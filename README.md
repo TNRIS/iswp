@@ -33,7 +33,8 @@ npm run dev -- --open
 ## Building
 
 To create a production version of your app:
-
+1. download gill-sans font insteuctions in gill-sans/README.md
+2. open main.css search url( then remove old_static
 ```bash
 npm run build
 ```
