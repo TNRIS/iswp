@@ -1,0 +1,47 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Static Files Launch Chrome",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://localhost:5173",
+            "webRoot": "${workspaceFolder}/static"
+        },
+        {
+            "name": "Svelte Files Launch Chrome",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://localhost:5173",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "Static Files Launch Chromium",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://localhost:5173/",
+            "webRoot": "${workspaceFolder}/static",
+            "runtimeExecutable": "/usr/bin/chromium-browser",
+            "runtimeArgs": [
+                "--new-window",
+                "-user-data-dir=\"/${workspaceFolder}/DevProfile\"",
+                "--remote-debugging-port=9222",
+                "--disable-background-networking"
+            ]
+        },
+        {
+            "name": "Svelte Files Launch Chromium",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://localhost:5173/",
+            "webRoot": "${workspaceFolder}",
+            "runtimeExecutable": "/usr/bin/chromium-browser",
+            "runtimeArgs": [
+                "--new-window",
+                "-user-data-dir=\"/${workspaceFolder}/DevProfile\"",
+                "--remote-debugging-port=9222",
+                "--disable-background-networking"
+            ]
+        }
+    ]
+}
