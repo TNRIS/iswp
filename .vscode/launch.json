@@ -42,6 +42,12 @@
                 "--remote-debugging-port=9222",
                 "--disable-background-networking"
             ]
+        },
+        {
+            "name": "Node.js - Debug Current File",
+            "type": "node",
+            "request": "launch",
+            "program": "${file}"
         }
     ]
 }
