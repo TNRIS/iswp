@@ -1,7 +1,7 @@
 //@ts-nocheck
-import fs from 'fs/promises';
-import AWS from 'aws-sdk';
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 let link = "https://tnris-droc.s3.amazonaws.com/iswp/2022/cache.json";
+const client = new S3Client({});;
 
 let runthis = async () => {
     let db23 = await fetch(link, {
@@ -17,8 +17,7 @@ let runthis = async () => {
         });
     }
 
-    await fs.writeFile("~/", JSON.stringify(tableobj));
-    console.log("Wait");   
+
 }
 
 runthis();
