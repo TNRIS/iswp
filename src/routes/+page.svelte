@@ -11,38 +11,38 @@
     import { onMount } from "svelte";
 
     // Helper to make onmount awaitable.
-    let async_onMount = async (callback) => {
+    let onMountSync = () => {
         return new Promise((resolve, reject) => {
-            onMount(async () => {
-                callback(resolve, reject);
-            });
+            try {
+                onMount(async () => {
+                    resolve("mounted");
+                });
+            } catch(err) {
+                reject(err);
+            }
         });
     };
 
     // Build the indexedDB
-    let build_indexeddb = () => {
-        return async_onMount(async (resolve, reject) => {
-            try {
-                let IS_2022_WEBSITE = window.location.href.indexOf("2022") > -1;
-                let IS_2017_WEBSITE = window.location.href.indexOf("2017") > -1;
+    let build_indexeddb = async () => {
+        await onMountSync();
 
-                // Start indexeddb, efficient if upgrade is not needed.
-                let [db17, db22] = await start_all_db();
+        let IS_2022_WEBSITE = window.location.href.indexOf("2022") > -1;
+        let IS_2017_WEBSITE = window.location.href.indexOf("2017") > -1;
 
-                // Choose database depending on url.
-                if (!(db22 && db17)) throw "Databases are null.";
+        // Start indexeddb, efficient if upgrade is not needed.
+        let [db17, db22] = await start_all_db();
 
-                if (IS_2022_WEBSITE) {
-                    resolve(db22);
-                } else if (IS_2017_WEBSITE) {
-                    resolve(db17);
-                } else {
-                    resolve(db22);
-                }
-            } catch (err) {
-                reject(err);
-            }
-        });
+        // Choose database depending on url.
+        if (!(db22 && db17)) throw "Databases are null.";
+
+        if (IS_2022_WEBSITE) {
+            return db22;
+        } else if (IS_2017_WEBSITE) {
+            return db17;
+        } else {
+            return db22;
+        }
     };
 </script>
 
