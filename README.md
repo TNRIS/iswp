@@ -51,3 +51,7 @@ How to create cache.
 3. upload to s3 bucket, 
 4. set metadata to Content-Encoding	gzip, Content-Type application/json
 5. Make publically accessible.
+
+## Creating db check file
+1. Run getmdata.js file
+2. upload checkfile2023.json to https://tnris-droc.s3.amazonaws.com/iswp/
