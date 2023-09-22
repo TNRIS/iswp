@@ -24,6 +24,7 @@ export default class Statewide {
         strategies: "vwWMSWugSupply",
     };
 
+    // for each type, for each decade, add the records decade total for that type to the storage decade total for that type.
     #buildTypeTotals = (ident, a, b, id) => {
         a.typeTotals[ident][this.decades[0]] =
             b.WugType == ident
@@ -289,7 +290,8 @@ export default class Statewide {
                         id
                     );
                 }
-    
+                
+                // Add records decade total to storage decade total for each decade.
                 a.decadeTotals[that.decades[0]] = a.decadeTotals[that.decades[0]] + b[id + that.decades[0]];
                 a.decadeTotals[that.decades[1]] = a.decadeTotals[that.decades[1]] + b[id + that.decades[1]];
                 a.decadeTotals[that.decades[2]] = a.decadeTotals[that.decades[2]] + b[id + that.decades[2]];

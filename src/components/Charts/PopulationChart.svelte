@@ -12,42 +12,36 @@
     //const c17 = new Constant2017();
     let constants = c22;
     let decades = constants.getDecades();
-    var getData = () => {
-        return new Promise((resolve, reject) => {
-            onMount(async () => {
-                try {
-                    let sw = new Statewide(db);
-                    let a = await sw.get();
-                    // Create a simple line chart
-                    console.log("a.population.decadeTotals: " + JSON.stringify(a.population.decadeTotals));
-                    let data = {
-                        // A labels array that can contain any sort of values
-                        labels: decades,
-                        // Our series array that contains series objects or in this case series data arrays
-                        series: [
-                            {
-                                className: "series-population",
-                                data: [
-                                    a.population.decadeTotals[decades[0]],
-                                    a.population.decadeTotals[decades[1]],
-                                    a.population.decadeTotals[decades[2]],
-                                    a.population.decadeTotals[decades[3]],
-                                    a.population.decadeTotals[decades[4]],
-                                    a.population.decadeTotals[decades[5]],
-                                ],
-                                meta: "population",
-                                name: "population",
-                            },
+    var getData = async () => {
+        try {
+            let sw = new Statewide(db);
+            let a = await sw.get();
+            // Create a simple line chart
+            console.log("a.population.decadeTotals: " + JSON.stringify(a.population.decadeTotals));
+            let data = {
+                // A labels array that can contain any sort of values
+                labels: decades,
+                // Our series array that contains series objects or in this case series data arrays
+                series: [
+                    {
+                        className: "series-population",
+                        data: [
+                            a.population.decadeTotals[decades[0]],
+                            a.population.decadeTotals[decades[1]],
+                            a.population.decadeTotals[decades[2]],
+                            a.population.decadeTotals[decades[3]],
+                            a.population.decadeTotals[decades[4]],
+                            a.population.decadeTotals[decades[5]],
                         ],
-                    };
-                    console.log(data)
-                    resolve(data);
-                } catch (err) {
-                    console.log(err);
-                    reject(err);
-                }
-            });
-        });
+                        meta: "population",
+                        name: "population",
+                    },
+                ],
+            };
+            return data
+        } catch (err) {
+            return err;
+        }
     };
 </script>
 
