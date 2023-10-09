@@ -8,6 +8,25 @@ export class Constant2022 {
         "LIVESTOCK",
         "MINING",
     ];
+
+    WMS_TYPES = [
+        'AGRICULTURAL CONSERVATION',
+        'AQUIFER STORAGE AND RECOVERY',
+        'CONJUNCTIVE USE',
+        'DIRECT POTABLE REUSE',
+        'DROUGHT MANAGEMENT',
+        'GROUNDWATER DESALINATION',
+        'GROUNDWATER WELLS AND OTHER',
+        'INDIRECT REUSE',
+        'INDUSTRIAL CONSERVATION',
+        'MUNICIPAL CONSERVATION',
+        'NEW MAJOR RESERVOIR',
+        'OTHER DIRECT REUSE',
+        'OTHER STRATEGIES',
+        'OTHER SURFACE WATER',
+        'SEAWATER DESALINATION'
+      ]
+
     #themes = ["demands", "supplies", "needs", "strategies"];
 
     #theme_titles = {

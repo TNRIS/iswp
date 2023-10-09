@@ -6,7 +6,7 @@ import { build_func } from "./db_helper.js";
 
 export function startDb22() {
     return new Promise(async (resolve, reject) => {
-        const request22 = window.indexedDB.open("iswpDB22", 154);
+        const request22 = window.indexedDB.open("iswpDB22", 155);
 
         request22.onerror = (event) => {
             reject(event);
@@ -78,7 +78,7 @@ export function startDb22() {
                 "WugRegion",
             ]);
             build_func(event, "vwWMSWugSupplyA1", []);
-            build_func(event, "vwWMSProjects", ["WmsProjectId", "WugRegion"]);
+            build_func(event, "vwWMSProjects", ["WmsProjectId", "WugRegion", "WmsProjectSponsorRegion"]);
             build_func(event, "vwWMSProjectByCounty", [
                 "WugCounty",
                 "WmsProjectId",

@@ -1,16 +1,14 @@
 // @ts-nocheck
 /** Class for statewide indexeddb queries. */
 
-import { Constant2022 } from "../Constant2022.js";
-let wugRegionFilter = undefined;
+import { Constant2022 } from "/src/lib/Constant2022.js";
 
 export default class Statewide {
     constructor(db) {
         const c22 = new Constant2022();
-        let constants = c22;
+        this.constants = c22; 
         this.db = db;
-        this.decades = constants.getDecades();
-        //console.log("this.decades: " + this.decades[0])
+        this.decades = this.constants.getDecades();
     }
 
     /**
@@ -24,99 +22,37 @@ export default class Statewide {
         strategies: "vwWMSWugSupply",
     };
 
+    #PROJECT_TABLES = {
+        region: 'vwWMSProjects',
+        county: 'vwWMSProjectByCounty',
+        entity: 'vwWMSProjectByEntity',
+        source: 'vwWMSProjectBySource',
+        wmstype: 'vwWMSProjectsByWmsType',
+        project: 'vwWMSProjectByWMS'//Not included as project information in project view is pulled from the vwWMSProjectByEntityWUGSplit table
+        //usagetype: vwWMSProjectByWUGType //Not included because results are too large
+    };
+
     // for each type, for each decade, add the records decade total for that type to the storage decade total for that type.
-    #buildTypeTotals = (ident, a, b, id) => {
-        a.typeTotals[ident][this.decades[0]] =
-            b.WugType == ident
-                ? a.typeTotals[ident][this.decades[0]] + b[id + this.decades[0]]
-                : a.typeTotals[ident][this.decades[0]];
-        a.typeTotals[ident][this.decades[1]] =
-            b.WugType == ident
-                ? a.typeTotals[ident][this.decades[1]] + b[id + this.decades[1]]
-                : a.typeTotals[ident][this.decades[1]];
-        a.typeTotals[ident][this.decades[2]] =
-            b.WugType == ident
-                ? a.typeTotals[ident][this.decades[2]] + b[id + this.decades[2]]
-                : a.typeTotals[ident][this.decades[2]];
-        a.typeTotals[ident][this.decades[3]] =
-            b.WugType == ident
-                ? a.typeTotals[ident][this.decades[3]] + b[id + this.decades[3]]
-                : a.typeTotals[ident][this.decades[3]];
-        a.typeTotals[ident][this.decades[4]] =
-            b.WugType == ident
-                ? a.typeTotals[ident][this.decades[4]] + b[id + this.decades[4]]
-                : a.typeTotals[ident][this.decades[4]];
-        a.typeTotals[ident][this.decades[5]] =
-            b.WugType == ident
-                ? a.typeTotals[ident][this.decades[5]] + b[id + this.decades[5]]
-                : a.typeTotals[ident][this.decades[5]];
+    #pattern = (ident, a, b, id, totalIdent, type) => {
+        for(let decade of this.decades) {
+            try {
+                a[totalIdent][ident][decade] = b[type] == ident
+                ? a[totalIdent][ident][decade] + b[id + decade]
+                : a[totalIdent][ident][decade];
+            } catch(err) {
+                console.log(`error ${err}`);
+            }
+        }
 
         return a;
-    };
-
-    #buildStratTotals = (ident, a, b, id) => {
-        a.strategySourceTotals[ident][this.decades[0]] =
-            b.WugType == ident
-                ? a.strategySourceTotals[ident][this.decades[0]] + b[id + this.decades[0]]
-                : a.strategySourceTotals[ident][this.decades[0]];
-        a.strategySourceTotals[ident][this.decades[1]] =
-            b.WugType == ident
-                ? a.strategySourceTotals[ident][this.decades[1]] + b[id + this.decades[1]]
-                : a.strategySourceTotals[ident][this.decades[1]];
-        a.strategySourceTotals[ident][this.decades[2]] =
-            b.WugType == ident
-                ? a.strategySourceTotals[ident][this.decades[2]] + b[id + this.decades[2]]
-                : a.strategySourceTotals[ident][this.decades[2]];
-        a.strategySourceTotals[ident][this.decades[3]] =
-            b.WugType == ident
-                ? a.strategySourceTotals[ident][this.decades[3]] + b[id + this.decades[3]]
-                : a.strategySourceTotals[ident][this.decades[3]];
-        a.strategySourceTotals[ident][this.decades[4]] =
-            b.WugType == ident
-                ? a.strategySourceTotals[ident][this.decades[4]] + b[id + this.decades[4]]
-                : a.strategySourceTotals[ident][this.decades[4]];
-        a.strategySourceTotals[ident][this.decades[5]] =
-            b.WugType == ident
-                ? a.strategySourceTotals[ident][this.decades[5]] + b[id + this.decades[5]]
-                : a.strategySourceTotals[ident][this.decades[5]];
-        return a;
-    };
-
-    #buildStratWmsTotals = (ident, a, b, id) => {
-        a.strategyTypeTotals[ident][this.decades[0]] =
-            b.WmsType == ident
-                ? a.strategyTypeTotals[ident][this.decades[0]] + b[id + this.decades[0]]
-                : a.strategyTypeTotals[ident][this.decades[0]];
-        a.strategyTypeTotals[ident][this.decades[1]] =
-            b.WmsType == ident
-                ? a.strategyTypeTotals[ident][this.decades[1]] + b[id + this.decades[1]]
-                : a.strategyTypeTotals[ident][this.decades[1]];
-        a.strategyTypeTotals[ident][this.decades[2]] =
-            b.WmsType == ident
-                ? a.strategyTypeTotals[ident][this.decades[2]] + b[id + this.decades[2]]
-                : a.strategyTypeTotals[ident][this.decades[2]];
-        a.strategyTypeTotals[ident][this.decades[3]] =
-            b.WmsType == ident
-                ? a.strategyTypeTotals[ident][this.decades[3]] + b[id + this.decades[3]]
-                : a.strategyTypeTotals[ident][this.decades[3]];
-        a.strategyTypeTotals[ident][this.decades[4]] =
-            b.WmsType == ident
-                ? a.strategyTypeTotals[ident][this.decades[4]] + b[id + this.decades[4]]
-                : a.strategyTypeTotals[ident][this.decades[4]];
-        a.strategyTypeTotals[ident][this.decades[5]] =
-            b.WmsType == ident
-                ? a.strategyTypeTotals[ident][this.decades[5]] + b[id + this.decades[5]]
-                : a.strategyTypeTotals[ident][this.decades[5]];
-        return a;
-    };
-
+    }
     // Warning: This function is reused in regionalsummaryind.js
     statewide_reducer = async (result, id) => {
         let that = this;
         //console.log("starting reduce");
         //console.log(JSON.stringify("result" + result));
         let reduced = await result.reduce(function (a, b) {
-            try{ 
+            try { 
                 if (Object.keys(a).length === 0) {
                     let init = {};
                                     
@@ -174,121 +110,32 @@ export default class Statewide {
                             "SURFACE WATER": {
                                 ...init
                             },
-                        }),
-                            (a["strategyTypeTotals"] = {
-                                "AGRICULTURAL CONSERVATION": {
-                                    ...init
-                                },
-                                "AQUIFER STORAGE AND RECOVERY": {
-                                    ...init
-                                },
-                                "CONJUNCTIVE USE": {
-                                    ...init
-                                },
-                                "DIRECT POTABLE REUSE": {
-                                    ...init
-                                },
-                                "DROUGHT MANAGEMENT": {
-                                    ...init
-                                },
-                                "GROUNDWATER DESALINATION": {
-                                    ...init
-                                },
-                                "GROUNDWATER WELLS AND OTHER": {
-                                    ...init
-                                },
-                                "INDIRECT REUSE": {
-                                    ...init
-                                },
-                                "INDUSTRIAL CONSERVATION": {
-                                    ...init
-                                },
-                                "MUNICIPAL CONSERVATION": {
-                                    ...init
-                                },
-                                "NEW MAJOR RESERVOIR": {
-                                    ...init
-                                },
-                                "OTHER DIRECT REUSE": {
-                                    ...init
-                                },
-                                "OTHER STRATEGIES": {
-                                    ...init
-                                },
-                                "OTHER SURFACE WATER": {
-                                    ...init
-                                },
-                                "SEAWATER DESALINATION": {
-                                    ...init
-                                },
-                            });
+                        });
+
+                        a["strategyTypeTotals"] = {};
+                        for(let type of that.constants.WMS_TYPES) {
+                            a["strategyTypeTotals"][type] = {...init}
+                        }
                     }
                 }
     
-                a = that.#buildTypeTotals("IRRIGATION", a, b, id);
+                a = that.#pattern("IRRIGATION", a, b, id, "typeTotals", "WugType");
+                a = that.#pattern("LIVESTOCK", a, b, id, "typeTotals", "WugType");
+                a = that.#pattern("MANUFACTURING", a, b, id, "typeTotals", "WugType");
+                a = that.#pattern("MINING", a, b, id, "typeTotals", "WugType");
+                a = that.#pattern("MUNICIPAL", a, b, id, "typeTotals", "WugType");
+                a = that.#pattern("STEAM ELECTRIC POWER", a, b, id, "typeTotals", "WugType");
 
-                a = that.#buildTypeTotals("LIVESTOCK", a, b, id);
-                a = that.#buildTypeTotals("MANUFACTURING", a, b, id);
-                a = that.#buildTypeTotals("MINING", a, b, id);
-                a = that.#buildTypeTotals("MUNICIPAL", a, b, id);
-                a = that.#buildTypeTotals("STEAM ELECTRIC POWER", a, b, id);
                 if (id == "SS") {
-                    a = that.#buildStratTotals("DEMAND REDUCTION", a, b, id);
-                    a = that.#buildStratTotals("GROUNDWATER", a, b, id);
-                    a = that.#buildStratTotals("REUSE", a, b, id);
-                    a = that.#buildStratTotals("SEAWATER", a, b, id);
-                    a = that.#buildStratTotals("SURFACE WATER", a, b, id);
-    
-                    a = that.#buildStratWmsTotals(
-                        "AGRICULTURAL CONSERVATION",
-                        a,
-                        b,
-                        id
-                    );
-                    a = that.#buildStratWmsTotals(
-                        "AQUIFER STORAGE AND RECOVERY",
-                        a,
-                        b,
-                        id
-                    );
-                    a = that.#buildStratWmsTotals("CONJUNCTIVE USE", a, b, id);
-                    a = that.#buildStratWmsTotals("DIRECT POTABLE REUSE", a, b, id);
-                    a = that.#buildStratWmsTotals("DROUGHT MANAGEMENT", a, b, id);
-                    a = that.#buildStratWmsTotals(
-                        "GROUNDWATER DESALINATION",
-                        a,
-                        b,
-                        id
-                    );
-                    a = that.#buildStratWmsTotals(
-                        "GROUNDWATER WELLS AND OTHER",
-                        a,
-                        b,
-                        id
-                    );
-                    a = that.#buildStratWmsTotals("INDIRECT REUSE", a, b, id);
-                    a = that.#buildStratWmsTotals(
-                        "INDUSTRIAL CONSERVATION",
-                        a,
-                        b,
-                        id
-                    );
-                    a = that.#buildStratWmsTotals(
-                        "MUNICIPAL CONSERVATION",
-                        a,
-                        b,
-                        id
-                    );
-                    a = that.#buildStratWmsTotals("NEW MAJOR RESERVOIR", a, b, id);
-                    a = that.#buildStratWmsTotals("OTHER DIRECT REUSE", a, b, id);
-                    a = that.#buildStratWmsTotals("OTHER STRATEGIES", a, b, id);
-                    a = that.#buildStratWmsTotals("OTHER SURFACE WATER", a, b, id);
-                    a = that.#buildStratWmsTotals(
-                        "SEAWATER DESALINATION",
-                        a,
-                        b,
-                        id
-                    );
+                    a = that.#pattern("DEMAND REDUCTION", a, b, id, "strategySourceTotals", "WugType");
+                    a = that.#pattern("GROUNDWATER", a, b, id, "strategySourceTotals", "WugType");
+                    a = that.#pattern("REUSE", a, b, id, "strategySourceTotals", "WugType");
+                    a = that.#pattern("SEAWATER", a, b, id, "strategySourceTotals", "WugType");
+                    a = that.#pattern("SURFACE WATER", a, b, id, "strategySourceTotals", "WugType");
+
+                    for(let type of that.constants.WMS_TYPES) {
+                        a = that.#pattern(type, a, b, id, "strategyTypeTotals", "WmsType");
+                    }
                 }
                 
                 // Add records decade total to storage decade total for each decade.
@@ -309,13 +156,17 @@ export default class Statewide {
         return reduced;
     };
 
-    #getAllTransaction = (key) => {
+    #getAllTransaction = (key, where, project_filter) => {
         return new Promise((resolve, reject) => {
             try {
                 //console.log("getAllTransaction for " + key);
+                if(key == 'vwWMSProjectsByWmsType') {
+                    // Temporary workaround until I find out why these are cased differently.
+                    key = 'vwWMSProjectsByWMSType'
+                }
                 const transaction = this.db.transaction([key]);
                 const objectStore = transaction.objectStore(key);
-                const rdemands = objectStore.index('WugRegion').getAll(wugRegionFilter);
+                const rdemands = objectStore.index(where).getAll(project_filter);
                 rdemands.onsuccess = (event) => {
                     // Do something with the request.result!
                     resolve(event.target.result);
@@ -326,32 +177,46 @@ export default class Statewide {
         });
     };
 
-    get = async (wfilter=undefined) => {
-        if(wfilter) {
-            wugRegionFilter = wfilter.replace(/[^a-zA-Z ]/g, "");
+    get = async (wfilt=undefined, wmsfilt=undefined) => {
+        let projectTable = this.#PROJECT_TABLES.region;
+        let projectClause = 'WmsProjectSponsorRegion';
+        let projectFilter = undefined;
+
+        if(wfilt) {
+            projectFilter = wfilt.replace(/[^a-zA-Z ]/g, "");
+        }
+        else if(wmsfilt) {
+            projectFilter = Number(wmsfilt.replace(/\D/g,''));
+            projectTable = this.#PROJECT_TABLES.project;
+            projectClause = 'WmsId'
         }
 
         let demands_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.demands
+            this.#DATA_TABLES.demands, 'WugRegion', projectFilter
         );
-        let needs_observable = this.#getAllTransaction(this.#DATA_TABLES.needs);
+        let needs_observable = this.#getAllTransaction(this.#DATA_TABLES.needs, 'WugRegion', projectFilter);
         let supplies_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.supplies
+            this.#DATA_TABLES.supplies, 'WugRegion', projectFilter
         );
         let population_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.population
+            this.#DATA_TABLES.population, 'WugRegion', projectFilter
         );
         let strategies_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.strategies
+            this.#DATA_TABLES.strategies, 'WugRegion', projectFilter
         );
 
-        let [demands, needs, supplies, population, strategies] =
+        let projects_observable = this.#getAllTransaction(
+            projectTable, projectClause, projectFilter
+        );
+
+        let [demands, needs, supplies, population, strategies, projects] =
             await Promise.all([
                 demands_observable,
                 needs_observable,
                 supplies_observable,
                 population_observable,
                 strategies_observable,
+                projects_observable
             ]);
 
         demands = await this.statewide_reducer(demands, "D");
@@ -366,6 +231,7 @@ export default class Statewide {
             population: population,
             strategies: strategies,
             supplies: supplies,
+            projects: projects
         };
 
         return c;
