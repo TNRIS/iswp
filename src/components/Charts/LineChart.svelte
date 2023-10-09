@@ -1,7 +1,8 @@
 <script>
+    //@ts-nocheck
     const { data, chartTitle, options } = $$props;
     import { onMount } from "svelte";
-    import { hoverHelper, clearInteraction } from "../../actions/HoverAction";
+    import { hoverHelper, clearInteraction } from "/src/actions/HoverAction";
 
     let buildChart = () => {
         // In the global name space Chartist we call the Line function to initialize a line chart. As a first parameter we pass in a selector where we would like to get our chart created. Second parameter is the actual data object and as a third parameter we pass in our options

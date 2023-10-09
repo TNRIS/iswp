@@ -1,11 +1,12 @@
 <script>
+    //@ts-nocheck
     import { onMount } from "svelte";
-    import { Constant2022 } from "../../lib/Constant2022.js";
+    import { Constant2022 } from "/src/lib/Constant2022.js";
     import LineChart from "./LineChart.svelte";
-    import ChartDataTable from "../ChartDataTable.svelte";
-    import ToggleDisplay from "../ToggleDisplay.svelte";
-    import Statewide from "../../lib/db/statewide.js";
-    const { chartTitle, db } = $$props;
+    import ChartDataTable from "/src/components/ChartDataTable.svelte";
+    import ToggleDisplay from "/src/components/ToggleDisplay.svelte";
+    import Statewide from "/src/lib/db/statewide.js";
+    const { chartTitle, db, wugRegionFilter } = $$props;
     import format from "format-number";
 
     const c22 = new Constant2022();
@@ -15,7 +16,7 @@
     var getData = async () => {
         try {
             let sw = new Statewide(db);
-            let a = await sw.get();
+            let a = await sw.get(wugRegionFilter);
             // Create a simple line chart
             console.log("a.population.decadeTotals: " + JSON.stringify(a.population.decadeTotals));
             let data = {
@@ -38,7 +39,7 @@
                     },
                 ],
             };
-            return data
+            return data;
         } catch (err) {
             return err;
         }

@@ -19,6 +19,18 @@ export class Constant2022 {
     };
 
     #year = 2022;
+    #regions = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'];
+
+    page_types = {
+        "region": "region",
+        "county": "county",
+        "entity": "entity",
+        "usagetype": "usagetype",
+        "source": "source",
+        "project": "project",
+        "wms": "wms",
+        "wmstype": "wmstype"
+    }
 
     getThemeTitles() {
         return this.#theme_titles;
@@ -38,5 +50,9 @@ export class Constant2022 {
 
     getYear() {
         return this.#year;
+    }
+
+    getRegions() {
+        return this.#regions;
     }
 }

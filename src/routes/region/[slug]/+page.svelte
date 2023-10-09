@@ -1,12 +1,18 @@
 <script>
     //@ts-nocheck
-    import PopulationChart from "../components/Charts/PopulationChart.svelte";
-    import DataUsageType from "../components/DataUsageType.svelte";
-    import TitleBlurb from "../components/TitleBlurb.svelte";
-    import ThemeTypesByDecadeChart from "../components/ThemeTypesByDecadeChart.svelte";
-    import ThemeTotalsByDecadeChart from "../components/ThemeTotalsByDecadeChart.svelte";
-    import DataViewChoiceWrap from "../components/DataByPlanningDecadeAndTheme/DataViewChoiceWrap.svelte";
-    import { start_all_db } from "../lib/db/db.js";
+    import PopulationChart from "/src/components/Charts/PopulationChart.svelte";
+    import DataUsageType from "/src/components/DataUsageType.svelte";
+    import TitleBlurb from "/src/components/TitleBlurb.svelte";
+    import ProjectTable from "/src/components/ProjectTable/ProjectTable.svelte";
+    import ThemeTypesByDecadeChart from "/src/components/ThemeTypesByDecadeChart.svelte";
+    import ThemeTotalsByDecadeChart from "/src/components/ThemeTotalsByDecadeChart.svelte";
+    import DataViewChoiceWrap from "/src/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrap.svelte";
+    import { Constant2022 } from "/src/lib/Constant2022.js";
+    const c22 = new Constant2022();
+    let constants = c22;
+    export let data;
+
+    import { start_all_db } from "/src/lib/db/db.js";
     import { onMount } from "svelte";
 
     // Helper to make onmount awaitable.
@@ -49,13 +55,12 @@
     <section>
         {#await build_indexeddb()}
             <span>Loading</span>
-        {:then data}
-            <PopulationChart chartTitle={"ct-pop-chart"} db={data} />
-            <TitleBlurb />
-            <ThemeTotalsByDecadeChart db={data} />
-            <ThemeTypesByDecadeChart chartTitle={"ct-usage-chart"} db={data} />
-            <DataUsageType db={data} />
-            <DataViewChoiceWrap db={data} />
+        {:then out}
+            <PopulationChart chartTitle={"ct-pop-chart"} db={out} type={constants.page_types.region} wugRegionFilter={data.slug}/>
+            <ThemeTotalsByDecadeChart db={out} wugRegionFilter={data.slug} />
+            <ThemeTypesByDecadeChart chartTitle={"ct-usage-chart"} db={out} wugRegionFilter={data.slug} />
+            <DataUsageType db={out} wugRegionFilter={data.slug} />
+            <ProjectTable />
         {:catch error}
             <span>Error starting database {error.message}</span>
         {/await}

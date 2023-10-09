@@ -13,7 +13,7 @@
     import ChartDataTable from "./ChartDataTable.svelte";
     import titleize from "titleize";
     import Statewide from "../lib/db/statewide.js";
-    const { db } = $$props;
+    const { db, wugRegionFilter } = $$props;
 
     const c22 = new Constant2022();
     function slugify(s) {
@@ -27,7 +27,7 @@
             onMount(async () => {
                 try {
                     let sw = new Statewide(db);
-                    let a = await sw.get();
+                    let a = await sw.get(wugRegionFilter);
                     dataUsageTypeData = await buildDataUsageTypeData(a);
 
                     resolve(dataUsageTypeData);

@@ -2,7 +2,7 @@
 /** Class for statewide indexeddb queries. */
 
 import { Constant2022 } from "../Constant2022.js";
-
+let wugRegionFilter = undefined;
 
 export default class Statewide {
     constructor(db) {
@@ -315,7 +315,7 @@ export default class Statewide {
                 //console.log("getAllTransaction for " + key);
                 const transaction = this.db.transaction([key]);
                 const objectStore = transaction.objectStore(key);
-                const rdemands = objectStore.getAll();
+                const rdemands = objectStore.index('WugRegion').getAll(wugRegionFilter);
                 rdemands.onsuccess = (event) => {
                     // Do something with the request.result!
                     resolve(event.target.result);
@@ -326,7 +326,11 @@ export default class Statewide {
         });
     };
 
-    get = async () => {
+    get = async (wfilter=undefined) => {
+        if(wfilter) {
+            wugRegionFilter = wfilter.replace(/[^a-zA-Z ]/g, "");
+        }
+
         let demands_observable = this.#getAllTransaction(
             this.#DATA_TABLES.demands
         );
@@ -363,7 +367,7 @@ export default class Statewide {
             strategies: strategies,
             supplies: supplies,
         };
-        //console.log("returning this after reducing. " + JSON.stringify(c));
+
         return c;
     };
 }
