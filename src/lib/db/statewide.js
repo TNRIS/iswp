@@ -111,54 +111,12 @@ export default class Statewide {
                             "SURFACE WATER": {
                                 ...init
                             },
-                        }),
-                            (a["strategyTypeTotals"] = {
-                                "AGRICULTURAL CONSERVATION": {
-                                    ...init
-                                },
-                                "AQUIFER STORAGE AND RECOVERY": {
-                                    ...init
-                                },
-                                "CONJUNCTIVE USE": {
-                                    ...init
-                                },
-                                "DIRECT POTABLE REUSE": {
-                                    ...init
-                                },
-                                "DROUGHT MANAGEMENT": {
-                                    ...init
-                                },
-                                "GROUNDWATER DESALINATION": {
-                                    ...init
-                                },
-                                "GROUNDWATER WELLS AND OTHER": {
-                                    ...init
-                                },
-                                "INDIRECT REUSE": {
-                                    ...init
-                                },
-                                "INDUSTRIAL CONSERVATION": {
-                                    ...init
-                                },
-                                "MUNICIPAL CONSERVATION": {
-                                    ...init
-                                },
-                                "NEW MAJOR RESERVOIR": {
-                                    ...init
-                                },
-                                "OTHER DIRECT REUSE": {
-                                    ...init
-                                },
-                                "OTHER STRATEGIES": {
-                                    ...init
-                                },
-                                "OTHER SURFACE WATER": {
-                                    ...init
-                                },
-                                "SEAWATER DESALINATION": {
-                                    ...init
-                                },
-                            });
+                        });
+
+                        a["strategyTypeTotals"] = {};
+                        for(let type of that.constants.WMS_TYPES) {
+                            a["strategyTypeTotals"][type] = {...init}
+                        }
                     }
                 }
     
