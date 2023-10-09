@@ -16,8 +16,6 @@ let runthis = async () => {
             length: db23_json[db].length
         });
     }
-
-
 }
 
 runthis();
