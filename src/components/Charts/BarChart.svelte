@@ -4,7 +4,7 @@
     import titleize from "titleize";
     import * as R from "ramda";
     import { onMount } from "svelte";
-    import { Constant2022 } from "../../lib/Constant2022.js";
+    import { Constant2022 } from "/src/lib/Constant2022.js";
     //import TitlePlugin from './ChartistAxisTitlePlugin';
 
     const c22 = new Constant2022();

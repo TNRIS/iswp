@@ -6,7 +6,7 @@ import { build_func } from "./db_helper.js";
 
 export function startDb22() {
     return new Promise(async (resolve, reject) => {
-        const request22 = window.indexedDB.open("iswpDB22", 141);
+        const request22 = window.indexedDB.open("iswpDB22", 154);
 
         request22.onerror = (event) => {
             reject(event);

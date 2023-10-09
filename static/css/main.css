@@ -816,7 +816,7 @@ select {
 
 .leaflet-control-defaultextent a {
   background-color: #fff;
-  background-image: url("old_static/img/texas_icon.png");
+  background-image: url("/old_static/img/texas_icon.png");
   background-size: 16px;
 }
 
@@ -859,14 +859,14 @@ button.easy-button-button span {
   height: 100%;
 }
 button.easy-button-button .icon-unlocked {
-  background: url("old_static/img/icon_unlock.png") center no-repeat;
+  background: url("/old_static/img/icon_unlock.png") center no-repeat;
   background-size: 18px;
 }
 button.easy-button-button .locked-active {
   background-color: #000;
 }
 button.easy-button-button .icon-locked {
-  background: url("old_static/img/icon_lock.png") center no-repeat;
+  background: url("/old_static/img/icon_lock.png") center no-repeat;
   background-size: 18px;
 }
 

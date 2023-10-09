@@ -1,16 +1,15 @@
 <script>
     // @ts-nocheck
-    import { Constant2022 } from "../lib/Constant2022.js";
-    import LineChart from "./Charts/LineChart.svelte";
-    import ChartDataTable from "./ChartDataTable.svelte";
-    const c22 = new Constant2022();
+    import { Constant2022 } from "/src/lib/Constant2022.js";
+    import LineChart from "/src/components/Charts/LineChart.svelte";
+    import ChartDataTable from "/src/components/ChartDataTable.svelte";
     import { onMount } from "svelte";
-    import Statewide from "../lib/db/statewide.js";
-    import ThemeSelector from "./ThemeSelector.svelte";
-    import { forEach } from "ramda";
-    const { chartTitle, db } = $$props;
+    import Statewide from "/src/lib/db/statewide.js";
+    import ThemeSelector from "/src/components/ThemeSelector.svelte";
     import format from "format-number";
 
+    const c22 = new Constant2022();
+    const { chartTitle, db, wugRegionFilter } = $$props;
     const chartOptions = {
         height: "240px",
         lineSmooth: false,
@@ -24,54 +23,43 @@
         },
         fullWidth: true,
     };
-    let selectedTheme = "Demands";
 
+    let titles = c22.getThemeTitles();
+    let selectedTheme = "demands";
     let demands_visible = true;
     let supplies_visible = false;
     let needs_visible = false;
     let strategies_visible = false;
-
     let constants = c22;
-
     let show = (event) => {
-        //console.log(event);
-        //console.log(event.target.innerHtml);
-
-        let obuttons = document.getElementsByClassName("selectorButtons");
-
-        for (let i = 0; i < obuttons.length; i++) {
-            obuttons[i].className = "selectorButtons button";
-        }
-
-        event.target.className = "selectorButtons button active";
         switch (event.target.innerHTML) {
             case "Demands":
                 supplies_visible = false;
                 needs_visible = false;
                 strategies_visible = false;
                 demands_visible = true;
-                selectedTheme = "Demands";
+                selectedTheme = "demands";
                 break;
             case "Existing Supplies":
                 demands_visible = false;
                 needs_visible = false;
                 strategies_visible = false;
                 supplies_visible = true;
-                selectedTheme = "Existing Supplies";
+                selectedTheme = "supplies";
                 break;
             case "Needs (Potential Shortages)":
                 demands_visible = false;
                 supplies_visible = false;
                 strategies_visible = false;
                 needs_visible = true;
-                selectedTheme = "Needs (Potential Shortages)";
+                selectedTheme = "needs";
                 break;
             case "Strategy Supplies":
                 demands_visible = false;
                 supplies_visible = false;
                 needs_visible = false;
                 strategies_visible = true;
-                selectedTheme = "Strategy Supplies";
+                selectedTheme = "strategies";
                 break;
         }
     };
@@ -96,7 +84,7 @@
             onMount(async () => {
                 try {
                     let sw = new Statewide(db);
-                    let a = await sw.get();
+                    let a = await sw.get(wugRegionFilter);
 
                     // Create a simple line chart
                     let data = {};
@@ -283,12 +271,12 @@
     <div style="pointer-events:auto; height:384px;" class="row panel-row">
         <div class="chart-header">
             <h4>
-                {selectedTheme} by Usage Type
+                {titles[selectedTheme]} by Usage Type
                 <span class="units">(acre-feet/year)</span>
                 <!--<Units />-->
             </h4>
             <!--<UsageTypeChartLegend className="u-pull-right legend-types-by-decade" />-->
-            <ThemeSelector {show} />
+            <ThemeSelector {show} bind:select_theme={selectedTheme}/>
         </div>
 
         {#await getData()}

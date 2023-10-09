@@ -59,7 +59,7 @@ export default class RegionalSummary {
             return this.#regionalsummary;
         }
         if (!this.db) {
-            console.err("db is not defined yet.");
+            console.error("db is not defined yet.");
         }
 
         try {
