@@ -157,13 +157,13 @@ export default class Statewide {
         return reduced;
     };
 
-    #getAllTransaction = (key) => {
+    #getAllTransaction = (key, where) => {
         return new Promise((resolve, reject) => {
             try {
                 //console.log("getAllTransaction for " + key);
                 const transaction = this.db.transaction([key]);
                 const objectStore = transaction.objectStore(key);
-                const rdemands = objectStore.index('WugRegion').getAll(wugRegionFilter);
+                const rdemands = objectStore.index(where).getAll(wugRegionFilter);
                 rdemands.onsuccess = (event) => {
                     // Do something with the request.result!
                     resolve(event.target.result);
@@ -180,26 +180,31 @@ export default class Statewide {
         }
 
         let demands_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.demands
+            this.#DATA_TABLES.demands, 'WugRegion'
         );
-        let needs_observable = this.#getAllTransaction(this.#DATA_TABLES.needs);
+        let needs_observable = this.#getAllTransaction(this.#DATA_TABLES.needs, 'WugRegion');
         let supplies_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.supplies
+            this.#DATA_TABLES.supplies, 'WugRegion'
         );
         let population_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.population
+            this.#DATA_TABLES.population, 'WugRegion'
         );
         let strategies_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.strategies
+            this.#DATA_TABLES.strategies, 'WugRegion'
         );
 
-        let [demands, needs, supplies, population, strategies] =
+        let projects_observable = this.#getAllTransaction(
+            this.#PROJECT_TABLES.region, 'WmsProjectSponsorRegion'
+        );
+
+        let [demands, needs, supplies, population, strategies, projects] =
             await Promise.all([
                 demands_observable,
                 needs_observable,
                 supplies_observable,
                 population_observable,
                 strategies_observable,
+                projects_observable
             ]);
 
         demands = await this.statewide_reducer(demands, "D");
@@ -214,6 +219,7 @@ export default class Statewide {
             population: population,
             strategies: strategies,
             supplies: supplies,
+            projects: projects
         };
 
         return c;
