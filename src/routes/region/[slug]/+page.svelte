@@ -13,20 +13,7 @@
     export let data;
 
     import { start_all_db } from "/src/lib/db/db.js";
-    import { onMount } from "svelte";
-
-    // Helper to make onmount awaitable.
-    let onMountSync = () => {
-        return new Promise((resolve, reject) => {
-            try {
-                onMount(async () => {
-                    resolve("mounted");
-                });
-            } catch(err) {
-                reject(err);
-            }
-        });
-    };
+    import { onMountSync } from "/src/lib/helper.js"
 
     // Build the indexedDB
     let build_indexeddb = async () => {

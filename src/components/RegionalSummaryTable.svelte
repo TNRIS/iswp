@@ -1,7 +1,8 @@
 <script>
     // @ts-nocheck
     import RegionalSummary from "../lib/db/regionalsummary.js";
-    import { onMount, getContext } from "svelte";
+    import { getContext } from "svelte";
+    import { onMountSync } from "/src/lib/helper.js"
     import { Constant2022 } from "../lib/Constant2022.js";
     export let { db } = $$props;
 
@@ -11,19 +12,6 @@
 
     const decadeStore = getContext('myContext').decadeStore;
     const themeStore = getContext('myContext').themeStore;
-
-    // Helper to make onmount awaitable.
-    let onMountSync = () => {
-        return new Promise((resolve, reject) => {
-            try {
-                onMount(async () => {
-                    resolve("mounted");
-                });
-            } catch(err) {
-                reject(err);
-            }
-        });
-    };
 
     let getData = async () => {
         await onMountSync();
