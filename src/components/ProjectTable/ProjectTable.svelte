@@ -4,7 +4,7 @@
     import "gridjs/dist/theme/mermaid.css";
     import { onMount } from "svelte";
     import { usd_format } from "/src/lib/helper.js"
-    const { db, wugRegionFilter, wmsFilter, wmsTypeFilter, countyFilter } = $$props;
+    const { db, wugRegionFilter, wmsFilter, wmsTypeFilter, countyFilter, sourceFilter } = $$props;
 
     import Statewide from "/src/lib/db/statewide.js";
     let sum = 0;
@@ -12,7 +12,7 @@
     let projects = false;
     onMount(async () => {
         let sw = new Statewide(db);
-        let a = await sw.get(wugRegionFilter, wmsFilter, wmsTypeFilter, countyFilter);
+        let a = await sw.get(wugRegionFilter, wmsFilter, wmsTypeFilter, countyFilter, sourceFilter);
         if (a.projects && a.projects.length) projects = true;
         let project_data = [];
         for (let project of a.projects) {
