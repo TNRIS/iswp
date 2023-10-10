@@ -60,7 +60,7 @@
             <ThemeTotalsByDecadeChart db={out} wugRegionFilter={data.slug} />
             <ThemeTypesByDecadeChart chartTitle={"ct-usage-chart"} db={out} wugRegionFilter={data.slug} />
             <DataUsageType db={out} wugRegionFilter={data.slug} />
-            <ProjectTable />
+            <ProjectTable db={out} wugRegionFilter={data.slug} />
         {:catch error}
             <span>Error starting database {error.message}</span>
         {/await}
