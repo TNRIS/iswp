@@ -180,7 +180,7 @@ export default class Statewide {
         });
     };
 
-    get = async (wfilt=undefined, wmsfilt=undefined, wmstypefilt=undefined) => {
+    get = async (wfilt=undefined, wmsfilt=undefined, wmstypefilt=undefined, countyfilt=undefined) => {
         let projectTable = this.#PROJECT_TABLES.region;
         let projectClause = 'WmsProjectSponsorRegion';
         let projectFilter = undefined;
@@ -196,6 +196,10 @@ export default class Statewide {
             projectFilter = wmstypefilt;
             projectTable = this.#PROJECT_TABLES.wmstype;
             projectClause = 'WmsType';
+        } else if (countyfilt) {
+            projectFilter = countyfilt.toUpperCase();
+            projectTable = this.#PROJECT_TABLES.county
+            projectClause = 'WugCounty'
         }
 
         let demands_observable = this.#getAllTransaction(

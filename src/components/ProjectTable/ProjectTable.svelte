@@ -3,7 +3,8 @@
     import { Grid } from "gridjs";
     import "gridjs/dist/theme/mermaid.css";
     import { onMount } from "svelte";
-    const { db, wugRegionFilter, wmsFilter, wmsTypeFilter } = $$props;
+    import { usd_format } from "/src/lib/helper.js"
+    const { db, wugRegionFilter, wmsFilter, wmsTypeFilter, countyFilter } = $$props;
 
     import Statewide from "/src/lib/db/statewide.js";
     let sum = 0;
@@ -11,7 +12,7 @@
     let projects = false;
     onMount(async () => {
         let sw = new Statewide(db);
-        let a = await sw.get(wugRegionFilter, wmsFilter, wmsTypeFilter);
+        let a = await sw.get(wugRegionFilter, wmsFilter, wmsTypeFilter, countyFilter);
         if (a.projects && a.projects.length) projects = true;
         let project_data = [];
         for (let project of a.projects) {
@@ -19,7 +20,7 @@
                 project.ProjectName,
                 project.OnlineDecade,
                 project.ProjectSponsors,
-                project.CapitalCost,
+                usd_format.format(project.CapitalCost)
             ];
 
             // Need to stringify array to use includes function because [1] !== [1] since they don't have the same reference.
@@ -55,7 +56,7 @@
                 <h4>Recommended Projects</h4>
                 <p>
                     Total capital cost of recommended projects:
-                    <strong>{sum}</strong>
+                    <strong>{usd_format.format(sum)}</strong>
                     .
                 </p>
                 <div id="table-container" />

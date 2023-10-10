@@ -12,3 +12,9 @@ export let onMountSync = () => {
         }
     });
 };
+
+// Helper to format a number.
+export let usd_format = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+});
