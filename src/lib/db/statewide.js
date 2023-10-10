@@ -2,7 +2,6 @@
 /** Class for statewide indexeddb queries. */
 
 import { Constant2022 } from "/src/lib/Constant2022.js";
-let wugRegionFilter = undefined;
 
 export default class Statewide {
     constructor(db) {
@@ -28,8 +27,8 @@ export default class Statewide {
         county: 'vwWMSProjectByCounty',
         entity: 'vwWMSProjectByEntity',
         source: 'vwWMSProjectBySource',
-        wmstype: 'vwWMSProjectsByWmsType'
-        // project: 'vwWMSProjectByWMS'//Not included as project information in project view is pulled from the vwWMSProjectByEntityWUGSplit table
+        wmstype: 'vwWMSProjectsByWmsType',
+        project: 'vwWMSProjectByWMS'//Not included as project information in project view is pulled from the vwWMSProjectByEntityWUGSplit table
         //usagetype: vwWMSProjectByWUGType //Not included because results are too large
     };
 
@@ -157,13 +156,17 @@ export default class Statewide {
         return reduced;
     };
 
-    #getAllTransaction = (key, where) => {
+    #getAllTransaction = (key, where, project_filter) => {
         return new Promise((resolve, reject) => {
             try {
                 //console.log("getAllTransaction for " + key);
+                if(key == 'vwWMSProjectsByWmsType') {
+                    // Temporary workaround until I find out why these are cased differently.
+                    key = 'vwWMSProjectsByWMSType'
+                }
                 const transaction = this.db.transaction([key]);
                 const objectStore = transaction.objectStore(key);
-                const rdemands = objectStore.index(where).getAll(wugRegionFilter);
+                const rdemands = objectStore.index(where).getAll(project_filter);
                 rdemands.onsuccess = (event) => {
                     // Do something with the request.result!
                     resolve(event.target.result);
@@ -174,27 +177,36 @@ export default class Statewide {
         });
     };
 
-    get = async (wfilter=undefined) => {
-        if(wfilter) {
-            wugRegionFilter = wfilter.replace(/[^a-zA-Z ]/g, "");
+    get = async (wfilt=undefined, wmsfilt=undefined) => {
+        let projectTable = this.#PROJECT_TABLES.region;
+        let projectClause = 'WmsProjectSponsorRegion';
+        let projectFilter = undefined;
+
+        if(wfilt) {
+            projectFilter = wfilt.replace(/[^a-zA-Z ]/g, "");
+        }
+        else if(wmsfilt) {
+            projectFilter = Number(wmsfilt.replace(/\D/g,''));
+            projectTable = this.#PROJECT_TABLES.project;
+            projectClause = 'WmsId'
         }
 
         let demands_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.demands, 'WugRegion'
+            this.#DATA_TABLES.demands, 'WugRegion', projectFilter
         );
-        let needs_observable = this.#getAllTransaction(this.#DATA_TABLES.needs, 'WugRegion');
+        let needs_observable = this.#getAllTransaction(this.#DATA_TABLES.needs, 'WugRegion', projectFilter);
         let supplies_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.supplies, 'WugRegion'
+            this.#DATA_TABLES.supplies, 'WugRegion', projectFilter
         );
         let population_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.population, 'WugRegion'
+            this.#DATA_TABLES.population, 'WugRegion', projectFilter
         );
         let strategies_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.strategies, 'WugRegion'
+            this.#DATA_TABLES.strategies, 'WugRegion', projectFilter
         );
 
         let projects_observable = this.#getAllTransaction(
-            this.#PROJECT_TABLES.region, 'WmsProjectSponsorRegion'
+            projectTable, projectClause, projectFilter
         );
 
         let [demands, needs, supplies, population, strategies, projects] =
