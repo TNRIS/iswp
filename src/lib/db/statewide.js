@@ -171,13 +171,16 @@ export default class Statewide {
                     // Do something with the request.result!
                     resolve(event.target.result);
                 };
+                rdemands.onerror = (event) => {
+                    reject(event);
+                }
             } catch (err) {
                 reject(err);
             }
         });
     };
 
-    get = async (wfilt=undefined, wmsfilt=undefined) => {
+    get = async (wfilt=undefined, wmsfilt=undefined, wmstypefilt=undefined) => {
         let projectTable = this.#PROJECT_TABLES.region;
         let projectClause = 'WmsProjectSponsorRegion';
         let projectFilter = undefined;
@@ -189,6 +192,10 @@ export default class Statewide {
             projectFilter = Number(wmsfilt.replace(/\D/g,''));
             projectTable = this.#PROJECT_TABLES.project;
             projectClause = 'WmsId'
+        } else if(wmstypefilt) {
+            projectFilter = wmstypefilt;
+            projectTable = this.#PROJECT_TABLES.wmstype;
+            projectClause = 'WmsType';
         }
 
         let demands_observable = this.#getAllTransaction(
