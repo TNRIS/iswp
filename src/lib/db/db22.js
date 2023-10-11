@@ -6,7 +6,7 @@ import { build_func } from "./db_helper.js";
 
 export function startDb22() {
     return new Promise(async (resolve, reject) => {
-        const request22 = window.indexedDB.open("iswpDB22", 155);
+        const request22 = window.indexedDB.open("iswpDB22", 158);
 
         request22.onerror = (event) => {
             reject(event);
@@ -76,6 +76,7 @@ export function startDb22() {
                 "MapSourceId",
                 "WugCounty",
                 "WugRegion",
+                "WmsType"
             ]);
             build_func(event, "vwWMSWugSupplyA1", []);
             build_func(event, "vwWMSProjects", ["WmsProjectId", "WugRegion", "WmsProjectSponsorRegion"]);
@@ -92,7 +93,7 @@ export function startDb22() {
                 "WmsProjectId",
             ]);
             build_func(event, "vwWMSProjectByWMS", ["WmsId", "WmsProjectId"]);
-            build_func(event, "vwWMSProjectsByWMSType", ["WmsProjectId"]);
+            build_func(event, "vwWMSProjectsByWMSType", ["WmsProjectId", "WmsType"]);
             build_func(event, "vwWMSProjectByWUGType", ["WmsProjectId"]);
             build_func(event, "vwWMSProjectByEntityWUGSplit", ["WmsProjectId"]);
             build_func(event, "vwWMSProjectEntityRelationships", [

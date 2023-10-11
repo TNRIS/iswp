@@ -11,7 +11,7 @@
         {#await load_indexeddb()}
             <span>Loading</span>
         {:then out}
-            <ProjectTable db={out} wugRegionFilter={undefined} wmsFilter={data.slug} />
+            <ProjectTable db={out} wugRegionFilter={undefined} wmsFilter={undefined} wmsTypeFilter={data.slug} />
         {:catch error}
             <span>Error starting database {error.message}</span>
         {/await}

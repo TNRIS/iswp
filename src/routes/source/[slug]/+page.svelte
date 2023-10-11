@@ -1,6 +1,7 @@
 <script>
     //@ts-nocheck
     import ProjectTable from "/src/components/ProjectTable/ProjectTable.svelte";
+    import { Constant2022 } from "$lib/Constant2022.js";
     export let data;
 
     import { load_indexeddb } from "$lib/helper.js"
@@ -11,7 +12,7 @@
         {#await load_indexeddb()}
             <span>Loading</span>
         {:then out}
-            <ProjectTable db={out} wugRegionFilter={undefined} wmsFilter={data.slug} />
+            <ProjectTable db={ out } sourceFilter={ data.slug } />
         {:catch error}
             <span>Error starting database {error.message}</span>
         {/await}

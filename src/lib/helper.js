@@ -1,4 +1,5 @@
 import { onMount } from "svelte";
+import { start_all_db } from "$lib/db/db.js";
 
 // Helper to make onmount awaitable.
 export let onMountSync = () => {
@@ -11,4 +12,32 @@ export let onMountSync = () => {
             reject(err);
         }
     });
+};
+
+// Helper to format a number.
+export let usd_format = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+});
+
+// Load indexeddb
+export let load_indexeddb = async () => {
+    await onMountSync();
+
+    let IS_2022_WEBSITE = window.location.href.indexOf("2022") > -1;
+    let IS_2017_WEBSITE = window.location.href.indexOf("2017") > -1;
+
+    // Start indexeddb, efficient if upgrade is not needed.
+    let [db17, db22] = await start_all_db();
+
+    // Choose database depending on url.
+    if (!(db22 && db17)) throw "Databases are null.";
+
+    if (IS_2022_WEBSITE) {
+        return db22;
+    } else if (IS_2017_WEBSITE) {
+        return db17;
+    } else {
+        return db22;
+    }
 };
