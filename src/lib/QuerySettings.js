@@ -1,64 +1,96 @@
-/**
- * @typedef {import ('./QuerySetting.js').QuerySetting} QuerySetting
- */
+import { QuerySetting } from './QuerySetting.js';
 
+/** Class representing settings to send to Statewide query to configure specific queries as needed. */
 export class QuerySettings {
     /**
-     * @param {QuerySetting} s_demands
-     * @param {QuerySetting} s_needs
-     * @param {QuerySetting} s_supplies
-     * @param {QuerySetting} s_population
-     * @param {QuerySetting} s_strategies
-     * @param {QuerySetting} s_projects
+     * @param {string} type
      */
-    constructor(s_demands, s_needs, s_supplies, s_population, s_strategies, s_projects) {
-        this.s_demands = s_demands,
-        this.s_needs = s_needs,
-        this.s_supplies =  s_supplies,
-        this.s_population = s_population,
-        this.s_strategies = s_strategies,
-        this.s_projects = s_projects
+    constructor(type) {
+        this.type = type;
+        this.s_demands = new QuerySetting(type);
+        this.s_needs = new QuerySetting(type);
+        this.s_supplies = new QuerySetting(type);
+        this.s_population = new QuerySetting(type);
+        this.s_strategies = new QuerySetting(type);
+        this.s_projects = new QuerySetting(type);
     }
 
     /**
-     * @param {QuerySetting} s_demands
+     * @param {string} demands
      */
-    setDemands(s_demands) {
-        this.s_demands = s_demands;
+    setDemands(demands) {
+        this.s_demands = new QuerySetting(this.type, demands);
     }
 
     /**
-     * @param {QuerySetting} s_needs
+     * Returns demands setting
+     * @returns {QuerySetting}
      */
-    setNeeds(s_needs) {
-        this.s_needs = s_needs;
+    getDemands() {
+        return this.s_demands;
     }
 
     /**
-     * @param {QuerySetting} s_supplies
+     * @param {string} needs
      */
-    setSupplies(s_supplies) {
-        this.s_supplies = s_supplies;
+    setNeeds(needs) {
+        this.s_needs = new QuerySetting(this.type, needs);
     }
 
     /**
-     * @param {QuerySetting} s_population
+     *  Returns needs setting
+     * @returns {QuerySetting}
      */
-    setPopulation(s_population) {
-        this.s_population = s_population;
+    getNeeds() {
+        return this.s_needs;
     }
 
     /**
-     * @param {QuerySetting} s_strategies
+     * Setup a supplies setting object.
+     * @param {string} supplies
      */
-    setStrategies(s_strategies) {
-        this.s_strategies = s_strategies;
+    setSupplies(supplies) {
+        this.s_supplies = new QuerySetting(this.type, supplies);
     }
 
     /**
-     * @param {QuerySetting} s_projects
+     * Returns supplies setting
+     * @returns {QuerySetting}
      */
-    setProjects(s_projects) {
-        this.s_projects = s_projects;
+    getSupplies() {
+        return this.s_supplies;
+    }
+
+    /**
+     * @param {string} population
+     */
+    setPopulation(population) {
+        this.s_population = new QuerySetting(this.type, population);
+    }
+
+    getPopulation() {
+        return this.s_population;
+    }
+
+    /**
+     * @param {string} strategies
+     */
+    setStrategies(strategies) {
+        this.s_strategies = new QuerySetting(this.type, strategies);
+    }
+
+    getStrategies() {
+        return this.s_strategies;
+    }
+
+    /**
+     * @param {string} projects
+     */
+    setProjects(projects) {
+        this.s_projects = new QuerySetting(this.type, projects);
+    }
+
+    getProjects() {
+        return this.s_projects;
     }
 }

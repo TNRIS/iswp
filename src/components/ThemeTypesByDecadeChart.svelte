@@ -9,7 +9,7 @@
     import format from "format-number";
 
     const c22 = new Constant2022();
-    const { chartTitle, db, wugRegionFilter } = $$props;
+    const { chartTitle, swdata } = $$props;
     const chartOptions = {
         height: "240px",
         lineSmooth: false,
@@ -83,9 +83,6 @@
         return new Promise((resolve, reject) => {
             onMount(async () => {
                 try {
-                    let sw = new Statewide(db);
-                    let a = await sw.get(wugRegionFilter);
-
                     // Create a simple line chart
                     let data = {};
                     data.demands = {
@@ -97,23 +94,23 @@
                                 "demands",
                                 "irrigation",
                                 "IRRIGATION",
-                                a
+                                swdata
                             ),
-                            makeSeries("demands", "livestock", "LIVESTOCK", a),
+                            makeSeries("demands", "livestock", "LIVESTOCK", swdata),
                             makeSeries(
                                 "demands",
                                 "manufacturing",
                                 "MANUFACTURING",
-                                a
+                                swdata
                             ),
                             makeSeries(
                                 "demands",
                                 "steam-electric-power",
                                 "STEAM ELECTRIC POWER",
-                                a
+                                swdata
                             ),
-                            makeSeries("demands", "livestock", "LIVESTOCK", a),
-                            makeSeries("demands", "municipal", "MUNICIPAL", a),
+                            makeSeries("demands", "livestock", "LIVESTOCK", swdata),
+                            makeSeries("demands", "municipal", "MUNICIPAL", swdata),
                         ],
                     };
 
@@ -122,22 +119,22 @@
                         labels: constants.getDecades(),
                         // Our series array that contains series objects or in this case series data arrays
                         series: [
-                            makeSeries("needs", "irrigation", "IRRIGATION", a),
-                            makeSeries("needs", "livestock", "LIVESTOCK", a),
+                            makeSeries("needs", "irrigation", "IRRIGATION", swdata),
+                            makeSeries("needs", "livestock", "LIVESTOCK", swdata),
                             makeSeries(
                                 "needs",
                                 "manufacturing",
                                 "MANUFACTURING",
-                                a
+                                swdata
                             ),
                             makeSeries(
                                 "needs",
                                 "steam-electric-power",
                                 "STEAM ELECTRIC POWER",
-                                a
+                                swdata
                             ),
-                            makeSeries("needs", "livestock", "LIVESTOCK", a),
-                            makeSeries("needs", "municipal", "MUNICIPAL", a),
+                            makeSeries("needs", "livestock", "LIVESTOCK", swdata),
+                            makeSeries("needs", "municipal", "MUNICIPAL", swdata),
                         ],
                     };
 
@@ -150,37 +147,37 @@
                                 "population",
                                 "irrigation",
                                 "IRRIGATION",
-                                a
+                                swdata
                             ),
                             makeSeries(
                                 "population",
                                 "livestock",
                                 "LIVESTOCK",
-                                a
+                                swdata
                             ),
                             makeSeries(
                                 "population",
                                 "manufacturing",
                                 "MANUFACTURING",
-                                a
+                                swdata
                             ),
                             makeSeries(
                                 "population",
                                 "steam-electric-power",
                                 "STEAM ELECTRIC POWER",
-                                a
+                                swdata
                             ),
                             makeSeries(
                                 "population",
                                 "livestock",
                                 "LIVESTOCK",
-                                a
+                                swdata
                             ),
                             makeSeries(
                                 "population",
                                 "municipal",
                                 "MUNICIPAL",
-                                a
+                                swdata
                             ),
                         ],
                     };
@@ -194,37 +191,37 @@
                                 "strategies",
                                 "irrigation",
                                 "IRRIGATION",
-                                a
+                                swdata
                             ),
                             makeSeries(
                                 "strategies",
                                 "livestock",
                                 "LIVESTOCK",
-                                a
+                                swdata
                             ),
                             makeSeries(
                                 "strategies",
                                 "manufacturing",
                                 "MANUFACTURING",
-                                a
+                                swdata
                             ),
                             makeSeries(
                                 "strategies",
                                 "steam-electric-power",
                                 "STEAM ELECTRIC POWER",
-                                a
+                                swdata
                             ),
                             makeSeries(
                                 "strategies",
                                 "livestock",
                                 "LIVESTOCK",
-                                a
+                                swdata
                             ),
                             makeSeries(
                                 "strategies",
                                 "municipal",
                                 "MUNICIPAL",
-                                a
+                                swdata
                             ),
                         ],
                     };
@@ -238,23 +235,23 @@
                                 "supplies",
                                 "irrigation",
                                 "IRRIGATION",
-                                a
+                                swdata
                             ),
-                            makeSeries("supplies", "livestock", "LIVESTOCK", a),
+                            makeSeries("supplies", "livestock", "LIVESTOCK", swdata),
                             makeSeries(
                                 "supplies",
                                 "manufacturing",
                                 "MANUFACTURING",
-                                a
+                                swdata
                             ),
                             makeSeries(
                                 "supplies",
                                 "steam-electric-power",
                                 "STEAM ELECTRIC POWER",
-                                a
+                                swdata
                             ),
-                            makeSeries("supplies", "livestock", "LIVESTOCK", a),
-                            makeSeries("supplies", "municipal", "MUNICIPAL", a),
+                            makeSeries("supplies", "livestock", "LIVESTOCK", swdata),
+                            makeSeries("supplies", "municipal", "MUNICIPAL", swdata),
                         ],
                     };
 
