@@ -6,7 +6,7 @@
     import ChartDataTable from "/src/components/ChartDataTable.svelte";
     import ToggleDisplay from "/src/components/ToggleDisplay.svelte";
     import Statewide from "/src/lib/db/statewide.js";
-    const { chartTitle, db, wugRegionFilter } = $$props;
+    const { title, swdata } = $$props;
     import format from "format-number";
 
     const c22 = new Constant2022();
@@ -15,10 +15,9 @@
     let decades = constants.getDecades();
     var getData = async () => {
         try {
-            let sw = new Statewide(db);
-            let a = await sw.get(wugRegionFilter);
+
             // Create a simple line chart
-            console.log("a.population.decadeTotals: " + JSON.stringify(a.population.decadeTotals));
+            console.log("swdata.population.decadeTotals: " + JSON.stringify(swdata.population.decadeTotals));
             let data = {
                 // A labels array that can contain any sort of values
                 labels: decades,
@@ -27,12 +26,12 @@
                     {
                         className: "series-population",
                         data: [
-                            a.population.decadeTotals[decades[0]],
-                            a.population.decadeTotals[decades[1]],
-                            a.population.decadeTotals[decades[2]],
-                            a.population.decadeTotals[decades[3]],
-                            a.population.decadeTotals[decades[4]],
-                            a.population.decadeTotals[decades[5]],
+                            swdata.population.decadeTotals[decades[0]],
+                            swdata.population.decadeTotals[decades[1]],
+                            swdata.population.decadeTotals[decades[2]],
+                            swdata.population.decadeTotals[decades[3]],
+                            swdata.population.decadeTotals[decades[4]],
+                            swdata.population.decadeTotals[decades[5]],
                         ],
                         meta: "population",
                         name: "population",
@@ -49,7 +48,7 @@
 <div class="view-top statewide-view-top">
     <div class="summary-wrapper container">
         <div class="view-summary">
-            <h2>TEXAS</h2>
+            <h2>{title}</h2>
             <div class="chart-header">
                 <h5>Population</h5>
             </div>
@@ -58,7 +57,7 @@
             {:then data}
                 <LineChart
                     {data}
-                    {chartTitle}
+                    chartTitle="ct-pop-chart"
                     options={{
                         height: "100px",
                         lineSmooth: false,
