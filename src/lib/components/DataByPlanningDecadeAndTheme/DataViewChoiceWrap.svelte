@@ -1,8 +1,8 @@
 <script>
     // @ts-nocheck
     import DataViewChoiceSelectors from "./DataViewChoiceSelectors.svelte";
-    import RegionalSummaryTable from "/src/components/RegionalSummaryTable.svelte";
-    import RegionalSummaryTreeMap from "/src/components/DataByPlanningDecadeAndTheme/RegionalSummaryTreeMap/RegionalSummaryTreeMap.svelte";
+    import RegionalSummaryTable from "$lib/components/RegionalSummaryTable.svelte";
+    import RegionalSummaryTreeMap from "$lib/components/DataByPlanningDecadeAndTheme/RegionalSummaryTreeMap/RegionalSummaryTreeMap.svelte";
     import { setContext } from "svelte";
     import { writable } from "svelte/store";
 

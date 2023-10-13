@@ -1,11 +1,11 @@
 <script>
     //@ts-nocheck
-    import PopulationChart from "../components/Charts/PopulationChart.svelte";
-    import DataUsageType from "../components/DataUsageType.svelte";
-    import TitleBlurb from "/src/components/TitleBlurb.svelte";
-    import ThemeTypesByDecadeChart from "/src/components/ThemeTypesByDecadeChart.svelte";
-    import ThemeTotalsByDecadeChart from "/src/components/ThemeTotalsByDecadeChart.svelte";
-    import DataViewChoiceWrap from "/src/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrap.svelte";
+    import PopulationChart from "$lib/components/Charts/PopulationChart.svelte";
+    import DataUsageType from "$lib/components/DataUsageType.svelte";
+    import TitleBlurb from "$lib/components/TitleBlurb.svelte";
+    import ThemeTypesByDecadeChart from "$lib/components/ThemeTypesByDecadeChart.svelte";
+    import ThemeTotalsByDecadeChart from "$lib/components/ThemeTotalsByDecadeChart.svelte";
+    import DataViewChoiceWrap from "$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrap.svelte";
     import { start_all_db } from "$lib/db/db.js";
     import { load_indexeddb } from "$lib/helper.js";
 

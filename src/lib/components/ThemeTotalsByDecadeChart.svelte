@@ -1,13 +1,13 @@
 <script>
     // @ts-nocheck
     import format from "format-number";
-    import BarChart from "./Charts/BarChart.svelte";
+    import BarChart from "$lib/components/Charts/BarChart.svelte";
     const { swdata, wugRegionFilter } = $$props;
-    import Statewide from "../lib/db/statewide.js";
-    import { Constant2022 } from "../lib/Constant2022.js";
+    import Statewide from "$lib/db/statewide.js";
+    import { Constant2022 } from "$lib/Constant2022.js";
     const c22 = new Constant2022();
     import * as R from "ramda";
-    import ChartDataTable from "./ChartDataTable.svelte";
+    import ChartDataTable from "$lib/components/ChartDataTable.svelte";
 
     const chartOptions = {
         height: "200px",

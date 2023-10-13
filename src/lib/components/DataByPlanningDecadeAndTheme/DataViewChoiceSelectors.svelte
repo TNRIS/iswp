@@ -1,7 +1,7 @@
 <script>
     //@ts-nocheck
-    import DecadeSelector from "/src/components/DecadeSelector.svelte";
-    import ThemeSelector from "/src/components/ThemeSelector.svelte";
+    import DecadeSelector from "$lib/components/DecadeSelector.svelte";
+    import ThemeSelector from "$lib/components/ThemeSelector.svelte";
     const { hideTheme, hidePopulation } = $$props;
     import { getContext } from "svelte";
 

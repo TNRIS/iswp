@@ -1,8 +1,8 @@
 <script>
     //@ts-nocheck
-    import { Constant2022 } from "/src/lib/Constant2022.js";
-    import RegionalSummary from "/src/lib/db/regionalsummary.js";
-    import Treemap from "/src/components/DataByPlanningDecadeAndTheme/RegionalSummaryTreeMap/Treemap.svelte";
+    import { Constant2022 } from "$lib/Constant2022.js";
+    import RegionalSummary from "$lib/db/regionalsummary.js";
+    import Treemap from "$lib/components/DataByPlanningDecadeAndTheme/RegionalSummaryTreeMap/Treemap.svelte";
     export let { db } = $$props;
     import { getContext } from "svelte";
 

@@ -1,6 +1,6 @@
 <script>
     //@ts-nocheck
-    import ProjectTable from "/src/components/ProjectTable/ProjectTable.svelte";
+    import ProjectTable from "$lib/components/ProjectTable/ProjectTable.svelte";
     import { Constant2022 } from "$lib/Constant2022.js";
     export let data;
 

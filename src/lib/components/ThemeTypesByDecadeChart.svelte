@@ -1,11 +1,9 @@
 <script>
     // @ts-nocheck
-    import { Constant2022 } from "/src/lib/Constant2022.js";
-    import LineChart from "/src/components/Charts/LineChart.svelte";
-    import ChartDataTable from "/src/components/ChartDataTable.svelte";
+    import { Constant2022 } from "$lib/Constant2022.js";
+    import LineChart from "$lib/components/Charts/LineChart.svelte";
     import { onMount } from "svelte";
-    import Statewide from "/src/lib/db/statewide.js";
-    import ThemeSelector from "/src/components/ThemeSelector.svelte";
+    import ThemeSelector from "$lib/components/ThemeSelector.svelte";
     import format from "format-number";
 
     const c22 = new Constant2022();

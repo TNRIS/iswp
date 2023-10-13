@@ -1,11 +1,8 @@
 <script>
     //@ts-nocheck
-    import { onMount } from "svelte";
-    import { Constant2022 } from "/src/lib/Constant2022.js";
+    import { Constant2022 } from "$lib/Constant2022.js";
     import LineChart from "./LineChart.svelte";
-    import ChartDataTable from "/src/components/ChartDataTable.svelte";
-    import ToggleDisplay from "/src/components/ToggleDisplay.svelte";
-    import Statewide from "/src/lib/db/statewide.js";
+    import ChartDataTable from "$lib/components/ChartDataTable.svelte";
     const { title, swdata } = $$props;
     import format from "format-number";
 

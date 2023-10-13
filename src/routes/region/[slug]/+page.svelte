@@ -1,18 +1,13 @@
 <script>
     //@ts-nocheck
-    import PopulationChart from "/src/components/Charts/PopulationChart.svelte";
-    import DataUsageType from "/src/components/DataUsageType.svelte";
-    import TitleBlurb from "/src/components/TitleBlurb.svelte";
-    import ProjectTable from "/src/components/ProjectTable/ProjectTable.svelte";
-    import ThemeTypesByDecadeChart from "/src/components/ThemeTypesByDecadeChart.svelte";
-    import ThemeTotalsByDecadeChart from "/src/components/ThemeTotalsByDecadeChart.svelte";
-    import DataViewChoiceWrap from "/src/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrap.svelte";
-    import { Constant2022 } from "/src/lib/Constant2022.js";
+    import PopulationChart from "$lib/components/Charts/PopulationChart.svelte";
+    import DataUsageType from "$lib/components/DataUsageType.svelte";
+    import ProjectTable from "$lib/components/ProjectTable/ProjectTable.svelte";
+    import ThemeTypesByDecadeChart from "$lib/components/ThemeTypesByDecadeChart.svelte";
+    import ThemeTotalsByDecadeChart from "$lib/components/ThemeTotalsByDecadeChart.svelte";
     import { load_indexeddb } from "$lib/helper.js";
-    import Statewide from "/src/lib/db/statewide.js";
+    import Statewide from "$lib/db/statewide.js";
 
-    const c22 = new Constant2022();
-    let constants = c22;
     export let data;
     
     let loadForRegion = async () => {
