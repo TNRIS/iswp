@@ -3,10 +3,10 @@
     import { Grid } from "gridjs";
     import "gridjs/dist/theme/mermaid.css";
     import { onMount } from "svelte";
-    import { usd_format } from "/src/lib/helper.js"
+    import { usd_format } from "$lib/helper.js"
     const { db, wugRegionFilter, wmsFilter, wmsTypeFilter, countyFilter, sourceFilter } = $$props;
 
-    import Statewide from "/src/lib/db/statewide.js";
+    import Statewide from "$lib/db/statewide.js";
     let sum = 0;
     let region = wugRegionFilter;
     let projects = false;

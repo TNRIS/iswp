@@ -1,18 +1,12 @@
 <script>
     // @ts-nocheck
-
-    import ChartLegend from "./ChartLegend.svelte";
-    import PropTypes from "prop-types";
     import * as R from "ramda";
-    //import constants from '../../constants';
-    import { Constant2022 } from "../lib/Constant2022.js";
-    import PopulationChart from "./Charts/PopulationChart.svelte";
+    import { Constant2022 } from "$lib/Constant2022.js";
     import BarChart from "./Charts/BarChart.svelte";
     import UsageTypeIcon from "./UsageTypeIcon.svelte";
     import { onMount } from "svelte";
-    import ChartDataTable from "./ChartDataTable.svelte";
+    import ChartDataTable from "$lib/components/ChartDataTable.svelte";
     import titleize from "titleize";
-    import Statewide from "../lib/db/statewide.js";
     const { swdata } = $$props;
 
     const c22 = new Constant2022();

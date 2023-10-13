@@ -1,9 +1,9 @@
 <script>
     //@ts-nocheck
-    import ProjectTable from "/src/components/ProjectTable/ProjectTable.svelte";
+    import ProjectTable from "$lib/components/ProjectTable/ProjectTable.svelte";
     export let data;
 
-    import { load_indexeddb } from "/src/lib/helper.js"
+    import { load_indexeddb } from "$lib/helper.js"
 </script>
 
 <div class="statewide-view">

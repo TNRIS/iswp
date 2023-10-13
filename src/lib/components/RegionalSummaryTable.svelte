@@ -1,9 +1,9 @@
 <script>
     // @ts-nocheck
-    import RegionalSummary from "../lib/db/regionalsummary.js";
+    import RegionalSummary from "$lib/db/regionalsummary.js";
     import { getContext } from "svelte";
-    import { onMountSync } from "/src/lib/helper.js"
-    import { Constant2022 } from "../lib/Constant2022.js";
+    import { onMountSync } from "$lib/helper.js"
+    import { Constant2022 } from "$lib/Constant2022.js";
     export let { db } = $$props;
 
     const c22 = new Constant2022();

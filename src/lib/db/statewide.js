@@ -1,7 +1,7 @@
 // @ts-nocheck
 /** Class for statewide indexeddb queries. */
 
-import { Constant2022 } from "/src/lib/Constant2022.js";
+import { Constant2022 } from "$lib/Constant2022.js";
 
 export default class Statewide {
     constructor(db) {
