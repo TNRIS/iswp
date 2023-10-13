@@ -4,18 +4,15 @@
     import "gridjs/dist/theme/mermaid.css";
     import { onMount } from "svelte";
     import { usd_format } from "$lib/helper.js"
-    const { db, wugRegionFilter, wmsFilter, wmsTypeFilter, countyFilter, sourceFilter } = $$props;
-
-    import Statewide from "$lib/db/statewide.js";
+    const { swdata } = $$props;
     let sum = 0;
-    let region = wugRegionFilter;
+
     let projects = false;
     onMount(async () => {
-        let sw = new Statewide(db);
-        let a = await sw.get(wugRegionFilter, wmsFilter, wmsTypeFilter, countyFilter, sourceFilter);
-        if (a.projects && a.projects.length) projects = true;
+
+        if (swdata.projects && swdata.projects.length) projects = true;
         let project_data = [];
-        for (let project of a.projects) {
+        for (let project of swdata.projects) {
             let to_array = [
                 project.ProjectName,
                 project.OnlineDecade,
@@ -34,9 +31,9 @@
         const grid = new Grid({
             columns: [
                 { name: "Project", width: "45%" },
-                "Decade Online",
+                { name: "Decade Online", width: "18%" },
                 "Sponsor",
-                "Capital Cost",
+                {name: "Capital Cost", width: "16%"}
             ],
             pagination: true,
             sort: true,
@@ -45,6 +42,17 @@
             className: {
                 table: "table-condensed",
             },
+            style: {
+                td: {
+                    padding: "2px 20px 0 0"
+                },
+                th: {
+                    padding: "2px 20px 0 0"
+                },
+                table: {
+                    border: "none"
+                }
+            }
         }).render(document.getElementById("table-container"));
     });
 </script>

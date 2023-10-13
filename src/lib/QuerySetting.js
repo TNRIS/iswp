@@ -1,11 +1,13 @@
 export class QuerySetting {
     /**
-     * @param { string } type
-     * @param { string } filter
+     * @param { string } [type]
+     * @param { string } [filter]
+     * @param { string } [whereClause]
      */
-    constructor(type, filter="") {
+    constructor(type, filter, whereClause) {
         this.type = type,
         this.filter = filter
+        this.whereClause = whereClause
     }
 
     getType() {
@@ -14,5 +16,9 @@ export class QuerySetting {
 
     getFilter() {
         return this.filter;
+    }
+
+    getWhereClause() {
+        return this.whereClause;
     }
 }

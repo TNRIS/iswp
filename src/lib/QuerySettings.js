@@ -3,23 +3,37 @@ import { QuerySetting } from './QuerySetting.js';
 /** Class representing settings to send to Statewide query to configure specific queries as needed. */
 export class QuerySettings {
     /**
-     * @param {string} type
+     * @param {string} [type]
+     * @param {string} [whereClause]
      */
-    constructor(type) {
+    constructor(type, whereClause) {
         this.type = type;
-        this.s_demands = new QuerySetting(type);
-        this.s_needs = new QuerySetting(type);
-        this.s_supplies = new QuerySetting(type);
-        this.s_population = new QuerySetting(type);
-        this.s_strategies = new QuerySetting(type);
-        this.s_projects = new QuerySetting(type);
+        this.whereClause = whereClause;
+        this.s_demands = new QuerySetting(type, undefined, whereClause);
+        this.s_needs = new QuerySetting(type, undefined, whereClause);
+        this.s_supplies = new QuerySetting(type, undefined, whereClause);
+        this.s_population = new QuerySetting(type, undefined, whereClause);
+        this.s_strategies = new QuerySetting(type, undefined, whereClause);
+        this.s_projects = new QuerySetting(type, undefined, whereClause);
+    }
+    
+    /**
+     * @param {string} filter
+     */
+    setAll(filter) {
+        this.s_demands = new QuerySetting(this.type, filter, this.whereClause);
+        this.s_needs = new QuerySetting(this.type, filter, this.whereClause);
+        this.s_supplies = new QuerySetting(this.type, filter, this.whereClause);
+        this.s_population = new QuerySetting(this.type, filter, this.whereClause);
+        this.s_strategies = new QuerySetting(this.type, filter, this.whereClause);
+        this.s_projects = new QuerySetting(this.type, filter, this.whereClause);
     }
 
     /**
      * @param {string} demands
      */
     setDemands(demands) {
-        this.s_demands = new QuerySetting(this.type, demands);
+        this.s_demands = new QuerySetting(this.type, demands, this.whereClause);
     }
 
     /**
@@ -34,7 +48,7 @@ export class QuerySettings {
      * @param {string} needs
      */
     setNeeds(needs) {
-        this.s_needs = new QuerySetting(this.type, needs);
+        this.s_needs = new QuerySetting(this.type, needs, this.whereClause);
     }
 
     /**
@@ -50,7 +64,7 @@ export class QuerySettings {
      * @param {string} supplies
      */
     setSupplies(supplies) {
-        this.s_supplies = new QuerySetting(this.type, supplies);
+        this.s_supplies = new QuerySetting(this.type, supplies, this.whereClause);
     }
 
     /**
@@ -65,9 +79,13 @@ export class QuerySettings {
      * @param {string} population
      */
     setPopulation(population) {
-        this.s_population = new QuerySetting(this.type, population);
+        this.s_population = new QuerySetting(this.type, population, this.whereClause);
     }
 
+    /**
+     *  Returns population setting
+     * @returns {QuerySetting}
+     */
     getPopulation() {
         return this.s_population;
     }
@@ -76,9 +94,13 @@ export class QuerySettings {
      * @param {string} strategies
      */
     setStrategies(strategies) {
-        this.s_strategies = new QuerySetting(this.type, strategies);
+        this.s_strategies = new QuerySetting(this.type, strategies, this.whereClause);
     }
 
+    /**
+     *  Returns strategies setting
+     * @returns {QuerySetting}
+     */
     getStrategies() {
         return this.s_strategies;
     }
@@ -87,9 +109,13 @@ export class QuerySettings {
      * @param {string} projects
      */
     setProjects(projects) {
-        this.s_projects = new QuerySetting(this.type, projects);
+        this.s_projects = new QuerySetting(this.type, projects, this.whereClause);
     }
 
+    /**
+     *  Returns projects setting
+     * @returns {QuerySetting}
+     */
     getProjects() {
         return this.s_projects;
     }
