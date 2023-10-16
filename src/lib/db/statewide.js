@@ -9,6 +9,7 @@ export default class Statewide {
         this.constants = c22; 
         this.db = db;
         this.decades = this.constants.getDecades();
+        this.TEST = true;
     }
 
     /**
@@ -46,11 +47,8 @@ export default class Statewide {
 
         return a;
     }
-    // Warning: This function is reused in regionalsummaryind.js
     statewide_reducer = async (result, id) => {
         let that = this;
-        //console.log("starting reduce");
-        //console.log(JSON.stringify("result" + result));
         let reduced = await result.reduce(function (a, b) {
             try { 
                 if (Object.keys(a).length === 0) {
@@ -159,14 +157,20 @@ export default class Statewide {
     #getAllTransaction = (key, where, project_filter) => {
         return new Promise((resolve, reject) => {
             try {
+
                 //console.log("getAllTransaction for " + key);
                 if(key == 'vwWMSProjectsByWmsType') {
                     // Temporary workaround until I find out why these are cased differently.
                     key = 'vwWMSProjectsByWMSType'
                 }
+
                 const transaction = this.db.transaction([key]);
                 const objectStore = transaction.objectStore(key);
-                const rdemands = objectStore.index(where).getAll(project_filter);
+                let rdemands;
+                if(where)
+                    rdemands = objectStore.index(where).getAll(project_filter);
+                else 
+                    rdemands = objectStore.getAll(project_filter);
                 rdemands.onsuccess = (event) => {
                     // Do something with the request.result!
                     resolve(event.target.result);
@@ -179,50 +183,34 @@ export default class Statewide {
             }
         });
     };
-
-    get = async (wfilt, wmsfilt, wmstypefilt, countyfilt, sourcefilt) => {
-        let projectTable = this.#PROJECT_TABLES.region;
-        let projectClause = 'WmsProjectSponsorRegion';
-        let projectFilter = undefined;
-
-        if(wfilt) {
-            projectFilter = wfilt.replace(/[^a-zA-Z ]/g, "");
-        }
-        else if(wmsfilt) {
-            projectFilter = Number(wmsfilt.replace(/\D/g,''));
-            projectTable = this.#PROJECT_TABLES.project;
-            projectClause = 'WmsId'
-        } else if(wmstypefilt) {
-            projectFilter = wmstypefilt;
-            projectTable = this.#PROJECT_TABLES.wmstype;
-            projectClause = 'WmsType';
-        } else if (countyfilt) {
-            projectFilter = countyfilt.toUpperCase();
-            projectTable = this.#PROJECT_TABLES.county
-            projectClause = 'WugCounty'
-        } else if (sourcefilt) {
-            projectFilter = Number(sourcefilt);
-            projectTable = this.#PROJECT_TABLES.source;
-            projectClause = 'MapSourceId'
+    #measuredStateWideReducer = async(obj, id) => {
+        const start = Date.now();
+        let red =  await this.statewide_reducer(obj, id);
+        if(this.TEST) {
+            console.log(`statewide reducer time: ${Date.now() - start} ms.`);
         }
 
+        return red;
+    }
+    get = async (setting) => {
         let demands_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.demands, 'WugRegion', projectFilter
+            this.#DATA_TABLES.demands, setting.s_demands.whereClause, setting.s_demands.filter
         );
-        let needs_observable = this.#getAllTransaction(this.#DATA_TABLES.needs, 'WugRegion', projectFilter);
+        let needs_observable = this.#getAllTransaction(this.#DATA_TABLES.needs, setting.s_needs.whereClause, setting.s_needs.filter);
         let supplies_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.supplies, 'WugRegion', projectFilter
+            this.#DATA_TABLES.supplies, setting.s_supplies.whereClause, setting.s_supplies.filter
         );
         let population_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.population, 'WugRegion', projectFilter
+            this.#DATA_TABLES.population, setting.s_population.whereClause, setting.s_population.filter
         );
         let strategies_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.strategies, 'WugRegion', projectFilter
+            this.#DATA_TABLES.strategies, setting.s_strategies.whereClause, setting.s_strategies.filter
         );
-
+        
         let projects_observable = this.#getAllTransaction(
-            projectTable, projectClause, projectFilter
+            this.#PROJECT_TABLES.region, setting.s_projects.whereClause, setting.s_projects.filter
         );
+        
 
         let [demands, needs, supplies, population, strategies, projects] =
             await Promise.all([
@@ -233,12 +221,13 @@ export default class Statewide {
                 strategies_observable,
                 projects_observable
             ]);
-
-        demands = await this.statewide_reducer(demands, "D");
-        needs = await this.statewide_reducer(needs, "N");
-        supplies = await this.statewide_reducer(supplies, "WS");
-        population = await this.statewide_reducer(population, "P");
-        strategies = await this.statewide_reducer(strategies, "SS");
+        
+        //TODO: Make more efficient.
+        demands = await this.#measuredStateWideReducer(demands, "D");
+        needs = await this.#measuredStateWideReducer(needs, "N");
+        supplies = await this.#measuredStateWideReducer(supplies, "WS");
+        population = await this.#measuredStateWideReducer(population, "P");
+        strategies = await this.#measuredStateWideReducer(strategies, "SS");
 
         let c = {
             demands: demands,

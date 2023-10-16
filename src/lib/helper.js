@@ -22,6 +22,7 @@ export let usd_format = new Intl.NumberFormat('en-US', {
 
 // Load indexeddb
 export let load_indexeddb = async () => {
+    const start = Date.now();
     await onMountSync();
 
     let IS_2022_WEBSITE = window.location.href.indexOf("2022") > -1;
@@ -32,6 +33,7 @@ export let load_indexeddb = async () => {
 
     // Choose database depending on url.
     if (!(db22 && db17)) throw "Databases are null.";
+    console.log(`exec time: ${Date.now() - start} ms.`);
 
     if (IS_2022_WEBSITE) {
         return db22;
