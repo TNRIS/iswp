@@ -1,7 +1,7 @@
 <script>
     //@ts-nocheck
     import { onMount } from "svelte";
-    import {buildZoomable} from "$lib/zoomBarChart.js"
+    import { buildZoomable } from "$lib/zoomBarChart.js"
     import { getContext } from "svelte";
 
     export let { treemapData, container } = $$props;

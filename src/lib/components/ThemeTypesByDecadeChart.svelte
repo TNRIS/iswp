@@ -94,7 +94,12 @@
                                 "IRRIGATION",
                                 swdata
                             ),
-                            makeSeries("demands", "livestock", "LIVESTOCK", swdata),
+                            makeSeries(
+                                "demands",
+                                "livestock",
+                                "LIVESTOCK",
+                                swdata
+                            ),
                             makeSeries(
                                 "demands",
                                 "manufacturing",
@@ -107,8 +112,18 @@
                                 "STEAM ELECTRIC POWER",
                                 swdata
                             ),
-                            makeSeries("demands", "livestock", "LIVESTOCK", swdata),
-                            makeSeries("demands", "municipal", "MUNICIPAL", swdata),
+                            makeSeries(
+                                "demands",
+                                "livestock",
+                                "LIVESTOCK",
+                                swdata
+                            ),
+                            makeSeries(
+                                "demands",
+                                "municipal",
+                                "MUNICIPAL",
+                                swdata
+                            ),
                         ],
                     };
 
@@ -117,8 +132,18 @@
                         labels: constants.getDecades(),
                         // Our series array that contains series objects or in this case series data arrays
                         series: [
-                            makeSeries("needs", "irrigation", "IRRIGATION", swdata),
-                            makeSeries("needs", "livestock", "LIVESTOCK", swdata),
+                            makeSeries(
+                                "needs",
+                                "irrigation",
+                                "IRRIGATION",
+                                swdata
+                            ),
+                            makeSeries(
+                                "needs",
+                                "livestock",
+                                "LIVESTOCK",
+                                swdata
+                            ),
                             makeSeries(
                                 "needs",
                                 "manufacturing",
@@ -131,8 +156,18 @@
                                 "STEAM ELECTRIC POWER",
                                 swdata
                             ),
-                            makeSeries("needs", "livestock", "LIVESTOCK", swdata),
-                            makeSeries("needs", "municipal", "MUNICIPAL", swdata),
+                            makeSeries(
+                                "needs",
+                                "livestock",
+                                "LIVESTOCK",
+                                swdata
+                            ),
+                            makeSeries(
+                                "needs",
+                                "municipal",
+                                "MUNICIPAL",
+                                swdata
+                            ),
                         ],
                     };
 
@@ -235,7 +270,12 @@
                                 "IRRIGATION",
                                 swdata
                             ),
-                            makeSeries("supplies", "livestock", "LIVESTOCK", swdata),
+                            makeSeries(
+                                "supplies",
+                                "livestock",
+                                "LIVESTOCK",
+                                swdata
+                            ),
                             makeSeries(
                                 "supplies",
                                 "manufacturing",
@@ -248,8 +288,18 @@
                                 "STEAM ELECTRIC POWER",
                                 swdata
                             ),
-                            makeSeries("supplies", "livestock", "LIVESTOCK", swdata),
-                            makeSeries("supplies", "municipal", "MUNICIPAL", swdata),
+                            makeSeries(
+                                "supplies",
+                                "livestock",
+                                "LIVESTOCK",
+                                swdata
+                            ),
+                            makeSeries(
+                                "supplies",
+                                "municipal",
+                                "MUNICIPAL",
+                                swdata
+                            ),
                         ],
                     };
 
@@ -271,7 +321,7 @@
                 <!--<Units />-->
             </h4>
             <!--<UsageTypeChartLegend className="u-pull-right legend-types-by-decade" />-->
-            <ThemeSelector {show} bind:select_theme={selectedTheme}/>
+            <ThemeSelector {show} showPopulation={false} bind:select_theme={selectedTheme} />
         </div>
 
         {#await getData()}
