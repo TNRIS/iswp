@@ -2,7 +2,7 @@
     //@ts-nocheck
     import DecadeSelector from "$lib/components/DecadeSelector.svelte";
     import ThemeSelector from "$lib/components/ThemeSelector.svelte";
-    const { hideTheme, hidePopulation } = $$props;
+    const { hideTheme, showPopulation } = $$props;
     import { getContext } from "svelte";
 
     const decadeStore = getContext("myContext").decadeStore;
@@ -31,7 +31,7 @@
     {#if !hideTheme}
         <div>
             <span class="inline-label show-medium">Theme:</span>
-            <ThemeSelector show={showTheme} bind:select_theme={$themeStore} />
+            <ThemeSelector {showPopulation} show={showTheme} bind:select_theme={$themeStore} />
         </div>
     {/if}
 </div>
