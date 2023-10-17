@@ -2,9 +2,12 @@
     // @ts-nocheck
     import DataViewChoiceSelectors from "./DataViewChoiceSelectors.svelte";
     import PivotTable from "./PivotTable.svelte";
+    import PopPivotTable from "./PopPivotTable.svelte";
+    import StrategiesBreakdown from "$lib/components/StrategiesBreakdown.svelte";
+
     import { setContext } from "svelte";
     import { writable } from "svelte/store";
-    const { swdata } = $$props;
+    const { swdata, type, hideTheme, title } = $$props;
 
     let decadeStore = writable("2020");
     let themeStore = writable("strategies");
@@ -22,16 +25,23 @@
         datafix: writable(),
         getData: writable(),
         bindTreeMap: writable(),
+        buildPie: writable()
     });
 </script>
 
 <div class="view-choice-wrap">
     <div class="view-choice-container">
         <h4>Data by Planning Decade and Theme</h4>
-        <DataViewChoiceSelectors hideTheme={false} showPopulation={true} />
+        <DataViewChoiceSelectors {hideTheme} showPopulation={true} />
     </div>
     <!-- insert 3 sub-widgets here -->
     <div class="container">
-        <PivotTable {swdata} />
+        <!-- <StrategiesBreakdown {swdata} /> -->
+        {#if type !== "pop"}
+            <PivotTable {swdata} />
+        {:else}
+            <PopPivotTable {swdata} />
+        {/if}
+
     </div>
 </div>
