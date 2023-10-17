@@ -4,7 +4,6 @@
     import LineChart from "$lib/components/Charts/LineChart.svelte";
     import { onMount } from "svelte";
     import ThemeSelector from "$lib/components/ThemeSelector.svelte";
-    import format from "format-number";
 
     const c22 = new Constant2022();
     const { chartTitle, swdata } = $$props;
@@ -12,8 +11,7 @@
         height: "240px",
         lineSmooth: false,
         axisY: {
-            low: 0,
-            labelInterpolationFnc: format(),
+            low: 0
         },
         chartPadding: {
             left: 40,
@@ -94,7 +92,12 @@
                                 "IRRIGATION",
                                 swdata
                             ),
-                            makeSeries("demands", "livestock", "LIVESTOCK", swdata),
+                            makeSeries(
+                                "demands",
+                                "livestock",
+                                "LIVESTOCK",
+                                swdata
+                            ),
                             makeSeries(
                                 "demands",
                                 "manufacturing",
@@ -107,8 +110,18 @@
                                 "STEAM ELECTRIC POWER",
                                 swdata
                             ),
-                            makeSeries("demands", "livestock", "LIVESTOCK", swdata),
-                            makeSeries("demands", "municipal", "MUNICIPAL", swdata),
+                            makeSeries(
+                                "demands",
+                                "livestock",
+                                "LIVESTOCK",
+                                swdata
+                            ),
+                            makeSeries(
+                                "demands",
+                                "municipal",
+                                "MUNICIPAL",
+                                swdata
+                            ),
                         ],
                     };
 
@@ -117,8 +130,18 @@
                         labels: constants.getDecades(),
                         // Our series array that contains series objects or in this case series data arrays
                         series: [
-                            makeSeries("needs", "irrigation", "IRRIGATION", swdata),
-                            makeSeries("needs", "livestock", "LIVESTOCK", swdata),
+                            makeSeries(
+                                "needs",
+                                "irrigation",
+                                "IRRIGATION",
+                                swdata
+                            ),
+                            makeSeries(
+                                "needs",
+                                "livestock",
+                                "LIVESTOCK",
+                                swdata
+                            ),
                             makeSeries(
                                 "needs",
                                 "manufacturing",
@@ -131,8 +154,18 @@
                                 "STEAM ELECTRIC POWER",
                                 swdata
                             ),
-                            makeSeries("needs", "livestock", "LIVESTOCK", swdata),
-                            makeSeries("needs", "municipal", "MUNICIPAL", swdata),
+                            makeSeries(
+                                "needs",
+                                "livestock",
+                                "LIVESTOCK",
+                                swdata
+                            ),
+                            makeSeries(
+                                "needs",
+                                "municipal",
+                                "MUNICIPAL",
+                                swdata
+                            ),
                         ],
                     };
 
@@ -235,7 +268,12 @@
                                 "IRRIGATION",
                                 swdata
                             ),
-                            makeSeries("supplies", "livestock", "LIVESTOCK", swdata),
+                            makeSeries(
+                                "supplies",
+                                "livestock",
+                                "LIVESTOCK",
+                                swdata
+                            ),
                             makeSeries(
                                 "supplies",
                                 "manufacturing",
@@ -248,8 +286,18 @@
                                 "STEAM ELECTRIC POWER",
                                 swdata
                             ),
-                            makeSeries("supplies", "livestock", "LIVESTOCK", swdata),
-                            makeSeries("supplies", "municipal", "MUNICIPAL", swdata),
+                            makeSeries(
+                                "supplies",
+                                "livestock",
+                                "LIVESTOCK",
+                                swdata
+                            ),
+                            makeSeries(
+                                "supplies",
+                                "municipal",
+                                "MUNICIPAL",
+                                swdata
+                            ),
                         ],
                     };
 
@@ -271,7 +319,7 @@
                 <!--<Units />-->
             </h4>
             <!--<UsageTypeChartLegend className="u-pull-right legend-types-by-decade" />-->
-            <ThemeSelector {show} bind:select_theme={selectedTheme}/>
+            <ThemeSelector {show} showPopulation={false} bind:select_theme={selectedTheme} />
         </div>
 
         {#await getData()}

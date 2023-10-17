@@ -37,9 +37,9 @@ export default class Statewide {
     #pattern = (ident, a, b, id, totalIdent, type) => {
         for(let decade of this.decades) {
             try {
-                a[totalIdent][ident][decade] = b[type] == ident
-                ? a[totalIdent][ident][decade] + b[id + decade]
-                : a[totalIdent][ident][decade];
+                if(b[type] == ident) {
+                    a[totalIdent][ident][decade] = a[totalIdent][ident][decade] + b[id + decade];
+                }
             } catch(err) {
                 console.log(`error ${err}`);
             }
@@ -126,11 +126,11 @@ export default class Statewide {
                 a = that.#pattern("STEAM ELECTRIC POWER", a, b, id, "typeTotals", "WugType");
 
                 if (id == "SS") {
-                    a = that.#pattern("DEMAND REDUCTION", a, b, id, "strategySourceTotals", "WugType");
-                    a = that.#pattern("GROUNDWATER", a, b, id, "strategySourceTotals", "WugType");
-                    a = that.#pattern("REUSE", a, b, id, "strategySourceTotals", "WugType");
-                    a = that.#pattern("SEAWATER", a, b, id, "strategySourceTotals", "WugType");
-                    a = that.#pattern("SURFACE WATER", a, b, id, "strategySourceTotals", "WugType");
+                    a = that.#pattern("DEMAND REDUCTION", a, b, id, "strategySourceTotals", "SourceType");
+                    a = that.#pattern("GROUNDWATER", a, b, id, "strategySourceTotals", "SourceType");
+                    a = that.#pattern("REUSE", a, b, id, "strategySourceTotals", "SourceType");
+                    a = that.#pattern("SEAWATER", a, b, id, "strategySourceTotals", "SourceType");
+                    a = that.#pattern("SURFACE WATER", a, b, id, "strategySourceTotals", "SourceType");
 
                     for(let type of that.constants.WMS_TYPES) {
                         a = that.#pattern(type, a, b, id, "strategyTypeTotals", "WmsType");
@@ -208,9 +208,20 @@ export default class Statewide {
             this.#DATA_TABLES.strategies, setting.s_strategies.whereClause, setting.s_strategies.filter
         );
         
-        let projects_observable = this.#getAllTransaction(
-            this.#PROJECT_TABLES.region, setting.s_projects.whereClause, setting.s_projects.filter
-        );
+        let projects_observable;
+        if(setting.type == "region") {
+            projects_observable = this.#getAllTransaction(
+                this.#PROJECT_TABLES.region, setting.s_projects.whereClause, setting.s_projects.filter
+            );
+        } else if(setting.type == "entity") {
+            projects_observable = this.#getAllTransaction(
+                this.#PROJECT_TABLES.entity, setting.s_projects.whereClause, setting.s_projects.filter
+            );
+        } else {
+            projects_observable = this.#getAllTransaction(
+                this.#PROJECT_TABLES.county, setting.s_projects.whereClause, setting.s_projects.filter
+            );
+        }
         
 
         let [demands, needs, supplies, population, strategies, projects] =

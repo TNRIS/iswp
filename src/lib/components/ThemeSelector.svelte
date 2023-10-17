@@ -3,12 +3,22 @@
     import { Constant2022 } from "$lib/Constant2022.js";
     const c22 = new Constant2022();
     const themeTitle = c22.getThemeTitles();
-    const { show } = $$props;
+    const { show, showPopulation } = $$props;
     export let select_theme;
 </script>
 
 <div class="selector theme-selector" style="font-size:0px;">
     <div class="show-medium">
+        {#if showPopulation}
+        <button
+            on:click={(event) => show(event)}
+            class="selectorButtons button"
+            value="population"
+            class:active={"population" == select_theme}
+        >
+            {themeTitle.population}
+        </button>
+        {/if}
         <button
             on:click={(event) => show(event)}
             class="selectorButtons button"
@@ -45,10 +55,21 @@
     <div class="hide-medium">
         <label>Theme:</label>
         <select>
-            <option value="demands" class:active={"demands" == select_theme}>{themeTitle.demands}</option>
-            <option value="supplies" class:active={"supplies" == select_theme}>{themeTitle.supplies}</option>
-            <option value="needs" class:active={"needs" == select_theme}>{themeTitle.needs}</option>
-            <option value="strategies" class:active={"strategies" == select_theme}>{themeTitle.strategies}</option>
+            <option value="demands" class:active={"demands" == select_theme}>
+                {themeTitle.demands}
+            </option>
+            <option value="supplies" class:active={"supplies" == select_theme}>
+                {themeTitle.supplies}
+            </option>
+            <option value="needs" class:active={"needs" == select_theme}>
+                {themeTitle.needs}
+            </option>
+            <option
+                value="strategies"
+                class:active={"strategies" == select_theme}
+            >
+                {themeTitle.strategies}
+            </option>
         </select>
     </div>
 </div>

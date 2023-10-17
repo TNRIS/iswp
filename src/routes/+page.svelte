@@ -34,7 +34,7 @@
             <ThemeTotalsByDecadeChart swdata={out} />
             <ThemeTypesByDecadeChart chartTitle={"ct-usage-chart"} swdata={out} />
             <DataUsageType swdata={out} />
-            <DataViewChoiceWrap {db} />
+            <DataViewChoiceWrap {db} swdata={out} />
         {:catch error}
             <span>Error starting database {error.message}</span>
         {/await}

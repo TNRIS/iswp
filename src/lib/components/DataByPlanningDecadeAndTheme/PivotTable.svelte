@@ -3,9 +3,7 @@
     const { swdata } = $$props;
     import { onMountSync, usd_format } from "$lib/helper.js";
     let pivotLoaded = false;
-    let promiseReactPivot = import(
-        "react-pivot/dist/react-pivot-standalone-4.1.1.min.js"
-    );
+
     import { getContext } from "svelte";
 
     const decadeStore = getContext("myContext").decadeStore;
@@ -16,12 +14,37 @@
         try {
             if (!pivotLoaded) {
                 await onMountSync();
-                promiseReactPivot = await promiseReactPivot;
             }
             pivotLoaded = true;
-            let rows, dimensions, reduce, calculations, sorter;
+            let rows,
+                dimensions,
+                reduce,
+                calculations,
+                sorter,
+                activeDimensions;
+            let getCalculations = (titleCalcField) => {
+                return [
+                    {
+                        title: titleCalcField,
+                        value: "amountTotal",
+                        template: function (val, row) {
+                            return val;
+                        },
+                        sortBy: function (row) {
+                            return isNaN(row.amountTotal) ? 0 : row.amountTotal;
+                        },
+                    },
+                ];
+            };
 
             if ($themeStore == "strategies") {
+                activeDimensions = [
+                    "County",
+                    "Entity",
+                    "Strategy",
+                    "WMS Type",
+                    "Source",
+                ];
                 sorter = "Strategy";
                 rows = swdata.strategies.rows;
                 dimensions = [
@@ -39,19 +62,11 @@
                     return memo;
                 };
 
-                calculations = [
-                    {
-                        title: `${$decadeStore} Strategy Supplies`,
-                        value: "amountTotal",
-                        template: function (val, row) {
-                            return val;
-                        },
-                        sortBy: function (row) {
-                            return isNaN(row.amountTotal) ? 0 : row.amountTotal;
-                        },
-                    },
-                ];
+                calculations = getCalculations(
+                    `${$decadeStore} Strategy Supplies`
+                );
             } else if ($themeStore == "needs") {
+                activeDimensions = ["County", "Entity"];
                 sorter = "County";
                 rows = swdata.needs.rows;
                 dimensions = [
@@ -66,19 +81,11 @@
                     return memo;
                 };
 
-                calculations = [
-                    {
-                        title: `${$decadeStore} Needs (Potential Shortages)`,
-                        value: "amountTotal",
-                        template: function (val, row) {
-                            return val;
-                        },
-                        sortBy: function (row) {
-                            return isNaN(row.amountTotal) ? 0 : row.amountTotal;
-                        },
-                    },
-                ];
+                calculations = getCalculations(
+                    `${$decadeStore} Needs (Potential Shortages)`
+                );
             } else if ($themeStore == "supplies") {
+                activeDimensions = ["County", "Entity", "Source"];
                 sorter = "County";
                 rows = swdata.supplies.rows;
                 dimensions = [
@@ -94,19 +101,11 @@
                     return memo;
                 };
 
-                calculations = [
-                    {
-                        title: `${$decadeStore} Existing Supplies`,
-                        value: "amountTotal",
-                        template: function (val, row) {
-                            return val;
-                        },
-                        sortBy: function (row) {
-                            return isNaN(row.amountTotal) ? 0 : row.amountTotal;
-                        },
-                    },
-                ];
+                calculations = getCalculations(
+                    `${$decadeStore} Existing Supplies`
+                );
             } else if ($themeStore == "demands") {
+                activeDimensions = ["County", "Entity"];
                 sorter = "County";
                 rows = swdata.demands.rows;
                 dimensions = [
@@ -120,19 +119,23 @@
                         parseFloat(row["D" + $decadeStore]);
                     return memo;
                 };
-
-                calculations = [
-                    {
-                        title: `${$decadeStore} Demands`,
-                        value: "amountTotal",
-                        template: function (val, row) {
-                            return val;
-                        },
-                        sortBy: function (row) {
-                            return isNaN(row.amountTotal) ? 0 : row.amountTotal;
-                        },
-                    },
+                calculations = getCalculations(`${$decadeStore} Demands`);
+            } else if ($themeStore == "population") {
+                activeDimensions = ["County", "Entity"];
+                sorter = "County";
+                rows = swdata.population.rows;
+                dimensions = [
+                    { value: "WugCounty", title: "County" },
+                    { value: "EntityName", title: "Entity" },
                 ];
+
+                reduce = function (row, memo) {
+                    memo.amountTotal =
+                        (memo.amountTotal || 0) +
+                        parseFloat(row["P" + $decadeStore]);
+                    return memo;
+                };
+                calculations = getCalculations(`${$decadeStore} Demands`);
             }
 
             if (document.getElementById("reactpivot").firstChild)
@@ -141,14 +144,7 @@
                 rows: rows,
                 dimensions: dimensions,
                 calculations: calculations,
-                activeDimensions: [
-                    "Strategy",
-                    "WMS Type",
-                    "Source",
-                    "County",
-                    "Entity",
-                ],
-
+                activeDimensions: activeDimensions,
                 reduce: reduce,
                 nPaginateRows: 50,
                 sortBy: sorter,

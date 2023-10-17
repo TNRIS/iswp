@@ -43,3 +43,25 @@ export let load_indexeddb = async () => {
         return db22;
     }
 };
+
+export let split_every = (size, array) => {
+    var array2d = [];
+    let arr = JSON.parse(JSON.stringify(array)); // Hard copy array.
+    while (arr.length > 0) {
+        array2d.push(arr.splice(0, size));
+    }
+
+    return array2d;
+}
+
+// Helper to calculate percentage of value in an array.
+export let calcPercentage = (array, value) => {
+    let total = 0;
+    array.forEach((item) => {
+        total += item[1];
+    });
+
+    let percent = Math.round(((value / total) * 10) * 100) / 10;
+
+    return `${percent}%` ;
+}
