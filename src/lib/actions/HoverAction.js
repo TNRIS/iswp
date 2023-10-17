@@ -1,6 +1,4 @@
 // @ts-nocheck
-import SeriesHighlightActions from './SeriesHighlightActions';
-import format from "format-number";
 const heightAdjust = 14;
 function slugify(s) {
     return s.replace(/\s+/g, "-");
@@ -17,7 +15,6 @@ export function hoverHelper(event, chartTitle) {
         const seriesName = parent.attributes['ct:meta'] ?
             parent.attributes['ct:meta'].value : 'default';
 
-        SeriesHighlightActions.selectSeries(seriesName);
 
         // bug in chartist results in 0s not being attached via ct:value
         // ref: https://github.com/gionkunz/chartist-js/issues/464
@@ -26,7 +23,7 @@ export function hoverHelper(event, chartTitle) {
         //first set the innerHTML to the formatted value
         // and place the tooltip offscreen so that its
         // height and width can be calculated
-        tooltip.innerHTML = format()(val);
+        tooltip.innerHTML = val;
         tooltip.className = 'ct-tooltip offscreen';
         const width = tooltip.offsetWidth;
         const height = tooltip.offsetHeight;
@@ -46,6 +43,5 @@ let hideTooltip = (chartTitle) => {
 }
 
 export function clearInteraction(chartTitle) {
-    SeriesHighlightActions.clearSeries();
     hideTooltip(chartTitle);
 }

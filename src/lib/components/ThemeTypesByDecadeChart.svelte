@@ -4,7 +4,6 @@
     import LineChart from "$lib/components/Charts/LineChart.svelte";
     import { onMount } from "svelte";
     import ThemeSelector from "$lib/components/ThemeSelector.svelte";
-    import format from "format-number";
 
     const c22 = new Constant2022();
     const { chartTitle, swdata } = $$props;
@@ -12,8 +11,7 @@
         height: "240px",
         lineSmooth: false,
         axisY: {
-            low: 0,
-            labelInterpolationFnc: format(),
+            low: 0
         },
         chartPadding: {
             left: 40,

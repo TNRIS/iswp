@@ -1,20 +1,19 @@
 <script>
     // @ts-nocheck
-    import * as R from "ramda";
+    import { split_every } from "$lib/helper.js"
     import { Constant2022 } from "$lib/Constant2022.js";
     import BarChart from "./Charts/BarChart.svelte";
     import UsageTypeIcon from "./UsageTypeIcon.svelte";
     import { onMount } from "svelte";
     import ChartDataTable from "$lib/components/ChartDataTable.svelte";
-    import titleize from "titleize";
     const { swdata } = $$props;
 
     const c22 = new Constant2022();
     function slugify(s) {
         return s.replace(/\s+/g, "-");
     }
+    const everyTwoTypes = split_every(2, c22.getUsageTypes());
 
-    const everyTwoTypes = R.splitEvery(2, c22.getUsageTypes());
     let dataUsageTypeData;
     var getData = () => {
         return new Promise((resolve, reject) => {
@@ -41,7 +40,7 @@
                             meta: theme,
                             className: `series-${theme}`,
                             data: c22.getDecades().map((year) => {
-                                if (R.path([theme, "typeTotals", type], a)) {
+                                if (a?.[theme]?.typeTotals?.[type]) {
                                     return a[theme].typeTotals[type][year];
                                 }
                                 return 0;
@@ -80,7 +79,7 @@
                                     class={"heading-" +
                                         slugify(group_name[0].toLowerCase())}
                                 >
-                                    {titleize(group_name[0])}
+                                    group_name[0]
                                 </h5>
                                 <BarChart
                                     iterator={i}
@@ -102,7 +101,7 @@
                                     class={"heading-" +
                                         slugify(group_name[1].toLowerCase())}
                                 >
-                                    {titleize(group_name[1])}
+                                    group_name[1]
                                 </h5>
                                 <BarChart
                                     iterator={(i + 1) * 999}
