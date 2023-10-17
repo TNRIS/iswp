@@ -5,22 +5,29 @@
     import ProjectTable from "$lib/components/ProjectTable/ProjectTable.svelte";
     import ThemeTypesByDecadeChart from "$lib/components/ThemeTypesByDecadeChart.svelte";
     import ThemeTotalsByDecadeChart from "$lib/components/ThemeTotalsByDecadeChart.svelte";
+    import DataViewChoiceWrapInd from "$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte";
     import { load_indexeddb } from "$lib/helper.js";
     import Statewide from "$lib/db/statewide.js";
     import { QuerySettings } from "$lib/QuerySettings.js"
     export let data;
-    
+    import { setContext } from "svelte";
+    import { writable } from "svelte/store";
+
     let regionSetting = new QuerySettings("region", "WugRegion");
     regionSetting.setAll(data.slug);
-
+    let db;
     let loadForRegion = async () => {
         let start = Date.now();
-        let db = await load_indexeddb()
+        db = await load_indexeddb()
         let sw = new Statewide(db);
         let dat =  await sw.get(regionSetting);
         console.log(`loadForRegion time in ms: ${Date.now() - start}`);
         return dat;
     }
+
+    setContext("dataviewContext", {
+        getData: writable()
+    });   
 </script>
 
 <div class="statewide-view">
@@ -33,6 +40,7 @@
         <ThemeTypesByDecadeChart chartTitle={"ct-usage-chart"} swdata={out} />
         <DataUsageType swdata={out} />
         <ProjectTable swdata={out} />
+        <DataViewChoiceWrapInd swdata={out} />
         {:catch error}
             <span>Error starting database {error.message}</span>
         {/await}

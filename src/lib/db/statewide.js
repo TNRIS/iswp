@@ -116,7 +116,8 @@ export default class Statewide {
                         }
                     }
                 }
-    
+                // First push b to a.rows[]
+                a.rows.push(b);
                 a = that.#pattern("IRRIGATION", a, b, id, "typeTotals", "WugType");
                 a = that.#pattern("LIVESTOCK", a, b, id, "typeTotals", "WugType");
                 a = that.#pattern("MANUFACTURING", a, b, id, "typeTotals", "WugType");
