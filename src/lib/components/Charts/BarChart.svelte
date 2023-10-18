@@ -1,8 +1,5 @@
 <script>
     // @ts-nocheck
-    import format from "format-number";
-    import titleize from "titleize";
-    import * as R from "ramda";
     import { onMount } from "svelte";
     import { Constant2022 } from "$lib/Constant2022.js";
     //import TitlePlugin from './ChartistAxisTitlePlugin';
@@ -35,9 +32,6 @@
             seriesBarDistance: 10,
             chartPadding: {
                 left: 40,
-            },
-            axisY: {
-                labelInterpolationFnc: format(),
             },
             height: "200px",
         };

@@ -4,7 +4,6 @@
     import LineChart from "./LineChart.svelte";
     import ChartDataTable from "$lib/components/ChartDataTable.svelte";
     const { title, swdata } = $$props;
-    import format from "format-number";
 
     const c22 = new Constant2022();
     //const c17 = new Constant2017();
@@ -59,8 +58,7 @@
                         height: "100px",
                         lineSmooth: false,
                         axisY: {
-                            low: 0,
-                            labelInterpolationFnc: format(),
+                            low: 0
                         },
                         chartPadding: {
                             left: 40,

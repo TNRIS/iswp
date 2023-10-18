@@ -1,20 +1,17 @@
 <script>
     // @ts-nocheck
-    import format from "format-number";
     import BarChart from "$lib/components/Charts/BarChart.svelte";
     const { swdata, wugRegionFilter } = $$props;
     import Statewide from "$lib/db/statewide.js";
     import { Constant2022 } from "$lib/Constant2022.js";
     const c22 = new Constant2022();
-    import * as R from "ramda";
     import ChartDataTable from "$lib/components/ChartDataTable.svelte";
 
     const chartOptions = {
         height: "200px",
         lineSmooth: false,
         axisY: {
-            low: 0,
-            labelInterpolationFnc: format(),
+            low: 0
         },
         chartPadding: {
             left: 40,
@@ -82,7 +79,7 @@
                             meta: theme,
                             className: `series-${theme}`,
                             data: c22.getDecades().map((year) => {
-                                if (R.path([theme, "typeTotals", type], a)) {
+                                if (a?.[theme]?.typeTotals?.[type]) {
                                     return a[theme].typeTotals[type][year];
                                 }
                                 return 0;

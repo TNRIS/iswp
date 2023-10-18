@@ -43,3 +43,13 @@ export let load_indexeddb = async () => {
         return db22;
     }
 };
+
+export let split_every = (size, array) => {
+    var array2d = [];
+    let arr = JSON.parse(JSON.stringify(array)); // Hard copy array.
+    while (arr.length > 0) {
+        array2d.push(arr.splice(0, size));
+    }
+
+    return array2d;
+}
