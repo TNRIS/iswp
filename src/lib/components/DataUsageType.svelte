@@ -79,7 +79,7 @@
                                     class={"heading-" +
                                         slugify(group_name[0].toLowerCase())}
                                 >
-                                    group_name[0]
+                                    {group_name[0]}
                                 </h5>
                                 <BarChart
                                     iterator={i}
@@ -101,7 +101,7 @@
                                     class={"heading-" +
                                         slugify(group_name[1].toLowerCase())}
                                 >
-                                    group_name[1]
+                                    {group_name[1]}
                                 </h5>
                                 <BarChart
                                     iterator={(i + 1) * 999}
