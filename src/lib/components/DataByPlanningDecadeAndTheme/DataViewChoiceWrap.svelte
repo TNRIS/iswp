@@ -3,6 +3,7 @@
     import DataViewChoiceSelectors from "./DataViewChoiceSelectors.svelte";
     import RegionalSummaryTable from "$lib/components/RegionalSummaryTable.svelte";
     import RegionalSummaryTreeMap from "$lib/components/DataByPlanningDecadeAndTheme/RegionalSummaryTreeMap/RegionalSummaryTreeMap.svelte";
+    import StrategiesBreakdown from "$lib/components/StrategiesBreakdown.svelte";
     import { setContext } from "svelte";
     import { writable } from "svelte/store";
 
@@ -24,7 +25,7 @@
         bindTreeMap: writable(),
     });
 
-    const { db } = $$props;
+    const { db, swdata } = $$props;
 </script>
 
 <div class="view-choice-wrap">
@@ -35,6 +36,7 @@
     <!-- insert 3 sub-widgets here -->
     <div class="container">
         <RegionalSummaryTreeMap {db} selectedTreemap={"region"}/>
+        <StrategiesBreakdown {swdata} />
         <RegionalSummaryTable {db} />
     </div>
 </div>

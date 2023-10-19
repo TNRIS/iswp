@@ -16,7 +16,12 @@
                 await onMountSync();
             }
             pivotLoaded = true;
-            let rows, dimensions, reduce, calculations, sorter, activeDimensions;
+            let rows,
+                dimensions,
+                reduce,
+                calculations,
+                sorter,
+                activeDimensions;
             let getCalculations = (titleCalcField) => {
                 return [
                     {
@@ -30,7 +35,7 @@
                         },
                     },
                 ];
-            }
+            };
 
             if ($themeStore == "strategies") {
                 activeDimensions = [
@@ -38,8 +43,8 @@
                     "Entity",
                     "Strategy",
                     "WMS Type",
-                    "Source"
-                ]
+                    "Source",
+                ];
                 sorter = "Strategy";
                 rows = swdata.strategies.rows;
                 dimensions = [
@@ -57,12 +62,11 @@
                     return memo;
                 };
 
-                calculations = getCalculations(`${$decadeStore} Strategy Supplies`);
+                calculations = getCalculations(
+                    `${$decadeStore} Strategy Supplies`
+                );
             } else if ($themeStore == "needs") {
-                activeDimensions = [
-                    "County",
-                    "Entity",
-                ]
+                activeDimensions = ["County", "Entity"];
                 sorter = "County";
                 rows = swdata.needs.rows;
                 dimensions = [
@@ -77,13 +81,11 @@
                     return memo;
                 };
 
-                calculations = getCalculations(`${$decadeStore} Needs (Potential Shortages)`);
+                calculations = getCalculations(
+                    `${$decadeStore} Needs (Potential Shortages)`
+                );
             } else if ($themeStore == "supplies") {
-                activeDimensions = [
-                    "County",
-                    "Entity",
-                    "Source"
-                ]
+                activeDimensions = ["County", "Entity", "Source"];
                 sorter = "County";
                 rows = swdata.supplies.rows;
                 dimensions = [
@@ -99,12 +101,11 @@
                     return memo;
                 };
 
-                calculations = getCalculations(`${$decadeStore} Existing Supplies`);
+                calculations = getCalculations(
+                    `${$decadeStore} Existing Supplies`
+                );
             } else if ($themeStore == "demands") {
-                activeDimensions = [
-                    "County",
-                    "Entity"
-                ]
+                activeDimensions = ["County", "Entity"];
                 sorter = "County";
                 rows = swdata.demands.rows;
                 dimensions = [
@@ -116,6 +117,22 @@
                     memo.amountTotal =
                         (memo.amountTotal || 0) +
                         parseFloat(row["D" + $decadeStore]);
+                    return memo;
+                };
+                calculations = getCalculations(`${$decadeStore} Demands`);
+            } else if ($themeStore == "population") {
+                activeDimensions = ["County", "Entity"];
+                sorter = "County";
+                rows = swdata.population.rows;
+                dimensions = [
+                    { value: "WugCounty", title: "County" },
+                    { value: "EntityName", title: "Entity" },
+                ];
+
+                reduce = function (row, memo) {
+                    memo.amountTotal =
+                        (memo.amountTotal || 0) +
+                        parseFloat(row["P" + $decadeStore]);
                     return memo;
                 };
                 calculations = getCalculations(`${$decadeStore} Demands`);

@@ -53,3 +53,14 @@ export let split_every = (size, array) => {
 
     return array2d;
 }
+
+export let calcPercentage = (array, value) => {
+    let total = 0;
+    array.forEach((item) => {
+        total += item[2020];
+    });
+
+    let percent = Math.round(((value / total) * 10) * 100) / 10;
+
+    return `${percent}%` ;
+}

@@ -4,22 +4,6 @@ npm run dev
 # Tools
 using node 18.16.0
 
-# create-svelte
-
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
 ## Developing
 Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
@@ -34,7 +18,7 @@ npm run dev -- --open
 
 To create a production version of your app:
 1. download gill-sans font insteuctions in gill-sans/README.md
-2. open main.css search url( then remove old_static
+2. Download a copy of [react-pivot-standalone-4.1.1.min.js][https://github.com/TNRIS/iswp/blob/main/static/react-pivot-standalone-4.1.1.min.js] and place in static folder root.
 ```bash
 npm run build
 ```
