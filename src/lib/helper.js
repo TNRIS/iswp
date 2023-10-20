@@ -54,10 +54,11 @@ export let split_every = (size, array) => {
     return array2d;
 }
 
+// Helper to calculate percentage of value in an array.
 export let calcPercentage = (array, value) => {
     let total = 0;
     array.forEach((item) => {
-        total += item[2020];
+        total += item[1];
     });
 
     let percent = Math.round(((value / total) * 10) * 100) / 10;
