@@ -23,6 +23,7 @@
         datafix: writable(),
         getData: writable(),
         bindTreeMap: writable(),
+        buildPie: writable()
     });
 
     const { db, swdata } = $$props;

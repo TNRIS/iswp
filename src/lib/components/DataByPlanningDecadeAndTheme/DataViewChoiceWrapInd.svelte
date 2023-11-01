@@ -2,6 +2,8 @@
     // @ts-nocheck
     import DataViewChoiceSelectors from "./DataViewChoiceSelectors.svelte";
     import PivotTable from "./PivotTable.svelte";
+    import StrategiesBreakdown from "$lib/components/StrategiesBreakdown.svelte";
+
     import { setContext } from "svelte";
     import { writable } from "svelte/store";
     const { swdata } = $$props;
@@ -22,6 +24,7 @@
         datafix: writable(),
         getData: writable(),
         bindTreeMap: writable(),
+        buildPie: writable()
     });
 </script>
 
@@ -32,6 +35,8 @@
     </div>
     <!-- insert 3 sub-widgets here -->
     <div class="container">
+        <StrategiesBreakdown {swdata} />
         <PivotTable {swdata} />
+
     </div>
 </div>

@@ -9,10 +9,12 @@
     const themeStore = getContext("myContext").themeStore;
     let bindTreeMap = getContext("dataviewContext").bindTreeMap;
     let getData = getContext("dataviewContext").getData;
+    let buildPie = getContext("dataviewContext").buildPie;
 
     let showDecade = async (event) => {
         decadeStore.set(event.currentTarget.innerHTML.trim());
         let data = await $getData();
+        $buildPie();
         $bindTreeMap(data);
     };
     let showTheme = async (event) => {
