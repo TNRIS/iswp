@@ -101,7 +101,7 @@ export function startDb22() {
             build_func(event, "vwWMSProjectByWMS", ["WmsId", "WmsProjectId"]);
             build_func(event, "vwWMSProjectsByWMSType", ["WmsProjectId", "WmsType"]);
             build_func(event, "vwWMSProjectByWUGType", ["WmsProjectId"]);
-            build_func(event, "vwWMSProjectByEntityWUGSplit", ["WmsProjectId, WmsId"]);
+            build_func(event, "vwWMSProjectByEntityWUGSplit", ["WmsProjectId", "WmsId"]);
             build_func(event, "vwWMSProjectEntityRelationships", [
                 "WmsProjectId",
                 "EntityId",
