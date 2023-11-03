@@ -29,7 +29,9 @@ export default class Statewide {
         entity: 'vwWMSProjectByEntity',
         source: 'vwWMSProjectBySource',
         wmstype: 'vwWMSProjectsByWmsType',
-        project: 'vwWMSProjectByWMS'//Not included as project information in project view is pulled from the vwWMSProjectByEntityWUGSplit table
+        project: 'vwWMSProjectByWMS', //Not included as project information in project view is pulled from the vwWMSProjectByEntityWUGSplit table
+        strategies: 'vwWMSProjectByEntityWUGSplit',
+        wms: 'vwWMSProjectByWMS'
         //usagetype: vwWMSProjectByWUGType //Not included because results are too large
     };
 
@@ -180,11 +182,14 @@ export default class Statewide {
                     reject(event);
                 }
             } catch (err) {
+                console.error(`error in getAllTransaction: key ${key}, where ${where}, project_filter ${project_filter}`)
                 reject(err);
             }
         });
     };
     #measuredStateWideReducer = async(obj, id) => {
+        if(!obj)
+            return [];
         const start = Date.now();
         let red =  await this.statewide_reducer(obj, id);
         if(this.TEST) {
@@ -194,35 +199,41 @@ export default class Statewide {
         return red;
     }
     get = async (setting) => {
-        let demands_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.demands, setting.s_demands.whereClause, setting.s_demands.filter
-        );
-        let needs_observable = this.#getAllTransaction(this.#DATA_TABLES.needs, setting.s_needs.whereClause, setting.s_needs.filter);
-        let supplies_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.supplies, setting.s_supplies.whereClause, setting.s_supplies.filter
-        );
-        let population_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.population, setting.s_population.whereClause, setting.s_population.filter
-        );
-        let strategies_observable = this.#getAllTransaction(
-            this.#DATA_TABLES.strategies, setting.s_strategies.whereClause, setting.s_strategies.filter
-        );
+        let demands_observable;
+        let needs_observable;
+        let population_observable;
         
-        let projects_observable;
-        if(setting.type == "region") {
-            projects_observable = this.#getAllTransaction(
-                this.#PROJECT_TABLES.region, setting.s_projects.whereClause, setting.s_projects.filter
+        if(setting.type !== "source" && setting.type !== "strategies" && setting.type !== "wms" && setting.type !== "datastrategies"  && setting.type !== "wmstype") {
+            population_observable = this.#getAllTransaction(
+                this.#DATA_TABLES.population, setting.s_population.whereClause, setting.s_population.filter
             );
-        } else if(setting.type == "entity") {
-            projects_observable = this.#getAllTransaction(
-                this.#PROJECT_TABLES.entity, setting.s_projects.whereClause, setting.s_projects.filter
+            demands_observable = this.#getAllTransaction(
+                this.#DATA_TABLES.demands, setting.s_demands.whereClause, setting.s_demands.filter
             );
-        } else {
-            projects_observable = this.#getAllTransaction(
-                this.#PROJECT_TABLES.county, setting.s_projects.whereClause, setting.s_projects.filter
+            needs_observable = this.#getAllTransaction(this.#DATA_TABLES.needs, setting.s_needs.whereClause, setting.s_needs.filter);
+
+        }
+        let supplies_observable, strategies_observable;
+
+        if(setting.type !== "strategies" && setting.type !== "wms"  && setting.type !== "wmstype") {
+            if(setting.type !== "datastrategies") {
+                supplies_observable = this.#getAllTransaction(
+                    this.#DATA_TABLES.supplies, setting.s_supplies.whereClause, setting.s_supplies.filter
+                );
+            }
+
+            strategies_observable = this.#getAllTransaction(
+                this.#DATA_TABLES.strategies, setting.s_strategies.whereClause, setting.s_strategies.filter
             );
         }
         
+        let projects_observable;
+        const HAS_PROJECTS = setting.type == "county" || setting.type == "region" || setting.type == "entity" || setting.type == "source" || setting.type == "wms" || setting.type == "strategies" || setting.type == "wmstype";
+        if(HAS_PROJECTS) {
+            projects_observable = this.#getAllTransaction(
+                this.#PROJECT_TABLES[setting.type], setting.s_projects.whereClause, setting.s_projects.filter
+            );
+        }        
 
         let [demands, needs, supplies, population, strategies, projects] =
             await Promise.all([

@@ -48,6 +48,7 @@ export function startDb22() {
                 "MapSourceId",
                 "WugCounty",
                 "WugRegion",
+                "WugType"
             ]);
             build_func(event, "vwExistingWUGSupplyA1", []);
             build_func(event, "vwSelectEntitiesInCounty", ["EntityId"]);
@@ -56,18 +57,21 @@ export function startDb22() {
                 "EntityId",
                 "WugCounty",
                 "WugRegion",
+                "WugType"
             ]);
             build_func(event, "vwWugDemandsA1", []);
             build_func(event, "vwWugNeeds", [
                 "EntityId",
                 "WugCounty",
                 "WugRegion",
+                "WugType"
             ]);
             build_func(event, "vwWugNeedsA1", []);
             build_func(event, "vwWugPopulation", [
                 "EntityId",
                 "WugCounty",
                 "WugRegion",
+                "WugType"
             ]);
             build_func(event, "vwWugPopulationA1", []);
             build_func(event, "vwSelectRegionsInCounty", []);
@@ -76,7 +80,9 @@ export function startDb22() {
                 "MapSourceId",
                 "WugCounty",
                 "WugRegion",
-                "WmsType"
+                "WmsType",
+                "WugType",
+                "WmsId"
             ]);
             build_func(event, "vwWMSWugSupplyA1", []);
             build_func(event, "vwWMSProjects", ["WmsProjectId", "WugRegion", "WmsProjectSponsorRegion"]);
@@ -95,7 +101,7 @@ export function startDb22() {
             build_func(event, "vwWMSProjectByWMS", ["WmsId", "WmsProjectId"]);
             build_func(event, "vwWMSProjectsByWMSType", ["WmsProjectId", "WmsType"]);
             build_func(event, "vwWMSProjectByWUGType", ["WmsProjectId"]);
-            build_func(event, "vwWMSProjectByEntityWUGSplit", ["WmsProjectId"]);
+            build_func(event, "vwWMSProjectByEntityWUGSplit", ["WmsProjectId, WmsId"]);
             build_func(event, "vwWMSProjectEntityRelationships", [
                 "WmsProjectId",
                 "EntityId",
