@@ -55,7 +55,6 @@ button[disabled]:hover, button[disabled]:focus {
 #page-wrapper {
   min-height: 100%;
   position: relative;
-  overflow-x: hidden;
 }
 
 #content {

@@ -37,9 +37,13 @@
     <!-- insert 3 sub-widgets here -->
     <div class="container">
         <!-- <StrategiesBreakdown {swdata} /> -->
+        {#if type !== "source" && type !== "pop" && type !== "wms" && type !== "wmstype"}
+        <StrategiesBreakdown {swdata} />
+        {/if}
         {#if type !== "pop"}
             <PivotTable {swdata} />
         {:else}
+        
             <PopPivotTable {swdata} />
         {/if}
 

@@ -4,6 +4,11 @@
     import { QuerySettings } from "$lib/QuerySettings.js"
     import Statewide from "$lib/db/statewide.js";
     export let data;
+    import PopulationChart from "$lib/components/Charts/PopulationChart.svelte";
+    import ThemeTotalsByDecadeChart from "$lib/components/ThemeTotalsByDecadeChart.svelte";
+    import DataUsageType from "$lib/components/DataUsageType.svelte";
+    import DataViewChoiceWrapInd from "$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte";
+    import ThemeTypesByDecadeChart from "$lib/components/ThemeTypesByDecadeChart.svelte";
 
     import { load_indexeddb } from "$lib/helper.js"
 
@@ -26,9 +31,19 @@
         {#await loadForCounty()}
             <span>Loading</span>
         {:then out}
-            <ProjectTable swdata={ out } type="county" />
+            <PopulationChart title={`Region ${data.slug} Population`} swdata={out}/>
+            <ThemeTotalsByDecadeChart swdata={out} />
+            <ThemeTypesByDecadeChart chartTitle={"ct-usage-chart"} swdata={out} />
+
+            <DataUsageType swdata={out} />
+            <ProjectTable swdata={out} type={"region"} />
+            <DataViewChoiceWrapInd swdata={out} />
+
         {:catch error}
             <span>Error starting database {error.message}</span>
         {/await}
     </section>
 </div>
+<style type="text/scss">
+    @import '$lib/sass/main.scss';
+</style>  

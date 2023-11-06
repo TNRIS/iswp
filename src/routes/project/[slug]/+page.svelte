@@ -21,8 +21,8 @@
         let dat = await sw.get(sourceSetting2);
         let dat2 = await sw.get(sourceSetting);
         let r = {
-                    ...dat,
-                    ...dat2,
+            ...dat,
+            ...dat2,
         };
 
         console.log(`loadForRegion time in ms: ${Date.now() - start}`);
@@ -38,3 +38,7 @@
 {:catch error}
     <span>Error starting database {error.message}</span>
 {/await}
+
+<style type="text/scss">
+    @import '$lib/sass/main.scss';
+</style>  

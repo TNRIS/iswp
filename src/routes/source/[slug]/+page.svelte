@@ -25,8 +25,12 @@
     <span>Loading</span>
 {:then out}
 <ProjectTable swdata={out} type={"region"} />
-<DataViewChoiceWrapInd swdata={out} />
+<DataViewChoiceWrapInd swdata={out} type={"source"}/>
 
 {:catch error}
     <span>Error starting database {error.message}</span>
 {/await}
+
+<style type="text/scss">
+    @import '$lib/sass/main.scss';
+</style>  
