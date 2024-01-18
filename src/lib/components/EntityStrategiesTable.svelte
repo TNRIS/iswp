@@ -1,14 +1,12 @@
 <script>
     //@ts-nocheck
     import { Grid } from "gridjs";
-    import { Constant2022 } from "$lib/Constant2022.js";
     import "gridjs/dist/theme/mermaid.css";
     import { onMount } from "svelte";
     import { usd_format } from "$lib/helper.js";
-    const { swdata, type } = $$props;
+    const { swdata, type, constants } = $$props;
     let sum = 0;
-    const c22 = new Constant2022();
-    let constants = c22;
+
 
     let decades = constants.getDecades();
     let strategies = false;

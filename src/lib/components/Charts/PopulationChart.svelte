@@ -1,19 +1,18 @@
+<!-- Population Line Chart displayed on most pages including homepage. -->
+
 <script>
     //@ts-nocheck
-    import { Constant2022 } from "$lib/Constant2022.js";
     import LineChart from "./LineChart.svelte";
     import ChartDataTable from "$lib/components/ChartDataTable.svelte";
-    const { title, swdata } = $$props;
+    const { title, swdata, mapOnly, constants } = $$props;
+    import PopulationMap from "$lib/components/Maps/PopulationMap.svelte";
+    import { commafy } from "$lib/helper.js";
 
-    const c22 = new Constant2022();
-    //const c17 = new Constant2017();
-    let constants = c22;
     let decades = constants.getDecades();
     var getData = async () => {
         try {
 
             // Create a simple line chart
-            console.log("swdata.population.decadeTotals: " + JSON.stringify(swdata.population.decadeTotals));
             let data = {
                 // A labels array that can contain any sort of values
                 labels: decades,
@@ -42,9 +41,11 @@
 </script>
 
 <div class="view-top statewide-view-top">
-    <div class="summary-wrapper container">
+    <div class="summary-wrapper container" style="z-index: 600">
         <div class="view-summary">
             <h2>{title}</h2>
+            {#if mapOnly !== true}
+
             <div class="chart-header">
                 <h5>Population</h5>
             </div>
@@ -57,25 +58,29 @@
                     options={{
                         height: "100px",
                         lineSmooth: false,
-                        axisY: {
-                            low: 0
-                        },
                         chartPadding: {
                             left: 40,
                             right: 40,
                         },
                         fullWidth: true,
+                        axisY: {
+                            low: 0,
+                            labelInterpolationFnc: function(value) {
+                                return commafy(value + '');
+                            }
+                        }
                     }}
                 />
                 <ChartDataTable
                     header={decades}
                     body={data.series}
                     titles={false}
-                    showHide={true}>Inner in populationchart
-                    </ChartDataTable>
+                    showHide={true} />
             {:catch error}
                 <span>There is a error. {error.message}</span>
             {/await}
+            {/if}
         </div>
     </div>
+    <PopulationMap {title} {swdata} />
 </div>

@@ -1,17 +1,19 @@
 <script>
     // @ts-nocheck
-    import { Constant2022 } from "$lib/Constant2022.js";
     import LineChart from "$lib/components/Charts/LineChart.svelte";
+    import IconSpread from "$lib/components/IconSpread.svelte";
     import { onMount } from "svelte";
     import ThemeSelector from "$lib/components/ThemeSelector.svelte";
-
-    const c22 = new Constant2022();
-    const { chartTitle, swdata } = $$props;
+    import { commafy } from "$lib/helper.js";
+    const { chartTitle, swdata, constants } = $$props;
     const chartOptions = {
         height: "240px",
         lineSmooth: false,
         axisY: {
-            low: 0
+            low: 0,
+            labelInterpolationFnc: function(value) {
+                return commafy(value + '');
+            }
         },
         chartPadding: {
             left: 40,
@@ -20,42 +22,38 @@
         fullWidth: true,
     };
 
-    let titles = c22.getThemeTitles();
+    let titles = constants.getThemeTitles();
     let selectedTheme = "demands";
     let demands_visible = true;
     let supplies_visible = false;
     let needs_visible = false;
     let strategies_visible = false;
-    let constants = c22;
     let show = (event) => {
-        switch (event.target.innerHTML) {
-            case "Demands":
+        selectedTheme = event.target.value;
+        switch (event.target.value) {
+            case "demands":
                 supplies_visible = false;
                 needs_visible = false;
                 strategies_visible = false;
                 demands_visible = true;
-                selectedTheme = "demands";
                 break;
-            case "Existing Supplies":
+            case "supplies":
                 demands_visible = false;
                 needs_visible = false;
                 strategies_visible = false;
                 supplies_visible = true;
-                selectedTheme = "supplies";
                 break;
-            case "Needs (Potential Shortages)":
+            case "needs":
                 demands_visible = false;
                 supplies_visible = false;
                 strategies_visible = false;
                 needs_visible = true;
-                selectedTheme = "needs";
                 break;
-            case "Strategy Supplies":
+            case "strategies":
                 demands_visible = false;
                 supplies_visible = false;
                 needs_visible = false;
                 strategies_visible = true;
-                selectedTheme = "strategies";
                 break;
         }
     };
@@ -313,12 +311,15 @@
 <div class="summary-wrapper container">
     <div style="pointer-events:auto; height:384px;" class="row panel-row">
         <div class="chart-header">
-            <h4>
-                {titles[selectedTheme]} by Usage Type
-                <span class="units">(acre-feet/year)</span>
-                <!--<Units />-->
-            </h4>
-            <!--<UsageTypeChartLegend className="u-pull-right legend-types-by-decade" />-->
+            <div class="row">
+                <h4>
+                    {titles[selectedTheme]} by Usage Type
+                    <span class="units">(acre-feet/year)</span>
+                    <!--<Units />-->
+                </h4>
+                <!--<UsageTypeChartLegend className="u-pull-right legend-types-by-decade" />-->
+                <IconSpread />
+            </div>
             <ThemeSelector {show} showPopulation={false} bind:select_theme={selectedTheme} />
         </div>
 

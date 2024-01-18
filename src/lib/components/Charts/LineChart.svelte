@@ -6,8 +6,6 @@
 
     let buildChart = () => {
         // In the global name space Chartist we call the Line function to initialize a line chart. As a first parameter we pass in a selector where we would like to get our chart created. Second parameter is the actual data object and as a third parameter we pass in our options
-        //console.log("Data: " + JSON.stringify(data));
-        //console.log("Options: " + JSON.stringify(options));
         try {
             new Chartist.Line(`.${chartTitle}`, data, options);
         } catch (err) {

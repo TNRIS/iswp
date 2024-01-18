@@ -6,8 +6,9 @@
     import StrategiesBreakdown from "$lib/components/StrategiesBreakdown.svelte";
     import { setContext } from "svelte";
     import { writable } from "svelte/store";
+    const { db, swdata, csvTitle, constants } = $$props;
 
-    let decadeStore = writable("2020");
+    let decadeStore = writable(constants.getDecades()[0]);
     let themeStore = writable("strategies");
     let ruStore = writable("region");
 
@@ -26,18 +27,17 @@
         buildPie: writable()
     });
 
-    const { db, swdata } = $$props;
 </script>
 
 <div class="view-choice-wrap">
-    <div class="view-choice-container">
+    <div class="view-choice-container sticky-div-2">
         <h4>Data by Planning Decade and Theme</h4>
-        <DataViewChoiceSelectors hideTheme={false} showPopulation={true} />
+        <DataViewChoiceSelectors hideTheme={false} showPopulation={true} {constants} />
     </div>
     <!-- insert 3 sub-widgets here -->
     <div class="container">
         <RegionalSummaryTreeMap {db} selectedTreemap={"region"}/>
         <StrategiesBreakdown {swdata} />
-        <RegionalSummaryTable {db} />
+        <RegionalSummaryTable {db} {swdata} {csvTitle} {constants} />
     </div>
 </div>

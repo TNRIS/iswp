@@ -40,20 +40,20 @@
 </script>
 
 {#if group_name == "IRRIGATION"}
-    <Irrigation class="usage-type-icon icon-irrigation" />
+    <Irrigation class="usage-type-icon icon-irrigation legend-marker" />
 {/if}
 {#if group_name == "MUNICIPAL"}
-    <Municipal class="usage-type-icon icon-municipal" />
+    <Municipal class="usage-type-icon icon-municipal legend-marker" />
 {/if}
 {#if group_name == "MANUFACTURING"}
-    <Manufacturing class="usage-type-icon icon-manufacturing" />
+    <Manufacturing class="usage-type-icon icon-manufacturing legend-marker" />
 {/if}
 {#if group_name == "STEAM ELECTRIC POWER"}
-    <SteamElectricPower class="usage-type-icon icon-steam-electric-power" />
+    <SteamElectricPower class="usage-type-icon icon-steam-electric-power legend-marker" />
 {/if}
 {#if group_name == "LIVESTOCK"}
-    <Livestock class="usage-type-icon icon-livestock" />
+    <Livestock class="usage-type-icon icon-livestock legend-marker" />
 {/if}
 {#if group_name == "MINING"}
-    <Mining class="usage-type-icon icon-mining" />
+    <Mining class="usage-type-icon icon-mining legend-marker" />
 {/if}

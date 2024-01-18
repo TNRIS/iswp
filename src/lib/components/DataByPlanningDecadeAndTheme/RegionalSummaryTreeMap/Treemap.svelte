@@ -8,12 +8,14 @@
     const dataviewContext = getContext('dataviewContext');
 
     onMount(() => {
-        let svg = buildZoomable(container, treemapData);
+        // Initialize to clarify the use of "region"
+        let selectedTreemap = "region";
+        let svg = buildZoomable(container, treemapData, selectedTreemap);
         container.appendChild(svg);
     });
     
-    const bindTreeMap = (df) => {
-        let svg = buildZoomable(container, df);
+    const bindTreeMap = (df, selectedTreemap) => {
+        let svg = buildZoomable(container, df, selectedTreemap);
         container.removeChild(container.firstChild);
         container.appendChild(svg);
     }
