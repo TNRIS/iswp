@@ -7,9 +7,11 @@
 
     import { setContext } from "svelte";
     import { writable } from "svelte/store";
-    const { swdata, type, hideTheme, title } = $$props;
+    import EntityMap from "./EntityMap.svelte";
 
-    let decadeStore = writable("2020");
+    const { swdata, type, hideTheme, csvTitle, fileName, constants } = $$props;
+
+    let decadeStore = writable(constants.getDecades()[0]);
     let themeStore = writable("strategies");
     let ruStore = writable("region");
 
@@ -25,27 +27,28 @@
         datafix: writable(),
         getData: writable(),
         bindTreeMap: writable(),
-        buildPie: writable()
+        buildPie: writable(),
+        buildEntMap: writable()
     });
 </script>
 
 <div class="view-choice-wrap">
     <div class="view-choice-container">
         <h4>Data by Planning Decade and Theme</h4>
-        <DataViewChoiceSelectors {hideTheme} showPopulation={true} />
+        <DataViewChoiceSelectors {hideTheme} showPopulation={true} {constants} />
     </div>
     <!-- insert 3 sub-widgets here -->
     <div class="container">
         <!-- <StrategiesBreakdown {swdata} /> -->
+
+        <EntityMap {swdata}/>
         {#if type !== "source" && type !== "pop" && type !== "wms" && type !== "wmstype"}
         <StrategiesBreakdown {swdata} />
         {/if}
         {#if type !== "pop"}
-            <PivotTable {swdata} />
+            <PivotTable {swdata} {csvTitle} {fileName} {constants} />
         {:else}
-        
-            <PopPivotTable {swdata} />
+            <PopPivotTable {swdata} {csvTitle} {fileName} {constants} />
         {/if}
-
     </div>
 </div>

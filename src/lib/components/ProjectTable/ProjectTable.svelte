@@ -65,6 +65,7 @@
 <div class="container">
     <div class="row panel-row">
         <div class="twelve columns">
+            <span class="view-name">Planning Region {swdata?.projects[0]?.WugRegion}</span>
             <div class="recommended-projects-container">
                 <h4>Recommended Projects</h4>
                 <p>

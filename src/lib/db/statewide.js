@@ -2,6 +2,8 @@
 /** Class for statewide indexeddb queries. */
 
 import { Constant2022 } from "$lib/Constant2022.js";
+import { writable } from 'svelte/store';
+import { objLeftjoin } from "$lib/helper";
 
 export default class Statewide {
     constructor(db) {
@@ -245,6 +247,8 @@ export default class Statewide {
                 projects_observable
             ]);
         
+
+
         //TODO: Make more efficient.
         demands = await this.#measuredStateWideReducer(demands, "D");
         needs = await this.#measuredStateWideReducer(needs, "N");
@@ -261,6 +265,113 @@ export default class Statewide {
             projects: projects
         };
 
+        // Get wug data for the map!
+            let b = await this.#getAllTransaction("vwEntityCoordinates");
+            let ent5 = await this.#getAllTransaction("vwWMSProjects", "WugRegion", "A")
+            let ent6 = await this.#getAllTransaction("vwWMSProjectBySource")
+
+
+            if(c.strategies.rows)
+                objLeftjoin(c.strategies.rows, b, ["EntityId"]);
+            if(c.needs.rows)
+                objLeftjoin(c.needs.rows, b, ["EntityId"]);
+            if(c.supplies.rows)
+                objLeftjoin(c.supplies.rows, b, ["EntityId"]);
+            if(c.demands.rows)
+                objLeftjoin(c.demands.rows, b, ["EntityId"]);
+            if(c.population.rows)
+                objLeftjoin(c.population.rows, b, ["EntityId"]);
+            objLeftjoin(ent5, ent6, ["WmsProjectId"]);
+            c.wug_projects = ent5;
+
         return c;
     };
+
+    getEntities = () => {
+        return new Promise((resolve, reject) => {
+            const stored = localStorage.content
+            if(stored) {
+                resolve(JSON.parse(stored));
+            }
+    
+            const transaction = this.db.transaction(["vwEntityCoordinates"]);
+            const objectStore = transaction.objectStore("vwEntityCoordinates");
+    
+            // We should store here.
+    
+            let rdemands = objectStore.getAll();
+    
+            rdemands.onsuccess = (event) => {
+    
+                // Set the stored value or a sane default.
+                let content = writable(JSON.stringify(event.target.result))
+    
+                // Anytime the store changes, update the local storage value.
+                content.subscribe((value) => localStorage.content = value)
+                resolve(event.target.result);
+            };
+            rdemands.onerror = (event) => {
+                reject(event);
+            }
+        })
+    }
+
+
+    getProjects = () => {
+        return new Promise((resolve, reject) => {
+            const stored = localStorage.project
+            if(stored != '[]') {
+                resolve(JSON.parse(stored));
+            }
+    
+            const transaction = this.db.transaction(["vwWMSProjects"]);
+            const objectStore = transaction.objectStore("vwWMSProjects");
+    
+            // We should store here.
+    
+            let rdemands = objectStore.getAll();
+    
+            rdemands.onsuccess = (event) => {
+    
+                // Set the stored value or a sane default.
+                let project = writable(JSON.stringify(event.target.result))
+    
+                // Anytime the store changes, update the local storage value.
+                project.subscribe((value) => localStorage.project = value)
+                resolve(event.target.result);
+            };
+            rdemands.onerror = (event) => {
+                reject(event);
+            }
+        })
+    }
+
+    getWms = () => {
+        return new Promise((resolve, reject) => {
+            const stored = localStorage.wms
+            if(stored != '[]' && stored) {
+                resolve(JSON.parse(stored));
+            }
+    
+            const transaction = this.db.transaction(["vwWMSProjectByWMS"]);
+            const objectStore = transaction.objectStore("vwWMSProjectByWMS");
+    
+            // We should store here.
+    
+            let rdemands = objectStore.getAll();
+    
+            rdemands.onsuccess = (event) => {
+    
+                // Set the stored value or a sane default.
+                let wms = writable(JSON.stringify(event.target.result))
+    
+                // Anytime the store changes, update the local storage value.
+                wms.subscribe((value) => localStorage.wms = value)
+                resolve(event.target.result);
+            };
+            rdemands.onerror = (event) => {
+                reject(event);
+            }
+        })
+    }
 }

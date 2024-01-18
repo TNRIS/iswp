@@ -84,7 +84,7 @@
         ruStore.set(classname);
         selectedTreemap = classname;
         let data = await getData();
-        $bindTreeMap(data);
+        $bindTreeMap(data, selectedTreemap);
     }
 </script>
 

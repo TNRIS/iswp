@@ -1,12 +1,12 @@
 <script>
     // @ts-nocheck
     import { onMount } from "svelte";
-    import { Constant2022 } from "$lib/Constant2022.js";
     //import TitlePlugin from './ChartistAxisTitlePlugin';
+    import { commafy } from "$lib/helper.js";
+    import { hoverHelper, clearInteraction } from "$lib/actions/HoverAction";
+    import ctAxisTitle from "chartist-plugin-axistitle";
 
-    const c22 = new Constant2022();
-
-    const { iterator, data, group_name } = $$props;
+    const { iterator, data, group_name, chartTitle, constants } = $$props;
 
     /**
      * Checks data series to see if it is all zeroes
@@ -34,6 +34,26 @@
                 left: 40,
             },
             height: "200px",
+            axisY: {
+                low: 0,
+                labelInterpolationFnc: function(value) {
+                    return commafy(value + '');
+                }
+            },
+            plugins: [
+                ctAxisTitle({
+                axisY: {
+                    axisTitle: 'acre-feet/year',
+                    axisClass: 'ct-axis-title',
+                    offset: {
+                        x: 0,
+                        y: 0
+                    },
+                    textAnchor: 'middle',
+                    flipTitle: false
+                }
+                })
+            ]
         };
 
         const responsiveOptions = [
@@ -49,7 +69,7 @@
         new Chartist.Bar(
             `.ct-chart-bar-${iterator}`,
             {
-                labels: c22.getDecades(),
+                labels: constants.getDecades(),
                 series: data[group_name],
             },
             defaultOptions,
@@ -61,15 +81,25 @@
         buildChart();
     });
 
-    let hover = () => {
-        console.log("Hover");
+    let onHover = (event) => {
+        hoverHelper(event, chartTitle);
     };
+
+    let onLeave = () => {
+        clearInteraction(chartTitle);
+    };
+
 </script>
 
 <div class="bar-chart-container">
     <div
-        on:mouseover={hover}
+        on:mouseover={onHover}
         on:focus
-        class="ct-chart-bar-{iterator} ct-chart"
+        on:mouseleave={onLeave}
+        on:mouseout={onLeave}
+        on:blur
+        class="{chartTitle} ct-chart-bar-{iterator} ct-chart"
+        role="region"
     />
+    <div role="tooltip" id={`${chartTitle}-tooltip`} />
 </div>

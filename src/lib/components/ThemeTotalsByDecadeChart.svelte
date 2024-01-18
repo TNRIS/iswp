@@ -1,17 +1,17 @@
 <script>
-    // @ts-nocheck
     import BarChart from "$lib/components/Charts/BarChart.svelte";
-    const { swdata, wugRegionFilter } = $$props;
-    import Statewide from "$lib/db/statewide.js";
-    import { Constant2022 } from "$lib/Constant2022.js";
-    const c22 = new Constant2022();
+    const { swdata, wugRegionFilter, constants } = $$props;
     import ChartDataTable from "$lib/components/ChartDataTable.svelte";
-
+    import { commafy } from "$lib/helper.js";
+    import ColorCodeSpread from "$lib/components/ColorCodeIcons/ColorCodeSpread.svelte";
     const chartOptions = {
         height: "200px",
         lineSmooth: false,
         axisY: {
-            low: 0
+            low: 0,
+            labelInterpolationFnc: function (value) {
+                return commafy(value + "");
+            },
         },
         chartPadding: {
             left: 40,
@@ -21,7 +21,7 @@
     };
 
     let dfunc = (dat, id) => {
-        let d = c22.getDecades();
+        let d = constants.getDecades();
         let data = [];
         for (let i = 0; i < d.length; i++) {
             data.push(dat[id].decadeTotals[d[i]]);
@@ -32,29 +32,30 @@
     let getData = () => {
         return new Promise(async (resolve, reject) => {
             try {
-                let data2 = [
+                const titles = constants.getThemeTitles();
+                const data2 = [
                     {
-                        name: "Demands",
+                        name: titles["demands"],
                         meta: "demands",
-                        className: "series-demands",
+                        className: `series-demands`,
                         data: dfunc(swdata, "demands"),
                     },
                     {
-                        name: "Supplies",
+                        name: titles["supplies"],
                         meta: "supplies",
-                        className: "series-supplies",
+                        className: `series-supplies`,
                         data: dfunc(swdata, "supplies"),
                     },
                     {
-                        name: "Needs",
+                        name: titles["needs"],
                         meta: "needs",
-                        className: "series-needs",
+                        className: `series-needs`,
                         data: dfunc(swdata, "needs"),
                     },
                     {
-                        name: "Strategies",
+                        name: titles["strategies"],
                         meta: "strategies",
-                        className: "series-strategies",
+                        className: `series-strategies`,
                         data: dfunc(swdata, "strategies"),
                     },
                 ];
@@ -72,13 +73,13 @@
         return new Promise((resolve, reject) => {
             try {
                 let seriesByType = {};
-                c22.getUsageTypes().forEach((type) => {
-                    seriesByType[type] = c22.getThemes().map((theme) => {
+                constants.getUsageTypes().forEach((type) => {
+                    seriesByType[type] = constants.getThemes().map((theme) => {
                         return {
-                            name: c22.getThemeTitles()[theme],
+                            name: constants.getThemeTitles()[theme],
                             meta: theme,
                             className: `series-${theme}`,
-                            data: c22.getDecades().map((year) => {
+                            data: constants.getDecades().map((year) => {
                                 if (a?.[theme]?.typeTotals?.[type]) {
                                     return a[theme].typeTotals[type][year];
                                 }
@@ -96,22 +97,33 @@
 </script>
 
 <div class="summary-wrapper container">
-    <div style="pointer-events:auto; height:344px;" class="row panel-row">
-        <div class="chart-header">
-            <h4>Totals by Decade<span class="units">(acre-feet/year)</span></h4>
-            {#await getData()}
-                <span>Loading</span>
-            {:then data}
-                <BarChart iterator={"tbd"} {data} group_name={"TBD"} />
-                <ChartDataTable
-                    header={c22.getDecades()}
-                    body={data["TBD"]}
-                    titles={true}
-                    >inner in datausagetype showHide={false}
-                </ChartDataTable>
-            {:catch error}
-                <span>There is an error getting totals by decade. {error.message}</span>
-            {/await}
+    <div style="pointer-events:auto;" class="row panel-row">
+            <div class="twelve columns">
+                <div>
+
+                <div class="chart-header">
+                    <h4>
+                        Totals by Decade
+                        <span class="units">(acre-feet/year)</span>
+                    </h4>
+                    <ColorCodeSpread />
+                    {#await getData()}
+                        <span>Loading</span>
+                    {:then data}
+                        <BarChart iterator={"tbd"} {data} group_name={"TBD"} chartTitle={"theme-totals-by-decade"} {constants} />
+                        <ChartDataTable
+                            header={constants.getDecades()}
+                            body={data["TBD"]}
+                            titles={true}
+                            showHide={false}
+                        />
+                    {:catch error}
+                        <span>
+                            There is an error getting totals by decade. {error.message}
+                        </span>
+                    {/await}
+                </div>
+            </div>
         </div>
     </div>
 </div>

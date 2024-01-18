@@ -8,7 +8,7 @@
   margin-bottom: 1rem;
   padding: 0;
   background: inherit;
-  box-shadow: none;
+  box-shadow: none !important;
 
   select {
     height: auto;
@@ -102,6 +102,9 @@
   max-width: 100px;
 }
 
+.regional-summary-table {
+  width: 100%;
+}
 .projects-table {
   .reactable-th-project {
     min-width: 340px;

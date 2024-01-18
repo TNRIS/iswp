@@ -8,6 +8,12 @@
   <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
   <link href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css" rel="stylesheet" type="text/css" />
   <script src="/react-pivot-standalone-4.1.1.min.js"></script>
+  <script src="/leaflet.oms.js"></script>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+  <script src="/utf-grid.js"></script>
+
 
   <!-- {% block styles %} -->
   <link rel="stylesheet" type="text/css" href="/webfonts/gill-sans.css">
@@ -15,47 +21,10 @@
 
   <link rel="stylesheet" type="text/css" href="/css/normalize.css">
   <link rel="stylesheet" type="text/css" href="/css/skeleton.css">
-  <!-- <link rel="stylesheet" type="text/css" href="/css/main.css"> -->
 
-  <!-- {% endblock styles %} -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
-  <!-- {% block title %}{% endblock title %} -->
-  <!-- 
-    <script src="/js/db.js"></script>
-    <script src="/js/statewide.js"></script>
-    <script src="/js/regionalsummary.js"></script>
-    <script src="/js/regionalsummaryind.js"></script>
-    <script src="/js/getByCounty.js"></script>
-    <script src="/js/getByRegion.js"></script>
-    -->
-
-  %sveltekit.head%
 </head>
-<style type="text/scss">
-  
-  .sticky-div,
-  .sticky-div-2 {
-    position: sticky;
-    padding: 10px 0px;
-    z-index: 10;
-  }
-
-  .sticky-div {
-    top: 0px;
-  }
-
-  .sticky-div-2 {
-    top: 58px;
-  }
-
-  .start {
-    height: 100px;
-  }
-
-  .end {
-    height: 500px;
-  }
-</style>
 
 <body>
   <div id="page-wrapper">
@@ -71,62 +40,9 @@
             The draft data displayed in this web application is to assist in review of the draft regional water plans and is as of 3/13/2020. Some features may not display properly until the data has been finalized (e.g. mapped sources). Although the data is subject to change as the draft plans are reviewed, the data displayed will not be refreshed until final regional water plans are approved (early 2021). Please visit the 2021 Draft Regional Water Plan homepage to view the published plan at: <a title="TWDB State Water Planning home" href="http://www.twdb.texas.gov/waterplanning/rwp/plans/2021/index.asp" target="_blank">http://www.twdb.texas.gov/waterplanning/rwp/plans/2021/index.asp</a>.
           </div>
         </div> -->
-      <header class="header" id="Top">
-        <a class="skip-link" id="skip-link" href="#main-content" tabIndex="1" title="Skip to main content">Skip to Main
-          Content</a>
-        <div class="header-title-container">
-          <div class="header-title wrapper">
-            <h1>
-              <a href="/" title="Home">
-                <span class="first-line">2022</span><br />
-                Texas State Water Plan
-              </a>
-            </h1>
-            <!-- <span class="by-the show-medium">by the</span> -->
-            <a href="http://www.twdb.texas.gov" title="Texas Water Development Board">
-              <img src="/old_static/img/twdb-logo-dark-bkgd-w200px-3c.png" class="logo" />
-            </a>
-            <div class="nav-container" style="font-size:0px">
-              <a class="button button-home" aria-label="Home" href="/" title="Home">
-                <svg version="1" viewBox="0 0 24 24" data-reactid=".0.1.0.3.0.0">
-                  <path d="M20 20v-8h2L12 3 2 12h2v8c0 .6.4 1 1 1h5v-7h4v7h5c.6 0 1-.4 1-1z"
-                    data-reactid=".0.1.0.3.0.0.0"></path>
-                </svg>
-              </a>
+        %sveltekit.head%
 
-              <a class="button active" title="About">About</a>
-            </div>
-          </div>
-        </div>
 
-      </header>
-      <div class="header-nav sticky-div">
-        <div class="wrapper">
-          <form>
-            <label for="nav-category-select">View data for</label>
-            <div class="select-container category-select" aria-live="polte">
-              <select class="nav-category-select" id="nav-category-select">
-                <option value="statewide">All of Texas</option>
-                <option value="county">County</option>
-                <option value="entity">Entity</option>
-                <option value="usagetype">Usage Type</option>
-                <option value="source">Water Source</option>
-                <option value="project">WMS Project</option>
-                <option value="wms">Water Management Strategy</option>
-                <option value="wms">WMS Type</option>
-
-              </select>
-
-              <!-- 
-                clearable={false}
-                onChange={this.onChangeNavCategory}
-                value={this.state.navCategory}
-                options={navCategoryOptions} 
-                -->
-            </div>
-          </form>
-        </div>
-      </div>
       <div id="main-content">
         <div style="display: contents">%sveltekit.body%</div>
 

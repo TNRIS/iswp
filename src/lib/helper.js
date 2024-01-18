@@ -1,5 +1,9 @@
-import { onMount } from "svelte";
+import { onMount, beforeUpdate,
+    afterUpdate} from "svelte";
 import { start_all_db } from "$lib/db/db.js";
+import { Constant2022 } from "$lib/Constant2022";
+const c22 = new Constant2022();
+
 
 // Helper to make onmount awaitable.
 export let onMountSync = () => {
@@ -7,6 +11,22 @@ export let onMountSync = () => {
         try {
             onMount(async () => {
                 resolve("mounted");
+            });
+        } catch(err) {
+            reject(err);
+        }
+    });
+};
+
+export let slugify = (s) => {
+    return s.replace(/\s+/g, "-");
+}
+
+export let afterUpdateSync = () => {
+    return new Promise((resolve, reject) => {
+        try {
+            afterUpdate(async () => {
+                resolve("updated");
             });
         } catch(err) {
             reject(err);
@@ -64,4 +84,133 @@ export let calcPercentage = (array, value) => {
     let percent = Math.round(((value / total) * 10) * 100) / 10;
 
     return `${percent}%` ;
+}
+/**
+ * Returns a string with commas every 3 characters.
+ * @param {string} s 
+ * @returns {string}
+ */
+export let commafy = (s) => {
+    return s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+/** 
+ * Generic function to sort a html table. Currently defaults to skip bottom row. But can be changed using SKIP_BOTTOM_ROW flag.
+ * @param {object} table Object referencing a table element selected with svelte.
+ * @param {number} n Index of column to sort.
+ * @param {function} parseFunc callback Function that is used to parse the inner HTML.
+ */
+let tableSort = (table, n, parseFunc) => {
+    let rows, shouldSwitch, x, y, i, switchcount = 0;
+    let switching = true;
+    let dir = "asc";
+    let SKIP_BOTTOM_ROW = true;
+
+    let offset = SKIP_BOTTOM_ROW ? 2 : 1;
+    while(switching) {
+        switching = false;
+        // @ts-ignore
+        rows = table.rows;
+
+        for(i = 1; i < (rows.length - offset); i++) {
+            shouldSwitch = false;
+
+            x = parseFunc(rows[i])
+            y = parseFunc(rows[i + 1]);
+
+            if (dir == "asc") {
+                if (x > y) {
+                  shouldSwitch = true;
+                  break;
+                }
+              } else if (dir == "desc") {
+                if (x < y) {
+                  shouldSwitch = true;
+                  break;
+                }
+            }
+        }
+
+        if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            switchcount ++;
+          } else {
+            if (switchcount == 0 && dir == "asc") {
+              dir = "desc";
+              switching = true;
+            }
+        }
+    }
+
+    let cells = rows[0].cells;
+    // Remove the current sort by icon on all headers.
+    for(let i = 0; i < cells.length; i++) {
+        cells[i].classList.remove("asc");
+        cells[i].classList.remove("desc");
+    }
+
+    if(dir == "asc") {
+        rows[0].cells[n].classList.add("asc");
+    } else if (dir == "desc") {
+        rows[0].cells[n].classList.add("desc");
+    }
+}
+
+/** 
+ * Sort a table Numerically
+ * @param {object} table Object referencing a table element selected with svelte.
+ * @param {number} n Index of column to sort.
+ */
+export let sortNumeric = (table, n) => {
+    tableSort(table, n, (row) => {
+        return Number(row.getElementsByTagName("td")[n].innerHTML.replaceAll(',', ''));
+    })
+}
+
+/** 
+ * Sort a table Numerically
+ * @param {object} table Object referencing a table element selected with svelte.
+ * @param {number} n Index of column to sort.
+ */
+export let sortAlphabetic = (table, n) => {
+    tableSort(table, n, (row) => {
+        return row.getElementsByTagName("td")[n].innerHTML.toLowerCase();
+    })
+}
+
+/** 
+ * Left join two json objects where column matches (paramater where)
+ * @param {object} left 
+ * @param {object} right
+ * @param {Array<string>} where
+ */
+export let objLeftjoin = (left, right, where) => {
+    let rightWhere = where[0];
+    if(where.length > 2) {
+        console.log("Error, only 2 where clauses allowed in objLeftJoin");
+    } else if(where.length === 2) {
+        rightWhere = where[1]
+    }
+    for(let i = 0; i < left.length; i++) {
+        let match = right.find(match => {
+            return left[i][where[0]] === match[rightWhere];
+        })
+        if(match) {
+            left[i] = {...match, ...left[i]}
+        }
+    }
+}
+
+/** 
+ * Scale numbers to portion of new max
+ * @param {number} scale1
+ * @param {number} scale2
+ * @param {number} newMax
+ */
+export let scaleTonew = (scale1, scale2, newMax) => {
+    let portion = scale1 / scale2;
+
+    let r = portion * newMax;
+    return Math.floor(r) + c22.MIN_RADIUS;
 }

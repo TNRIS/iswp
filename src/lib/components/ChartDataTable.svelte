@@ -1,9 +1,7 @@
 <script>
     import ToggleDisplay from "./ToggleDisplay.svelte";
     const { header, body, titles, showHide } = $$props;
-    function slugify(s) {
-        return s.replace(/\s+/g, "-");
-    }
+    import { slugify, commafy } from "$lib/helper.js";
 </script>
 
 <div class="chart-table-container">
@@ -22,11 +20,7 @@
                         </thead>
                         <tbody>
                             {#each body as b}
-                                <tr
-                                    class={`${slugify(
-                                        b.className,
-                                    ).toLowerCase()}`}
-                                >
+                                <tr class={slugify(b.className).toLowerCase()}>
                                     {#if titles == true}
                                         <td class="row-label">
                                             <span>{b.name}</span>
@@ -35,7 +29,7 @@
                                         <td />
                                     {/if}
                                     {#each b.data as bd}
-                                        <td>{bd}</td>
+                                        <td>{commafy(bd + '')}</td>
                                     {/each}
                                 </tr>
                             {/each}
@@ -56,7 +50,7 @@
                     </thead>
                     <tbody>
                         {#each body as b}
-                            <tr class={`${slugify(b.className).toLowerCase()}`}>
+                            <tr class={slugify(b.className).toLowerCase()}>
                                 {#if titles == true}
                                     <td class="row-label">
                                         <span>{b.name}</span>
@@ -65,7 +59,7 @@
                                     <td />
                                 {/if}
                                 {#each b.data as bd}
-                                    <td>{bd}</td>
+                                    <td>{commafy(bd + '')}</td>
                                 {/each}
                             </tr>
                         {/each}

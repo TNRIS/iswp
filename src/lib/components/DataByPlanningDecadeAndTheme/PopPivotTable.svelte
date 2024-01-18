@@ -1,6 +1,6 @@
 <script>
     //@ts-nocheck
-    const { swdata } = $$props;
+    const { swdata, csvTitle } = $$props;
     import { onMountSync, usd_format } from "$lib/helper.js";
     let pivotLoaded = false;
 

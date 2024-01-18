@@ -1,9 +1,6 @@
 <script>
     //@ts-nocheck
-    import { Constant2022 } from "$lib/Constant2022.js";
-    const c22 = new Constant2022();
-    const constants = c22;
-    const { show } = $$props;
+    const { show, constants } = $$props;
 
     const DECADES = constants.getDecades();
     export let select_decade;

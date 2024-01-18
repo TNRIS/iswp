@@ -48,7 +48,7 @@ $nav-color: lighten($twdb-blue, 10%);
 
 .header-nav {
   background-color: $nav-color;
-  padding: 1rem 0;
+  padding: 4px 0;
   border-bottom: 1px solid white;
 
   form {
@@ -77,7 +77,6 @@ $nav-color: lighten($twdb-blue, 10%);
 
   .select-container {
     display: block;
-    width: 220px;
     vertical-align: middle;
     margin-top: 0.5rem;
 
@@ -117,7 +116,7 @@ $nav-color: lighten($twdb-blue, 10%);
   }
 }
 
-#nav-category-select {
+#nav-category-select, #secondary-category-select {
   display: inline-block;
   margin-bottom: 0;
 }

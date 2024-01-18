@@ -2,7 +2,7 @@
 // Based on zoom map at https://observablehq.com/@d3/zoomable-treemap
 import * as d3 from "d3";
 
-export let buildZoomable = (container, data) => {
+export let buildZoomable = (container, data, selectedTreemap) => {
     // Specify the chart’s dimensions.
     const width = container.offsetWidth;
     const height = 500;
@@ -10,15 +10,39 @@ export let buildZoomable = (container, data) => {
 
     // This custom tiling function adapts the built-in binary tiling function
     // for the appropriate aspect ratio when the treemap is zoomed-in.
-    function tile(node, x0, y0, x1, y1) {
-        d3.treemapSquarify(node, 0, 0, width, height)
+    function tile(node, left, top, right, bottom) {
+        //node.x0 - the left edge of the rectangle
+        //node.y0 - the top edge of the rectangle
+        //node.x1 - the right edge of the rectangle
+        //node.y1 - the bottom edge of the rectangle
+        console.log(`x0: ${left}\n y0: ${top}\n x1: ${right}\n y1: ${bottom}\n\n`);
+        d3.treemapBinary(node, 0, 0, width, height)
+        node.x1 = node.x1
+        node.x0 = node.x0        
+        node.y1 = node.y1
+        node.y0 = node.y0
         for (const child of node.children) {
-            child.x0 = x0 + (child.x0 / width) * (x1 - x0);
-            child.x1 = x0 + (child.x1 / width) * (x1 - x0);
-            child.y0 = y0 + (child.y0 / height) * (y1 - y0);
-            child.y1 = y0 + (child.y1 / height) * (y1 - y0);
+
+            // Renaming these to a more descriptive name.
+            let c_left = child.x0;
+            let c_right = child.x1;
+            let c_top = child.y0;
+            let c_bottom = child.y1;
+            //500 / container.offsetWidth * 0.5 * (1 + Math.sqrt(5))
+            let tile_width_scalar = right - left;
+            let tile_height_scalar = bottom - top;
+            height / width * 0.5 * (1 + Math.sqrt(5))
+            // Start at left of parent, or top for y. Then do calculation. Then multiply by scalar to get volume.
+            child.x0 = left + (c_left / width)  * (tile_width_scalar);
+            child.x1 = left + (c_right / width) * (tile_width_scalar);
+            child.y0 = top + (c_top / height) * (tile_height_scalar);
+            child.y1 = top + (c_bottom / height) * (tile_height_scalar);
+            //console.log(`child.x0: ${child.x0}\n child.y0: ${child.y0}\n child.x1: ${child.x1}\n child.y1: ${child.y1}\n\n`);
+
         }
+
     }
+    //x0 is top left
 
     // Compute the layout.
     const hierarchy = d3
@@ -29,7 +53,7 @@ export let buildZoomable = (container, data) => {
     const root = d3
         .treemap()
         .round(false)
-        .tile(tile)(hierarchy);
+        .tile(d3.treemapSquarify)(hierarchy);
 
     // Create the scales.
     const x = d3.scaleLinear().rangeRound([0, width]);
@@ -62,7 +86,19 @@ export let buildZoomable = (container, data) => {
             .selectAll("g")
             .data(root.children.concat(root.leaves()))
             .join("g");
-            const color = d3.scaleOrdinal(data.children.map(d => d.name), d3.schemeTableau10);
+
+            let region_colors = ["#fff9ae", "#aad7d4", "#dee791", "#fec34e", "#ffe4af", "#c1e1c1", "#a89bc3", "#c7dff4"
+            , "#7ebf85", "#f9b5ab", "#78b6e4", "#ff0", "#57bbb6", "#b6bde0", "#c2cb20", "#d6aacb"];
+        
+            let usage_colors = ["#000000"];
+
+            if(selectedTreemap == "region") {
+                usage_colors = region_colors;
+            } else if(selectedTreemap == "usagetype") {
+                usage_colors = ["#ed1b2f", "#009b90", "#ead604", "#78b6e4", "#fec34e", "#6a8a22"]
+            }
+
+            const color = d3.scaleOrdinal(data.children.map(d => d.name), usage_colors);
 
             node.filter(function (d) {
                 if(d === root) {
