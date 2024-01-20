@@ -4,7 +4,7 @@
     //@ts-nocheck
     import LineChart from "./LineChart.svelte";
     import ChartDataTable from "$lib/components/ChartDataTable.svelte";
-    const { title, swdata, mapOnly, constants } = $$props;
+    const { title, swdata, mapOnly, constants, tagline } = $$props;
     import PopulationMap from "$lib/components/Maps/PopulationMap.svelte";
     import { commafy } from "$lib/helper.js";
 
@@ -44,13 +44,17 @@
     <div class="summary-wrapper container" style="z-index: 600">
         <div class="view-summary">
             <h2>{title}</h2>
+            
+            {#if tagline}
+            <span id="tagline">{@html tagline}</span>
+            {/if}
             {#if mapOnly !== true}
 
             <div class="chart-header">
                 <h5>Population</h5>
             </div>
             {#await getData()}
-                <span>Loading</span>
+                <div class="loader"></div>
             {:then data}
                 <LineChart
                     {data}
@@ -84,3 +88,9 @@
     </div>
     <PopulationMap {title} {swdata} />
 </div>
+
+<style>
+    #tagline {
+        font-style:italic;
+    }
+</style>

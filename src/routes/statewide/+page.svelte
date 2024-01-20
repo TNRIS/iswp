@@ -9,24 +9,10 @@
     import ThemeTotalsByDecadeChart from "$lib/components/ThemeTotalsByDecadeChart.svelte";
     import DataViewChoiceWrap from "$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrap.svelte";
     import Header from "$lib/components/Header.svelte";
+    import { onMountSync, getConstants } from "$lib/helper.js";
+    import { page } from '$app/stores';
 
-    import { onMountSync } from "$lib/helper.js";
-
-    import { Constant2027 } from "$lib/Constant2027.js";
-    import { Constant2022 } from "$lib/Constant2022.js";
-    import { Constant2017 } from "$lib/Constant2017.js";
-
-    const year = 2027;
-    let constants;
-    if(year == 2027) {
-        constants = new Constant2027();
-    } else if (year == 2022) {
-        constants = new Constant2022();
-    } else if (year == 2017) {
-        constants = new Constant2017();
-    }
-
-
+    let constants = getConstants($page.url.host);
     let stateSettings = new QuerySettings();
     let db = load_indexeddb();
 
@@ -46,7 +32,7 @@
 <div class="statewide-view">
     <section>
         {#await loadForState()}
-            <span>Loading</span>
+        <div class="loader"></div>
         {:then out}
             <PopulationChart title={`TEXAS`} swdata={out} {constants} />
             <TitleBlurb {constants} />

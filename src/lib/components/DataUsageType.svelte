@@ -66,7 +66,8 @@
                 </div>
 
                 {#await getData()}
-                    <span>Loading</span>
+                    <div class="loader"></div>
+
                 {:then data}
                     {#each everyTwoTypes as group_name, i}
                         <div class="row" key={i}>

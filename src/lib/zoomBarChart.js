@@ -2,7 +2,7 @@
 // Based on zoom map at https://observablehq.com/@d3/zoomable-treemap
 import * as d3 from "d3";
 
-export let buildZoomable = (container, data, selectedTreemap) => {
+export let buildZoomable = (container, data, selectedTreemap, total) => {
     // Specify the chart’s dimensions.
     const width = container.offsetWidth;
     const height = 500;
@@ -47,7 +47,11 @@ export let buildZoomable = (container, data, selectedTreemap) => {
     // Compute the layout.
     const hierarchy = d3
         .hierarchy(data)
-        .sum((d) => d.value)
+        .sum(function(d) {
+            if(typeof d.value == "number") {
+                return d.value;
+            }
+        })
         .sort((a, b) => b.value - a.value);
     
     const root = d3
@@ -74,7 +78,9 @@ export let buildZoomable = (container, data, selectedTreemap) => {
         .attr("width", width)
         .attr("height", height + 30)
         .attr("style", "max-width: 100%; height: auto;")
-        .style("font", "10px sans-serif");
+        .style("font", "10px sans-serif")
+        .style("font-weight", "bold")
+        .style("color", "green");
 
         
     // Display the root.
@@ -136,9 +142,6 @@ export let buildZoomable = (container, data, selectedTreemap) => {
             .append("use")
             .attr("xlink:href", (d) => d.leafUid.href);
 
-
-
-            
         node.filter((d) => (d.children !== undefined ? d : undefined)).append("text")
             .attr("clip-path", (d) => d.clipUid)
             .attr("font-weight", (d) => (d === root ? "bold" : null))

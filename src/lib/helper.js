@@ -1,9 +1,22 @@
 import { onMount, beforeUpdate,
     afterUpdate} from "svelte";
 import { start_all_db } from "$lib/db/db.js";
-import { Constant2022 } from "$lib/Constant2022";
+import { Constant2027 } from "$lib/Constant2027.js";
+import { Constant2022 } from "$lib/Constant2022.js";
+import { Constant2017 } from "$lib/Constant2017.js";
 const c22 = new Constant2022();
 
+export let getConstants = (host) => {
+    if(host.includes("2027")) {
+        return new Constant2027();
+    } else if (host.includes("2022")) {
+        return new Constant2022();
+    } else if (host.includes("2017")) {
+        return new Constant2017();
+    } else {
+        return new Constant2022();
+    }
+}
 
 // Helper to make onmount awaitable.
 export let onMountSync = () => {
@@ -22,6 +35,10 @@ export let slugify = (s) => {
     return s.replace(/\s+/g, "-");
 }
 
+export let real_clone = (obj) => {
+    return JSON.parse(JSON.stringify(obj));
+}
+
 export let afterUpdateSync = () => {
     return new Promise((resolve, reject) => {
         try {
@@ -37,32 +54,50 @@ export let afterUpdateSync = () => {
 // Helper to format a number.
 export let usd_format = new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'USD'
+    //maximumFractionDigits: decimalpoints
+    
 });
 
 // Load indexeddb
 export let load_indexeddb = async () => {
     const start = Date.now();
     await onMountSync();
-
-    let IS_2022_WEBSITE = window.location.href.indexOf("2022") > -1;
     let IS_2017_WEBSITE = window.location.href.indexOf("2017") > -1;
-
+    let IS_2022_WEBSITE = window.location.href.indexOf("2022") > -1;
+    let IS_2027_WEBSITE = window.location.href.indexOf("2027") > -1;
+    
     // Start indexeddb, efficient if upgrade is not needed.
-    let [db17, db22] = await start_all_db();
+    let [db17, db22, db27] = await start_all_db();
 
     // Choose database depending on url.
-    if (!(db22 && db17)) throw "Databases are null.";
+    if (!(db22 && db17 && db27)) throw "Databases are null.";
     console.log(`exec time: ${Date.now() - start} ms.`);
 
     if (IS_2022_WEBSITE) {
         return db22;
     } else if (IS_2017_WEBSITE) {
         return db17;
+    } else if (IS_2027_WEBSITE) {
+        return db27;
     } else {
+        // SET TEST HERE
         return db22;
     }
 };
+
+export let cap = (s) => {
+    if(!s) {
+        return s;
+    }
+    let split_space = s.split(" ");
+    let format_string = "";
+    for(let i = 0; i < split_space.length; i++) {
+        format_string += split_space[i].toLowerCase().charAt(0).toUpperCase() + split_space[i].toLowerCase().slice(1);
+        format_string += " ";
+    }
+    return format_string;
+}
 
 export let split_every = (size, array) => {
     var array2d = [];

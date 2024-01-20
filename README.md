@@ -6,6 +6,7 @@ using node 18.16.0
 
 ## Developing
 Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+npm package
 
 ```bash
 npm run dev

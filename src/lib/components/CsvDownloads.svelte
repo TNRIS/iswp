@@ -1,14 +1,39 @@
 <script>
     const { swdata, csvTitle, fileName, constants } = $$props;
-
+    let decades = constants.getDecades();
     if(!fileName)
         console.log("We need a filename");
     import { json2csv } from 'json-2-csv';
-    let population = swdata?.population?.rows ?json2csv(swdata?.population?.rows) : [];
-    let demands = swdata?.demands?.rows ? json2csv(swdata?.demands?.rows) : [];
-    let existing = swdata?.supplies?.rows ? json2csv(swdata?.supplies?.rows) : [];
-    let needs = swdata?.needs?.rows ? json2csv(swdata?.needs?.rows) : [];
-    let strategy = swdata?.strategies?.rows ? json2csv(swdata?.strategies?.rows) : [];
+
+    let population = swdata?.population?.rows ?json2csv(swdata?.population?.rows, 
+    {
+        keys: ["EntityId", "EntityName", "WugType", "WugRegion", "WugCounty", "EntityIsSplit", `P${decades[0]}`, `P${decades[1]}`, `P${decades[2]}`, `P${decades[3]}`, `P${decades[4]}`, , `P${decades[5]}`],
+        emptyFieldValue: ""
+    }) : [];
+
+    let demands = swdata?.demands?.rows ? json2csv(swdata?.demands?.rows,
+    {
+        keys: ["EntityId", "EntityName", "WugType", "WugRegion", "WugCounty", "EntityIsSplit", `D${decades[0]}`, `D${decades[1]}`, `D${decades[2]}`, `D${decades[3]}`, `D${decades[4]}`, , `D${decades[5]}`],
+        emptyFieldValue: ""
+    }) : [];
+    
+    let existing = swdata?.supplies?.rows ? json2csv(swdata?.supplies?.rows,
+    {
+        keys: ["EntityId", "MapSourceId", "EntityName", "WugType", "WugRegion", "WugCounty", "EntityIsSplit", "SourceName", `WS${decades[0]}`, `WS${decades[1]}`, `WS${decades[2]}`, `WS${decades[3]}`, `WS${decades[4]}`, , `WS${decades[5]}`],
+        emptyFieldValue: ""
+    }) : [];
+    
+    let needs = swdata?.needs?.rows ? json2csv(swdata?.needs?.rows,
+    {
+        keys: ["EntityId", "EntityName", "WugType", "WugRegion", "WugCounty", "EntityIsSplit", `N${decades[0]}`, `N${decades[1]}`, `N${decades[2]}`, `N${decades[3]}`, `N${decades[4]}`, , `N${decades[5]}`],
+        emptyFieldValue: ""
+    }) : [];
+
+    let strategy = swdata?.strategies?.rows ? json2csv(swdata?.strategies?.rows,
+    {
+        keys: ["EntityId", "MapSourceId", "EntityName", "WugType", "WugRegion", "WugCounty", "EntityIsSplit", "SourceName", "SourceType", "WmsId", "WmsSponsorRegion", "WmsName", "WmsType", `SS${decades[0]}`, `SS${decades[1]}`, `SS${decades[2]}`, `SS${decades[3]}`, `SS${decades[4]}`, , `SS${decades[5]}`],
+        emptyFieldValue: ""
+    }) : [];
     
     /**
      * @param {string} thing
@@ -33,11 +58,21 @@
 <h5>Download Data</h5>
 <ul>
     {#if csvTitle !== "Agricultural Conservation WMS Type"}
-    <li><a href="#" on:click={() => {dlpop(population, "population.csv")}}>Download {csvTitle} Population data (Comma-Separated Values)</a></li>
-    <li><a href="#" on:click={() => {dlpop(demands, "demands.csv")}}>Download {csvTitle} Demands data (Comma-Separated Values)</a></li>
-    <li><a href="#" on:click={() => {dlpop(existing, "existing.csv")}}>Download {csvTitle} Existing data (Comma-Separated Values)</a></li>
-    <li><a href="#" on:click={() => {dlpop(needs, "needs.csv")}}>Download {csvTitle} Needs (Potential Shortages) data (Comma-Separated Values)</a></li>
+        {#if population.length}
+        <li><a href="#" on:click={() => {dlpop(population, "population.csv")}}>Download {csvTitle} Population data (Comma-Separated Values)</a></li>
+        {/if}
+        {#if demands.length}
+        <li><a href="#" on:click={() => {dlpop(demands, "demands.csv")}}>Download {csvTitle} Demands data (Comma-Separated Values)</a></li>
+        {/if}
+        {#if existing.length}
+        <li><a href="#" on:click={() => {dlpop(existing, "existing.csv")}}>Download {csvTitle} Existing Supplies data (Comma-Separated Values)</a></li>
+        {/if}
+        {#if needs.length}
+        <li><a href="#" on:click={() => {dlpop(needs, "needs.csv")}}>Download {csvTitle} Needs (Potential Shortages) data (Comma-Separated Values)</a></li>
+        {/if}
     {/if}
+    {#if strategy.length}
     <li><a href="#" on:click={() => {dlpop(strategy, "strategies.csv")}}>Download {csvTitle} Strategy Supplies data (Comma-Separated Values)</a></li>
+    {/if}
 </ul>
 {/if}

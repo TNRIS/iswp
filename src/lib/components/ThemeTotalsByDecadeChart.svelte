@@ -108,7 +108,7 @@
                     </h4>
                     <ColorCodeSpread />
                     {#await getData()}
-                        <span>Loading</span>
+                        <div class="loader"></div>
                     {:then data}
                         <BarChart iterator={"tbd"} {data} group_name={"TBD"} chartTitle={"theme-totals-by-decade"} {constants} />
                         <ChartDataTable

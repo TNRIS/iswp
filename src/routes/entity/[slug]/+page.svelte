@@ -11,33 +11,59 @@
 
     export let data;
 
-    import { load_indexeddb } from "$lib/helper.js"
-    import { Constant2027 } from "$lib/Constant2027.js";
-    import { Constant2022 } from "$lib/Constant2022.js";
-    import { Constant2017 } from "$lib/Constant2017.js";
+    import { load_indexeddb, getConstants, cap } from "$lib/helper.js"
+    import { page } from '$app/stores';
 
-    const year = 2027;
-    let constants;
-    if(year == 2027) {
-        constants = new Constant2027();
-    } else if (year == 2022) {
-        constants = new Constant2022();
-    } else if (year == 2017) {
-        constants = new Constant2017();
-    }
+    let constants = getConstants($page.url.host)
     let entitySetting = new QuerySettings("entity", "EntityId");
     entitySetting.setAll(Number(data.slug));
 
     let db;
     let entityName = '';
 
+    let stratAd = [
+        "Region",
+        "County",
+        "Entity",
+        "Strategy",
+        "WMS Type",
+        "Source"
+    ];
+
+    let activeDem = [
+        "Region",
+        "County",
+        "Entity"
+    ];
+    $: tagline = "";
+
     let loadForEntity = async () => {
         let start = Date.now();
         db = await load_indexeddb();
         let sw = new Statewide(db);
         let dat =  await sw.get(entitySetting);
-        entityName = dat?.population?.rows?.[0]?.EntityName;
+        const pops = dat?.population?.rows;
+
+        entityName = pops?.[0]?.EntityName;
         console.log(`loadForRegion time in ms: ${Date.now() - start}`);
+        let groups = '';
+
+        if(pops) {
+            for(let i = 0; i < pops.length; i++) {
+                const wc = cap(pops[i].WugCounty).trim();
+                if(pops.length == 1) {
+                    groups += `<a href="/county/${wc}">${wc}</a>`;
+                }
+                else if(i < pops.length - 1) {
+                    groups += `<a href="/county/${wc}">${wc}</a>, `;
+
+                } else {
+                    groups += `and <a href="/county/${wc}">${wc}</a>`;
+                }
+            }
+        }
+        tagline = groups.length ? `Water User Group in ${groups}` : undefined;
+
         return dat;
     }
 </script>
@@ -46,13 +72,13 @@
 <div class="statewide-view">
     <section>
         {#await loadForEntity()}
-            <span>Loading</span>
+        <div class="loader"></div>
         {:then out}
-            <PopulationChart title={entityName} swdata={out} {constants}/>
+            <PopulationChart {tagline} title={entityName} swdata={out} {constants}/>
             <ThemeTotalsByDecadeChart swdata={out} {constants}/>
             <EntityStrategiesTable swdata={out} {constants} />
-            <ProjectTable swdata={ out } type="county"  />
-            <DataViewChoiceWrapInd swdata={out} csvTitle={entityName} fileName={`entity_${data.slug}`} {constants} />
+            <ProjectTable project_title={`WATER USER GROUP - ${entityName}`} project_title2={"Projects Serving Area Of Interest"} swdata={ out } type="county"  />
+            <DataViewChoiceWrapInd swdata={out} csvTitle={entityName} fileName={`entity_${data.slug}`} {constants} {stratAd} {activeDem} />
         {:catch error}
             <span>Error starting database {error.message}</span>
         {/await}

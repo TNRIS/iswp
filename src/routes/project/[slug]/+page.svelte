@@ -5,40 +5,40 @@
     export let data;
     let db;
     import { QuerySettings } from "$lib/QuerySettings.js";
-    import { load_indexeddb } from "$lib/helper.js";
+    import { load_indexeddb, getConstants } from "$lib/helper.js";
     import Statewide from "$lib/db/statewide.js";
     import Header from "$lib/components/Header.svelte";
     import PopulationChart from "$lib/components/Charts/PopulationChart.svelte";
-    import { Constant2027 } from "$lib/Constant2027.js";
-    import { Constant2022 } from "$lib/Constant2022.js";
-    import { Constant2017 } from "$lib/Constant2017.js";
+    import { page } from '$app/stores';
 
-    const year = 2027;
-    let constants;
-    if(year == 2027) {
-        constants = new Constant2027();
-    } else if (year == 2022) {
-        constants = new Constant2022();
-    } else if (year == 2017) {
-        constants = new Constant2017();
-    }
+    let constants = getConstants($page.url.host)
+    $: tagline = "";
     let sourceSetting = new QuerySettings("strategies", "WmsProjectId");
     sourceSetting.setAll(Number(data.slug));
 
     const sourceSetting2 = new QuerySettings("wms", "WmsProjectId");
     sourceSetting2.setAll(Number(data.slug));
 
-    let loadForSource = async () => {
-        let start = Date.now();
+    const loadForSource = async () => {
+        const start = Date.now();
         db = await load_indexeddb();
-        let sw = new Statewide(db);
-        let dat = await sw.get(sourceSetting2);
-        let dat2 = await sw.get(sourceSetting);
-        let r = {
+        const sw = new Statewide(db);
+        const dat = await sw.get(sourceSetting2);
+        const dat2 = await sw.get(sourceSetting);
+        const r = {
             ...dat,
             ...dat2,
         };
+        const decade_online = dat?.projects[0].OnlineDecade;
 
+        let formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0
+        });
+        const capital_cost = formatter.format(dat?.projects[0].CapitalCost);
+
+        tagline = `<span>Decade Online: ${decade_online}</span><br /><span>Capital Cost: ${capital_cost}</span>`
         console.log(`loadForRegion time in ms: ${Date.now() - start}`);
         return r;
     };
@@ -46,10 +46,10 @@
 <Header {constants} />
 
 {#await loadForSource()}
-    <span>Loading</span>
+<div class="loader"></div>
 {:then out}
-    <PopulationChart title={out.projects[0].ProjectName} mapOnly={true} swdata={out} {constants} />
-    <ProjectTable swdata={out} type={"region"} />
+    <PopulationChart {tagline} title={out.projects[0].ProjectName} mapOnly={true} swdata={out} {constants} />
+    <ProjectTable project_title={`WMS PROJECT - ${out.projects[0].ProjectName}`} project_title2={"Water Management Strategies related to Project"} swdata={out} type={"region"} />
     <DataViewChoiceWrapInd swdata={out} type={"pop"} hideTheme={true} {constants} />
 {:catch error}
     <span>Error starting database {error.message}</span>

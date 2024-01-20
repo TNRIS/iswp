@@ -5,6 +5,32 @@ export class Constant2017 {
     allow_dl=true
     MIN_RADIUS = 4;
     MAX_RADIUS = 12;
+
+    tappend = "vw2017Map";
+
+    /**
+     * Create a Statewide.
+     */
+    DATA_TABLES = {
+        demands: "vw2017MapWugDemand",
+        needs: "vw2017MapWugNeeds",
+        supplies: "vw2017MapExistingWugSupply",
+        population: "vw2017MapWugPopulation",
+        strategies: "vw2017MapWMSWugSupply",
+    };
+
+    PROJECT_TABLES = {
+        region: 'vw2017MapWMSProjects',
+        county: 'vw2017MapWMSProjectByCounty',
+        entity: 'vw2017MapWMSProjectByEntity',
+        source: 'vw2017MapWMSProjectBySource',
+        wmstype: 'vw2017MapWMSProjectsByWmsType',
+        project: 'vw2017MapWMSProjectByWMS', //Not included as project information in project view is pulled from the vwWMSProjectByEntityWUGSplit table
+        strategies: 'vw2017MapWMSProjectByEntityWUGSplit',
+        wms: 'vw2017MapWMSProjectByWMS'
+        //usagetype: vwWMSProjectByWUGType //Not included because results are too large
+    };
+
     #decades = ["2020", "2030", "2040", "2050", "2060", "2070"];
     #usage_types = [
         "IRRIGATION",
@@ -14,7 +40,7 @@ export class Constant2017 {
         "LIVESTOCK",
         "MINING",
     ];
-    #USAGE_TYPE_DESCRIPTIONS = {
+    USAGE_TYPE_DESCRIPTIONS = {
         IRRIGATION: "Irrigation water demand includes water used in irrigated field crops, vineyards, orchards, and self-supplied golf courses.",
         MUNICIPAL: "Municipal water demand consists of water to be used for residential (single family and multi-family), commercial (including some manufacturing firms that do not use water in their production process), and institutional purposes (establishments dedicated to public service).",
         MANUFACTURING: "Manufacturing water demand consists of the future water necessary for large facilities including those that process chemicals, oil and gas, food, paper, and other materials.",

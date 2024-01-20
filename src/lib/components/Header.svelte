@@ -1,8 +1,9 @@
 <script>
+    console.log("Start header");
     import Banner from "$lib/components/Header/Banner.svelte";
     import Navigation from "$lib/components/Header/Navigation.svelte";
     import { onMountSync } from "$lib/helper.js"
-    const { db, constants } = $$props;
+    const { db, constants, hideNav } = $$props;
 
     import { page } from '$app/stores';
     let selected = {id: $page.url.pathname.split(["/"])[1] };
@@ -15,7 +16,9 @@
   </div>
 {/if}
 <Banner {constants} />
+{#if !hideNav}
 {#await onMountSync()}
 {:then}
 <Navigation {selected} {db} />
 {/await}
+{/if}

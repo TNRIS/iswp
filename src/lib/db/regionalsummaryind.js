@@ -11,19 +11,38 @@
  * @property {Number} STEAM_ELECTRIC_POWER User group steam electric power (Context determined by parent)
  * @property {Number} TOTAL User group total (Context determined by parent)
  */
+
+
+import { Constant2017 } from "$lib/Constant2017.js";
+import { Constant2022 } from "$lib/Constant2022.js";
+import { Constant2027 } from "$lib/Constant2027.js";
 export default class RegionalSummaryInd {
+    host = window.location.hostname;
     constructor(wkey, where, db) {
         this.wkey = wkey;
         this.where = where;
         this.db = db;
+    
+        if(this.host.includes(2027)) {
+            this.constants = new Constant2027();
+        } else if (this.host.includes(year == 2022)) {
+            this.constants = new Constant2022();
+        } else if (this.host.includes(year == 2017)) {
+            this.constants = new Constant2017();
+        } else {
+            this.constants = new Constant2022();
+        }
+
+        this.#summaryTables = {
+            demands: `${this.constants.tappend}WugDemand`,
+            needs: `${this.constants.tappend}WugNeeds`,
+            supplies: `${this.constants.tappend}ExistingWugSupply`,
+            population: `${this.constants.tappend}WugPopulation`,
+            strategies: `${this.constants.tappend}WMSWugSupply`,
+        };
+    
     }
-    #summaryTables = {
-        demands: "vwWugDemand",
-        needs: "vwWugNeeds",
-        supplies: "vwExistingWugSupply",
-        population: "vwWugPopulation",
-        strategies: "vwWMSWugSupply",
-    };
+
 
     #getAllTransaction = (key) => {
         return new Promise((resolve, reject) => {

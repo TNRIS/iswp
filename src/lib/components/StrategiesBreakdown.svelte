@@ -1,8 +1,9 @@
 <script>
     //@ts-nocheck
     const { swdata } = $$props;
-    import { calcPercentage } from "$lib/helper.js";
+    import { calcPercentage, commafy } from "$lib/helper.js";
     import { getContext, onMount } from "svelte";
+    import { hoverHelper, clearInteraction } from "$lib/actions/HoverAction";
     const decadeStore = getContext("myContext").decadeStore;
     const themeStore = getContext("myContext").themeStore;
     const dataviewContext = getContext("dataviewContext");
@@ -83,19 +84,34 @@
     onMount(() => {
         buildCtchart();
     });
+
+    let onHover = (event) => {
+        hoverHelper(event, "strat-chart");
+    };
+
+    let onLeave = () => {
+        clearInteraction("strat-chart");
+    };
+
     dataviewContext.buildPie.set(buildCtchart);
     $: checkShow = !($themeStore == "strategies");
 </script>
 
-<div class="strategies-breakdown-container" class:hider={checkShow}>
-    <div class="row panel-row">
+<div class="strategies-breakdown-container row panel-row" class:hider={checkShow}>
+    <div class="row">
+        <h4>Strategy Supplies Breakdown - {$decadeStore}<span class="units">(acre-feet/year)</span></h4>
+    </div>
+    <div class="row">
         <div class="six columns strategies-by-source-type-container">
-            <h4>Strategy Supplies Breakdown - {$decadeStore}</h4>
 
             <h5>Share by Water Resource</h5>
             <div class="pie-chart-container">
-                <div class="strat-chart" />
+                <div class="strat-chart" 
+                on:mousemove={onHover}
+                on:mouseleave={onLeave}
+                />
             </div>
+            <div id='strat-chart-tooltip' />
         </div>
         <div class="six columns strategies-by-source-type-container">
             <h5>Share by Strategy Type</h5>
@@ -108,12 +124,14 @@
                         <th>Amount</th>
                     </tr>
                     {#each stt_entries as t}
+                        {#if t[1] > 0}
                         <tr>
-                            <td>{t[0]}</td>
+                            <td><a href="/wmstype/{t[0]}">{t[0]}</a></td>
                             <td>
-                                {calcPercentage(stt_entries, t[1])}
+                                {`${calcPercentage(stt_entries, t[1])} (${commafy(t[1].toString())})`}
                             </td>
                         </tr>
+                        {/if}
                     {/each}
                 {:else}
                     <span>No Strategy types found</span>
@@ -126,5 +144,10 @@
 <style>
     .hider {
         display: none;
+    }
+    .strat-chart .ct-label {
+        font-size: 1rem !important;
+        color: #000 !important;
+        fill: #000 !important;
     }
 </style>

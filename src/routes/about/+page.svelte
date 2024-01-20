@@ -1,22 +1,12 @@
 <script>
     //@ts-nocheck
     import Header from "$lib/components/Header.svelte";
-    import { Constant2027 } from "$lib/Constant2027.js";
-    import { Constant2022 } from "$lib/Constant2022.js";
-    import { Constant2017 } from "$lib/Constant2017.js";
+    import { getConstants } from "$lib/helper.js";
+    import { page } from '$app/stores';
 
-    const year = 2027;
-    let constants;
-    if(year == 2027) {
-        constants = new Constant2027();
-    } else if (year == 2022) {
-        constants = new Constant2022();
-    } else if (year == 2017) {
-        constants = new Constant2017();
-    }
-
+    let constants = getConstants($page.url.host);
 </script>
-<Header {constants} />
+<Header {constants} hideNav={true} />
   
   
   <title>About | 2022 Texas State Water Plan</title>

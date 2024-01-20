@@ -2,26 +2,25 @@
     //@ts-nocheck
     import ProjectTable from "$lib/components/ProjectTable/ProjectTable.svelte";
     import DataViewChoiceWrapInd from "$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte";
-    import { load_indexeddb } from "$lib/helper.js";
+    import { load_indexeddb, getConstants } from "$lib/helper.js";
     import Statewide from "$lib/db/statewide.js";
     import { QuerySettings } from "$lib/QuerySettings.js"
     export let data;
     import { setContext } from "svelte";
     import { writable } from "svelte/store";
     import Header from "$lib/components/Header.svelte";
-    import { Constant2027 } from "$lib/Constant2027.js";
-    import { Constant2022 } from "$lib/Constant2022.js";
-    import { Constant2017 } from "$lib/Constant2017.js";
-
-    const year = 2027;
-    let constants;
-    if(year == 2027) {
-        constants = new Constant2027();
-    } else if (year == 2022) {
-        constants = new Constant2022();
-    } else if (year == 2017) {
-        constants = new Constant2017();
-    }
+    import { wms_info } from "$lib/WmsTypes.js";
+    
+    import { page } from '$app/stores';
+    let stratAd = [
+        "WMS Type",
+        "Strategy",
+        "Source",
+        "Region",
+        "County",
+        "Entity"
+    ];
+    let constants = getConstants($page.url.host)
     let wmsTypeSetting = new QuerySettings("datastrategies", "WmsType");
     wmsTypeSetting.setAll(data.slug);
     const wmsSetting2 = new QuerySettings("wmstype", "WmsType");
@@ -50,10 +49,19 @@
 <div class="statewide-view">
     <section>
         {#await loadForWmsType()}
-            <span>Loading</span>
+        <div class="loader"></div>
         {:then out}
-        <ProjectTable swdata={out} type={"region"} />
-        <DataViewChoiceWrapInd swdata={out} hideTheme={true} type={"wmstype"} csvTitle={`${data.slug} WMS Type`} {constants} />
+        <div class="view-top usage-type-view-top">
+            <div class="summary-wrapper container">
+                
+                <div class="view-summary usage-type-summary">
+                    <h1>{data.slug}</h1>
+                    {wms_info.WMS_TYPE_DESCRIPTIONS[data.slug.replace('AND', '&')]}
+                </div>
+            </div>
+        </div>
+        <ProjectTable project_title={`WMS TYPE - ${data.slug}`} project_title2={"Projects related to Water Management Strategy Type"} swdata={out} type={"region"} />
+        <DataViewChoiceWrapInd {stratAd} swdata={out} hideTheme={true} type={"wmstype"} csvTitle={`${data.slug} WMS Type`} {constants} />
 
         {:catch error}
             <span>Error starting database {error.message}</span>

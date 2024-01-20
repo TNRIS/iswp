@@ -2,18 +2,22 @@
 <html lang="en">
 
 <head>
+  <script>console.log("Starting app.html")</script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="/old_static/img/favicon.ico" />
   <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
   <link href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css" rel="stylesheet" type="text/css" />
   <script src="/react-pivot-standalone-4.1.1.min.js"></script>
-  <script src="/leaflet.oms.js"></script>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
   <script src="/utf-grid.js"></script>
+  <script src="/leaflet.oms.js"></script>
 
+  <!-- Tom Select Styles -->
+  <link rel="stylesheet" href="tom-select.default.min.css">
+  <script src="tom-select.complete.js"></script>
 
   <!-- {% block styles %} -->
   <link rel="stylesheet" type="text/css" href="/webfonts/gill-sans.css">
@@ -23,7 +27,10 @@
   <link rel="stylesheet" type="text/css" href="/css/skeleton.css">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-
+  <script>
+    console.log("Done with head");
+    var starter = Date.now();
+  </script>
 </head>
 
 <body>
@@ -41,7 +48,6 @@
           </div>
         </div> -->
         %sveltekit.head%
-
 
       <div id="main-content">
         <div style="display: contents">%sveltekit.body%</div>

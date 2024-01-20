@@ -11,7 +11,7 @@
     let decadeStore = writable(constants.getDecades()[0]);
     let themeStore = writable("strategies");
     let ruStore = writable("region");
-
+    let selectedTreemapStore = writable("region");
     // Establish root for myContext here.
     setContext("myContext", {
         decadeStore,
@@ -24,7 +24,8 @@
         datafix: writable(),
         getData: writable(),
         bindTreeMap: writable(),
-        buildPie: writable()
+        buildPie: writable(),
+        selectedTreemap: selectedTreemapStore
     });
 
 </script>

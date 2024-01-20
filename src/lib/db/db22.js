@@ -74,7 +74,7 @@ export function startDb22() {
                 "WugType"
             ]);
             build_func(event, "vwWugPopulationA1", []);
-            build_func(event, "vwSelectRegionsInCounty", []);
+            build_func(event, "vwSelectRegionsInCounty", ["RegionLetter"]);
             build_func(event, "vwWMSWugSupply", [
                 "EntityId",
                 "MapSourceId",
