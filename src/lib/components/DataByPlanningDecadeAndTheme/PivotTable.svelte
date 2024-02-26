@@ -1,15 +1,15 @@
 <script>
     //@ts-nocheck
-    const { swdata, csvTitle, fileName, constants } = $$props;
-    import { onMountSync, usd_format } from "$lib/helper.js";
+    const { swdata, csvTitle, fileName, constants, stratAd, activeDem } = $$props;
+    import { commafy, onMountSync, usd_format } from "$lib/helper.js";
     let pivotLoaded = false;
     import CsvDownloads from "$lib/components/CsvDownloads.svelte";
 
     import { getContext } from "svelte";
-
     const decadeStore = getContext("myContext").decadeStore;
     const themeStore = getContext("myContext").themeStore;
     const dataviewContext = getContext("dataviewContext");
+    const themeTitles = constants.getThemeTitles();
 
     let getData = async () => {
         try {
@@ -29,7 +29,7 @@
                         title: titleCalcField,
                         value: "amountTotal",
                         template: function (val, row) {
-                            return val;
+                            return commafy(val + '');
                         },
                         sortBy: function (row) {
                             return isNaN(row.amountTotal) ? 0 : row.amountTotal;
@@ -39,13 +39,7 @@
             };
 
             if ($themeStore == "strategies") {
-                activeDimensions = [
-                    "County",
-                    "Entity",
-                    "Strategy",
-                    "WMS Type",
-                    "Source",
-                ];
+                activeDimensions = stratAd;
                 sorter = "Strategy";
                 rows = swdata.strategies.rows;
                 dimensions = [
@@ -54,6 +48,7 @@
                     { value: "SourceName", title: "Source" },
                     { value: "WugCounty", title: "County" },
                     { value: "EntityName", title: "Entity" },
+                    { value: "WugRegion", title: "Region"}
                 ];
 
                 reduce = function (row, memo) {
@@ -67,12 +62,13 @@
                     `${$decadeStore} Strategy Supplies`
                 );
             } else if ($themeStore == "needs") {
-                activeDimensions = ["County", "Entity"];
+                activeDimensions = activeDem;
                 sorter = "County";
                 rows = swdata.needs.rows;
                 dimensions = [
                     { value: "WugCounty", title: "County" },
                     { value: "EntityName", title: "Entity" },
+                    { value: "WugRegion", title: "Region" }
                 ];
 
                 reduce = function (row, memo) {
@@ -86,13 +82,16 @@
                     `${$decadeStore} Needs (Potential Shortages)`
                 );
             } else if ($themeStore == "supplies") {
-                activeDimensions = ["County", "Entity", "Source"];
+                const supArray = activeDem.concat(['Source'])
+                activeDimensions = supArray
                 sorter = "County";
                 rows = swdata.supplies.rows;
                 dimensions = [
                     { value: "WugCounty", title: "County" },
                     { value: "EntityName", title: "Entity" },
                     { value: "SourceName", title: "Source" },
+                    { value: "WugRegion", title: "Region" }
+
                 ];
 
                 reduce = function (row, memo) {
@@ -106,12 +105,13 @@
                     `${$decadeStore} Existing Supplies`
                 );
             } else if ($themeStore == "demands") {
-                activeDimensions = ["County", "Entity"];
+                activeDimensions = activeDem;
                 sorter = "County";
                 rows = swdata.demands.rows;
                 dimensions = [
                     { value: "WugCounty", title: "County" },
                     { value: "EntityName", title: "Entity" },
+                    { value: "WugRegion", title: "Region" }
                 ];
 
                 reduce = function (row, memo) {
@@ -122,12 +122,13 @@
                 };
                 calculations = getCalculations(`${$decadeStore} Demands`);
             } else if ($themeStore == "population") {
-                activeDimensions = ["County", "Entity"];
+                activeDimensions = activeDem;
                 sorter = "County";
                 rows = swdata.population.rows;
                 dimensions = [
                     { value: "WugCounty", title: "County" },
                     { value: "EntityName", title: "Entity" },
+                    { value: "WugRegion", title: "Region" }
                 ];
 
                 reduce = function (row, memo) {
@@ -141,6 +142,13 @@
 
             if (document.getElementById("reactpivot").firstChild)
                 document.getElementById("reactpivot").firstChild.remove();
+
+            for(let i = 0; i < rows.length; i++) {
+                rows[i].EntityName = `<a href="/entity/${rows[i].EntityId}">${rows[i].EntityName}</a>`;
+                rows[i].WugCounty = `<a href="/county/${rows[i].WugCounty}">${rows[i].WugCounty}</a>`;
+                rows[i].WmsName = `<a href="/wms/${rows[i].WmsId}">${rows[i].WmsName}</a>`;
+                rows[i].WmsType = `<a href="/wmstype/${rows[i].WmsType}">${rows[i].WmsType}</a>`;
+            }
             ReactPivot(document.getElementById("reactpivot"), {
                 rows: rows,
                 dimensions: dimensions,
@@ -162,14 +170,16 @@
 </script>
 
 {#await onLoad()}
-    <span>Loading</span>
+    <div class="loader"></div>
 {:then}
     <table id="PivotTable" />
 {:catch}
     <span>Error loading pivottable</span>
 {/await}
-<div class="row panel-row">
 
-<div id="reactpivot" />
+<div class="row panel-row">
+    <span class="view-name">{csvTitle}</span>
+    <h4>Raw Data - {$decadeStore} - {themeTitles[$themeStore]}</h4>
+    <div id="reactpivot" />
     <CsvDownloads {swdata} {csvTitle} {fileName} {constants} />
 </div>

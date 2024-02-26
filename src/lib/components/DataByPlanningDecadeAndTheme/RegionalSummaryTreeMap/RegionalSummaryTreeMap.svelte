@@ -19,11 +19,15 @@
 
     let rs = new RegionalSummary(db);
     let data;
+    let total = 0;
 
     // imported properties
     $: df = {};
     let datafix = async (data) => {
         let d = data[$themeStore][$decadeStore];
+        for(let i = 0; i < d.length; i++) {
+            total += d[i].TOTAL;
+        }
 
         let newobjz = {
             name: "statewide",
@@ -37,6 +41,7 @@
                     array.push({ name, value });
                 }
             }
+ 
             newobjz.children.push({
                 name: `Region ${d[item].REGION}`,
                 children: array,
@@ -114,9 +119,9 @@
                 </button>
             </div>
             {#await getData()}
-                <span>Loading</span>
+                <div class="loader"></div>
             {:then}
-                <Treemap treemapData={df} />
+                <Treemap treemapData={df} {total}/>
             {:catch err}
                 <span>Error</span>
             {/await}

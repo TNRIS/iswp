@@ -1,6 +1,6 @@
 <script>
     //@ts-nocheck
-    import { Grid } from "gridjs";
+    import { Grid, html } from "gridjs";
     import "gridjs/dist/theme/mermaid.css";
     import { onMount } from "svelte";
     import { usd_format } from "$lib/helper.js";
@@ -26,14 +26,13 @@
                 for (let decade of decades) {
                     acc[acc.length -1][`SS${decade}`] += d[`SS${decade}`];
                 }
-                console.log("Break");
             }
             return acc;
 
         }, []);
 
         for (let strat of strat_condensed) {
-            let to_array = [strat?.WmsName];
+            let to_array = [html(`<a href="/wms/${strat?.WmsId}">${strat?.WmsName}</a>`)];
             // Add decades to array
             for (let decade of decades) {
                 to_array.push(strat?.[`SS${decade}`]);

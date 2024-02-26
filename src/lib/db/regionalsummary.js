@@ -11,20 +11,35 @@
  * @property {Number} STEAM_ELECTRIC_POWER User group steam electric power (Context determined by parent)
  * @property {Number} TOTAL User group total (Context determined by parent)
  */
-
+import { Constant2017 } from "$lib/Constant2017.js";
+import { Constant2022 } from "$lib/Constant2022.js";
+import { Constant2027 } from "$lib/Constant2027.js";
 export default class RegionalSummary {
+    host = window.location.hostname;
+
     constructor(db) {
         this.db = db;
+        if(this.host.includes(2027)) {
+            this.constants = new Constant2027();
+        } else if (this.host.includes(2022)) {
+            this.constants = new Constant2022();
+        } else if (this.host.includes(2017)) {
+            this.constants = new Constant2017();
+        } else {
+            this.constants = new Constant2022();
+        }
+
+        this.summaryTables = {
+            demands: `${this.constants.tappend}WugDemandsA1`,
+            needs: `${this.constants.tappend}WugNeedsA1`,
+            supplies: `${this.constants.tappend}ExistingWUGSupplyA1`,
+            population: `${this.constants.tappend}WugPopulationA1`,
+            strategies: `${this.constants.tappend}WMSWugSupplyA1`,
+        };
     }
 
     #regionalsummary;
-    #summaryTables = {
-        demands: "vwWugDemandsA1",
-        needs: "vwWugNeedsA1",
-        supplies: "vwExistingWUGSupplyA1",
-        population: "vwWugPopulationA1",
-        strategies: "vwWMSWugSupplyA1",
-    };
+
 
     #getAllTransaction = (key) => {
         return new Promise((resolve, reject) => {
@@ -64,19 +79,19 @@ export default class RegionalSummary {
 
         try {
             let demands_observable = this.#getAllTransaction(
-                this.#summaryTables.demands
+                this.summaryTables.demands
             );
             let needs_observable = this.#getAllTransaction(
-                this.#summaryTables.needs
+                this.summaryTables.needs
             );
             let supplies_observable = this.#getAllTransaction(
-                this.#summaryTables.supplies
+                this.summaryTables.supplies
             );
             let population_observable = this.#getAllTransaction(
-                this.#summaryTables.population
+                this.summaryTables.population
             );
             let strategies_observable = this.#getAllTransaction(
-                this.#summaryTables.strategies
+                this.summaryTables.strategies
             );
 
             /**

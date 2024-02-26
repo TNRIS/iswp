@@ -23,6 +23,9 @@
     };
 
     let titles = constants.getThemeTitles();
+
+    let usage_types = constants.getUsageTypes();
+
     let selectedTheme = "demands";
     let demands_visible = true;
     let supplies_visible = false;
@@ -87,37 +90,37 @@
                             makeSeries(
                                 "demands",
                                 "irrigation",
-                                "IRRIGATION",
+                                usage_types[0],
                                 swdata
                             ),
                             makeSeries(
                                 "demands",
                                 "livestock",
-                                "LIVESTOCK",
+                                usage_types[4],
                                 swdata
                             ),
                             makeSeries(
                                 "demands",
                                 "manufacturing",
-                                "MANUFACTURING",
+                                usage_types[2],
                                 swdata
                             ),
                             makeSeries(
                                 "demands",
                                 "steam-electric-power",
-                                "STEAM ELECTRIC POWER",
+                                usage_types[3],
                                 swdata
                             ),
                             makeSeries(
                                 "demands",
                                 "livestock",
-                                "LIVESTOCK",
+                                usage_types[4],
                                 swdata
                             ),
                             makeSeries(
                                 "demands",
                                 "municipal",
-                                "MUNICIPAL",
+                                usage_types[1],
                                 swdata
                             ),
                         ],
@@ -131,37 +134,37 @@
                             makeSeries(
                                 "needs",
                                 "irrigation",
-                                "IRRIGATION",
+                                usage_types[0],
                                 swdata
                             ),
                             makeSeries(
                                 "needs",
                                 "livestock",
-                                "LIVESTOCK",
+                                usage_types[4],
                                 swdata
                             ),
                             makeSeries(
                                 "needs",
                                 "manufacturing",
-                                "MANUFACTURING",
+                                usage_types[2],
                                 swdata
                             ),
                             makeSeries(
                                 "needs",
                                 "steam-electric-power",
-                                "STEAM ELECTRIC POWER",
+                                usage_types[3],
                                 swdata
                             ),
                             makeSeries(
                                 "needs",
                                 "livestock",
-                                "LIVESTOCK",
+                                usage_types[4],
                                 swdata
                             ),
                             makeSeries(
                                 "needs",
                                 "municipal",
-                                "MUNICIPAL",
+                                usage_types[1],
                                 swdata
                             ),
                         ],
@@ -175,37 +178,37 @@
                             makeSeries(
                                 "population",
                                 "irrigation",
-                                "IRRIGATION",
+                                usage_types[0],
                                 swdata
                             ),
                             makeSeries(
                                 "population",
                                 "livestock",
-                                "LIVESTOCK",
+                                usage_types[4],
                                 swdata
                             ),
                             makeSeries(
                                 "population",
                                 "manufacturing",
-                                "MANUFACTURING",
+                                usage_types[2],
                                 swdata
                             ),
                             makeSeries(
                                 "population",
                                 "steam-electric-power",
-                                "STEAM ELECTRIC POWER",
+                                usage_types[3],
                                 swdata
                             ),
                             makeSeries(
                                 "population",
                                 "livestock",
-                                "LIVESTOCK",
+                                usage_types[4],
                                 swdata
                             ),
                             makeSeries(
                                 "population",
                                 "municipal",
-                                "MUNICIPAL",
+                                usage_types[1],
                                 swdata
                             ),
                         ],
@@ -219,37 +222,37 @@
                             makeSeries(
                                 "strategies",
                                 "irrigation",
-                                "IRRIGATION",
+                                usage_types[0],
                                 swdata
                             ),
                             makeSeries(
                                 "strategies",
                                 "livestock",
-                                "LIVESTOCK",
+                                usage_types[4],
                                 swdata
                             ),
                             makeSeries(
                                 "strategies",
                                 "manufacturing",
-                                "MANUFACTURING",
+                                usage_types[2],
                                 swdata
                             ),
                             makeSeries(
                                 "strategies",
                                 "steam-electric-power",
-                                "STEAM ELECTRIC POWER",
+                                usage_types[3],
                                 swdata
                             ),
                             makeSeries(
                                 "strategies",
                                 "livestock",
-                                "LIVESTOCK",
+                                usage_types[4],
                                 swdata
                             ),
                             makeSeries(
                                 "strategies",
                                 "municipal",
-                                "MUNICIPAL",
+                                usage_types[1],
                                 swdata
                             ),
                         ],
@@ -263,37 +266,37 @@
                             makeSeries(
                                 "supplies",
                                 "irrigation",
-                                "IRRIGATION",
+                                usage_types[0],
                                 swdata
                             ),
                             makeSeries(
                                 "supplies",
                                 "livestock",
-                                "LIVESTOCK",
+                                usage_types[4],
                                 swdata
                             ),
                             makeSeries(
                                 "supplies",
                                 "manufacturing",
-                                "MANUFACTURING",
+                                usage_types[2],
                                 swdata
                             ),
                             makeSeries(
                                 "supplies",
                                 "steam-electric-power",
-                                "STEAM ELECTRIC POWER",
+                                usage_types[3],
                                 swdata
                             ),
                             makeSeries(
                                 "supplies",
                                 "livestock",
-                                "LIVESTOCK",
+                                usage_types[4],
                                 swdata
                             ),
                             makeSeries(
                                 "supplies",
                                 "municipal",
-                                "MUNICIPAL",
+                                usage_types[1],
                                 swdata
                             ),
                         ],
@@ -324,7 +327,7 @@
         </div>
 
         {#await getData()}
-            <span>Loading</span>
+            <div class="loader"></div>
         {:then data}
             {#if demands_visible}
                 <LineChart

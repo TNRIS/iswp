@@ -13,7 +13,9 @@
 
     const c22 = new Constant2022();
     let layers = [];
+    let spiderfier;
     onMount(async () => {
+     
         /*
          *
          * Initialize Leaflet map!
@@ -24,7 +26,34 @@
             maxZoom: 10,
             minZoom: 1,
         });
+        spiderfier = new OverlappingMarkerSpiderfier(map, {
+            keepSpiderfied: true,
+            nearbyDistance: 5,
+        });   
 
+        spiderfier.addListener("spiderfy", () => {
+            map.closePopup();
+        });
+
+        spiderfier.addListener("click", (marker) => {
+            const props = marker.feature.properties;
+            const entityContent = `
+                <h3>${props.EntityName}</h3>
+                <p>Total Value: ${format()(props.ValueSum)}</p>
+                <a id="entity_${props.EntityId}">View Entity Page</a>
+            `;
+            const projectContent = `
+                <h3>${props.ProjectName}</h3>
+                <p>Decade Online: ${props.OnlineDecade}</p>
+                <p>Sponsor: ${props.ProjectSponsors}</p>
+                <p>Capital Cost: ${props.CapitalCost}</p>
+                <a id="project_${props.WmsProjectId}">View Project Page</a>
+            `;
+            const content = props.EntityId ? entityContent : projectContent;
+            popup.setContent(content);
+            popup.setLatLng(marker.getLatLng());
+            map.openPopup(popup);
+        });
         map.createPane("geom");
         map.createPane("labels");
         map.createPane("project_labels");
@@ -214,7 +243,7 @@
                     }">View Entity Page</a></p>`,
                             )
                             .openPopup();
-
+                        spiderfier.addMarker(marker);
                         marker.addTo(map);
                         layers.push(marker);
                     }
@@ -242,6 +271,7 @@
                     }">View Project Page</a></p>`,
                             )
                             .openPopup();
+                        spiderfier.addMarker(marker);
 
                         marker.addTo(map);
                         layers.push(marker);
@@ -312,6 +342,8 @@
                     }">View Entity Page</a></p>`,
                             )
                             .openPopup();
+                            spiderfier.addMarker(marker);
+
                         marker.addTo(map);
                         let fillColor = 'green'
                         if(percentage < 10) {
@@ -435,6 +467,7 @@
                     }">View Entity Page</a></p>`,
                             )
                             .openPopup();
+                            spiderfier.addMarker(marker);
 
                         marker.addTo(map);
                         marker.setStyle({fillColor: "grey"})
@@ -494,6 +527,7 @@
                     }">View Entity Page</a></p>`,
                             )
                             .openPopup();
+                            spiderfier.addMarker(marker);
 
                         marker.addTo(map);
                         layers.push(marker);
@@ -553,6 +587,7 @@
                     }">View Entity Page</a></p>`,
                             )
                             .openPopup();
+                            spiderfier.addMarker(marker);
 
                         marker.addTo(map);
                         layers.push(marker);
@@ -583,6 +618,7 @@
                     }">View Project Page</a></p>`,
                             )
                             .openPopup();
+                            spiderfier.addMarker(marker);
 
                         marker.addTo(map);
                         layers.push(marker);
@@ -606,6 +642,7 @@
                     }">View Entity Page</a></p>`,
                             )
                             .openPopup();
+                            spiderfier.addMarker(cmarker);
 
                         cmarker.addTo(map);
                         layers.push(cmarker);

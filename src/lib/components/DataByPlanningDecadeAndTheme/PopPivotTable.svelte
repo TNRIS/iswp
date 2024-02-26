@@ -81,7 +81,7 @@
 </script>
 
 {#await onLoad()}
-    <span>Loading</span>
+    <div class="loader"></div>
 {:then}
     <table id="PivotTable" />
 {:catch}

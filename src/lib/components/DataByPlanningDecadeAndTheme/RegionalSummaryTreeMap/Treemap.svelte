@@ -2,19 +2,24 @@
     //@ts-nocheck
     import { onMount } from "svelte";
     import { buildZoomable } from "$lib/zoomBarChart.js"
-    import { getContext } from "svelte";
+    import { getContext, setContext } from "svelte";
 
-    export let { treemapData, container } = $$props;
+    export let { treemapData, container, total } = $$props;
     const dataviewContext = getContext('dataviewContext');
-
+    let selectedTreemapStore = dataviewContext.selectedTreemap;
     onMount(() => {
         // Initialize to clarify the use of "region"
         let selectedTreemap = "region";
-        let svg = buildZoomable(container, treemapData, selectedTreemap);
+        let svg = buildZoomable(container, treemapData, selectedTreemap, total);
         container.appendChild(svg);
     });
     
     const bindTreeMap = (df, selectedTreemap) => {
+        if(selectedTreemap) {
+            dataviewContext.selectedTreemap.set(selectedTreemap);
+        } else {
+            selectedTreemap = $selectedTreemapStore;
+        }
         let svg = buildZoomable(container, df, selectedTreemap);
         container.removeChild(container.firstChild);
         container.appendChild(svg);

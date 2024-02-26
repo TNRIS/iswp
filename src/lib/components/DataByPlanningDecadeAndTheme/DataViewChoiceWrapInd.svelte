@@ -9,11 +9,13 @@
     import { writable } from "svelte/store";
     import EntityMap from "./EntityMap.svelte";
 
-    const { swdata, type, hideTheme, csvTitle, fileName, constants } = $$props;
+    const { swdata, type, hideTheme, csvTitle, fileName, constants, stratAd, activeDem, showPopulation} = $$props;
 
     let decadeStore = writable(constants.getDecades()[0]);
     let themeStore = writable("strategies");
     let ruStore = writable("region");
+
+
 
     // Establish root for myContext here.
     setContext("myContext", {
@@ -35,7 +37,7 @@
 <div class="view-choice-wrap">
     <div class="view-choice-container">
         <h4>Data by Planning Decade and Theme</h4>
-        <DataViewChoiceSelectors {hideTheme} showPopulation={true} {constants} />
+        <DataViewChoiceSelectors {hideTheme} {showPopulation} {constants} />
     </div>
     <!-- insert 3 sub-widgets here -->
     <div class="container">
@@ -46,7 +48,7 @@
         <StrategiesBreakdown {swdata} />
         {/if}
         {#if type !== "pop"}
-            <PivotTable {swdata} {csvTitle} {fileName} {constants} />
+            <PivotTable {swdata} {csvTitle} {fileName} {constants} {stratAd} {activeDem} />
         {:else}
             <PopPivotTable {swdata} {csvTitle} {fileName} {constants} />
         {/if}

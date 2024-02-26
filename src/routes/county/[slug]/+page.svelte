@@ -10,20 +10,22 @@
     import DataViewChoiceWrapInd from "$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte";
     import ThemeTypesByDecadeChart from "$lib/components/ThemeTypesByDecadeChart.svelte";
     import Header from "$lib/components/Header.svelte";
-    import { load_indexeddb } from "$lib/helper.js";
-    import { Constant2027 } from "$lib/Constant2027.js";
-    import { Constant2022 } from "$lib/Constant2022.js";
-    import { Constant2017 } from "$lib/Constant2017.js";
+    import { load_indexeddb, getConstants } from "$lib/helper.js";
+    import { page } from '$app/stores';
+    let stratAd = [
+        "Region",
+        "Entity",
+        "Strategy",
+        "WMS Type",
+        "Source"
+    ];
 
-    const year = 2027;
-    let constants;
-    if(year == 2027) {
-        constants = new Constant2027();
-    } else if (year == 2022) {
-        constants = new Constant2022();
-    } else if (year == 2017) {
-        constants = new Constant2017();
-    }
+    let activeDem = [
+        "Region",
+        "Entity"
+    ];
+    $: tagline = "";
+    let constants = getConstants($page.url.host);
     let regionSetting = new QuerySettings("county", "WugCounty");
     regionSetting.setAll(data.slug.toUpperCase());
     let db;
@@ -33,19 +35,25 @@
         let sw = new Statewide(db);
         let dat = await sw.get(regionSetting);
         console.log(`loadForRegion time in ms: ${Date.now() - start}`);
+        tagline = 'County in <a href="/">Texas</a>'
+        let region = dat?.population?.rows[0]?.WugRegion;
+
+        tagline = region ? `County in <a href="/region/${region}/">Region ${region}</a>` : undefined;
         return dat;
     };
+
 </script>
 <Header {constants} />
 
 <div class="statewide-view">
     <section>
         {#await loadForCounty()}
-            <span>Loading</span>
+            <div class="loader"></div>
         {:then out}
             <PopulationChart
                 title={`${data.slug} County`}
                 swdata={out}
+                {tagline}
                 {constants}
             />
             <ThemeTotalsByDecadeChart swdata={out} {constants} />
@@ -56,8 +64,8 @@
             />
 
             <DataUsageType swdata={out} {constants} />
-            <ProjectTable swdata={out} type={"region"} />
-            <DataViewChoiceWrapInd swdata={out} csvTitle={`${data.slug} County`} fileName={`county_${data.slug.toLowerCase()}`} {constants} />
+            <ProjectTable project_title={`${data.slug} COUNTY`} project_title2={"Projects Serving Area Of Interest"} swdata={out} type={"region"} />
+            <DataViewChoiceWrapInd {stratAd} {activeDem} swdata={out} csvTitle={`${data.slug} County`} fileName={`county_${data.slug.toLowerCase()}`} {constants} />
 
         {:catch error}
             <span>Error starting database {error.message}</span>

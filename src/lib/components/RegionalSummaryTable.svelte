@@ -86,7 +86,7 @@
     <table class="table-condensed regional-summary-table {$themeStore == "population" ? 'skinny' : ''}" bind:this={rtable}>
 
     {#await getData()}
-        <span>Loading</span>
+        <div class="loader"></div>
     {:then data}
             <tr>
                 
