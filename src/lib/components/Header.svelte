@@ -19,6 +19,6 @@
 {#if !hideNav}
 {#await onMountSync()}
 {:then}
-<Navigation {selected} {db} />
+<Navigation {selected} {db} {constants} />
 {/await}
 {/if}

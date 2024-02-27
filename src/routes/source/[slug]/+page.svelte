@@ -37,7 +37,7 @@
 {:then out}
 <PopulationChart {tagline} mapOnly={true} {title} {constants} />
 <ProjectTable swdata={out} type={"region"} project_title={"WATER SOURCE - " + title} project_title2={"Projects Associated with Source"} {title} />
-<DataViewChoiceWrapInd swdata={out} type={"source"} fileName={`source_${data.slug}`} {constants} />
+<DataViewChoiceWrapInd swdata={out} type={"source"} fileName={`source_${data.slug}`} {constants} csvTitle={title} sourcePage={true} />
 
 {:catch error}
     <span>Error starting database {error.message}</span>

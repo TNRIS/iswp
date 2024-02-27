@@ -1,17 +1,17 @@
 <script>
     import { getContext, onMount } from "svelte";
     import { scaleTonew, usd_format, objLeftjoin, commafy } from "$lib/helper";
-    import { scale } from "svelte/transition";
-    import { Constant2022 } from "$lib/Constant2022";
     const countyTable = "county_extended";
     const regionTable = "rwpas";
     const sourceTable = "iswp_sourcefeatures2022";
-    const { title, swdata } = $$props;
+    const { title, swdata, constants, type, entityMapBlurb } = $$props;
     const dataviewContext = getContext("dataviewContext");
     const decadeStore = getContext("myContext").decadeStore;
     const themeStore = getContext("myContext").themeStore;
 
-    const c22 = new Constant2022();
+
+    const titles = constants.chosenTitles;
+    const theme_titles = constants.getThemeTitles();
     let layers = [];
     let spiderfier;
     onMount(async () => {
@@ -63,10 +63,12 @@
         map.getPane("project_labels").style.zIndex = 300;
 
         L.control.zoom({ position: "topright" }).addTo(map);
-        map.fitBounds([
+
+        const TEXAS = [
             [36.5, -106.65],
             [25.84, -93.51],
-        ]);
+        ]
+        map.fitBounds(TEXAS);
         const baseLayer = L.tileLayer(
             "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png",
             {
@@ -168,18 +170,8 @@
                         maxValue = swdata.strategies.rows[i][`SS${$decadeStore}`];
                     }
                 }
-                let totalEntity = [];
-                // Compress entities on EntityID. Combine strategies data!
-                swdata.strategies.rows.forEach((item) => {
-                    const last = totalEntity[totalEntity.length - 1];
-                    const ENT_EXISTS = !(last?.EntityId !== item.EntityId);
+                let totalEntity = swdata.strategies.rows
 
-                    if(!ENT_EXISTS) {
-                        totalEntity.push({... item});
-                    } else {
-                        last[`SS${$decadeStore}`] += item[`SS${$decadeStore}`]
-                    }
-                });
 
                 /**
                  * Step4 for strategies
@@ -208,7 +200,7 @@
                                     color: "#3F556D",
                                     opacity: 1,
                                     weight: 4,
-                                    fillOpacity: 0.1,
+                                    fillOpacity: 0.3,
                                 },
                                 pane: "geom",
                             });
@@ -223,7 +215,7 @@
                         let radius = scaleTonew(
                             item[`SS${$decadeStore}`],
                             maxValue,
-                            c22.MAX_RADIUS,
+                            constants.MAX_RADIUS,
                         );
                         const markerOpts = {
                             radius,
@@ -319,7 +311,7 @@
                         let radius = scaleTonew(
                             item[`N${$decadeStore}`],
                             maxValue,
-                            c22.MAX_RADIUS,
+                            constants.MAX_RADIUS,
                         );
                         const markerOpts = {
                             radius,
@@ -447,7 +439,7 @@
                         let radius = scaleTonew(
                             item[`WS${$decadeStore}`],
                             maxValue,
-                            c22.MAX_RADIUS,
+                            constants.MAX_RADIUS,
                         );
                         const markerOpts = {
                             radius,
@@ -506,7 +498,7 @@
                         let radius = scaleTonew(
                             item[`D${$decadeStore}`],
                             maxValue,
-                            c22.MAX_RADIUS,
+                            constants.MAX_RADIUS,
                         );
                         const markerOpts = {
                             radius,
@@ -516,7 +508,13 @@
                             [item.Latitude, item.Longitude],
                             markerOpts,
                         );
-                        marker.setStyle({fillColor: "purple", opacity: 1, fillOpacity: 1, weight: 1, color: "black"})
+                        marker.setStyle({
+                            fillColor: "purple",
+                            opacity: 1,
+                            fillOpacity: 1,
+                            weight: 1,
+                            color: "black"
+                        })
 
                         marker
                             .bindPopup(
@@ -566,7 +564,7 @@
                         let radius = scaleTonew(
                             item[`P${$decadeStore}`],
                             maxValue,
-                            c22.MAX_RADIUS,
+                            constants.MAX_RADIUS,
                         );
                         const markerOpts = {
                             radius,
@@ -670,11 +668,19 @@
 
         dataviewContext.buildEntMap.set(buildGrid);
     });
+
 </script>
 
 <div class="row panel-row">
+    <span class="view-name">{title}</span>
+    {#if type == "pop"}
+    <h4>Water User Groups - {$decadeStore} - {theme_titles["population"]}<span class="units">(acre-feet/year)</span></h4>
+    {:else}
+    <h4>Water User Groups - {$decadeStore} - {theme_titles[$themeStore]}<span class="units">(acre-feet/year)</span></h4>
+    {/if}
     <div class="twelve columns">
         <div id="entity_map" style="width:100%; top:0;" />
+        <span>{@html entityMapBlurb}</span>
     </div>
 </div>
 

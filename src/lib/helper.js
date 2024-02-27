@@ -1,6 +1,6 @@
 import { onMount, beforeUpdate,
     afterUpdate} from "svelte";
-import { start_all_db } from "$lib/db/db.js";
+import { start_all_db, start_db_2017, start_db_2022, start_db_2027 } from "$lib/db/db.js";
 import { Constant2027 } from "$lib/Constant2027.js";
 import { Constant2022 } from "$lib/Constant2022.js";
 import { Constant2017 } from "$lib/Constant2017.js";
@@ -67,22 +67,15 @@ export let load_indexeddb = async () => {
     let IS_2022_WEBSITE = window.location.href.indexOf("2022") > -1;
     let IS_2027_WEBSITE = window.location.href.indexOf("2027") > -1;
     
-    // Start indexeddb, efficient if upgrade is not needed.
-    let [db17, db22, db27] = await start_all_db();
-
-    // Choose database depending on url.
-    if (!(db22 && db17 && db27)) throw "Databases are null.";
-    console.log(`exec time: ${Date.now() - start} ms.`);
-
     if (IS_2022_WEBSITE) {
-        return db22;
+        return start_db_2022();
     } else if (IS_2017_WEBSITE) {
-        return db17;
+        return start_db_2017();
     } else if (IS_2027_WEBSITE) {
-        return db27;
+        return start_db_2027();
     } else {
         // SET TEST HERE
-        return db22;
+        return start_db_2022();
     }
 };
 
