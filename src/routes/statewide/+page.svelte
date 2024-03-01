@@ -40,7 +40,9 @@
 {/await}
 <div class="statewide-view">
     <section>
-        {#await loadForState() then out}
+        {#await loadForState()}
+        <h1>Loading...</h1>
+            {:then out}
             {#await popChartPromise}
             <div class="loader"></div>
             {:then {default: Component}}

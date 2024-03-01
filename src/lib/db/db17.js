@@ -134,6 +134,7 @@ export function startDb17() {
                 "MapSourceId",
                 "WugCounty",
                 "WugRegion",
+                "WugType"
             ]);
             build_func(event, "vw2017MapExistingWUGSupplyA1", ["id"]);
             build_func(event, "vw2017MapSelectEntitiesInCounty", ["id", "EntityId"]);
@@ -143,6 +144,7 @@ export function startDb17() {
                 "EntityId",
                 "WugCounty",
                 "WugRegion",
+                "WugType"
             ]);
             build_func(event, "vw2017MapWugDemandsA1", ["id"]);
             build_func(event, "vw2017MapWugNeeds", [
@@ -150,6 +152,7 @@ export function startDb17() {
                 "EntityId",
                 "WugCounty",
                 "WugRegion",
+                "WugType"
             ]);
             build_func(event, "vw2017MapWugNeedsA1", ["id"]);
             build_func(event, "vw2017MapWugPopulation", [
@@ -157,6 +160,7 @@ export function startDb17() {
                 "EntityId",
                 "WugCounty",
                 "WugRegion",
+                "WugType"
             ]);
             build_func(event, "vw2017MapWugPopulationA1", ["id"]);
             build_func(event, "vw2017MapSelectRegionsInCounty", ["id", "RegionLetter"]);
@@ -166,9 +170,12 @@ export function startDb17() {
                 "MapSourceId",
                 "WugCounty",
                 "WugRegion",
+                "WmsType",
+                "WugType",
+                "WmsId"
             ]);
             build_func(event, "vw2017MapWMSWugSupplyA1", ["id"]);
-            build_func(event, "vw2017MapWMSProjects", ["id", "WmsProjectId", "WugRegion"]);
+            build_func(event, "vw2017MapWMSProjects", ["id", "WmsProjectId", "WugRegion", "WmsProjectSponsorRegion"]);
             build_func(event, "vw2017MapWMSProjectByCounty", [
                 "id",
                 "WugCounty",
@@ -185,9 +192,9 @@ export function startDb17() {
                 "WmsProjectId",
             ]);
             build_func(event, "vw2017MapWMSProjectByWMS", ["id", "WmsId", "WmsProjectId"]);
-            build_func(event, "vw2017MapWMSProjectsByWMSType", ["id", "WmsProjectId"]);
-            build_func(event, "vw2017MapWMSProjectByWUGType", ["id", "WmsProjectId"]);
-            build_func(event, "vw2017MapWMSProjectByEntityWUGSplit", ["id", "WmsProjectId"]);
+            build_func(event, "vw2017MapWMSProjectsByWMSType", ["id", "WmsProjectId", "WmsType"]);
+            build_func(event, "vw2017MapWMSProjectByWUGType", ["id", "WmsProjectId", "WmsProjectSponsorRegion"]);
+            build_func(event, "vw2017MapWMSProjectByEntityWUGSplit", ["id", "WmsProjectId", "WmsId"]);
             build_func(event, "vw2017MapWMSProjectEntityRelationships", [
                 "id",
                 "WmsProjectId",
