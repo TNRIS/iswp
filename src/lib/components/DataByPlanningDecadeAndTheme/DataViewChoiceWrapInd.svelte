@@ -9,10 +9,13 @@
     import { writable } from "svelte/store";
     import EntityMap from "./EntityMap.svelte";
 
-    const { swdata, type, hideTheme, csvTitle, fileName, constants, stratAd, activeDem, showPopulation} = $$props;
+    const { swdata, type, hideTheme, csvTitle, fileName, constants, stratAd, activeDem, showPopulation, sourcePage, entityMapBlurb} = $$props;
 
     let decadeStore = writable(constants.getDecades()[0]);
     let themeStore = writable("strategies");
+    if(type === "pop")
+        themeStore.set("population")
+
     let ruStore = writable("region");
 
 
@@ -37,13 +40,13 @@
 <div class="view-choice-wrap">
     <div class="view-choice-container">
         <h4>Data by Planning Decade and Theme</h4>
-        <DataViewChoiceSelectors {hideTheme} {showPopulation} {constants} />
+        <DataViewChoiceSelectors {hideTheme} {showPopulation} {constants} {sourcePage} />
     </div>
     <!-- insert 3 sub-widgets here -->
     <div class="container">
         <!-- <StrategiesBreakdown {swdata} /> -->
 
-        <EntityMap {swdata}/>
+        <EntityMap {swdata} title={csvTitle} {constants} {type} {entityMapBlurb} />
         {#if type !== "source" && type !== "pop" && type !== "wms" && type !== "wmstype"}
         <StrategiesBreakdown {swdata} />
         {/if}

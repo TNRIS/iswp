@@ -41,8 +41,10 @@
         db = await load_indexeddb()
         let sw = new Statewide(db);
         let cc = new Counties(db);
-        let ccounties = await cc.get(data.slug);
-        let dat =  await sw.get(regionSetting);
+        let [ccounties, dat] = await Promise.all([cc.get(data.slug), sw.get(regionSetting)]) ;
+        //let ccounties = await cc.get(data.slug);
+        //let dat =  await sw.get(regionSetting);
+
         dat.counties = ccounties;
         console.log(`loadForRegion time in ms: ${Date.now() - start}`);
         return dat;
@@ -50,7 +52,8 @@
 
     setContext("dataviewContext", {
         getData: writable()
-    });   
+    });
+    const entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried. The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p><p class="note"><!-- react-text: 1060 -->Red triangles indicate capital projects associated with strategy supplies that have been assigned to a Water User Group.<!-- /react-text --><!-- react-text: 1061 --> <!-- /react-text --><a class="pointerHover"><!-- react-text: 1063 -->Hide<!-- /react-text --><!-- react-text: 1064 --> Projects<!-- /react-text --></a></p>`
 </script>
 <Header {constants} />
 
@@ -64,7 +67,7 @@
             <div class="row panel-row">
                 <div class="twelve columns">
                     <div>
-                        <p>{description[data.slug]} {constants.region_footer}</p>
+                        <p>{description[data.slug]} {@html constants.region_footer}</p>
                     </div>
                 </div> 
             </div>
@@ -73,7 +76,7 @@
         <ThemeTypesByDecadeChart chartTitle={"ct-usage-chart"} swdata={out} {constants} />
         <DataUsageType swdata={out} {constants} />
         <ProjectTable project_title={`PLANNING REGION ${data.slug}`} project_title2={"Projects "} swdata={out} type={"region"} />
-        <DataViewChoiceWrapInd {stratAd} {activeDem} {constants} csvTitle={`Planning Region ${data.slug}`} swdata={out} fileName={`region_${data.slug.toLowerCase()}`} />
+        <DataViewChoiceWrapInd showPopulation={true} type={"region"} {stratAd} {activeDem} {constants} csvTitle={`Planning Region ${data.slug}`} swdata={out} fileName={`region_${data.slug.toLowerCase()}`} {entityMapBlurb} />
         {:catch error}
             <span>Error starting database {error.message}</span>
         {/await}

@@ -4,9 +4,15 @@
         var input, filter, ul, li, a, i, txtValue;
         input = document.getElementById('secondary-category-select');
         filter = input.value.toUpperCase();
+
         ul = document.getElementById("secondList");
         li = ul.getElementsByTagName('li');
-
+        if(!(filter.length > 0)) {
+            for (i = 0; i < li.length; i++) {
+                li[i].style.display = "none";
+            }
+            return;
+        }
         // Loop through all list items, and hide those who don't match the search query
         for (i = 0; i < li.length; i++) {
             a = li[i].getElementsByTagName("a")[0];
@@ -23,8 +29,7 @@
     let selected = {id: $page.url.pathname.split(["/"])[1] };
     let selected2 = $page.url.pathname.split(["/"])[2];
     import { sourceNames } from "$lib/pages/SourceNames";
-    import { Constant2022 } from "$lib/Constant2022";
-    let { db } = $$props;
+    let { db, constants } = $$props;
     import Statewide from "$lib/db/statewide.js";
     import {cap, onMountSync} from "$lib/helper.js";
     import Select from 'svelte-select'
@@ -55,21 +60,8 @@
         }
     }
 
-    let constants = new Constant2022();
-    // Need to parse string to extract route.
-    let sets = [
-        { id: "", value: "All of Texas" },
-        { id: "region", value: "Planning Region" },
-        { id: "county", value: "County" },
-        { id: "entity", value: "Water User Group" },
-        { id: "usagetype", value: "Usage Type" },
-        { id: "source", value: "Water Source" },
-        { id: "project", value: "WMS Project" },
-        { id: "wms", value: "Water Management Strategy" },
-        { id: "wmstype", value: "WMS Type" },
-    ];
     
-    let regions = constants.getRegions().reduce((a, o) => (a.push({"value": o, "label": o}), a), []);
+    let regions = constants.getRegions().reduce((a, o) => (a.push({"value": o, "label": "Region " + o}), a), []);
     let chosen = selected.id;
     if(chosen == "statewide") {
         chosen = "";
@@ -80,9 +72,9 @@
     let wmstype = constants.WMS_TYPES.reduce((a, o) => (a.push({"value": o, "label": o}), a), []);
     $: region = chosen && chosen2 ? `/${chosen}/${chosen2}`: `${chosen}/`;
 
+    const titles = constants.chosenTitles;
 
-
-    let abc = {
+    let categories = {
         "": [],
         "region": regions,
         "county": counties,
@@ -104,11 +96,11 @@
             let cc = zz.reduce((a, o) => (a.push({"value": o.ProjectName, "label": o.WmsProjectId}), a), []);
             let b = a.reduce((a, o) => (a.push({"value": o.EntityName, "label": o.EntityId}), a), []);
 
-            abc.entity = b;
-            abc.project = cc;
-            abc.wms = dd;
+            categories.entity = b;
+            categories.project = cc;
+            categories.wms = dd;
 
-            tmap = abc[chosen].reduce(function(map, obj) {
+            tmap = categories[chosen].reduce(function(map, obj) {
                 map[obj.value] = obj.label;
                 return map;
             }, {});
@@ -126,7 +118,7 @@
     */
     let reset = (value) => {
         chosen = value.detail.value;
-        chosen2 = abc[chosen][0]["value"];
+        chosen2 = categories[chosen][0]["value"];
     }
 
     let box2Change = (value) => {
@@ -155,20 +147,18 @@
                 <Select {items} clearable={false} on:change={reset} value={chosen ? chosen : "All of Texas"} showChevron />
             </div>
 
-            {#await thing()}
-                <div class="loader"></div>
-            {:then}
+            {#await thing() then}
             {#if chosen && chosen !== "" && chosen !== "statewide"}
 
                 {#if chosen == "region" || chosen == "county" || chosen == "usagetype" || chosen == "source" || chosen == "wmstype"}
                 <div class="select-container" style="width:400px;">
-                    <Select items={abc[chosen]} clearable={false} on:change={box2Change} placeholder={`Select ${chosen}`} value={tmap[chosen2] ? tmap[chosen2] : ""} showChevron />
+                    <Select items={categories[chosen]} clearable={false} on:change={box2Change} placeholder={`Select ${chosen}`} showChevron />
                 </div>
                 {:else}
                 <div class="select-container">
-                    <input  style="padding: 8px;" type="text" id="secondary-category-select" on:keyup={myFunction} placeholder="Search for names..">
+                    <input  style="padding: 8px;" type="text" id="secondary-category-select" on:keyup={myFunction} placeholder="Find {titles[chosen]}">
                     <ul id="secondList" class="nav-category-select">
-                        {#each abc?.[chosen] as r}
+                        {#each categories?.[chosen] as r}
                             <li style="display:none;" >
                                 <a on:click={clicker} id={r.label} class="listItem">{cap(r.value)}</a>
                             </li>
@@ -199,15 +189,19 @@
 
     #submit-button {
         display: inline;
-        margin-left: 10px;
+    
     }
 
     .button-nav-submit {
+        height: 42px;
         background-color: white;
     }
 
     #secondary-category-select {
-        width:200px;
+        width: 200px;
+        border-radius: 8px;
+        width: 400px;
+        height: 42px;
     }
 
     .header-nav {
@@ -215,6 +209,7 @@
     }
 
     .listItem {
+        width: 100%;
         padding: 20px 10px;
         border: 1px solid #979997;
         margin: 0px;
@@ -223,7 +218,7 @@
         -ms-appearance: none;
         -o-appearance: none;
         appearance: none;
-
+        cursor: pointer;
         -webkit-border-radius: 4px;
         -moz-border-radius: 4px;
         -ms-border-radius: 4px;
@@ -240,6 +235,10 @@
         list-style-type: none;
         margin: 0;
         position: absolute;
+        width: 380px;
+        max-height:400px;
+        overflow-y: scroll;
+        overflow-x: hidden;
     }
     
     #secondList li {
@@ -250,7 +249,7 @@
     #secondList li a {
         padding-top: 8px;
         padding-bottom: 8px;
-        border-bottom: 1px solid lightgray;
+        border: none; 
         width: 100%;
         background-color: white;
         text-decoration: none;

@@ -46,6 +46,19 @@
             series: strats.data,
         };
 
+        let total = 0;
+        // Remove items without any data in reverse because this won't alter index when multiple items are 0;
+        // Also calculate total;
+        for(let i = data.series.length - 1; i >= 0; i--) {
+            if(data.series[i].value === 0) {
+                data.series.splice(i, 1);
+                data.labels.splice(i, 1);
+            } else {
+                total += data.series[i].value;
+            }
+        };
+        
+
         var responsiveOptions = [
             [
                 "screen and (min-width: 640px)",
@@ -53,7 +66,8 @@
                     chartPadding: 30,
                     labelOffset: 10,
                     labelDirection: "explode",
-                    labelInterpolationFnc: function (value) {
+                    labelInterpolationFnc: function (value, i) {
+                        return `${value}  (${Math.round((((data.series[i].value / total) * 100)) * 10) / 10.0}%)`;
                         return value;
                     },
                 },

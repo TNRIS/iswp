@@ -1,10 +1,10 @@
 export class Constant2017 {
     id=17;
     header="Texas State Water Plan"
-    region_footer=" The 2021 Regional Water Plans can be found on the TWDB website at: http://www.twdb.texas.gov/waterplanning/rwp/plans/2021/index.asp ."
+    region_footer=" The 2021 Regional Water Plans can be found on the TWDB website at: <a href='http://www.twdb.texas.gov/waterplanning/rwp/plans/2021/index.asp'>http://www.twdb.texas.gov/waterplanning/rwp/plans/2021/index.asp</a> ."
     allow_dl=true
     MIN_RADIUS = 4;
-    MAX_RADIUS = 12;
+    MAX_RADIUS = 9;
 
     tappend = "vw2017Map";
 

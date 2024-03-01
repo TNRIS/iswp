@@ -1,6 +1,8 @@
 <script>
     //@ts-nocheck
-    const { swdata, csvTitle } = $$props;
+    const { swdata, csvTitle, constants, fileName } = $$props;
+    import CsvDownloads from "$lib/components/CsvDownloads.svelte";
+
     import { onMountSync, usd_format } from "$lib/helper.js";
     let pivotLoaded = false;
 
@@ -87,4 +89,11 @@
 {:catch}
     <span>Error loading pivottable</span>
 {/await}
-<div id="reactpivot" />
+
+
+<div class="row panel-row">
+    <span class="view-name">{csvTitle}</span>
+    <h4>Download Data</h4>
+    <div id="reactpivot" />
+    <CsvDownloads {swdata} {csvTitle} {fileName} {constants} />
+</div>

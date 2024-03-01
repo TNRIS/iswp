@@ -34,6 +34,12 @@
         keys: ["EntityId", "MapSourceId", "EntityName", "WugType", "WugRegion", "WugCounty", "EntityIsSplit", "SourceName", "SourceType", "WmsId", "WmsSponsorRegion", "WmsName", "WmsType", `SS${decades[0]}`, `SS${decades[1]}`, `SS${decades[2]}`, `SS${decades[3]}`, `SS${decades[4]}`, , `SS${decades[5]}`],
         emptyFieldValue: ""
     }) : [];
+
+    let projects = swdata?.projects ? json2csv(swdata?.projects,
+    {
+        keys: ["WmsProjectId", "ProjectName", "OnlineDecade", "ProjectSponsors", "CapitalCost", "EntityLatCoord", "EntityLongCoord", "ProjectLatCoord", "ProjectLongCoord", "EntityId", "EntityName", "WugRegion", "WugCounty", "P2020", "P2030", "P2040", "P2050", "P2060", "P2070"],
+        emptyFieldValue: ""
+    }) : [];
     
     /**
      * @param {string} thing
@@ -73,6 +79,11 @@
     {/if}
     {#if strategy.length}
     <li><a href="#" on:click={() => {dlpop(strategy, "strategies.csv")}}>Download {csvTitle} Strategy Supplies data (Comma-Separated Values)</a></li>
+    {/if}
+
+    {#if projects.length}
+    <li><a href="#" on:click={() => {dlpop(projects, "projects.csv")}}>Download {csvTitle} Strategy Supplies data (Comma-Separated Values)</a></li>
+
     {/if}
 </ul>
 {/if}

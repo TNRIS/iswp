@@ -78,7 +78,7 @@
             <ThemeTotalsByDecadeChart swdata={out} {constants}/>
             <EntityStrategiesTable swdata={out} {constants} />
             <ProjectTable project_title={`WATER USER GROUP - ${entityName}`} project_title2={"Projects Serving Area Of Interest"} swdata={ out } type="county"  />
-            <DataViewChoiceWrapInd swdata={out} csvTitle={entityName} fileName={`entity_${data.slug}`} {constants} {stratAd} {activeDem} />
+            <DataViewChoiceWrapInd showPopulation={true} swdata={out} csvTitle={entityName} fileName={`entity_${data.slug}`} {constants} {stratAd} {activeDem} />
         {:catch error}
             <span>Error starting database {error.message}</span>
         {/await}

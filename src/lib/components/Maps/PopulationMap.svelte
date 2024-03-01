@@ -89,8 +89,15 @@
                 fetch(`https://mapserver.tnris.org/?map=/tnris_mapfiles/${regionTable}.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=RWPAS&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>letter</PropertyName><Literal>${key}</Literal></PropertyIsEqualTo></Filter>`)
                 .then(res => res.text())
                 .then(body => {
-                    let gj = L.geoJson(JSON.parse(body));
-                    //gj.addTo(map);
+                    let gj = L.geoJson(JSON.parse(body), {
+                                style: {
+                                    color: "#3F556D",
+                                    opacity: 1,
+                                    weight: 4,
+                                    fillOpacity: 0.1,
+                                }
+                            });
+                    gj.addTo(map);
                     const center = gj.getBounds().getCenter();
                     center.lng -= 2; // Move center a bit to get out of the way of the population line graph
                     map.setView(center, 7);
@@ -104,7 +111,14 @@
                 fetch(rString)
                 .then(res => res.text())
                 .then(body => {
-                    let gj = L.geoJson(JSON.parse(body));
+                    let gj = L.geoJson(JSON.parse(body), {
+                                style: {
+                                    color: "#3F556D",
+                                    opacity: 1,
+                                    weight: 0,
+                                    fillOpacity: 0.1,
+                                }
+                            });
                     gj.on('click', navigateToCounty)
                     gj.addTo(map);
                 })
@@ -116,7 +130,14 @@
                 fetch(`https://mapserver.tnris.org?map=/tnris_mapfiles/${countyTable}.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=CountyBoundaries&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>name</PropertyName><Literal>${key}</Literal></PropertyIsEqualTo></Filter>`)
                 .then(res => res.text())
                 .then(body => {
-                    let gj = L.geoJson(JSON.parse(body));
+                    let gj = L.geoJson(JSON.parse(body), {
+                                style: {
+                                    color: "#3F556D",
+                                    opacity: 1,
+                                    weight: 4,
+                                    fillOpacity: 0.1,
+                                }
+                            });
                     gj.addTo(map);
                     const center = gj.getBounds().getCenter();
                     center.lng -= .5; // Move center a bit to get out of the way of the population line graph
@@ -152,7 +173,14 @@
                     const layerName = featureTyp.charAt(0).toUpperCase() + featureTyp.slice(1);
                     fetch(`https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${layerName}Sources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${key}</Literal></PropertyIsEqualTo></Filter>`)
                     .then(r => r.text()).then(r => {
-                        let gj = L.geoJson(JSON.parse(r));
+                        let gj = L.geoJson(JSON.parse(r), {
+                                style: {
+                                    color: "#3F556D",
+                                    opacity: 1,
+                                    weight: 4,
+                                    fillOpacity: 0.1,
+                                }
+                            });
                         gj.addTo(map);
                         const center = gj.getBounds().getCenter();
                         center.lng -= .25 // Move center a bit to get out of the way of the population line graph
