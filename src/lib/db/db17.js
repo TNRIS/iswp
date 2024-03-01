@@ -3,7 +3,7 @@ let db17;
 let UPGRADE_NEEDED = false;
 
 import { build_func } from "./db_helper.js";
-
+let checksumPromise = async () => {/*placeholder*/};
 export const delete_database17 = () => {
     try {
         var del = window.indexedDB.deleteDatabase("iswpDB17")
@@ -40,15 +40,6 @@ export function startDb17() {
     return new Promise(async (resolve, reject) => {
         const request17 = window.indexedDB.open("iswpDB17", 141);
 
-    
-        const start = Date.now();
-        let checksum = localStorage.getItem("checksum2017");
-        if(checksum && checksum.length) {
-            checksum = JSON.parse(checksum);
-        }
-        //OK: So fast not even 1ms Load time here. It measures 0ms!
-        console.log(`get checksum from localstorage time: ${Date.now() - start}ms.`)
-
         request17.onerror = (event) => {
             reject(event);
         };
@@ -79,6 +70,15 @@ export function startDb17() {
             // Check databases before resolving
             // Not very efficient so only do once per database refresh
             if(localStorage.getItem("checkedDB17") !== "true") {
+                await checksumPromise;
+                const start = Date.now();
+                let checksum = localStorage.getItem("checksum2017");
+                if(checksum && checksum.length) {
+                    checksum = JSON.parse(checksum);
+                }
+                //OK: So fast not even 1ms Load time here. It measures 0ms!
+                console.log(`get checksum from localstorage time: ${Date.now() - start}ms.`)
+                
                 if(db17.objectStoreNames.length !== Object.keys(checksum).length) {
                     request17.result.close();
                     delete_database17();
@@ -119,7 +119,7 @@ export function startDb17() {
         };
 
         request17.onupgradeneeded = async (event) => {
-            storeChecksum();
+            checksumPromise = storeChecksum();
             localStorage.setItem("checkedDB17", false);
             // Begin upgrade now.
 

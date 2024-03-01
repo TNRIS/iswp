@@ -3,6 +3,7 @@ let db27;
 let UPGRADE_NEEDED = false;
 
 import { build_func } from "./db_helper.js";
+let checksumPromise = async () => {/*placeholder*/};
 
 export const delete_database27 = () => {
     try {
@@ -40,13 +41,7 @@ export function startDb27() {
     return new Promise(async (resolve, reject) => {
         const request27 = window.indexedDB.open("iswpdb27", 2);
 
-        const start = Date.now();
-        let checksum = localStorage.getItem("checksum2027");
-        if(checksum && checksum.length) {
-            checksum = JSON.parse(checksum);
-        }
-        //OK: So fast not even 1ms Load time here. It measures 0ms!
-        console.log(`get checksum from localstorage time: ${Date.now() - start}ms.`)
+
 
         request27.onerror = (event) => {
             reject(event);
@@ -79,6 +74,15 @@ export function startDb27() {
             // Check databases before resolving
             // Not very efficient so only do once per database refresh
             if(localStorage.getItem("checkedDB27") !== "true") {
+                await checksumPromise;
+                const start = Date.now();
+                let checksum = localStorage.getItem("checksum2027");
+                if(checksum && checksum.length) {
+                    checksum = JSON.parse(checksum);
+                }
+                //OK: So fast not even 1ms Load time here. It measures 0ms!
+                console.log(`get checksum from localstorage time: ${Date.now() - start}ms.`)
+                
                 if(db27.objectStoreNames.length !== Object.keys(checksum).length) {
                     request27.result.close();
                     delete_database27();
@@ -119,7 +123,7 @@ export function startDb27() {
         };
 
         request27.onupgradeneeded = async (event) => {
-            storeChecksum();
+            checksumPromise = storeChecksum();
             localStorage.setItem("checkedDB27", false);
             // Begin upgrade now.
 
