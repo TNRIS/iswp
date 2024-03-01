@@ -58,7 +58,7 @@ export default class Counties {
     };
 
     get = async (setting) => {
-        let a = this.#getAllTransaction("vwSelectRegionsInCounty", "RegionLetter", `${setting} `);
+        let a = this.#getAllTransaction(`${this.constants.tappend}vwSelectRegionsInCounty`, "RegionLetter", `${setting} `);
 
         return a;
     };
