@@ -41,7 +41,7 @@
 <div class="statewide-view">
     <section>
         {#await loadForState()}
-        <h1>Loading ...</h1>
+        <div class="loader"></div>
         {:then out}
             {#await popChartPromise}
             <div class="loader"></div>
