@@ -37,7 +37,6 @@ export let buildZoomable = (container, data, selectedTreemap, total) => {
             child.x1 = left + (c_right / width) * (tile_width_scalar);
             child.y0 = top + (c_top / height) * (tile_height_scalar);
             child.y1 = top + (c_bottom / height) * (tile_height_scalar);
-            //console.log(`child.x0: ${child.x0}\n child.y0: ${child.y0}\n child.x1: ${child.x1}\n child.y1: ${child.y1}\n\n`);
 
         }
 
