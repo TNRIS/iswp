@@ -5,7 +5,8 @@
     import { commafy } from "$lib/helper.js";
     import { hoverHelper, clearInteraction } from "$lib/actions/HoverAction";
     import ctAxisTitle from "chartist-plugin-axistitle";
-
+    import "chartist/dist/index.css"
+    import { BarChart } from "chartist"
     const { iterator, data, group_name, chartTitle, constants } = $$props;
 
     /**
@@ -66,7 +67,7 @@
         ];
 
         //const chartOptions = R.merge(defaultOptions, {});
-        new Chartist.Bar(
+        new BarChart(
             `.ct-chart-bar-${iterator}`,
             {
                 labels: constants.getDecades(),
