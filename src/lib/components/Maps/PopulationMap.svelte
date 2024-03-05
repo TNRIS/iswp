@@ -7,11 +7,6 @@
     const sourceTable = 'iswp_sourcefeatures2022';
     const { title, swdata } = $$props;
     import { cap } from '$lib/helper';
-    const leaflet = import("leaflet");
-    import "leaflet/dist/leaflet.css";
-    let L;
-
-    import {utfbuild} from "$lib/utf-grid";
 
 	function navigateToRegion({data}) {
 		window.location.replace(`/region/${data.letter}`);
@@ -23,8 +18,6 @@
 
     onMount(async () => {
         // Leaflet must be loaded after mount. 
-        L = await leaflet;
-        utfbuild(L);
 
 
         const map = L.map("map", {

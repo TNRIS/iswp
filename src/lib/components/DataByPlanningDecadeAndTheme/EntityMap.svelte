@@ -8,17 +8,14 @@
     const dataviewContext = getContext("dataviewContext");
     const decadeStore = getContext("myContext").decadeStore;
     const themeStore = getContext("myContext").themeStore;
-    const leaflet = import("leaflet");
 
     const titles = constants.chosenTitles;
     const theme_titles = constants.getThemeTitles();
     let layers = [];
     let spiderfier;
     import {runOMS} from "$lib/leaflet.oms.js";
-    import "leaflet/dist/leaflet.css"
 
     onMount(async () => {
-        let L = await leaflet;
         runOMS();
         /*
          *
