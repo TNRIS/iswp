@@ -8,17 +8,14 @@
     const dataviewContext = getContext("dataviewContext");
     const decadeStore = getContext("myContext").decadeStore;
     const themeStore = getContext("myContext").themeStore;
-    const leaflet = import("leaflet");
 
     const titles = constants.chosenTitles;
     const theme_titles = constants.getThemeTitles();
     let layers = [];
     let spiderfier;
     import {runOMS} from "$lib/leaflet.oms.js";
-    import "leaflet/dist/leaflet.css"
 
     onMount(async () => {
-        let L = await leaflet;
         runOMS();
         /*
          *
@@ -138,7 +135,7 @@
         if(page === "region" || page === "county") {
             region_query = await fetch(
             `https://mapserver.tnris.org/?map=/tnris_mapfiles/${table}.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${type_name}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>${property_name}</PropertyName><Literal>${key}</Literal></PropertyIsEqualTo></Filter>`,
-            );
+            {'mode': 'no-cors'});
 
             let region_geo_json = await region_query.text();
             let region = L.geoJson(JSON.parse(region_geo_json), {
@@ -196,6 +193,7 @@
                         if (item.SourceType == "GROUNDWATER" || item.SourceType == "SURFACE WATER") {
                             let mapSource = await fetch(
                                 `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PolygonSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`,
+                                {'mode': 'no-cors'}
                             );
                             let text = await mapSource.text();
 
@@ -389,14 +387,15 @@
                         }
                         sources = "LineSources";
                         let mapSource = await fetch(
-                                `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`,
-                            );
+                            `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`,
+                            {'mode': 'no-cors'});
                         let text = await mapSource.text();
                         let j = JSON.parse(text);
                         if(j.numberMatched <= 0) { // Try a polygon source then.
                             sources = "PolygonSources";
                             mapSource = await fetch(
                                 `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`,
+                                {'mode': 'no-cors'}
                             );
 
                             text = await mapSource.text();
