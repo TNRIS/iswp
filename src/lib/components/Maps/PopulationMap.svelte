@@ -7,7 +7,11 @@
     const sourceTable = 'iswp_sourcefeatures2022';
     const { title, swdata } = $$props;
     import { cap } from '$lib/helper';
+    const leaflet = import("leaflet");
+    import "leaflet/dist/leaflet.css";
+    let L;
 
+    import {utfbuild} from "$lib/utf-grid";
 
 	function navigateToRegion({data}) {
 		window.location.replace(`/region/${data.letter}`);
@@ -17,7 +21,12 @@
 		window.location.replace(`/county/${item?.layer?.feature?.properties?.name}`);
 	}
 
-    onMount(() => {
+    onMount(async () => {
+        // Leaflet must be loaded after mount. 
+        L = await leaflet;
+        utfbuild(L);
+
+
         const map = L.map("map", {
             scrollWheelZoom: false,
             zoomControl: false,

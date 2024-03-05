@@ -45,6 +45,7 @@
 		"gridjs": "^6.0.6",
 		"json-2-csv": "^5.0.1",
 		"leaflet": "^1.9.4",
+		"leaflet-ajax": "^2.1.0",
 		"svelte-select": "^5.8.3",
 		"tom-select": "^2.3.1"
 	}
