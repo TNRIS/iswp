@@ -27,8 +27,6 @@ export default class Counties {
     #getAllTransaction = (key, where, project_filter) => {
         return new Promise(async (resolve, reject) => {
             try {
-
-                //console.log("getAllTransaction for " + key);
                 if(key == `${this.constants.tappend}WMSProjectsByWmsType`) {
                     // Temporary workaround until I find out why these are cased differently.
                     key = `${this.constants.tappend}WMSProjectsByWMSType`

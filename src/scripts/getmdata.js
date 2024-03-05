@@ -33,7 +33,6 @@ let runthis = async () => {
     }
 
     await uploadS3("iswp/2022/checksum.json", JSON.stringify(tableobj))
-    console.log("Done");
 }
 
 runthis();

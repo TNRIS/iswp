@@ -43,7 +43,7 @@
 <div class="view-top statewide-view-top">
     <div class="summary-wrapper container" style="z-index: 600">
         <div class="view-summary">
-            <h2>{title}</h2>
+            <h2 class={title.length > 18 ? "long-name" : ""}>{title}</h2>
             
             {#if tagline}
             <span id="tagline">{@html tagline}</span>

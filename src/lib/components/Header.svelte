@@ -1,5 +1,4 @@
 <script>
-    console.log("Start header");
     import Banner from "$lib/components/Header/Banner.svelte";
     import Navigation from "$lib/components/Header/Navigation.svelte";
     import { onMountSync } from "$lib/helper.js"

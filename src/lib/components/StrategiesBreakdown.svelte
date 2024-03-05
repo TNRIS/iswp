@@ -7,7 +7,9 @@
     const decadeStore = getContext("myContext").decadeStore;
     const themeStore = getContext("myContext").themeStore;
     const dataviewContext = getContext("dataviewContext");
+    import "chartist/dist/index.css"
 
+    import { PieChart } from 'chartist';
     $: stt_entries = Object.entries(swdata.strategies.strategyTypeTotals)
         .sort((a, b) => {
             return b[1][$decadeStore] - a[1][$decadeStore];
@@ -81,7 +83,7 @@
             ],
         ];
 
-        new Chartist.Pie(
+        new PieChart(
             ".strat-chart",
             data,
             {

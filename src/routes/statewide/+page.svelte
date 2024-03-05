@@ -18,17 +18,14 @@
     let db = load_indexeddb();
 
     let loadForState = async () => {
-        console.log("Premount.")
         console.log(`Start now ${Date.now() - starter}`);
         await onMountSync();
         let start = Date.now();
-        console.log("Starting loadForState()")
         db = await db;
         let sw = new Statewide(db);
         let dat = await sw.get(stateSettings);
         
         console.log(`loadForState() time in ms: ${Date.now() - start}`);
-        console.log(`Total time so far: ${Date.now() - starter}`)
         return dat;
     };
 </script>
@@ -41,8 +38,8 @@
 <div class="statewide-view">
     <section>
         {#await loadForState()}
-        <h1>Loading...</h1>
-            {:then out}
+        <div class="loader"></div>
+        {:then out}
             {#await popChartPromise}
             <div class="loader"></div>
             {:then {default: Component}}

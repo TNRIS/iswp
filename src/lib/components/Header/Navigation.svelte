@@ -35,7 +35,6 @@
     import Select from 'svelte-select'
     let sw;
     let thing = async () => {
-        console.log("Starting thing func")
         await onMountSync();
         db = await db;
         sw = new Statewide(db);
@@ -87,7 +86,6 @@
     let funcs = async () => {
         try {
             let start = Date.now();
-            console.log("Starting navigation func");
             let qq = await sw.getWms();
             let a = await sw.getEntities();
             let zz = await sw.getProjects();

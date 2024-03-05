@@ -61,8 +61,6 @@ export default class Statewide {
                     init[that.decades[4]] = 0;
                     init[that.decades[5]] = 0;
     
-                    //console.log("init: " + JSON.stringify(init));
-
                     let typeTotals = {};
                     typeTotals[that.usage_types[0]] = real_clone(init);
                     typeTotals[that.usage_types[1]] = real_clone(init);
@@ -77,8 +75,7 @@ export default class Statewide {
                             ...init
                         },
                     };
-                    //console.log( "a.decadeTotals " + JSON.stringify(a.decadeTotals ));
-    
+
                     // Special strat supplies object
                     if (id == "SS") {
                         (a["strategySourceTotals"] = {
@@ -138,7 +135,6 @@ export default class Statewide {
                 let start = Date.now();
                 console.log("Transaction timer");
                 //vwWMSProjectsByWmsType
-                //console.log("getAllTransaction for " + key);
                 if(key == `${this.constants.tappend}WMSProjectsByWmsType`) {
                     // Temporary workaround until I find out why these are cased differently.
                     key = `${this.constants.tappend}WMSProjectsByWMSType`

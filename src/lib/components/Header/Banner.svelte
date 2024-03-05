@@ -1,6 +1,5 @@
 <script>
     const { constants } = $$props;
-    console.log("Loading Banner");
 </script>
 <header class="header" id="Top">
     <a
