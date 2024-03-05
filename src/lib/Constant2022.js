@@ -7,7 +7,8 @@ export class Constant2022 {
     MAX_RADIUS = 9;
 
     tappend = "vw";
-    
+    sourcemap = "iswp_sourcefeatures2022.map";
+
     /**
      * Create a Statewide.
      */

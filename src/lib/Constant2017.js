@@ -7,7 +7,7 @@ export class Constant2017 {
     MAX_RADIUS = 9;
 
     tappend = "vw2017Map";
-
+    sourcemap = "https://mapserver.tnris.org/?map=/tnris_mapfiles/iswp_sourcefeatures2017.map"
     /**
      * Create a Statewide.
      */

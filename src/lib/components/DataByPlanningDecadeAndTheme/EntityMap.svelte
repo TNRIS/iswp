@@ -3,8 +3,8 @@
     import { scaleTonew, usd_format, objLeftjoin, commafy } from "$lib/helper";
     const countyTable = "county_extended";
     const regionTable = "rwpas";
-    const sourceTable = "iswp_sourcefeatures2022";
     const { title, swdata, constants, type, entityMapBlurb } = $$props;
+    const sourceTable = constants.sourcemap;
     const dataviewContext = getContext("dataviewContext");
     const decadeStore = getContext("myContext").decadeStore;
     const themeStore = getContext("myContext").themeStore;
