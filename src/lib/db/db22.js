@@ -129,6 +129,7 @@ export function startDb22() {
         };
 
         request22.onupgradeneeded = async (event) => {
+            localStorage.clear(); // Clear all cached queries.
             checksumPromise = storeChecksum();
             localStorage.setItem("checkedDB22", false);
             // Begin upgrade now.
