@@ -8,7 +8,7 @@ export class Constant2017 {
 
     tappend = "vw2017Map";
     sourcemap = "iswp_sourcefeatures2017.map"
-    sourcetables = "iswp_sourcefeatures2027.map";
+    sourcetables = "iswp_sourcefeatures2017.map";
 
     /**
      * Create a Statewide.
