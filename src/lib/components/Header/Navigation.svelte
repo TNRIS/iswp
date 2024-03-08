@@ -154,7 +154,7 @@
                 </div>
                 {:else}
                 <div class="select-container">
-                    <input  style="padding: 8px;" type="text" id="secondary-category-select" on:keyup={myFunction} placeholder="Find {titles[chosen]}">
+                    <input  style="padding: 8px;" type="text" id="secondary-category-select" autocomplete="off" on:keyup={myFunction} placeholder="Find {titles[chosen]}">
                     <ul id="secondList" class="nav-category-select">
                         {#each categories?.[chosen] as r}
                             <li style="display:none;" >

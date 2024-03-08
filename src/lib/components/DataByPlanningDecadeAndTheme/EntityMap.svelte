@@ -182,7 +182,8 @@
                         item.SourceType == "DIRECT REUSE" ||
                         item.SourceType == "LOCAL SURFACE WATER SUPPLY" ||
                         item.SourceType == "ATMOSPHERE" ||
-                        item.SourceType == "RAINWATER HARVESTING"
+                        item.SourceType == "RAINWATER HARVESTING" ||
+                        item.SourceName == "ATMOSPHERE"
                     ) {
                         return;
                     }
