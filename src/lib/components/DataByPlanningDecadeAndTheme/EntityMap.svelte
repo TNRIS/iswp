@@ -694,6 +694,9 @@
         </div>
         
         <span>{@html entityMapBlurb}</span>
+        {#if $themeStore === "strategies"}
+        <p class="note">Red triangles indicate capital projects associated with strategy supplies that have been assigned to a Water User Group.<a class="pointerHover">Hide Projects</a></p>
+        {/if}
     </div>
 </div>
 

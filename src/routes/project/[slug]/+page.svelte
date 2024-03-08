@@ -10,7 +10,7 @@
     import Header from "$lib/components/Header.svelte";
     import PopulationChart from "$lib/components/Charts/PopulationChart.svelte";
     import { page } from '$app/stores';
-
+    const entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried. Red triangles indicate capital projects. If a water user group does not display with the selected project, the project is not currently assigned to a specific water user group.</p>`;
     let constants = getConstants($page.url.host)
     $: tagline = "";
     let sourceSetting = new QuerySettings("strategies", "WmsProjectId");
@@ -51,7 +51,7 @@
 {:then out}
     <PopulationChart {tagline} title={out.projects[0].ProjectName} mapOnly={true} swdata={out} {constants} />
     <ProjectTable2 project_title={`WMS PROJECT - ${out.projects[0].ProjectName}`} project_title2={"Water Management Strategies related to Project"} swdata={out} type={"region"} />
-    <DataViewChoiceWrapInd swdata={out} type={"pop"} hideTheme={true} {constants}  csvTitle={out.projects[0].ProjectName} fileName={`project_${data.slug}`} />
+    <DataViewChoiceWrapInd {entityMapBlurb} swdata={out} type={"pop"} hideTheme={true} {constants}  csvTitle={out.projects[0].ProjectName} fileName={`project_${data.slug}`} />
 {:catch error}
     <span>Error starting database {error.message}</span>
 {/await}

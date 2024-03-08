@@ -12,6 +12,7 @@
     import Header from "$lib/components/Header.svelte";
     import { load_indexeddb, getConstants } from "$lib/helper.js";
     import { page } from '$app/stores';
+    const entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`;
     let stratAd = [
         "Region",
         "Entity",
@@ -65,7 +66,7 @@
 
             <DataUsageType swdata={out} {constants} />
             <ProjectTable project_title={`${data.slug} COUNTY`} project_title2={"Projects Serving Area Of Interest"} swdata={out} type={"region"} />
-            <DataViewChoiceWrapInd showPopulation={true} {stratAd} {activeDem} swdata={out} csvTitle={`${data.slug} County`} fileName={`county_${data.slug.toLowerCase()}`} {constants} />
+            <DataViewChoiceWrapInd {entityMapBlurb} showPopulation={true} {stratAd} {activeDem} swdata={out} csvTitle={`${data.slug} County`} fileName={`county_${data.slug.toLowerCase()}`} {constants} />
 
         {:catch error}
             <span>Error starting database {error.message}</span>

@@ -53,7 +53,7 @@
     setContext("dataviewContext", {
         getData: writable()
     });
-    const entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried. The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p><p class="note"><!-- react-text: 1060 -->Red triangles indicate capital projects associated with strategy supplies that have been assigned to a Water User Group.<!-- /react-text --><!-- react-text: 1061 --> <!-- /react-text --><a class="pointerHover"><!-- react-text: 1063 -->Hide<!-- /react-text --><!-- react-text: 1064 --> Projects<!-- /react-text --></a></p>`
+    const entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried. The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`
 </script>
 <Header {constants} />
 

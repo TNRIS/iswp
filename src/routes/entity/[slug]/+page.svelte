@@ -17,7 +17,7 @@
     let constants = getConstants($page.url.host)
     let entitySetting = new QuerySettings("entity", "EntityId");
     entitySetting.setAll(Number(data.slug));
-
+    const entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.`;
     let db;
     let entityName = '';
 
@@ -78,7 +78,7 @@
             <ThemeTotalsByDecadeChart swdata={out} {constants}/>
             <EntityStrategiesTable swdata={out} {constants} />
             <ProjectTable project_title={`WATER USER GROUP - ${entityName}`} project_title2={"Projects Serving Area Of Interest"} swdata={ out } type="county"  />
-            <DataViewChoiceWrapInd showPopulation={true} swdata={out} csvTitle={entityName} fileName={`entity_${data.slug}`} {constants} {stratAd} {activeDem} />
+            <DataViewChoiceWrapInd showPopulation={true} swdata={out} csvTitle={entityName} fileName={`entity_${data.slug}`} {constants} {stratAd} {activeDem} {entityMapBlurb} />
         {:catch error}
             <span>Error starting database {error.message}</span>
         {/await}
