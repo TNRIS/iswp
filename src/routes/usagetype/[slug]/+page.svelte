@@ -48,7 +48,7 @@
 </script>
 <Header {constants} />
 
-<div>
+<div class="statewide-view">
 {#await loadForRegion()}
 <div class="loader"></div>
 {:then out}
