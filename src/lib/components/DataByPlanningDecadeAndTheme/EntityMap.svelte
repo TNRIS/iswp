@@ -40,7 +40,7 @@
             const props = marker.feature.properties;
             const entityContent = `
                 <h3>${props.EntityName}</h3>
-                <p>Total Value: ${format()(props.ValueSum)}</p>
+                <p>Total Value: ${commafy(props.ValueSum + "")}</p>
                 <a id="entity_${props.EntityId}">View Entity Page</a>
             `;
             const projectContent = `
@@ -228,7 +228,7 @@
                         marker
                             .bindPopup(
                                 `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${item[`SS${$decadeStore}`]}</p>
+                    <p>Total Value: ${commafy(item[`SS${$decadeStore}`] + "")}</p>
                     <p><a href="/entity/${
                         item.EntityId
                     }">View Entity Page</a></p>`,
@@ -327,7 +327,7 @@
                         marker
                             .bindPopup(
                                 `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${commafy(JSON.stringify(item[`N${$decadeStore}`]))}</p>
+                    <p>Total Value: ${commafy(JSON.stringify(item[`N${$decadeStore}`] + ""))}</p>
                     <p><a href="/entity/${
                         item.EntityId
                     }">View Entity Page</a></p>`,
@@ -461,7 +461,7 @@
                         marker
                             .bindPopup(
                                 `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${item[`WS${$decadeStore}`]}</p>
+                    <p>Total Value: ${commafy(item[`WS${$decadeStore}`] + "")}</p>
                     <p><a href="/entity/${
                         item.EntityId
                     }">View Entity Page</a></p>`,
@@ -527,7 +527,7 @@
                         marker
                             .bindPopup(
                                 `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${item[`D${$decadeStore}`]}</p>
+                    <p>Total Value: ${commafy(item[`D${$decadeStore}`] + "")}</p>
                     <p><a href="/entity/${
                         item.EntityId
                     }">View Entity Page</a></p>`,
@@ -587,7 +587,7 @@
                         marker
                             .bindPopup(
                                 `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${item[`P${$decadeStore}`]}</p>
+                    <p>Total Value: ${commafy(item[`P${$decadeStore}`] + "")}</p>
                     <p><a href="/entity/${
                         item.EntityId
                     }">View Entity Page</a></p>`,
@@ -642,7 +642,7 @@
                         cmarker
                             .bindPopup(
                                 `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${item[`P${$decadeStore}`]}</p>
+                    <p>Total Value: ${commafy(item[`P${$decadeStore}`] + "")}</p>
                     <p><a href="/entity/${
                         item.EntityId
                     }">View Entity Page</a></p>`,
