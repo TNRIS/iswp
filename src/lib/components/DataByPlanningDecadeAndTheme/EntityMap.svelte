@@ -40,7 +40,7 @@
             const props = marker.feature.properties;
             const entityContent = `
                 <h3>${props.EntityName}</h3>
-                <p>Total Value: ${format()(props.ValueSum)}</p>
+                <p>Total Value: ${commafy(props.ValueSum + "")}</p>
                 <a id="entity_${props.EntityId}">View Entity Page</a>
             `;
             const projectContent = `
@@ -134,8 +134,7 @@
         // Create a border for region and county.
         if(page === "region" || page === "county") {
             region_query = await fetch(
-            `https://mapserver.tnris.org/?map=/tnris_mapfiles/${table}.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${type_name}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>${property_name}</PropertyName><Literal>${key}</Literal></PropertyIsEqualTo></Filter>`,
-            {'mode': 'no-cors'});
+            `https://mapserver.tnris.org/?map=/tnris_mapfiles/${table}.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${type_name}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>${property_name}</PropertyName><Literal>${key}</Literal></PropertyIsEqualTo></Filter>`);
 
             let region_geo_json = await region_query.text();
             let region = L.geoJson(JSON.parse(region_geo_json), {
@@ -166,7 +165,7 @@
             let maxValue = 1;
             const buildStrategies = () => {
                 // Get the max value of SSDecadeStore!
-                for (let i = 0; i < swdata.strategies.rows.length; i++) {
+                for (let i = 0; i < swdata.strategies.rows?.length; i++) {
                     if (swdata.strategies.rows[i][`SS${$decadeStore}`] > maxValue) {
                         maxValue = swdata.strategies.rows[i][`SS${$decadeStore}`];
                     }
@@ -178,12 +177,13 @@
                  * Step4 for strategies
                  * Add the entities!
                  */
-                totalEntity.forEach(async (item) => {
+                totalEntity?.forEach(async (item) => {
                     if (
                         item.SourceType == "DIRECT REUSE" ||
                         item.SourceType == "LOCAL SURFACE WATER SUPPLY" ||
                         item.SourceType == "ATMOSPHERE" ||
-                        item.SourceType == "RAINWATER HARVESTING"
+                        item.SourceType == "RAINWATER HARVESTING" ||
+                        item.SourceName == "ATMOSPHERE"
                     ) {
                         return;
                     }
@@ -192,9 +192,7 @@
                         // Add the blue aquifer Geojson entities with a popup!
                         if (item.SourceType == "GROUNDWATER" || item.SourceType == "SURFACE WATER") {
                             let mapSource = await fetch(
-                                `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PolygonSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`,
-                                {'mode': 'no-cors'}
-                            );
+                                `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PolygonSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
                             let text = await mapSource.text();
 
                             let gj = L.geoJson(JSON.parse(text), {
@@ -231,7 +229,7 @@
                         marker
                             .bindPopup(
                                 `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${item[`SS${$decadeStore}`]}</p>
+                    <p>Total Value: ${commafy(item[`SS${$decadeStore}`] + "")}</p>
                     <p><a href="/entity/${
                         item.EntityId
                     }">View Entity Page</a></p>`,
@@ -286,7 +284,7 @@
                         last[`N${$decadeStore}`] += item[`N${$decadeStore}`]
                     }
                 });
-
+                objLeftjoin(totalEntity, swdata.demands.rows, ["EntityId"]);
 
                 // Join needs with supplies in order to calculate percentage fulfilled efficiently!
                 let perc_needs = JSON.parse(JSON.stringify(totalEntity));
@@ -330,30 +328,41 @@
                         marker
                             .bindPopup(
                                 `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${commafy(JSON.stringify(item[`N${$decadeStore}`]))}</p>
+                    <p>Total Value: ${commafy(JSON.stringify(item[`N${$decadeStore}`] + ""))}</p>
                     <p><a href="/entity/${
                         item.EntityId
                     }">View Entity Page</a></p>`,
                             )
                             .openPopup();
-                            spiderfier.addMarker(marker);
+                        spiderfier.addMarker(marker);
 
                         marker.addTo(map);
-                        let fillColor = 'green'
+
+                        let fillColor = '#84D68C'
                         if(percentage < 10) {
-                            fillColor = 'green';
+                            fillColor = '#84D68C';
                         } else if(percentage < 25) {
-                            fillColor = 'yellow';
+                            fillColor = '#FFFFBF';
                         } else if(percentage < 50) {
-                            fillColor = 'orange';
+                            fillColor = '#FDAE61';
                         } else {
-                            fillColor = 'red';
+                            fillColor = 'rgb(237, 27, 47)';
                         }
                         marker.setStyle({fillColor: fillColor})
 
                         layers.push(marker);
                     }
                 });
+/*
+                const Legend = L.control.Legend({
+                    position: "bottomleft",
+                    legends: [{
+                        label: "Marker1",
+                        type: "circle"
+                    }]
+                }).addTo(map);
+                layers.push(Legend);
+                */
             };
 
 
@@ -387,16 +396,13 @@
                         }
                         sources = "LineSources";
                         let mapSource = await fetch(
-                            `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`,
-                            {'mode': 'no-cors'});
+                            `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
                         let text = await mapSource.text();
                         let j = JSON.parse(text);
                         if(j.numberMatched <= 0) { // Try a polygon source then.
                             sources = "PolygonSources";
                             mapSource = await fetch(
-                                `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`,
-                                {'mode': 'no-cors'}
-                            );
+                                `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
 
                             text = await mapSource.text();
                             j = JSON.parse(text);
@@ -456,7 +462,7 @@
                         marker
                             .bindPopup(
                                 `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${item[`WS${$decadeStore}`]}</p>
+                    <p>Total Value: ${commafy(item[`WS${$decadeStore}`] + "")}</p>
                     <p><a href="/entity/${
                         item.EntityId
                     }">View Entity Page</a></p>`,
@@ -522,7 +528,7 @@
                         marker
                             .bindPopup(
                                 `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${item[`D${$decadeStore}`]}</p>
+                    <p>Total Value: ${commafy(item[`D${$decadeStore}`] + "")}</p>
                     <p><a href="/entity/${
                         item.EntityId
                     }">View Entity Page</a></p>`,
@@ -582,7 +588,7 @@
                         marker
                             .bindPopup(
                                 `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${item[`P${$decadeStore}`]}</p>
+                    <p>Total Value: ${commafy(item[`P${$decadeStore}`] + "")}</p>
                     <p><a href="/entity/${
                         item.EntityId
                     }">View Entity Page</a></p>`,
@@ -637,7 +643,7 @@
                         cmarker
                             .bindPopup(
                                 `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${item[`P${$decadeStore}`]}</p>
+                    <p>Total Value: ${commafy(item[`P${$decadeStore}`] + "")}</p>
                     <p><a href="/entity/${
                         item.EntityId
                     }">View Entity Page</a></p>`,
@@ -688,6 +694,9 @@
         </div>
         
         <span>{@html entityMapBlurb}</span>
+        {#if $themeStore === "strategies"}
+        <p class="note">Red triangles indicate capital projects associated with strategy supplies that have been assigned to a Water User Group.<a class="pointerHover">Hide Projects</a></p>
+        {/if}
     </div>
 </div>
 

@@ -119,6 +119,7 @@ export function startDb17() {
         };
 
         request17.onupgradeneeded = async (event) => {
+            localStorage.clear(); // Clear all cached queries.
             checksumPromise = storeChecksum();
             localStorage.setItem("checkedDB17", false);
             // Begin upgrade now.

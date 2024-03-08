@@ -39,7 +39,7 @@ const storeChecksum = async () => {
 
 export function startDb22() {
     return new Promise(async (resolve, reject) => {
-        const request22 = window.indexedDB.open("iswpDB22", 174);
+        const request22 = window.indexedDB.open("iswpDB22", 175);
     
 
 
@@ -50,6 +50,9 @@ export function startDb22() {
         request22.onsuccess = async (event) => {
             db22 = event.target.result;
             if (UPGRADE_NEEDED) {
+                let doc = document.getElementsByClassName("statewide-view")[0];
+                doc.style.display = 'none';
+
                 const BASE_URL = "https://tnris-droc.s3.amazonaws.com/iswp/";
                 const cache_2022 = "2022/cache.json";
                 let start = Date.now();
@@ -74,7 +77,7 @@ export function startDb22() {
                     });
                 }
                 console.log(`Time step 3: ${Date.now() - start}`);
-
+                doc.style.display = 'block';
             }
 
             // Check databases before resolving
@@ -129,6 +132,7 @@ export function startDb22() {
         };
 
         request22.onupgradeneeded = async (event) => {
+            localStorage.clear(); // Clear all cached queries.
             checksumPromise = storeChecksum();
             localStorage.setItem("checkedDB22", false);
             // Begin upgrade now.

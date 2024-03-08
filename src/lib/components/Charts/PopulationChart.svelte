@@ -86,7 +86,7 @@
             {/if}
         </div>
     </div>
-    <PopulationMap {title} {swdata} />
+    <PopulationMap {title} {swdata} {constants} />
 </div>
 
 <style>

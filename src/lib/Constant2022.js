@@ -8,6 +8,7 @@ export class Constant2022 {
 
     tappend = "vw";
     sourcemap = "iswp_sourcefeatures2022.map";
+    sourcetables = "iswp_sourcefeatures2022.map";
 
     /**
      * Create a Statewide.

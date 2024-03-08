@@ -13,6 +13,7 @@
     import Livestock from "/static/img/icon-livestock.svg";
     import Mining from "/static/img/icon-mining.svg";
     import { page } from '$app/stores';
+    const entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`
 
     let constants = getConstants($page.url.host)
     let utSetting = new QuerySettings("usagetype", "WugType");
@@ -48,7 +49,7 @@
 </script>
 <Header {constants} />
 
-<div>
+<div class="statewide-view">
 {#await loadForRegion()}
 <div class="loader"></div>
 {:then out}
@@ -78,7 +79,7 @@
     </div>
 </div>
 <ThemeTotalsByDecadeChart swdata={out} {constants} />
-<DataViewChoiceWrapInd showPopulation={false} {stratAd} {activeDem} swdata={out} csvTitle={`${slugify(data.slug)} Usage Type`} fileName={`usagetype_${data.slug.toLowerCase()}`} {constants} />
+<DataViewChoiceWrapInd {entityMapBlurb} showPopulation={false} {stratAd} {activeDem} swdata={out} csvTitle={`${slugify(data.slug)} Usage Type`} fileName={`usagetype_${data.slug.toLowerCase()}`} {constants} />
 
 {:catch error}
 <span>Error starting database {error.message}</span>
