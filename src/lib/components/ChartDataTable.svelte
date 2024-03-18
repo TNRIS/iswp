@@ -1,12 +1,13 @@
 <script>
     import ToggleDisplay from "./ToggleDisplay.svelte";
-    const { header, body, titles, showHide } = $$props;
+    const { header, body, titles, showHide, titleMap } = $$props;
     import { slugify, commafy } from "$lib/helper.js";
 </script>
 
 <div class="chart-table-container">
-    <div class="toggle-container">
         {#if showHide}
+        <div class="toggle-container">
+
             <ToggleDisplay>
                 <div aria-live="polite" class="table-scroll-container">
                     <table class="u-full-width">
@@ -23,7 +24,11 @@
                                 <tr class={slugify(b.className).toLowerCase()}>
                                     {#if titles == true}
                                         <td class="row-label">
+                                            {#if titleMap}
+                                            <span>{titleMap[b.name]}</span>
+                                            {:else}
                                             <span>{b.name}</span>
+                                            {/if}
                                         </td>
                                     {:else}
                                         <td />
@@ -37,6 +42,8 @@
                     </table>
                 </div>
             </ToggleDisplay>
+        </div>
+
         {:else}
             <div aria-live="polite" class="table-scroll-container">
                 <table class="u-full-width">
@@ -66,6 +73,6 @@
                     </tbody>
                 </table>
             </div>
+
         {/if}
-    </div>
 </div>

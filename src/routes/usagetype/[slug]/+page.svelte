@@ -78,7 +78,7 @@
         </div>
     </div>
 </div>
-<ThemeTotalsByDecadeChart swdata={out} {constants} />
+<ThemeTotalsByDecadeChart swdata={out} {constants} title={`${slugify(data.slug)} Usage Type`} />
 <DataViewChoiceWrapInd {entityMapBlurb} showPopulation={false} {stratAd} {activeDem} swdata={out} csvTitle={`${slugify(data.slug)} Usage Type`} fileName={`usagetype_${data.slug.toLowerCase()}`} {constants} />
 
 {:catch error}

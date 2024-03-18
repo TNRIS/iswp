@@ -9,7 +9,7 @@
     import { writable } from "svelte/store";
     import EntityMap from "./EntityMap.svelte";
 
-    const { swdata, type, hideTheme, csvTitle, fileName, constants, stratAd, activeDem, showPopulation, sourcePage, entityMapBlurb} = $$props;
+    const { swdata, type, hideTheme, csvTitle, title, fileName, constants, stratAd, activeDem, showPopulation, sourcePage, entityMapBlurb} = $$props;
 
     let decadeStore = writable(constants.getDecades()[0]);
     let themeStore = writable("strategies");
@@ -46,14 +46,14 @@
     <div class="container">
         <!-- <StrategiesBreakdown {swdata} /> -->
 
-        <EntityMap {swdata} title={csvTitle} {constants} {type} {entityMapBlurb} />
+        <EntityMap {swdata} {title} {constants} {type} {entityMapBlurb} />
         {#if type !== "source" && type !== "pop" && type !== "wms" && type !== "wmstype"}
         <StrategiesBreakdown {swdata} />
         {/if}
         {#if type !== "pop"}
-            <PivotTable {swdata} {csvTitle} {fileName} {constants} {stratAd} {activeDem} />
+            <PivotTable {swdata} {csvTitle} {title} {fileName} {constants} {stratAd} {activeDem} />
         {:else}
-            <PopPivotTable {swdata} {csvTitle} {fileName} {constants} />
+            <PopPivotTable {swdata} {csvTitle} {title} {fileName} {constants} />
         {/if}
     </div>
 </div>

@@ -57,7 +57,7 @@
                 {tagline}
                 {constants}
             />
-            <ThemeTotalsByDecadeChart swdata={out} {constants} />
+            <ThemeTotalsByDecadeChart title={`${data.slug} County`} swdata={out} {constants} />
             <ThemeTypesByDecadeChart
                 chartTitle={"ct-usage-chart"}
                 swdata={out}

@@ -91,16 +91,17 @@
     };
 
 </script>
-
 <div class="bar-chart-container">
-    <div
-        on:mouseover={onHover}
-        on:focus
-        on:mouseleave={onLeave}
-        on:mouseout={onLeave}
-        on:blur
-        class="{chartTitle} ct-chart-bar-{iterator} ct-chart"
-        role="region"
-    />
-    <div role="tooltip" id={`${chartTitle}-tooltip`} />
+    <div class="ct-chart">
+        <div
+            on:mouseover={onHover}
+            on:focus
+            on:mouseleave={onLeave}
+            on:mouseout={onLeave}
+            on:blur
+            class="{chartTitle} ct-chart-bar-{iterator} ct-chart"
+            role="region"
+        />
+        <div role="tooltip" id={`${chartTitle}-tooltip`} />
+    </div>
 </div>

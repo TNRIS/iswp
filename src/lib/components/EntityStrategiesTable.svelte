@@ -4,7 +4,7 @@
     import "gridjs/dist/theme/mermaid.css";
     import { onMount } from "svelte";
     import { usd_format } from "$lib/helper.js";
-    const { swdata, type, constants } = $$props;
+    const { swdata, type, constants, title } = $$props;
     let sum = 0;
 
 
@@ -74,7 +74,11 @@
 <div class="container">
     <div class="row panel-row">
         <div class="twelve columns">
+            {#if title}
+            <span class="view-name">{title}</span>
+            {/if}
             <div class="recommended-projects-container">
+
                 <h4>Water Management Strategies</h4>
                 <div id="tab-con" />
             </div>

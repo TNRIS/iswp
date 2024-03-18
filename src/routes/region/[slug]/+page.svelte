@@ -72,7 +72,7 @@
                 </div> 
             </div>
         </div>
-        <ThemeTotalsByDecadeChart swdata={out} {constants} />
+        <ThemeTotalsByDecadeChart swdata={out} {constants} title={`Planning Region ${data.slug}`} />
         <ThemeTypesByDecadeChart chartTitle={"ct-usage-chart"} swdata={out} {constants} />
         <DataUsageType swdata={out} {constants} />
         <ProjectTable project_title={`PLANNING REGION ${data.slug}`} project_title2={"Projects "} swdata={out} type={"region"} />

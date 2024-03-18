@@ -8,6 +8,33 @@ export function clearSeriesHighlight() {
     const nee_series = document.getElementsByClassName(`series-needs`);
     const str_series = document.getElementsByClassName(`series-strategies`);
 
+    const min_series = document.getElementsByClassName(`series-mining`);
+    const liv_series = document.getElementsByClassName(`series-livestock`);
+    const sep_series = document.getElementsByClassName(`series-steam-electric-power`);
+    const man_series = document.getElementsByClassName(`series-manufacturing`);
+    const mun_series = document.getElementsByClassName(`series-municipal`);
+    const irr_series = document.getElementsByClassName(`series-irrigation`);
+
+
+    for (let i = 0; i < min_series.length; i++) {
+        min_series[i].classList.remove("highlight");
+    }
+    for (let i = 0; i < liv_series.length; i++) {
+        liv_series[i].classList.remove("highlight");
+    }
+    for (let i = 0; i < sep_series.length; i++) {
+        sep_series[i].classList.remove("highlight");
+    }
+    for (let i = 0; i < man_series.length; i++) {
+        man_series[i].classList.remove("highlight");
+    }
+    for (let i = 0; i < mun_series.length; i++) {
+        mun_series[i].classList.remove("highlight");
+    }
+    for (let i = 0; i < irr_series.length; i++) {
+        irr_series[i].classList.remove("highlight");
+    }
+
     for (let i = 0; i < dem_series.length; i++) {
         dem_series[i].classList.remove("highlight");
     }
@@ -47,7 +74,13 @@ export function hoverHelper(event, chartTitle) {
         const width = tooltip.offsetWidth;
         const height = tooltip.offsetHeight;
 
+        clearSeriesHighlight();
 
+        const series = document.getElementsByClassName(`series-${seriesName}`);
+
+        for(let i = 0; i < series.length; i++) {
+            series[i].classList.add("highlight");
+        }
         //use those heights and widths to calculate the placement in relation
         // to the hovered chart element
         tooltip.style.top = `${matrix.f - height - heightAdjust}px`;

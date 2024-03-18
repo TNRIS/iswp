@@ -1,6 +1,6 @@
 <script>
     //@ts-nocheck
-    const { swdata, csvTitle, constants, fileName } = $$props;
+    const { swdata, csvTitle, title, constants, fileName } = $$props;
     import CsvDownloads from "$lib/components/CsvDownloads.svelte";
 
     import { onMountSync, usd_format } from "$lib/helper.js";
@@ -92,8 +92,8 @@
 
 
 <div class="row panel-row">
-    <span class="view-name">{csvTitle}</span>
+    <span class="view-name">{title}</span>
     <h4>Download Data</h4>
     <div id="reactpivot" />
-    <CsvDownloads {swdata} {csvTitle} {fileName} {constants} />
+    <CsvDownloads {swdata} csvTitle={title} {fileName} {constants} />
 </div>
