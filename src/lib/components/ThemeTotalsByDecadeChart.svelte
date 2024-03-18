@@ -107,6 +107,8 @@
                         <span class="units">(acre-feet/year)</span>
                     </h4>
                     <ColorCodeSpread />
+                </div>
+
                     {#await getData()}
                         <div class="loader"></div>
                     {:then data}
@@ -122,7 +124,6 @@
                             There is an error getting totals by decade. {error.message}
                         </span>
                     {/await}
-                </div>
             </div>
         </div>
     </div>
