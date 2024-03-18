@@ -1,6 +1,6 @@
 <script>
     import BarChart from "$lib/components/Charts/BarChart.svelte";
-    const { swdata, wugRegionFilter, constants } = $$props;
+    const { swdata, wugRegionFilter, constants, title } = $$props;
     import ChartDataTable from "$lib/components/ChartDataTable.svelte";
     import { commafy } from "$lib/helper.js";
     import ColorCodeSpread from "$lib/components/ColorCodeIcons/ColorCodeSpread.svelte";
@@ -99,6 +99,9 @@
 <div class="summary-wrapper container">
     <div style="pointer-events:auto;" class="row panel-row">
             <div class="twelve columns">
+                {#if title}
+                <span class="view-name">{title}</span>
+                {/if}
                 <div>
 
                 <div class="chart-header">

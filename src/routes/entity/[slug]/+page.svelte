@@ -75,10 +75,10 @@
         <div class="loader"></div>
         {:then out}
             <PopulationChart {tagline} title={entityName} swdata={out} {constants}/>
-            <ThemeTotalsByDecadeChart swdata={out} {constants}/>
-            <EntityStrategiesTable swdata={out} {constants} />
+            <ThemeTotalsByDecadeChart swdata={out} {constants} title={`Water User Group - ${entityName}`} />
+            <EntityStrategiesTable swdata={out} {constants} title={`Water User Group - ${entityName}`} />
             <ProjectTable project_title={`WATER USER GROUP - ${entityName}`} project_title2={"Projects Serving Area Of Interest"} swdata={ out } type="county"  />
-            <DataViewChoiceWrapInd showPopulation={true} swdata={out} csvTitle={entityName} fileName={`entity_${data.slug}`} {constants} {stratAd} {activeDem} {entityMapBlurb} />
+            <DataViewChoiceWrapInd showPopulation={true} swdata={out} title = {`Water User Group - ${entityName}`} csvTitle={entityName} fileName={`entity_${data.slug}`} {constants} {stratAd} {activeDem} {entityMapBlurb} />
         {:catch error}
             <span>Error starting database {error.message}</span>
         {/await}

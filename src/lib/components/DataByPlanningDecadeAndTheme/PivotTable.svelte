@@ -1,6 +1,6 @@
 <script>
     //@ts-nocheck
-    const { swdata, csvTitle, fileName, constants, stratAd, activeDem } = $$props;
+    const { swdata, csvTitle, title, fileName, constants, stratAd, activeDem } = $$props;
     import { commafy, onMountSync, usd_format } from "$lib/helper.js";
     let pivotLoaded = false;
     import CsvDownloads from "$lib/components/CsvDownloads.svelte";
