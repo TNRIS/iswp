@@ -4,8 +4,19 @@
     import IconSpread from "$lib/components/IconSpread.svelte";
     import { onMount } from "svelte";
     import ThemeSelector from "$lib/components/ThemeSelector.svelte";
+    import ChartDataTable from "$lib/components/ChartDataTable.svelte";
+
     import { commafy } from "$lib/helper.js";
     const { chartTitle, swdata, constants } = $$props;
+    let decades = constants.getDecades();
+    let titleMap = {
+        irrigation: "Irrigation",
+        livestock: "Livestock",
+        manufacturing: "Manufacturing",
+        "steam-electric-power": "Steam Electric Power",
+        mining: "Mining",
+        municipal: "Municipal"
+    }
     const chartOptions = {
         height: "240px",
         lineSmooth: false,
@@ -113,8 +124,8 @@
                             ),
                             makeSeries(
                                 "demands",
-                                "livestock",
-                                usage_types[4],
+                                "mining",
+                                usage_types[5],
                                 swdata
                             ),
                             makeSeries(
@@ -157,8 +168,8 @@
                             ),
                             makeSeries(
                                 "needs",
-                                "livestock",
-                                usage_types[4],
+                                "mining",
+                                usage_types[5],
                                 swdata
                             ),
                             makeSeries(
@@ -201,8 +212,8 @@
                             ),
                             makeSeries(
                                 "population",
-                                "livestock",
-                                usage_types[4],
+                                "mining",
+                                usage_types[5],
                                 swdata
                             ),
                             makeSeries(
@@ -245,8 +256,8 @@
                             ),
                             makeSeries(
                                 "strategies",
-                                "livestock",
-                                usage_types[4],
+                                "mining",
+                                usage_types[5],
                                 swdata
                             ),
                             makeSeries(
@@ -289,8 +300,8 @@
                             ),
                             makeSeries(
                                 "supplies",
-                                "livestock",
-                                usage_types[4],
+                                "mining",
+                                usage_types[5],
                                 swdata
                             ),
                             makeSeries(
@@ -312,7 +323,7 @@
 </script>
 
 <div class="summary-wrapper container">
-    <div style="pointer-events:auto; height:384px;" class="row panel-row">
+    <div style="pointer-events:auto;" class="row panel-row">
         <div class="chart-header">
             <div class="row">
                 <h4>
@@ -335,6 +346,14 @@
                     chartTitle={`${chartTitle}-demands`}
                     options={chartOptions}
                 />
+                <div class="toggle-container">
+                <ChartDataTable
+                header={decades}
+                body={data.demands.series}
+                titles={true}
+                showHide={true}
+                {titleMap} />
+                </div>
             {/if}
             {#if supplies_visible}
                 <LineChart
@@ -342,6 +361,15 @@
                     chartTitle={`${chartTitle}-supplies`}
                     options={chartOptions}
                 />
+
+                <div class="toggle-container">
+                    <ChartDataTable
+                    header={decades}
+                    body={data.supplies.series}
+                    titles={true}
+                    showHide={true}
+                    {titleMap} />
+                </div>
             {/if}
             {#if needs_visible}
                 <LineChart
@@ -349,6 +377,16 @@
                     chartTitle={`${chartTitle}-needs`}
                     options={chartOptions}
                 />
+
+
+                <div class="toggle-container">
+                    <ChartDataTable
+                    header={decades}
+                    body={data.needs.series}
+                    titles={true}
+                    showHide={true}
+                    {titleMap} />
+                </div>
             {/if}
             {#if strategies_visible}
                 <LineChart
@@ -356,6 +394,16 @@
                     chartTitle={`${chartTitle}-strategies`}
                     options={chartOptions}
                 />
+
+    
+                <div class="toggle-container">
+                    <ChartDataTable
+                    header={decades}
+                    body={data.strategies.series}
+                    titles={true}
+                    showHide={true}
+                    {titleMap} />
+                </div>
             {/if}
         {:catch error}
             <span>There is a error: {error.message}</span>

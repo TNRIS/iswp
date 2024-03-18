@@ -1,6 +1,6 @@
 <script>
     import ToggleDisplay from "./ToggleDisplay.svelte";
-    const { header, body, titles, showHide } = $$props;
+    const { header, body, titles, showHide, titleMap } = $$props;
     import { slugify, commafy } from "$lib/helper.js";
 </script>
 
@@ -24,7 +24,11 @@
                                 <tr class={slugify(b.className).toLowerCase()}>
                                     {#if titles == true}
                                         <td class="row-label">
+                                            {#if titleMap}
+                                            <span>{titleMap[b.name]}</span>
+                                            {:else}
                                             <span>{b.name}</span>
+                                            {/if}
                                         </td>
                                     {:else}
                                         <td />
