@@ -1,43 +1,59 @@
 <script>
     import ToggleDisplay from "./ToggleDisplay.svelte";
-    const { header, body, titles, showHide, titleMap } = $$props;
+    const { header, body, titles, showHide, titleMap, showTotal } = $$props;
+    let totals = [0, 0, 0, 0, 0, 0];
+    if(showTotal) {
+        body.forEach((b) => {
+            b.data.forEach((amount, i) => {
+                totals[i] += amount;
+            })
+        })
+    }
+
     import { slugify, commafy } from "$lib/helper.js";
 </script>
 
 <div class="chart-table-container">
-        {#if showHide}
-        <div class="toggle-container">
+    {#if showHide}
+    <div class="toggle-container">
 
-            <ToggleDisplay>
-                <div aria-live="polite" class="table-scroll-container">
-                    <table class="u-full-width">
-                        <thead>
-                            <tr>
-                                <th />
-                                {#each header as h}
-                                    <th>{h}</th>
-                                {/each}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {#each body as b}
-                                <tr class={slugify(b.className).toLowerCase()}>
-                                    {#if titles == true}
-                                        <td class="row-label">
-                                            {#if titleMap}
-                                            <span>{titleMap[b.name]}</span>
-                                            {:else}
-                                            <span>{b.name}</span>
-                                            {/if}
-                                        </td>
-                                    {:else}
-                                        <td />
-                                    {/if}
+        <ToggleDisplay>
+            <div aria-live="polite" class="table-scroll-container">
+                <table class="u-full-width">
+                    <thead>
+                        <tr>
+                            <th />
+                            {#each header as h}
+                                <th>{h}</th>
+                            {/each}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {#each body as b}
+                            <tr class={slugify(b.className).toLowerCase()}>
+                                {#if titles == true}
+                                    <td class="row-label">
+                                        {#if titleMap}
+                                        <span>{titleMap[b.name]}</span>
+                                        {:else}
+                                        <span>{b.name}</span>
+                                        {/if}
+                                    </td>
+                                {:else}
+                                    <td />
+                                {/if}
                                     {#each b.data as bd}
                                         <td>{commafy(bd + '')}</td>
                                     {/each}
                                 </tr>
                             {/each}
+                            {#if showTotal}
+                            <tr class="totals-row"><td class="row-label">Total: </td>
+                                {#each totals as t}
+                                    <td>{commafy(t + '')}</td>
+                                {/each}
+                            </tr>
+                            {/if}
                         </tbody>
                     </table>
                 </div>
@@ -68,8 +84,15 @@
                                 {#each b.data as bd}
                                     <td>{commafy(bd + '')}</td>
                                 {/each}
+
+
+
                             </tr>
+    
                         {/each}
+                        {#if showTotal}
+                        <tr class="totals-row"><td class="row-label">Total: </td></tr>
+                        {/if}
                     </tbody>
                 </table>
             </div>
