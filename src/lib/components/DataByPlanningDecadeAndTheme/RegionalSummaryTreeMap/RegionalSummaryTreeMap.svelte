@@ -59,7 +59,7 @@
             if(!(keyids[item] == 'id' || keyids[item] == 'TOTAL' || keyids[item] == 'REGION' || keyids[item] == 'DECADE')) {
                 for(let i = 0; i < d.length; i++) {
                     array.push({
-                        name: keyids[item],
+                        name: `Region ${d[i]["REGION"]}`,
                         value: d[i][keyids[item]]
                     })
                 }

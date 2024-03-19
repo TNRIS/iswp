@@ -49,7 +49,8 @@ export let buildZoomable = (container, data, selectedTreemap, total) => {
     // Display the root.
     let group = svg.append("g").call(render, root);
     let toggle = true;
-
+    
+    //inz is short for inner zoom.
     function render(group, root, inz = false) {
         const node = group
             .selectAll("g")
