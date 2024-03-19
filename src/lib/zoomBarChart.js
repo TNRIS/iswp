@@ -8,41 +8,6 @@ export let buildZoomable = (container, data, selectedTreemap, total) => {
     const height = 500;
     var count = 0;``
 
-    // This custom tiling function adapts the built-in binary tiling function
-    // for the appropriate aspect ratio when the treemap is zoomed-in.
-    function tile(node, left, top, right, bottom) {
-        //node.x0 - the left edge of the rectangle
-        //node.y0 - the top edge of the rectangle
-        //node.x1 - the right edge of the rectangle
-        //node.y1 - the bottom edge of the rectangle
-        console.log(`x0: ${left}\n y0: ${top}\n x1: ${right}\n y1: ${bottom}\n\n`);
-        d3.treemapBinary(node, 0, 0, width, height)
-        node.x1 = node.x1
-        node.x0 = node.x0        
-        node.y1 = node.y1
-        node.y0 = node.y0
-        for (const child of node.children) {
-
-            // Renaming these to a more descriptive name.
-            let c_left = child.x0;
-            let c_right = child.x1;
-            let c_top = child.y0;
-            let c_bottom = child.y1;
-            //500 / container.offsetWidth * 0.5 * (1 + Math.sqrt(5))
-            let tile_width_scalar = right - left;
-            let tile_height_scalar = bottom - top;
-            height / width * 0.5 * (1 + Math.sqrt(5))
-            // Start at left of parent, or top for y. Then do calculation. Then multiply by scalar to get volume.
-            child.x0 = left + (c_left / width)  * (tile_width_scalar);
-            child.x1 = left + (c_right / width) * (tile_width_scalar);
-            child.y0 = top + (c_top / height) * (tile_height_scalar);
-            child.y1 = top + (c_bottom / height) * (tile_height_scalar);
-
-        }
-
-    }
-    //x0 is top left
-
     // Compute the layout.
     const hierarchy = d3
         .hierarchy(data)
@@ -80,13 +45,12 @@ export let buildZoomable = (container, data, selectedTreemap, total) => {
         .style("font", "10px sans-serif")
         .style("font-weight", "bold")
         .style("color", "green");
-
         
     // Display the root.
     let group = svg.append("g").call(render, root);
     let toggle = true;
 
-    function render(group, root) {
+    function render(group, root, inz = false) {
         const node = group
             .selectAll("g")
             .data(root.children.concat(root.leaves()))
@@ -135,35 +99,42 @@ export let buildZoomable = (container, data, selectedTreemap, total) => {
             .attr("width", d => d.x1 - d.x0)
             .attr("height", d => d.y1 - d.y0);
 
-
         node.append("clipPath")
             .attr("id", (d) => (d.clipUid = `clip${count++}`).id)
             .append("use")
             .attr("xlink:href", (d) => d.leafUid.href);
 
-        node.filter((d) => (d.children !== undefined ? d : undefined)).append("text")
-            .attr("clip-path", (d) => d.clipUid)
-            .attr("font-weight", (d) => (d === root ? "bold" : null))
-            .selectAll("tspan")
-            .data((d) =>
-                (d === root ? name(d) : d.data.name)
-                    .split(/(?=[A-Z][^A-Z])/g)
-                    .concat(format(d.value))
-            )
-            .join("tspan")
-            .attr("x", 3)
-            .attr(
-                "y",
-                (d, i, nodes) =>
-                    `${(i === nodes.length - 1) * 0.3 + 1.1 + i * 0.9}em`
-            )
-            .attr("fill-opacity", (d, i, nodes) =>
-                i === nodes.length - 1 ? 0.7 : null
-            )
-            .attr("font-weight", (d, i, nodes) =>
-                i === nodes.length - 1 ? "normal" : null
-            )
-            .text((d) => d);
+        node.filter((d) => {
+            if(inz) {
+                return d;
+            } else {
+                return (d.children !== undefined ? d : undefined);
+            }
+        }).append("text")
+        .attr("clip-path", (d) => {
+            return d.clipUid;
+        })
+        .attr("font-weight", (d) => (d === root ? "bold" : null))
+        .selectAll("tspan")
+        .data((d) =>
+            (d === root ? name(d) : d.data.name)
+                .split(/(?=[A-Z][^A-Z])/g)
+                .concat(format(d.value))
+        )
+        .join("tspan")
+        .attr("x", 3)
+        .attr(
+            "y",
+            (d, i, nodes) =>
+                `${(i === nodes.length - 1) * 0.3 + 1.1 + i * 0.9}em`
+        )
+        .attr("fill-opacity", (d, i, nodes) =>
+            i === nodes.length - 1 ? 0.7 : null
+        )
+        .attr("font-weight", (d, i, nodes) =>
+            i === nodes.length - 1 ? "normal" : null
+        )
+        .text((d) => d);
 
         group.call(position, root);
     }
@@ -184,7 +155,7 @@ export let buildZoomable = (container, data, selectedTreemap, total) => {
     // When zooming in, draw the new nodes on top, and fade them in.
     function zoomin(d) {
         const group0 = group.attr("pointer-events", "none");
-        const group1 = (group = svg.append("g").call(render, d));
+        const group1 = (group = svg.append("g").call(render, d, true));
 
         x.domain([d.x0, d.x1]);
         y.domain([d.y0, d.y1]);
