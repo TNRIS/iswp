@@ -100,8 +100,8 @@
                         series: [
                             makeSeries(
                                 "demands",
-                                "irrigation",
-                                usage_types[0],
+                                "mining",
+                                usage_types[5],
                                 swdata
                             ),
                             makeSeries(
@@ -112,20 +112,14 @@
                             ),
                             makeSeries(
                                 "demands",
-                                "manufacturing",
-                                usage_types[2],
-                                swdata
-                            ),
-                            makeSeries(
-                                "demands",
                                 "steam-electric-power",
                                 usage_types[3],
                                 swdata
                             ),
                             makeSeries(
                                 "demands",
-                                "mining",
-                                usage_types[5],
+                                "manufacturing",
+                                usage_types[2],
                                 swdata
                             ),
                             makeSeries(
@@ -134,6 +128,12 @@
                                 usage_types[1],
                                 swdata
                             ),
+                            makeSeries(
+                                "demands",
+                                "irrigation",
+                                usage_types[0],
+                                swdata
+                            )
                         ],
                     };
 
@@ -352,7 +352,8 @@
                 body={data.demands.series}
                 titles={true}
                 showHide={true}
-                {titleMap} />
+                {titleMap} 
+                showTotal={true} />
                 </div>
             {/if}
             {#if supplies_visible}
@@ -368,7 +369,8 @@
                     body={data.supplies.series}
                     titles={true}
                     showHide={true}
-                    {titleMap} />
+                    {titleMap} 
+                    showTotal={true}  />
                 </div>
             {/if}
             {#if needs_visible}
@@ -385,7 +387,8 @@
                     body={data.needs.series}
                     titles={true}
                     showHide={true}
-                    {titleMap} />
+                    {titleMap} 
+                    showTotal={true}  />
                 </div>
             {/if}
             {#if strategies_visible}
@@ -402,7 +405,8 @@
                     body={data.strategies.series}
                     titles={true}
                     showHide={true}
-                    {titleMap} />
+                    {titleMap} 
+                    showTotal={true}  />
                 </div>
             {/if}
         {:catch error}
