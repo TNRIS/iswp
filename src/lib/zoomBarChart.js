@@ -117,11 +117,14 @@ export let buildZoomable = (container, data, selectedTreemap, total) => {
         })
         .attr("font-weight", (d) => (d === root ? "bold" : null))
         .selectAll("tspan")
-        .data((d) =>
-            (d === root ? name(d) : d.data.name)
-                .split(/(?=[A-Z][^A-Z])/g)
-                .concat(format(d.value))
-        )
+        .data((d) => {
+            if(d === root) {
+                return [name(d).concat(` (${format((d.value / d.parent.value ) * 100)})%`)]
+            } else {
+                return [d.data.name.concat(` (${format((d.value / d.parent.value ) * 100)})%`)]
+            }            
+        })
+
         .join("tspan")
         .attr("x", 3)
         .attr(
@@ -129,12 +132,8 @@ export let buildZoomable = (container, data, selectedTreemap, total) => {
             (d, i, nodes) =>
                 `${(i === nodes.length - 1) * 0.3 + 1.1 + i * 0.9}em`
         )
-        .attr("fill-opacity", (d, i, nodes) =>
-            i === nodes.length - 1 ? 0.7 : null
-        )
-        .attr("font-weight", (d, i, nodes) =>
-            i === nodes.length - 1 ? "normal" : null
-        )
+        .attr("fill-opacity", 1)
+        .attr("font-weight", 1)
         .text((d) => d);
 
         group.call(position, root);
