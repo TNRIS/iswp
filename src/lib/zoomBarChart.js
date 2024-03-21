@@ -6,7 +6,7 @@ export let buildZoomable = (container, data, selectedTreemap, total) => {
     // Specify the chart’s dimensions.
     const width = container.offsetWidth;
     const height = 500;
-    var count = 0;``
+    var count = 0;
 
     // Compute the layout.
     const hierarchy = d3
@@ -92,16 +92,33 @@ export let buildZoomable = (container, data, selectedTreemap, total) => {
             });
 
         node.append("title").text((d) => `${name(d)}\n${format(d.value)}`);
-
-        let inner =  node.append("rect")
+        
+        if(!inz) {
+            node.append("rect")
             .attr("id", d => (d.leafUid = `leaf${count++}`).id)
             .attr("fill", d => { while (d.depth > 1) d = d.parent; return color(d.data.name); })
-            .attr("fill-opacity", 0.6)
+
+
             .attr("width", d => d.x1 - d.x0)
-            .attr("height", d => d.y1 - d.y0);
+            .attr("height", d => d.y1 - d.y0)
+            .filter((d) => {
+                if(!(d?.data?.name.includes("Region"))) {
+                    return d;
+                }
+            }).attr("fill-opacity", 0)
+        } else {
+            node.append("rect")
+            .attr("id", d => (d.leafUid = `leaf${count++}`).id)
+            .attr("fill", d => { while (d.depth > 1) d = d.parent; return color(d.data.name); })
+            
+            .attr("width", d => d.x1 - d.x0)
+            .attr("height", d => d.y1 - d.y0)
+            .attr("fill-opacity", 1)
+        }
+
 
         node.append("clipPath")
-            .attr("id", (d) => (d.clipUid = `clip${count++}`).id)
+            .attr("id", (d) => (d.clipUid =  `clip${count++}`).id)
             .append("use")
             .attr("xlink:href", (d) => d.leafUid.href);
 
@@ -140,8 +157,7 @@ export let buildZoomable = (container, data, selectedTreemap, total) => {
     }
 
     function position(group, root) {
-        group
-            .selectAll("g")
+        group.selectAll("g")
             .attr("transform", (d) =>
                 d === root
                     ? `translate(0,-30)`
