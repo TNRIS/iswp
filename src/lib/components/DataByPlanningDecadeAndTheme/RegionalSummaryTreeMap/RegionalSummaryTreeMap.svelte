@@ -102,7 +102,11 @@
                 Regional Summary Treemap - {$decadeStore} - {themetitles[
                     $themeStore
                 ]}
+                {#if $themeStore === "population"}
+                <span class="units">(people)</span>
+                {:else}
                 <span class="units">(acre-feet/year)</span>
+                {/if}
             </h4>
             <div class="selector treemap-selector">
                 <button
