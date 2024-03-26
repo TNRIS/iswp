@@ -5,6 +5,7 @@
     import Treemap from "$lib/components/DataByPlanningDecadeAndTheme/RegionalSummaryTreeMap/Treemap.svelte";
     export let { db } = $$props;
     import { getContext } from "svelte";
+    import { cap } from "$lib/helper.js";
 
     const decadeStore = getContext("myContext").decadeStore;
     const themeStore = getContext("myContext").themeStore;
@@ -36,8 +37,9 @@
         for (let item in d) {
             let array = [];
 
-            for (const [name, value] of Object.entries(d[item])) {
+            for (let [name, value] of Object.entries(d[item])) {
                 if (name !== "TOTAL") {
+                    name = cap(name);
                     array.push({ name, value });
                 }
             }
@@ -63,7 +65,7 @@
                         value: d[i][keyids[item]]
                     })
                 }
-                newobj.children.push({name: keyids[item], children: array})
+                newobj.children.push({name: cap(keyids[item]), children: array})
             }
         }
 
@@ -121,7 +123,7 @@
             {#await getData()}
                 <div class="loader"></div>
             {:then}
-                <Treemap treemapData={df} {total}/>
+                <Treemap treemapData={df} {total} themeStore={$themeStore}/>
             {:catch err}
                 <span>Error</span>
             {/await}
