@@ -37,7 +37,7 @@
 
     let usage_types = constants.getUsageTypes();
 
-    export let selectedTheme = "demands";
+    let selectedTheme = "demands";
     let demands_visible = true;
     let supplies_visible = false;
     let needs_visible = false;
