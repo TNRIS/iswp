@@ -38,9 +38,9 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
     // Create the SVG container.
     const svg = d3
         .create("svg")
-        .attr("viewBox", [0.5, -30.5, width, height + 30])
+        .attr("viewBox", [0.5, -20.5, width, height + 20])
         .attr("width", width)
-        .attr("height", height + 30)
+        .attr("height", height + 20)
         .attr("style", "max-width: 100%; height: auto;")
         .style("font", "10px sans-serif")
         .style("font-weight", "bold");
@@ -233,10 +233,8 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
                 .style("transform", "translateY(8px)")
 
                 rect.append("title").text((d) => {
-                    return `${d.data.name} (${format((d.value / d.parent.value) * 100)}%): ${format(d.value)}`
+                    return `${d.data.name} (${format((d.value / d.parent.value) * 100)}%): ${format(d.value)}`;
                 })
-
-
             }
         }
 
@@ -288,9 +286,7 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
         .attr("fill-opacity", 1)
         .attr("font-weight", "bold")
         .attr("font-size", "12")
-
         .text((d) => d);
-
 
         group.call(position, root);
     }
@@ -304,7 +300,7 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
             )
             .select("rect")
             .attr("width", (d) => (d === root ? width : x(d.x1) - x(d.x0)))
-            .attr("height", (d) => (d === root ? 30 : y(d.y1) - y(d.y0)));
+            .attr("height", (d) => (d === root ? 20 : y(d.y1) - y(d.y0)));
     }
 
     // When zooming in, draw the new nodes on top, and fade them in.
@@ -317,16 +313,16 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
             y.domain([d.y0, d.y1]);
 
             svg.transition()
-                .duration(750)
-                .call((t) =>
-                    group0.transition(t).remove().call(position, d.parent)
-                )
-                .call((t) =>
-                    group1
-                        .transition(t)
-                        .attrTween("opacity", () => d3.interpolate(0, 1))
-                        .call(position, d)
-                );
+            .duration(750)
+            .call((t) =>
+                group0.transition(t).remove().call(position, d.parent)
+            )
+            .call((t) =>
+                group1
+                    .transition(t)
+                    .attrTween("opacity", () => d3.interpolate(0, 1))
+                    .call(position, d)
+            );
         }
     }
 

@@ -49,8 +49,43 @@ export function clearSeriesHighlight() {
     }
 }
 
-export function hoverHelper(event, chartTitle) {
-    if ( event.target.classList.contains( 'ct-point' ) && event.currentTarget.classList[0] == chartTitle ) {
+export function hoverHelper(event, chartTitle, message=undefined) {
+    console.log(event.target.classList);
+    if ( event.target.classList.contains( 'leaflet-interactive' ) ) {
+        const me = event.target;
+        const matrix = me.getScreenCTM().translate(
+            +me.getAttribute('x1'), +me.getAttribute('y2')
+        );
+        const parent = me.parentNode;
+        const tooltip = document.getElementById(`${chartTitle}-tooltip`);
+        
+        const seriesName = parent.attributes['ct:meta'] ?
+            parent.attributes['ct:meta'].value : 'default';
+
+
+        // bug in chartist results in 0s not being attached via ct:value
+        // ref: https://github.com/gionkunz/chartist-js/issues/464
+        const val = message ? message : "";
+
+        //first set the innerHTML to the formatted value
+        // and place the tooltip offscreen so that its
+        // height and width can be calculated
+        tooltip.innerHTML = commafy(val);
+        tooltip.className = 'ct-tooltip offscreen';
+        const width = tooltip.offsetWidth;
+        const height = tooltip.offsetHeight;
+
+        //use those heights and widths to calculate the placement in relation
+        // to the hovered chart element
+
+        console.log(event.clientY);
+
+        tooltip.style.top = `${event.clientY - (tooltip.offsetParent.clientHeight / 2) + height - heightAdjust}px`;
+        tooltip.style.left = `${event.clientX  + 10}px`;
+        tooltip.style.zIndex = "9999"
+        tooltip.className = `leaflet-label label-county leaflet-zoom-animated leaflet-label-right`;
+    }
+    else if ( event.target.classList.contains( 'ct-point' ) && event.currentTarget.classList[0] == chartTitle ) {
         const me = event.target;
         const matrix = me.getScreenCTM().translate(
             +me.getAttribute('x1'), +me.getAttribute('y2')

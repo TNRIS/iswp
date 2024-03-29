@@ -5,8 +5,9 @@
     const countyTable = 'county_extended';
     const regionTable = 'rwpas';
     const { title, swdata, constants } = $$props;
-    import { cap } from '$lib/helper';
+    import { cap, commafy } from '$lib/helper';
     const sourceTable = constants.sourcetables;
+    import { hoverHelper, clearInteraction } from "$lib/actions/HoverAction";
 
 	function navigateToRegion({data}) {
 		window.location.replace(`/region/${data.letter}`);
@@ -15,6 +16,10 @@
     function navigateToCounty(item) {
 		window.location.replace(`/county/${item?.layer?.feature?.properties?.name}`);
 	}
+
+    function onLeave() {
+        clearInteraction("map-hover");
+    }
 
     onMount(async () => {
         // Leaflet must be loaded after mount. 
@@ -121,8 +126,38 @@
                                     fillOpacity: 0.1,
                                 }
                             });
-                    gj.on('click', navigateToCounty)
+
                     gj.addTo(map);
+                })
+
+                // TODO: Cache this query
+                let countyString = encodeURI(`https://mapserver.tnris.org/?map=/tnris_mapfiles/county_extended.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=CountyBoundaries&outputformat=geojson&SRSNAME=EPSG:4326`)
+                fetch(countyString)
+                .then(res => res.text())
+                .then(body => {
+
+                    let gj = L.geoJson(JSON.parse(body), {
+                        style: {
+                            color: "#3F556D",
+                            opacity: 0,
+                            weight: 0,
+                            fillOpacity: 0,
+                        }
+                    });
+
+                    Object.values(gj._layers).forEach((item) => {
+                    gj.on('click', navigateToCounty);
+
+                    item.on("mousemove", (event) => {
+                        let name = item.feature.properties.name
+                        const me = event.originalEvent;
+                        hoverHelper(me, "map-hover", name);
+                    })
+                    item.on("mouseout", () => {
+                        onLeave();
+                    })
+                    item.addTo(map)
+                    })
                 })
             } 
             //vwSelectRegionsInCounty
@@ -207,8 +242,9 @@
     });
 </script>
 
-<div id="map" style="width:100%; top:0; position:absolute; height:100%;"/>
-
+<div id="map" style="width:100%; top:0; position:absolute; height:100%;">
+    <div id="map-hover-tooltip" />
+</div>
 <style>
     #map {
         height: 180px;
