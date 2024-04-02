@@ -10,6 +10,8 @@
     const themeStore = getContext("myContext").themeStore;
 
     const titles = constants.chosenTitles;
+    import { hoverHelper, clearInteraction } from "$lib/actions/HoverAction";
+
     const theme_titles = constants.getThemeTitles();
     let layers = [];
     let spiderfier;
@@ -207,6 +209,12 @@
                             gj.bindPopup(
                                 `<h3>${item.SourceName}</h3><p><a href="/source/${item.MapSourceId}">View Source Page</a></p>`,
                             );
+                            gj.on("mousemove", (event) => {
+                                //let name = item.feature.properties.name;
+                                console.log("moving");
+                                const me = event.originalEvent;
+                                hoverHelper(me, "map-entity-hover", item.SourceName);
+                            })
                             gj.addTo(map);
                             layers.push(gj);
                         }
@@ -689,8 +697,7 @@
     {/if}
     <div class="twelve columns">
         <div id="entity_map" style="width:100%; top:0;">
-
-            
+            <div id="map-entity-hover-tooltip" />
         </div>
         
         <span>{@html entityMapBlurb}</span>
