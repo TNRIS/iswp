@@ -70,7 +70,7 @@
 
                 {:then data}
                     {#each everyTwoTypes as group_name, i}
-                        <div class="row" key={i}>
+                        <div class="row" key={i} id="bar_chart_container_dut">
                             <div class="six columns wide type-chart-container">
                                 <UsageTypeIcon group_name={group_name[0]} />
                                 <h5
@@ -128,5 +128,8 @@
 <style>
     .cap {
         text-transform:capitalize;
+    }
+    #bar_chart_container_dut {
+        padding-top: 1em;
     }
 </style>

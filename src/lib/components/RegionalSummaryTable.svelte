@@ -143,6 +143,7 @@
 <style>
     .total_column {
         border-left: 2px solid;
+        padding-left: 1em;
     }
     .total_second_column {
         border-top: 2px solid;

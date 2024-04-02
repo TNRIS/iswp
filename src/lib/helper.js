@@ -127,12 +127,13 @@ export let commafy = (s) => {
  * @param {object} table Object referencing a table element selected with svelte.
  * @param {number} n Index of column to sort.
  * @param {function} parseFunc callback Function that is used to parse the inner HTML.
+ * @param {boolean} SKIP_BOTTOM_ROW (For total column mainly (you don't want total sorted)).
+
  */
-let tableSort = (table, n, parseFunc) => {
+let tableSort = (table, n, parseFunc, SKIP_BOTTOM_ROW = true) => {
     let rows, shouldSwitch, x, y, i, switchcount = 0;
     let switching = true;
     let dir = "asc";
-    let SKIP_BOTTOM_ROW = true;
 
     let offset = SKIP_BOTTOM_ROW ? 2 : 1;
     while(switching) {
@@ -189,11 +190,23 @@ let tableSort = (table, n, parseFunc) => {
  * Sort a table Numerically
  * @param {object} table Object referencing a table element selected with svelte.
  * @param {number} n Index of column to sort.
+ * @param {string} [start] Optional Start value to sort between.
+ * @param {string} [end] Optional End value to sort between.
+ * @param {number} [skips=1] how many columns to skip (For total column mainly (you don't want total sorted)) make 0 if there is no total.
  */
-export let sortNumeric = (table, n) => {
+export let sortNumeric = (table, n, start, end, SKIP_BOTTOM_ROW = true) => {
     tableSort(table, n, (row) => {
-        return Number(row.getElementsByTagName("td")[n].innerHTML.replaceAll(',', ''));
-    })
+        let ih = row.getElementsByTagName("td")[n].innerHTML
+        if(start && end) {
+            ih = ih.substring(
+                ih.indexOf(start) + 1,
+                ih.lastIndexOf(end)
+            )
+            return Number(ih.replaceAll(',', ''));
+        } else {
+            return Number(ih.replaceAll(',', ''));
+        }
+    }, SKIP_BOTTOM_ROW)
 }
 
 /** 
@@ -201,10 +214,11 @@ export let sortNumeric = (table, n) => {
  * @param {object} table Object referencing a table element selected with svelte.
  * @param {number} n Index of column to sort.
  */
-export let sortAlphabetic = (table, n) => {
+export let sortAlphabetic = (table, n, SKIP_BOTTOM_ROW = true) => {
     tableSort(table, n, (row) => {
-        return row.getElementsByTagName("td")[n].innerHTML.toLowerCase();
-    })
+        let ri = row.getElementsByTagName("td")[n].innerHTML.toLowerCase();
+        return ri;
+    }, SKIP_BOTTOM_ROW)
 }
 
 /** 

@@ -1,12 +1,14 @@
 <script>
     //@ts-nocheck
     const { swdata } = $$props;
-    import { calcPercentage, commafy } from "$lib/helper.js";
+    import { calcPercentage, commafy, sortAlphabetic, sortNumeric } from "$lib/helper.js";
     import { getContext, onMount } from "svelte";
     import { hoverHelper, clearInteraction } from "$lib/actions/HoverAction";
     const decadeStore = getContext("myContext").decadeStore;
     const themeStore = getContext("myContext").themeStore;
     const dataviewContext = getContext("dataviewContext");
+
+    let srttable;
     import "chartist/dist/index.css"
 
     import { PieChart } from 'chartist';
@@ -133,11 +135,12 @@
             <h5>Share by Strategy Type</h5>
             <table
                 class="table-condensed u-full-width strategies-by-type-table"
+                bind:this={srttable}
             >
                 {#if swdata?.strategies?.strategyTypeTotals}
                     <tr>
-                        <th>Strategy Type</th>
-                        <th>Amount</th>
+                        <th on:click={() => {sortAlphabetic(srttable, 0, false)}}>Strategy Type</th>
+                        <th on:click={() => {sortNumeric(srttable, 1, '(', ')', false)}}>Amount</th>
                     </tr>
                     {#each stt_entries as t}
                         {#if t[1] > 0}
