@@ -146,17 +146,17 @@
                     });
 
                     Object.values(gj._layers).forEach((item) => {
-                    gj.on('click', navigateToCounty);
+                        gj.on('click', navigateToCounty);
 
-                    item.on("mousemove", (event) => {
-                        let name = item.feature.properties.name
-                        const me = event.originalEvent;
-                        hoverHelper(me, "map-hover", name);
-                    })
-                    item.on("mouseout", () => {
-                        onLeave();
-                    })
-                    item.addTo(map)
+                        item.on("mousemove", (event) => {
+                            let name = item.feature.properties.name;
+                            const me = event.originalEvent;
+                            hoverHelper(me, "map-hover", name);
+                        })
+                        item.on("mouseout", () => {
+                            onLeave();
+                        })
+                        item.addTo(map)
                     })
                 })
             } 

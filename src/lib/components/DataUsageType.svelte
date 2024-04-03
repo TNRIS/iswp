@@ -7,7 +7,7 @@
     import ChartDataTable from "$lib/components/ChartDataTable.svelte";
     import { slugify } from "$lib/helper.js";
     import ColorCodeSpread from "$lib/components/ColorCodeIcons/ColorCodeSpread.svelte";
-    const { swdata, constants } = $$props;
+    const { swdata, constants, title } = $$props;
 
     const everyTwoTypes = split_every(2, constants.getUsageTypes());
 
@@ -58,6 +58,9 @@
         <div class="clear-float u-full-width">
             <div class="row panel-row">
                 <div class="chart-header">
+                    {#if title}
+                    <span class="view-name">{title}</span>
+                    {/if}
                     <h4>
                         Data by Usage Type
                         <span class="units">(acre-feet/year)</span>

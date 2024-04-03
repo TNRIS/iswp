@@ -78,12 +78,12 @@ export function hoverHelper(event, chartTitle, message=undefined) {
         //use those heights and widths to calculate the placement in relation
         // to the hovered chart element
 
-        console.log(event.clientY);
+        tooltip.style.top = `${event.layerY - heightAdjust}px`;
+        tooltip.style.left = `${event.layerX +10}px`;
 
-        tooltip.style.top = `${event.clientY - (tooltip.offsetParent.clientHeight / 2) + height - heightAdjust}px`;
-        tooltip.style.left = `${event.clientX  + 10}px`;
-        tooltip.style.zIndex = "9999"
-        tooltip.className = `leaflet-label label-county leaflet-zoom-animated leaflet-label-right`;
+        tooltip.style.zIndex = "999"
+
+        tooltip.className = `leaflet-label leaflet-zoom-animated leaflet-label-right`;
     }
     else if ( event.target.classList.contains( 'ct-point' ) && event.currentTarget.classList[0] == chartTitle ) {
         const me = event.target;

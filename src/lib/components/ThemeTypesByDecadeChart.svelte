@@ -5,9 +5,10 @@
     import { onMount } from "svelte";
     import ThemeSelector from "$lib/components/ThemeSelector.svelte";
     import ChartDataTable from "$lib/components/ChartDataTable.svelte";
+    import ctAxisTitle from "chartist-plugin-axistitle";
 
     import { commafy } from "$lib/helper.js";
-    const { chartTitle, swdata, constants } = $$props;
+    const { chartTitle, swdata, constants, title } = $$props;
     let decades = constants.getDecades();
     let titleMap = {
         irrigation: "Irrigation",
@@ -31,6 +32,21 @@
             right: 40,
         },
         fullWidth: true,
+        plugins: [
+            ctAxisTitle({
+            axisY: {
+                axisTitle: 'acre-feet/year',
+                axisClass: 'ct-axis-title',
+                offset: {
+                    x: 0,
+                    y: 0
+                },
+                textAnchor: 'middle',
+                flipTitle: false
+            }
+            })
+        ]
+
     };
 
     let titles = constants.getThemeTitles();
@@ -326,6 +342,9 @@
     <div style="pointer-events:auto;" class="row panel-row">
         <div class="chart-header">
             <div class="row">
+                {#if title}
+                <span class="view-name">{title}</span>
+                {/if}
                 <h4>
                     {titles[selectedTheme]} by Usage Type
                     <span class="units">(acre-feet/year)</span>

@@ -15,7 +15,6 @@
     import { setContext } from "svelte";
     import { writable } from "svelte/store";
     import Header from "$lib/components/Header.svelte";
-    import { description } from "$lib/RegionDescriptions.js";
     import { page } from '$app/stores';
 
     const tagline = 'Regional Water Planning Area in <a href="/">Texas</a>'
@@ -67,16 +66,27 @@
             <div class="row panel-row">
                 <div class="twelve columns">
                     <div>
-                        <p>{description[data.slug]} {@html constants.region_footer}</p>
+                        {#if constants.regionalLink}
+                        <!-- 2016 description. -->
+                        <p>{constants.regionalDescription[data.slug]} <a href={`http://www.twdb.texas.gov/waterplanning/rwp/plans/2016/#region-${data.slug.toLowerCase()}`}>
+                                http://www.twdb.texas.gov/waterplanning/rwp/plans/2016/#region-{data.slug.toLowerCase()}
+                            </a>. {constants.regionalLink[data.slug]}<a href={`http://www.twdb.texas.gov/waterplanning/swp/2017/doc/2016_RegionalSummary_${data.slug}.pdf`}>
+                                http://www.twdb.texas.gov/waterplanning/swp/2017/doc/2016_RegionalSummary_{data.slug}.pdf
+                            </a>.
+                        </p>
+                        {:else}
+                        <!-- 2022 description. -->
+                        <p>{constants.regionalDescription[data.slug]} {@html constants.region_footer}</p>
+                        {/if}
                     </div>
                 </div> 
             </div>
         </div>
         <ThemeTotalsByDecadeChart swdata={out} {constants} title={`Planning Region ${data.slug}`} />
-        <ThemeTypesByDecadeChart chartTitle={"ct-usage-chart"} swdata={out} {constants} />
-        <DataUsageType swdata={out} {constants} />
+        <ThemeTypesByDecadeChart chartTitle={"ct-usage-chart"} swdata={out} {constants} title={`Planning Region ${data.slug}`} />
+        <DataUsageType title={`Planning Region ${data.slug}`} swdata={out} {constants} />
         <ProjectTable project_title={`PLANNING REGION ${data.slug}`} project_title2={"Projects "} swdata={out} type={"region"} />
-        <DataViewChoiceWrapInd showPopulation={true} type={"region"} {stratAd} {activeDem} {constants} csvTitle={`Planning Region ${data.slug}`} swdata={out} fileName={`region_${data.slug.toLowerCase()}`} {entityMapBlurb} />
+        <DataViewChoiceWrapInd title={`Planning Region ${data.slug}`} showPopulation={true} type={"region"} {stratAd} {activeDem} {constants} csvTitle={`Planning Region ${data.slug}`} swdata={out} fileName={`region_${data.slug.toLowerCase()}`} {entityMapBlurb} />
         {:catch error}
             <span>Error starting database {error.message}</span>
         {/await}
