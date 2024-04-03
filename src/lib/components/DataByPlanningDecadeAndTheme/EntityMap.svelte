@@ -158,6 +158,10 @@
             for (let i = 0; i < layers.length; i++) {
                 map.removeLayer(layers[i]);
 
+                if(layers[i].onAdd) {
+                    layers[i].remove()
+                }
+
                 if (i == layers.length) {
                     layers = []; //reset
                 }
@@ -214,6 +218,9 @@
                                 console.log("moving");
                                 const me = event.originalEvent;
                                 hoverHelper(me, "map-entity-hover", item.SourceName);
+                            })
+                            gj.on("mouseout", (event) => {
+                                clearInteraction("map-entity-hover");
                             })
                             gj.addTo(map);
                             layers.push(gj);
@@ -345,7 +352,6 @@
                         spiderfier.addMarker(marker);
 
                         marker.addTo(map);
-
                         let fillColor = '#84D68C'
                         if(percentage < 10) {
                             fillColor = '#84D68C';
@@ -361,16 +367,53 @@
                         layers.push(marker);
                     }
                 });
-/*
-                const Legend = L.control.Legend({
-                    position: "bottomleft",
-                    legends: [{
-                        label: "Marker1",
-                        type: "circle"
-                    }]
-                }).addTo(map);
-                layers.push(Legend);
-                */
+
+                
+                var legend = L.control({position: 'bottomleft'});
+                var div = L.DomUtil.create('div', 'info legend');
+
+                legend.onAdd = function () {
+                    let legenditems = [
+                        {
+                            text: "Greater than 50%",
+                            color: "rgb(237, 27, 47)"
+                            
+                        }, {
+                            text: "Greater than 25%",
+                            color: "#FDAE61"
+                        }, 
+                        {
+                            text: "Greater than 10%",
+                            color: "#FFFFBF"
+                        },
+                        {
+                            text: "Less than 10%",
+                            color: "#84D68C"
+                        }
+                    ];
+                    let ih = `<div class=" leaflet-left">
+                            <div class="leaflet-legend legend-needs leaflet-control">
+                                <h4 class="">Potential shortage<br>(as share of total demand)</h4>
+                                <p class="">*Zero needs not displayed</p>
+                            <ul>`
+                    
+                    // Regular for loop
+                    legenditems.forEach((label) => {
+                        ih += `<li class="legend-entry">
+                            <svg height="8" width="8">
+                                <circle cx="4" cy="4" r="4" stroke="black" stroke-width="1" fill="${label.color}">
+                                </circle>
+                            </svg> ${label.text}
+                        </li>`
+                    })
+                    ih += `</ul></div></div>`;
+                    
+
+                    div.innerHTML = ih;
+                    return div;
+                }
+                legend.addTo(map)
+                layers.push(legend)
             };
 
 
@@ -428,6 +471,16 @@
                         gj.bindPopup(
                             `<h3>${item.SourceName}</h3><p><a href="/source/${item.MapSourceId}">View Source Page</a></p>`,
                         );
+
+                        gj.on("mousemove", (event) => {
+                                //let name = item.feature.properties.name;
+                                console.log("moving");
+                                const me = event.originalEvent;
+                                hoverHelper(me, "map-entity-hover", item.SourceName);
+                            })
+                            gj.on("mouseout", (event) => {
+                                clearInteraction("map-entity-hover");
+                            })
                         gj.addTo(map);
                         layers.push(gj);
                     } else {
@@ -544,7 +597,6 @@
                             .openPopup();
                             spiderfier.addMarker(marker);
 
-                        marker.addTo(map);
                         layers.push(marker);
                     }
                 });
@@ -691,9 +743,17 @@
 <div class="row panel-row">
     <span class="view-name">{title}</span>
     {#if type == "pop"}
-    <h4>Water User Groups - {$decadeStore} - {theme_titles["population"]}<span class="units">(acre-feet/year)</span></h4>
+    <h4>Water User Groups - {$decadeStore} - {theme_titles["population"]}<span class="units">(people)</span></h4>
     {:else}
-    <h4>Water User Groups - {$decadeStore} - {theme_titles[$themeStore]}<span class="units">(acre-feet/year)</span></h4>
+
+
+    <h4>Water User Groups - {$decadeStore} - {theme_titles[$themeStore]}
+    {#if $themeStore === "population"}
+    <span class="units">(people)</span>
+    {:else}
+    <span class="units">(acre-feet/year)</span>
+    {/if}
+    </h4>
     {/if}
     <div class="twelve columns">
         <div id="entity_map" style="width:100%; top:0;">
