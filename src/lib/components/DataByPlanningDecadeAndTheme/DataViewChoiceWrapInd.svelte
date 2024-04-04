@@ -48,7 +48,7 @@
 
         <EntityMap {swdata} {title} {constants} {type} {entityMapBlurb} />
         {#if type !== "source" && type !== "pop" && type !== "wms" && type !== "wmstype"}
-        <StrategiesBreakdown {swdata} />
+        <StrategiesBreakdown {swdata} {title} />
         {/if}
         {#if type !== "pop"}
             <PivotTable {swdata} {csvTitle} {title} {fileName} {constants} {stratAd} {activeDem} />

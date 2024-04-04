@@ -179,7 +179,13 @@
 
 <div class="row panel-row">
     <span class="view-name">{csvTitle}</span>
-    <h4>Raw Data - {$decadeStore} - {themeTitles[$themeStore]}</h4>
+    <h4>Raw Data - {$decadeStore} - {themeTitles[$themeStore]}
+        {#if $themeStore === "population"}
+        <span class="units">(people)</span>
+        {:else}
+        <span class="units">(acre-feet/year)</span>
+        {/if}
+    </h4>
     <div id="reactpivot" />
     <CsvDownloads {swdata} {csvTitle} {fileName} {constants} />
 </div>

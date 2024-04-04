@@ -1,6 +1,6 @@
 <script>
     //@ts-nocheck
-    const { swdata } = $$props;
+    const { swdata, title } = $$props;
     import { calcPercentage, commafy, sortAlphabetic, sortNumeric } from "$lib/helper.js";
     import { getContext, onMount } from "svelte";
     import { hoverHelper, clearInteraction } from "$lib/actions/HoverAction";
@@ -116,6 +116,8 @@
 </script>
 
 <div class="strategies-breakdown-container row panel-row" class:hider={checkShow}>
+    <span class="view-name">{title}</span>
+
     <div class="row">
         <h4>Strategy Supplies Breakdown - {$decadeStore}<span class="units">(acre-feet/year)</span></h4>
     </div>
