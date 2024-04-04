@@ -38,7 +38,7 @@
 </script>
 
 <div class="view-choice-wrap">
-    <div class="view-choice-container">
+    <div class="view-choice-container sticky-div-2">
         <h4>Data by Planning Decade and Theme</h4>
         <DataViewChoiceSelectors {hideTheme} {showPopulation} {constants} {sourcePage} />
     </div>
