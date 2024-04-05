@@ -143,14 +143,18 @@
             if (document.getElementById("reactpivot").firstChild)
                 document.getElementById("reactpivot").firstChild.remove();
 
-            for(let i = 0; i < rows.length; i++) {
-                rows[i].EntityName = rows[i].EntityName?.startsWith('<a') ? rows[i].EntityName : `<a href="/entity/${rows[i].EntityId}">${rows[i].EntityName}</a>`;
-                rows[i].WugCounty = rows[i].WugCounty?.startsWith('<a') ? rows[i].WugCounty : `<a href="/county/${rows[i].WugCounty}">${rows[i].WugCounty}</a>`;
-                rows[i].WmsName = rows[i].WmsName?.startsWith('<a') ? rows[i].WmsName : `<a href="/wms/${rows[i].WmsId}">${rows[i].WmsName}</a>`;
-                rows[i].WmsType = rows[i].WmsType?.startsWith('<a') ? rows[i].WmsType : `<a href="/wmstype/${rows[i].WmsType}">${rows[i].WmsType}</a>`;
-            }
+            let formattedRows = JSON.parse(JSON.stringify(rows));
+
+
+            formattedRows.forEach((f) => {
+                f.EntityName = f.EntityName?.startsWith('<a') ? f.EntityName : `<a href="/entity/${f.EntityId}">${f.EntityName}</a>`;
+                f.WugCounty = f.WugCounty?.startsWith('<a') ? f.WugCounty : `<a href="/county/${f.WugCounty}">${f.WugCounty}</a>`;
+                f.WmsName = f.WmsName?.startsWith('<a') ? f.WmsName : `<a href="/wms/${f.WmsId}">${f.WmsName}</a>`;
+                f.WmsType = f.WmsType?.startsWith('<a') ? f.WmsType : `<a href="/wmstype/${f.WmsType}">${f.WmsType}</a>`;
+            })
+
             ReactPivot(document.getElementById("reactpivot"), {
-                rows: rows,
+                rows: formattedRows,
                 dimensions: dimensions,
                 calculations: calculations,
                 activeDimensions: activeDimensions,
