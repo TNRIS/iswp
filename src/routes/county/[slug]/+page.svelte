@@ -61,12 +61,13 @@
             <ThemeTypesByDecadeChart
                 chartTitle={"ct-usage-chart"}
                 swdata={out}
+                title={`${data.slug} County`}
                 {constants}
             />
 
-            <DataUsageType swdata={out} {constants} />
+            <DataUsageType swdata={out} {constants} title={`${data.slug} County`} />
             <ProjectTable project_title={`${data.slug} COUNTY`} project_title2={"Projects Serving Area Of Interest"} swdata={out} type={"region"} />
-            <DataViewChoiceWrapInd {entityMapBlurb} showPopulation={true} {stratAd} {activeDem} swdata={out} csvTitle={`${data.slug} County`} fileName={`county_${data.slug.toLowerCase()}`} {constants} />
+            <DataViewChoiceWrapInd title={`${data.slug} County`} {entityMapBlurb} showPopulation={true} {stratAd} {activeDem} swdata={out} csvTitle={`${data.slug} County`} fileName={`county_${data.slug.toLowerCase()}`} {constants} />
 
         {:catch error}
             <span>Error starting database {error.message}</span>
