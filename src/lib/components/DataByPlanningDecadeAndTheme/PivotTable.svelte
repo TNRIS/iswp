@@ -144,10 +144,10 @@
                 document.getElementById("reactpivot").firstChild.remove();
 
             for(let i = 0; i < rows.length; i++) {
-                rows[i].EntityName = `<a href="/entity/${rows[i].EntityId}">${rows[i].EntityName}</a>`;
-                rows[i].WugCounty = `<a href="/county/${rows[i].WugCounty}">${rows[i].WugCounty}</a>`;
-                rows[i].WmsName = `<a href="/wms/${rows[i].WmsId}">${rows[i].WmsName}</a>`;
-                rows[i].WmsType = `<a href="/wmstype/${rows[i].WmsType}">${rows[i].WmsType}</a>`;
+                rows[i].EntityName = rows[i].EntityName?.startsWith('<a') ? rows[i].EntityName : `<a href="/entity/${rows[i].EntityId}">${rows[i].EntityName}</a>`;
+                rows[i].WugCounty = rows[i].WugCounty?.startsWith('<a') ? rows[i].WugCounty : `<a href="/county/${rows[i].WugCounty}">${rows[i].WugCounty}</a>`;
+                rows[i].WmsName = rows[i].WmsName?.startsWith('<a') ? rows[i].WmsName : `<a href="/wms/${rows[i].WmsId}">${rows[i].WmsName}</a>`;
+                rows[i].WmsType = rows[i].WmsType?.startsWith('<a') ? rows[i].WmsType : `<a href="/wmstype/${rows[i].WmsType}">${rows[i].WmsType}</a>`;
             }
             ReactPivot(document.getElementById("reactpivot"), {
                 rows: rows,
