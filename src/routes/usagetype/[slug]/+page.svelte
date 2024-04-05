@@ -1,5 +1,5 @@
 <script>
-    import { load_indexeddb, slugify, getConstants } from "$lib/helper.js";
+    import { load_indexeddb, slugify, getConstants, cap } from "$lib/helper.js";
     import Statewide from "$lib/db/statewide.js";
     import { QuerySettings } from "$lib/QuerySettings.js"
     import ThemeTotalsByDecadeChart from "$lib/components/ThemeTotalsByDecadeChart.svelte";
@@ -79,7 +79,7 @@
     </div>
 </div>
 <ThemeTotalsByDecadeChart swdata={out} {constants} title={`${slugify(data.slug)} Usage Type`} />
-<DataViewChoiceWrapInd {entityMapBlurb} showPopulation={false} {stratAd} {activeDem} swdata={out} csvTitle={`${slugify(data.slug)} Usage Type`} fileName={`usagetype_${data.slug.toLowerCase()}`} {constants} />
+<DataViewChoiceWrapInd {entityMapBlurb} showPopulation={false} {stratAd} {activeDem} swdata={out} csvTitle={`${cap(data.slug)} Usage Type`} fileName={`usagetype_${data.slug.toLowerCase()}`} {constants} />
 
 {:catch error}
 <span>Error starting database {error.message}</span>

@@ -95,5 +95,5 @@
     <span class="view-name">{title}</span>
     <h4>Download Data</h4>
     <div id="reactpivot" />
-    <CsvDownloads {swdata} csvTitle={title} {fileName} {constants} />
+    <CsvDownloads {swdata} {csvTitle} {fileName} {constants} />
 </div>

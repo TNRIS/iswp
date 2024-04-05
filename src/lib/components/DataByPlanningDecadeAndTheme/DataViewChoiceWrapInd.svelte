@@ -51,7 +51,7 @@
         <StrategiesBreakdown {swdata} {title} />
         {/if}
         {#if type !== "pop"}
-            <PivotTable {swdata} {csvTitle} {title} {fileName} {constants} {stratAd} {activeDem} />
+            <PivotTable {swdata} {csvTitle} {title} {fileName} {constants} {stratAd} {activeDem} {showPopulation} />
         {:else}
             <PopPivotTable {swdata} {csvTitle} {title} {fileName} {constants} />
         {/if}

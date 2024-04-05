@@ -1,5 +1,5 @@
 <script>
-    const { swdata, csvTitle, fileName, constants } = $$props;
+    const { swdata, csvTitle, fileName, constants, downloadPopulation } = $$props;
     let decades = constants.getDecades();
     if(!fileName)
         console.log("We need a filename");
@@ -64,7 +64,7 @@
 <h5>Download Data</h5>
 <ul>
     {#if csvTitle !== "Agricultural Conservation WMS Type"}
-        {#if population.length}
+        {#if population.length && downloadPopulation}
         <li><a href="#" on:click={() => {dlpop(population, "population.csv")}}>Download {csvTitle} Population data (Comma-Separated Values)</a></li>
         {/if}
         {#if demands.length}
@@ -81,9 +81,8 @@
     <li><a href="#" on:click={() => {dlpop(strategy, "strategies.csv")}}>Download {csvTitle} Strategy Supplies data (Comma-Separated Values)</a></li>
     {/if}
 
-    {#if projects.length}
-    <li><a href="#" on:click={() => {dlpop(projects, "projects.csv")}}>Download {csvTitle} Strategy Supplies data (Comma-Separated Values)</a></li>
-
+    {#if projects.length && window.location.pathname.includes('/project/')}
+    <li><a href="#" on:click={() => {dlpop(projects, "projects.csv")}}>Download {csvTitle} Project data (Comma-Separated Values)</a></li>
     {/if}
 </ul>
 {/if}

@@ -5,7 +5,7 @@
     export let data;
     let db;
     import { QuerySettings } from "$lib/QuerySettings.js";
-    import { load_indexeddb, getConstants } from "$lib/helper.js";
+    import { load_indexeddb, getConstants, cap } from "$lib/helper.js";
     import Statewide from "$lib/db/statewide.js";
     import Header from "$lib/components/Header.svelte";
     import PopulationChart from "$lib/components/Charts/PopulationChart.svelte";
@@ -51,7 +51,7 @@
 {:then out}
     <PopulationChart {tagline} title={out.projects[0].ProjectName} mapOnly={true} swdata={out} {constants} />
     <ProjectTable2 project_title={`WMS PROJECT - ${out.projects[0].ProjectName}`} project_title2={"Water Management Strategies related to Project"} swdata={out} type={"region"} />
-    <DataViewChoiceWrapInd {entityMapBlurb} swdata={out} type={"pop"} hideTheme={true} {constants}  csvTitle={out.projects[0].ProjectName} fileName={`project_${data.slug}`} />
+    <DataViewChoiceWrapInd {entityMapBlurb} swdata={out} type={"pop"} hideTheme={true} {constants} csvTitle={cap(out.projects[0].ProjectName)} fileName={`project_${data.slug}`} />
 {:catch error}
     <span>Error starting database {error.message}</span>
 {/await}

@@ -1,6 +1,6 @@
 <script>
     //@ts-nocheck
-    const { swdata, csvTitle, title, fileName, constants, stratAd, activeDem } = $$props;
+    const { swdata, csvTitle, title, fileName, constants, stratAd, activeDem, showPopulation } = $$props;
     import { commafy, onMountSync, usd_format } from "$lib/helper.js";
     let pivotLoaded = false;
     import CsvDownloads from "$lib/components/CsvDownloads.svelte";
@@ -191,5 +191,5 @@
         {/if}
     </h4>
     <div id="reactpivot" />
-    <CsvDownloads {swdata} {csvTitle} {fileName} {constants} />
+    <CsvDownloads {swdata} {csvTitle} {fileName} {constants} downloadPopulation={showPopulation} />
 </div>
