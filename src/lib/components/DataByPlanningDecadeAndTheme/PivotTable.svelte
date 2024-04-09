@@ -1,6 +1,6 @@
 <script>
     //@ts-nocheck
-    const { swdata, csvTitle, title, fileName, constants, stratAd, activeDem } = $$props;
+    const { swdata, csvTitle, title, fileName, constants, stratAd, activeDem, showPopulation } = $$props;
     import { commafy, onMountSync, usd_format } from "$lib/helper.js";
     let pivotLoaded = false;
     import CsvDownloads from "$lib/components/CsvDownloads.svelte";
@@ -143,14 +143,18 @@
             if (document.getElementById("reactpivot").firstChild)
                 document.getElementById("reactpivot").firstChild.remove();
 
-            for(let i = 0; i < rows.length; i++) {
-                rows[i].EntityName = `<a href="/entity/${rows[i].EntityId}">${rows[i].EntityName}</a>`;
-                rows[i].WugCounty = `<a href="/county/${rows[i].WugCounty}">${rows[i].WugCounty}</a>`;
-                rows[i].WmsName = `<a href="/wms/${rows[i].WmsId}">${rows[i].WmsName}</a>`;
-                rows[i].WmsType = `<a href="/wmstype/${rows[i].WmsType}">${rows[i].WmsType}</a>`;
-            }
+            let formattedRows = JSON.parse(JSON.stringify(rows));
+
+
+            formattedRows.forEach((f) => {
+                f.EntityName = f.EntityName?.startsWith('<a') ? f.EntityName : `<a href="/entity/${f.EntityId}">${f.EntityName}</a>`;
+                f.WugCounty = f.WugCounty?.startsWith('<a') ? f.WugCounty : `<a href="/county/${f.WugCounty}">${f.WugCounty}</a>`;
+                f.WmsName = f.WmsName?.startsWith('<a') ? f.WmsName : `<a href="/wms/${f.WmsId}">${f.WmsName}</a>`;
+                f.WmsType = f.WmsType?.startsWith('<a') ? f.WmsType : `<a href="/wmstype/${f.WmsType}">${f.WmsType}</a>`;
+            })
+
             ReactPivot(document.getElementById("reactpivot"), {
-                rows: rows,
+                rows: formattedRows,
                 dimensions: dimensions,
                 calculations: calculations,
                 activeDimensions: activeDimensions,
@@ -179,7 +183,13 @@
 
 <div class="row panel-row">
     <span class="view-name">{csvTitle}</span>
-    <h4>Raw Data - {$decadeStore} - {themeTitles[$themeStore]}</h4>
+    <h4>Raw Data - {$decadeStore} - {themeTitles[$themeStore]}
+        {#if $themeStore === "population"}
+        <span class="units">(people)</span>
+        {:else}
+        <span class="units">(acre-feet/year)</span>
+        {/if}
+    </h4>
     <div id="reactpivot" />
-    <CsvDownloads {swdata} {csvTitle} {fileName} {constants} />
+    <CsvDownloads {swdata} {csvTitle} {fileName} {constants} downloadPopulation={showPopulation} />
 </div>

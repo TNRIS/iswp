@@ -1,6 +1,6 @@
 <script>
     //@ts-nocheck
-    const { swdata } = $$props;
+    const { swdata, title } = $$props;
     import { calcPercentage, commafy, sortAlphabetic, sortNumeric } from "$lib/helper.js";
     import { getContext, onMount } from "svelte";
     import { hoverHelper, clearInteraction } from "$lib/actions/HoverAction";
@@ -67,20 +67,19 @@
             [
                 "screen and (min-width: 640px)",
                 {
-                    chartPadding: 30,
+                    chartPadding: 0,
                     labelOffset: 10,
-                    labelDirection: "explode",
+                    labelDirection: "neutral",
+                    labelPosition: "neutral",
                     labelInterpolationFnc: function (value, i) {
                         return `${value}  (${Math.round((((data.series[i].value / total) * 100)) * 10) / 10.0}%)`;
-                        return value;
                     },
                 },
             ],
             [
                 "screen and (min-width: 1024px)",
                 {
-                    labelOffset: 10,
-                    chartPadding: 20,
+                    chartPadding: 0,
                 },
             ],
         ];
@@ -94,6 +93,8 @@
                 },
                 width: "100%",
                 height: 250,
+                startAngle: 270,
+
             },
             responsiveOptions
         );
@@ -116,6 +117,8 @@
 </script>
 
 <div class="strategies-breakdown-container row panel-row" class:hider={checkShow}>
+    <span class="view-name">{title}</span>
+
     <div class="row">
         <h4>Strategy Supplies Breakdown - {$decadeStore}<span class="units">(acre-feet/year)</span></h4>
     </div>

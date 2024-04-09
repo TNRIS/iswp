@@ -34,6 +34,40 @@
 
         L.control.zoom({ position: "topright" }).addTo(map);
 
+        L.easyButton({
+            position: 'topright',
+            states: [{
+                stateName: 'unlocked',
+                title: 'Lock',
+                icon: 'icon-texas',
+                onClick: (btn /*, map*/) => {
+                btn.state('locked');
+
+                }
+            }]
+        }).addTo(map);
+
+        const toggleLockButton = L.easyButton({
+            position: 'topright',
+            states: [{
+                stateName: 'unlocked',
+                title: 'Lock',
+                icon: 'icon-unlocked',
+                onClick: (btn /*, map*/) => {
+                btn.state('locked');
+
+                }
+            }, {
+                stateName: 'locked',
+                title: 'Unlock',
+                icon: 'icon-locked',
+                onClick: (btn /*, map*/) => {
+                btn.state('unlocked');
+                }
+            }]
+        });
+
+        toggleLockButton.addTo(map)
 		map.fitBounds([[36.5, -106.65], [25.84, -93.51]]);
 
         const baseLayer = L.tileLayer(

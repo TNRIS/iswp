@@ -2,7 +2,7 @@
     //@ts-nocheck
     import ProjectTable from "$lib/components/ProjectTable/ProjectTable.svelte";
     import DataViewChoiceWrapInd from "$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte";
-    import { load_indexeddb, getConstants } from "$lib/helper.js";
+    import { load_indexeddb, getConstants, cap } from "$lib/helper.js";
     import Statewide from "$lib/db/statewide.js";
     import { QuerySettings } from "$lib/QuerySettings.js"
     export let data;
@@ -62,7 +62,7 @@
             </div>
         </div>
         <ProjectTable project_title={`WMS TYPE - ${data.slug}`} project_title2={"Projects related to Water Management Strategy Type"} swdata={out} type={"region"} />
-        <DataViewChoiceWrapInd {entityMapBlurb} {stratAd} swdata={out} hideTheme={true} type={"wmstype"} csvTitle={`${data.slug} WMS Type`} {constants} />
+        <DataViewChoiceWrapInd {entityMapBlurb} {stratAd} swdata={out} hideTheme={true} type={"wmstype"} csvTitle={`${cap(data.slug)} WMS Type`} {constants} />
 
         {:catch error}
             <span>Error starting database {error.message}</span>

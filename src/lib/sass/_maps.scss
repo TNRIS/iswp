@@ -143,7 +143,7 @@ button.easy-button-button {
   }
 
   .icon-unlocked {
-    background: url('/public/static/img/icon_unlock.png') center no-repeat;
+    background: url('/img/icon_unlock.png') center no-repeat;
     background-size: 18px;
   }
 
@@ -152,7 +152,12 @@ button.easy-button-button {
   }
 
   .icon-locked {
-    background: url('/public/static/img/icon_lock.png') center no-repeat;
+    background: url('/img/icon_lock.png') center no-repeat;
+    background-size: 18px;
+  }
+
+  .icon-texas {
+    background: url("img/texas_icon.png") center no-repeat;
     background-size: 18px;
   }
 }

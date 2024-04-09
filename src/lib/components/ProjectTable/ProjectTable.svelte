@@ -76,8 +76,7 @@
                 {#if project_data.length}
                 <p>
                     Total capital cost of recommended projects:
-                    <strong>{usd_format.format(sum)}</strong>
-                    .
+                    <strong>{usd_format.format(sum)}</strong>.
                 </p>
                 {:else}
                 <p>There are no recommended projects.</p>
