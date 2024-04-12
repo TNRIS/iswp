@@ -41,33 +41,11 @@
                 title: 'Lock',
                 icon: 'icon-texas',
                 onClick: (btn /*, map*/) => {
-                btn.state('locked');
-
+                    map.setView([31, -108], 5)
                 }
             }]
         }).addTo(map);
 
-        const toggleLockButton = L.easyButton({
-            position: 'topright',
-            states: [{
-                stateName: 'unlocked',
-                title: 'Lock',
-                icon: 'icon-unlocked',
-                onClick: (btn /*, map*/) => {
-                btn.state('locked');
-
-                }
-            }, {
-                stateName: 'locked',
-                title: 'Unlock',
-                icon: 'icon-locked',
-                onClick: (btn /*, map*/) => {
-                btn.state('unlocked');
-                }
-            }]
-        });
-
-        toggleLockButton.addTo(map)
 		map.fitBounds([[36.5, -106.65], [25.84, -93.51]]);
 
         const baseLayer = L.tileLayer(
@@ -148,6 +126,7 @@
                 swdata.counties.forEach((c) => {
                     properties += `<PropertyIsEqualTo><PropertyName>name</PropertyName><Literal>${cap(c.CountyName).trim()}</Literal></PropertyIsEqualTo>`
                 });
+                //
                 let rString = encodeURI(`https://mapserver.tnris.org/?map=/tnris_mapfiles/county_extended.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=CountyBoundaries&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><OR>${properties}</OR></Filter>`)
                 fetch(rString)
                 .then(res => res.text())
