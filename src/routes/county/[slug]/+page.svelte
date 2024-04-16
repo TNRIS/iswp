@@ -37,9 +37,36 @@
         let dat = await sw.get(regionSetting);
         console.log(`loadForRegion time in ms: ${Date.now() - start}`);
         tagline = 'County in <a href="/">Texas</a>'
-        let region = dat?.population?.rows[0]?.WugRegion;
 
-        tagline = region ? `County in <a href="/region/${region}/">Region ${region}</a>` : undefined;
+        const regions = dat?.population?.rows;
+        let groups = '';
+
+        let found_regions = [];
+        regions.forEach((r) => {
+            const wc = r.WugRegion.trim();
+            if(!found_regions.includes(wc))
+                found_regions.push(wc);
+        })
+
+        if(found_regions) {
+            found_regions.sort();
+            found_regions.forEach((r, i) => {                
+                if(found_regions.length == 1) {
+                    groups += `<a href="/region/${r}">Region ${r}</a>`;
+                }
+                else if(i < found_regions.length - 1) {
+                    groups += `<a href="/region/${r}">Region ${r}</a>, `;
+                } else {
+                    groups += `and <a href="/region/${r}">Region ${r}</a>`;
+                }
+            });
+        }
+        tagline = groups.length ? `County in ${groups}` : undefined;
+
+
+
+
+
         return dat;
     };
 

@@ -1,21 +1,25 @@
 <script>
     import { getContext, onMount } from "svelte";
     import { scaleTonew, usd_format, objLeftjoin, commafy } from "$lib/helper";
+    import { hoverHelper, clearInteraction } from "$lib/actions/HoverAction";
+    import {runOMS} from "$lib/leaflet.oms.js";
+
     const countyTable = "county_extended";
     const regionTable = "rwpas";
     const { title, swdata, constants, type, entityMapBlurb } = $$props;
+    const DECADES = constants.getDecades();
     const sourceTable = constants.sourcemap;
     const dataviewContext = getContext("dataviewContext");
     const decadeStore = getContext("myContext").decadeStore;
     const themeStore = getContext("myContext").themeStore;
 
     const titles = constants.chosenTitles;
-    import { hoverHelper, clearInteraction } from "$lib/actions/HoverAction";
 
     const theme_titles = constants.getThemeTitles();
     let layers = [];
     let spiderfier;
-    import {runOMS} from "$lib/leaflet.oms.js";
+    let switch_unlocked = true;
+
 
     onMount(async () => {
         runOMS();
@@ -29,6 +33,14 @@
             maxZoom: 10,
             minZoom: 1,
         });
+        let cb = (fc) => {
+            /* If there are GeoJson features then fitbounds to them. Otherwise move on. */
+            if(fc.features.length) {
+                let gj = L.geoJson(fc);
+                map.fitBounds(gj.getBounds());
+            }
+        }
+
         spiderfier = new OverlappingMarkerSpiderfier(map, {
             keepSpiderfied: true,
             nearbyDistance: 5,
@@ -67,10 +79,48 @@
 
         L.control.zoom({ position: "topright" }).addTo(map);
 
+
         const TEXAS = [
             [36.5, -106.65],
             [25.84, -93.51],
         ]
+
+
+        L.easyButton({
+            position: 'topright',
+            states: [{
+                stateName: 'unlocked',
+                title: 'Lock',
+                icon: 'icon-texas',
+                onClick: (btn /*, map*/) => {
+                    map.setView([31, -100], 5)
+                }
+            }]
+        }).addTo(map);
+
+        const toggleLockButton = L.easyButton({
+            position: 'topright',
+            states: [{
+                stateName: 'unlocked',
+                title: 'Lock',
+                icon: 'icon-unlocked',
+                onClick: (btn ) => {
+                    btn.state('locked');
+                    switch_unlocked = false;
+                }
+            }, {
+                stateName: 'locked',
+                title: 'Unlock',
+                icon: 'icon-locked',
+                onClick: (btn ) => {
+                    btn.state('unlocked');
+                    switch_unlocked = true;
+
+                }
+            }]
+        });
+        toggleLockButton.addTo(map)
+
         map.fitBounds(TEXAS);
         const baseLayer = L.tileLayer(
             "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png",
@@ -119,7 +169,8 @@
         let region_query;
         let property_name;
         let type_name
-        let table
+        let table;
+        let region;
         if(page === "region") {
             property_name = "letter";
             type_name = "RWPAS";
@@ -139,7 +190,7 @@
             `https://mapserver.tnris.org/?map=/tnris_mapfiles/${table}.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${type_name}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>${property_name}</PropertyName><Literal>${key}</Literal></PropertyIsEqualTo></Filter>`);
 
             let region_geo_json = await region_query.text();
-            let region = L.geoJson(JSON.parse(region_geo_json), {
+            region = L.geoJson(JSON.parse(region_geo_json), {
                 interactive: false,
                 style: {
                     color: "#cc9200",
@@ -148,8 +199,8 @@
             });
             region.addTo(map);
 
-            const center = region.getBounds().getCenter();
-            map.setView(center, 7);
+            if(switch_unlocked)
+                map.fitBounds(region.getBounds());
         }
 
 
@@ -170,20 +221,47 @@
             // The maxValue is used to determine how big the circle icon will be. You can scale based on a percentage of maxValue to determine the circle icon size!
             let maxValue = 1;
             const buildStrategies = () => {
+                if(switch_unlocked)
+                    /* Not all page types have a region so check for autofocus here. */
+                    if(region)
+                        map.fitBounds(region.getBounds());
+                let counter = 0;
+                let feat_coll = {"type":"FeatureCollection","numberMatched":0,"name":"AllSources","features":[]}
+
                 // Get the max value of SSDecadeStore!
                 for (let i = 0; i < swdata.strategies.rows?.length; i++) {
                     if (swdata.strategies.rows[i][`SS${$decadeStore}`] > maxValue) {
                         maxValue = swdata.strategies.rows[i][`SS${$decadeStore}`];
                     }
                 }
-                let totalEntity = swdata.strategies.rows
+
+                /** Store unique Entity Names. @type {string[]} */
+                let ename_store = [];
+                let totalEntity = swdata.strategies.rows.reduce((
+                    /** @type {any[]}*/ accumulator , /** @type {object} */ currentValue) => {
+                    if(!ename_store.includes(currentValue.EntityName)) {
+                        ename_store.push(currentValue.EntityName);
+                        accumulator.push(currentValue);
+                    }
+                    else {
+                        let obj = accumulator.find((e) => e.EntityName === currentValue.EntityName)
+                        // Loop through constant of years, with "SS in front then add the values."
+
+                        DECADES.forEach((decade) => {
+                            obj[`SS${decade}`] += currentValue[`SS${decade}`];
+                        })
+                    }
+
+
+                    return accumulator;
+                }, []);
 
 
                 /**
                  * Step4 for strategies
                  * Add the entities!
                  */
-                totalEntity?.forEach(async (item) => {
+                totalEntity?.forEach(async (item, i, ar) => {
                     if (
                         item.SourceType == "DIRECT REUSE" ||
                         item.SourceType == "LOCAL SURFACE WATER SUPPLY" ||
@@ -200,8 +278,8 @@
                             let mapSource = await fetch(
                                 `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PolygonSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
                             let text = await mapSource.text();
-
-                            let gj = L.geoJson(JSON.parse(text), {
+                            let j = JSON.parse(text);
+                            let gj = L.geoJson(j, {
                                 style: {
                                     color: "#3F556D",
                                     opacity: 1,
@@ -223,9 +301,20 @@
                                 clearInteraction("map-entity-hover");
                             })
                             gj.addTo(map);
+
+                            
                             layers.push(gj);
+                            counter++;
+
+                            if(switch_unlocked) {
+                                feat_coll.features.push(... j.features)
+                            }
+
+                        } else {
+                            counter++;
                         }
 
+ 
                         // Add the blue circle entites with a popup!
                         let radius = scaleTonew(
                             item[`SS${$decadeStore}`],
@@ -253,7 +342,13 @@
                         spiderfier.addMarker(marker);
                         marker.addTo(map);
                         layers.push(marker);
+                    } else {
+                        counter ++;
                     }
+
+                    if(switch_unlocked && counter >= ar.length) {
+                        cb(feat_coll);
+                    }     
                 });
 
                 /* Add the red triangle Projects! */
@@ -287,6 +382,10 @@
             };
 
             const buildNeeds = async () => {
+                if(switch_unlocked)
+                    /* Not all page types have a region so check for autofocus here. */
+                    if(region)
+                        map.fitBounds(region.getBounds());
                 let totalEntity = [];
                 // Compress entities on EntityID. Combine needs data!
                 swdata.needs.rows.forEach((item) => {
@@ -434,9 +533,34 @@
                  * Step4 for supplies
                  * Add the entities!
                  */
-                swdata.supplies.rows.forEach(async (item) => {
+                /*
+                 Idea behind this snippet is to limit requests by making one request for all geojson data then filter the results using JSON.
+                 But the query is too slow. I will need to wait until the GeoJson get's preprocessed in mapserver to explore this further.. 
+
+                //https://mapserver.tnris.org/?map=/tnris_mapfiles/iswp_sourcefeatures2022.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=CountyBoundaries&outputformat=geojson&SRSNAME=EPSG:4326&Filter=%3CFilter%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Esourceid%3C/PropertyName%3E%3CLiteral%3E293%3C/Literal%3E%3C/PropertyIsEqualTo%3E%3C/Filter%3E
+                (async () => {
+                    try {
+                        let mapSource = await fetch(
+                            `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PolygonSources&outputformat=geojson&SRSNAME=EPSG:4326`);
+                        let text = await mapSource.text();
+                        let a = JSON.parse(text);
+
+                        console.log(a);
+                    } catch(Err) {
+                        console.log("Here");
+                    }
+
+                })();
+                //https://mapserver.tnris.org/?map=/tnris_mapfiles/iswp_sourcefeatures2022.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PolygonSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=%3CFilter%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Esourceid%3C/PropertyName%3E%3CLiteral%3E%3COr%3E293%3C/Or%3E%3C/Literal%3E%3C/PropertyIsEqualTo%3E%3C/Filter%3E
+                */
+                let feat_coll = {"type":"FeatureCollection","numberMatched":0,"name":"AllSources","features":[]}
+                let counter = true;
+
+
+                swdata.supplies.rows.forEach(async (item, index, ar) => {
                     let sources = "PolygonSources";
                     let color = "#526e8d";
+
 
                     if(item.SourceName !== "DIRECT REUSE" && item.SourceName !== "LOCAL SURFACE WATER SUPPLY" && item.SourceName !== "ATMOSPHERE" && item.SourceName !== "Rainwater Harvesting") {
                         if(item.SourceName.includes("RIVER")) {
@@ -458,6 +582,15 @@
                             text = await mapSource.text();
                             j = JSON.parse(text);
                         }
+                        counter++;
+
+                        if(switch_unlocked) {
+                            feat_coll.features.push(... j.features)
+                            if(counter > ar.length) {
+                                cb(feat_coll);
+                            }
+                        }
+
                         // After Trying Lines and Polygons push whatever we got.
                         let gj = L.geoJson(j, {
                             style: {
@@ -484,6 +617,7 @@
                         gj.addTo(map);
                         layers.push(gj);
                     } else {
+                        counter++;
                         console.log(item.SourceName)
                     }
                 });
@@ -540,6 +674,8 @@
             };
 
             const buildDemands = () => {
+                if(switch_unlocked)
+                    map.fitBounds(region.getBounds());
                 let totalEntity = [];
                 // Compress entities on EntityID. Combine supplies data!
                 swdata.demands.rows.forEach((item) => {
@@ -596,14 +732,15 @@
                             )
                             .openPopup();
                             spiderfier.addMarker(marker);
-
+                        marker.addTo(map);
                         layers.push(marker);
                     }
                 });
             };
 
             const buildPopulation = () => {
-
+                if(switch_unlocked)
+                    map.fitBounds(region.getBounds());
                 let totalEntity = [];
 
                 // Compress entities on EntityID. Combine population data!

@@ -41,33 +41,11 @@
                 title: 'Lock',
                 icon: 'icon-texas',
                 onClick: (btn /*, map*/) => {
-                btn.state('locked');
-
+                    map.setView([31, -108], 5)
                 }
             }]
         }).addTo(map);
 
-        const toggleLockButton = L.easyButton({
-            position: 'topright',
-            states: [{
-                stateName: 'unlocked',
-                title: 'Lock',
-                icon: 'icon-unlocked',
-                onClick: (btn /*, map*/) => {
-                btn.state('locked');
-
-                }
-            }, {
-                stateName: 'locked',
-                title: 'Unlock',
-                icon: 'icon-locked',
-                onClick: (btn /*, map*/) => {
-                btn.state('unlocked');
-                }
-            }]
-        });
-
-        toggleLockButton.addTo(map)
 		map.fitBounds([[36.5, -106.65], [25.84, -93.51]]);
 
         const baseLayer = L.tileLayer(
@@ -97,6 +75,39 @@
                 const countyLabelsLayer = L.tileLayer(countyLabelret.tilesUrl);
                 map.addLayer(countyLabelsLayer);
         }
+
+        function countyHoverSetup() {
+                    // TODO: Cache this query
+                    let countyString = encodeURI(`https://mapserver.tnris.org/?map=/tnris_mapfiles/county_extended.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=CountyBoundaries&outputformat=geojson&SRSNAME=EPSG:4326`)
+                    fetch(countyString)
+                    .then(res => res.text())
+                    .then(body => {
+
+                        let gj = L.geoJson(JSON.parse(body), {
+                            style: {
+                                color: "#3F556D",
+                                opacity: 0,
+                                weight: 0,
+                                fillOpacity: 0,
+                            }
+                        });
+
+                        Object.values(gj._layers).forEach((item) => {
+                            gj.on('click', navigateToCounty);
+
+                            item.on("mousemove", (event) => {
+                                let name = item.feature.properties.name;
+                                const me = event.originalEvent;
+                                hoverHelper(me, "map-hover", name);
+                            })
+                            item.on("mouseout", () => {
+                                onLeave();
+                            })
+                            item.addTo(map)
+                        })
+                    })
+        }
+
 
         if(window.location.pathname == '/') {
             const url = `https://mapserver.tnris.org?map=/tnris_mapfiles/${regionTable}.map&mode=tile&tilemode=gmap&tile={x}+{y}+{z}&layers=RWPAS&map.imagetype=png`;
@@ -148,6 +159,7 @@
                 swdata.counties.forEach((c) => {
                     properties += `<PropertyIsEqualTo><PropertyName>name</PropertyName><Literal>${cap(c.CountyName).trim()}</Literal></PropertyIsEqualTo>`
                 });
+                //
                 let rString = encodeURI(`https://mapserver.tnris.org/?map=/tnris_mapfiles/county_extended.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=CountyBoundaries&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><OR>${properties}</OR></Filter>`)
                 fetch(rString)
                 .then(res => res.text())
@@ -164,35 +176,7 @@
                     gj.addTo(map);
                 })
 
-                // TODO: Cache this query
-                let countyString = encodeURI(`https://mapserver.tnris.org/?map=/tnris_mapfiles/county_extended.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=CountyBoundaries&outputformat=geojson&SRSNAME=EPSG:4326`)
-                fetch(countyString)
-                .then(res => res.text())
-                .then(body => {
-
-                    let gj = L.geoJson(JSON.parse(body), {
-                        style: {
-                            color: "#3F556D",
-                            opacity: 0,
-                            weight: 0,
-                            fillOpacity: 0,
-                        }
-                    });
-
-                    Object.values(gj._layers).forEach((item) => {
-                        gj.on('click', navigateToCounty);
-
-                        item.on("mousemove", (event) => {
-                            let name = item.feature.properties.name;
-                            const me = event.originalEvent;
-                            hoverHelper(me, "map-hover", name);
-                        })
-                        item.on("mouseout", () => {
-                            onLeave();
-                        })
-                        item.addTo(map)
-                    })
-                })
+                countyHoverSetup();
             } 
             //vwSelectRegionsInCounty
             //https://mapserver.tnris.org/?map=/tnris_mapfiles/county_extended.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=CountyBoundaries&outputformat=geojson&SRSNAME=EPSG:4326&Filter=%3CFilter%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Ename%3C/PropertyName%3E%3CLiteral%3EDallam%3C/Literal%3E%3C/PropertyIsEqualTo%3E%3C/Filter%3E
@@ -213,6 +197,8 @@
                     const center = gj.getBounds().getCenter();
                     center.lng -= .5; // Move center a bit to get out of the way of the population line graph
                     map.setView(center, 9);
+
+                    countyHoverSetup();
                 })
             } else if (page == "entity") {
                 buildGrid();
@@ -234,6 +220,7 @@
                 let entity = swdata.demands.rows[0];
 
                 map.setView([entity.Latitude, entity.Longitude - .1], 10);
+                
             } else if (page == "source") {
                 buildGrid();
 
