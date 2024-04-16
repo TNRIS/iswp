@@ -10,7 +10,7 @@
     import DataViewChoiceWrapInd from "$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte";
     import ThemeTypesByDecadeChart from "$lib/components/ThemeTypesByDecadeChart.svelte";
     import Header from "$lib/components/Header.svelte";
-    import { load_indexeddb, getConstants, cap } from "$lib/helper.js";
+    import { load_indexeddb, getConstants } from "$lib/helper.js";
     import { page } from '$app/stores';
     const entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`;
     let stratAd = [
@@ -42,25 +42,24 @@
         let groups = '';
 
         let found_regions = [];
+        regions.forEach((r) => {
+            const wc = r.WugRegion.trim();
+            if(!found_regions.includes(wc))
+                found_regions.push(wc);
+        })
 
-        if(regions) {
-            for(let i = 0; i < regions.length; i++) {
-                const wc = cap(regions[i].WugRegion).trim();
-                if(found_regions.includes(wc))
-                    continue;
-                else
-                    found_regions.push(wc);
-                
-                if(regions.length == 1) {
-                    groups += `<a href="/region/${wc}">Region ${wc}</a>`;
+        if(found_regions) {
+            found_regions.sort();
+            found_regions.forEach((r, i) => {                
+                if(found_regions.length == 1) {
+                    groups += `<a href="/region/${r}">Region ${r}</a>`;
                 }
-                else if(i < regions.length - 1) {
-                    groups += `<a href="/region/${wc}">Region ${wc}</a>, `;
-
+                else if(i < found_regions.length - 1) {
+                    groups += `<a href="/region/${r}">Region ${r}</a>, `;
                 } else {
-                    groups += `and <a href="/region/${wc}">Region ${wc}</a>`;
+                    groups += `and <a href="/region/${r}">Region ${r}</a>`;
                 }
-            }
+            });
         }
         tagline = groups.length ? `County in ${groups}` : undefined;
 
