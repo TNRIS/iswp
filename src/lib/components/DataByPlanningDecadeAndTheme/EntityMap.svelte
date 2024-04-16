@@ -7,6 +7,7 @@
     const countyTable = "county_extended";
     const regionTable = "rwpas";
     const { title, swdata, constants, type, entityMapBlurb } = $$props;
+    const DECADES = constants.getDecades();
     const sourceTable = constants.sourcemap;
     const dataviewContext = getContext("dataviewContext");
     const decadeStore = getContext("myContext").decadeStore;
@@ -33,8 +34,11 @@
             minZoom: 1,
         });
         let cb = (fc) => {
-            let gj = L.geoJson(fc);
-            map.fitBounds(gj.getBounds());
+            /* If there are GeoJson features then fitbounds to them. Otherwise move on. */
+            if(fc.features.length) {
+                let gj = L.geoJson(fc);
+                map.fitBounds(gj.getBounds());
+            }
         }
 
         spiderfier = new OverlappingMarkerSpiderfier(map, {
@@ -217,6 +221,10 @@
             // The maxValue is used to determine how big the circle icon will be. You can scale based on a percentage of maxValue to determine the circle icon size!
             let maxValue = 1;
             const buildStrategies = () => {
+                if(switch_unlocked)
+                    /* Not all page types have a region so check for autofocus here. */
+                    if(region)
+                        map.fitBounds(region.getBounds());
                 let counter = 0;
                 let feat_coll = {"type":"FeatureCollection","numberMatched":0,"name":"AllSources","features":[]}
 
@@ -226,7 +234,27 @@
                         maxValue = swdata.strategies.rows[i][`SS${$decadeStore}`];
                     }
                 }
-                let totalEntity = swdata.strategies.rows
+
+                /** Store unique Entity Names. @type {string[]} */
+                let ename_store = [];
+                let totalEntity = swdata.strategies.rows.reduce((
+                    /** @type {any[]}*/ accumulator , /** @type {object} */ currentValue) => {
+                    if(!ename_store.includes(currentValue.EntityName)) {
+                        ename_store.push(currentValue.EntityName);
+                        accumulator.push(currentValue);
+                    }
+                    else {
+                        let obj = accumulator.find((e) => e.EntityName === currentValue.EntityName)
+                        // Loop through constant of years, with "SS in front then add the values."
+
+                        DECADES.forEach((decade) => {
+                            obj[`SS${decade}`] += currentValue[`SS${decade}`];
+                        })
+                    }
+
+
+                    return accumulator;
+                }, []);
 
 
                 /**
@@ -318,7 +346,6 @@
                         counter ++;
                     }
 
-                    console.log("Here");
                     if(switch_unlocked && counter >= ar.length) {
                         cb(feat_coll);
                     }     
@@ -356,7 +383,9 @@
 
             const buildNeeds = async () => {
                 if(switch_unlocked)
-                    map.fitBounds(region.getBounds());
+                    /* Not all page types have a region so check for autofocus here. */
+                    if(region)
+                        map.fitBounds(region.getBounds());
                 let totalEntity = [];
                 // Compress entities on EntityID. Combine needs data!
                 swdata.needs.rows.forEach((item) => {
@@ -703,7 +732,7 @@
                             )
                             .openPopup();
                             spiderfier.addMarker(marker);
-
+                        marker.addTo(map);
                         layers.push(marker);
                     }
                 });
