@@ -15,14 +15,18 @@
      * @return {boolean}
      */
     function isAllZero() {
-        for (let i = 0; i < data.series.length; i++) {
-            const s = data.series[i];
-            for (let j = 0; j < s.data.length; j++) {
-                if (s.data[j] !== 0) {
+        let group = data[group_name];
+
+        // Return false if anything in any of the keys are non zero.
+        // Use regular for Loop not a forEach to return out of isAllZero function. 
+        for(let i = 0; i < group.length; i++) {
+            let series = group[i].data;
+            for(let j = 0; j < series.length; j++) {
+                if(series[j])
                     return false;
-                }
             }
         }
+        //If we get through the above loop without a match all items are zero.
         return true;
     }
 
@@ -92,6 +96,9 @@
 
 </script>
 <div class="bar-chart-container">
+    {#if isAllZero()}
+    <div class="zero-message">All values are zero</div>
+    {/if}
     <div class="ct-chart">
         <div
             on:mouseover={onHover}
