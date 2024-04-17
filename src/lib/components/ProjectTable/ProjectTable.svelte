@@ -1,5 +1,4 @@
 <script>
-    //@ts-nocheck
     import { Grid, html } from "gridjs";
     import "gridjs/dist/theme/mermaid.css";
     import { onMount } from "svelte";
@@ -8,6 +7,9 @@
     let sum = 0;
 
     let projects = false;
+    /**
+     * @type {Array<Array<Object>>}
+     */
     $: project_data = []
     $: display_table = "none";
     onMount(async () => {
@@ -40,10 +42,63 @@
         }
         const grid = new Grid({
             columns: [
-                { name: "Project", width: "45%" },
-                { name: "Decade Online", width: "18%" },
+                { 
+                    name: "Project",
+                    width: "45%",
+                    sort: {
+                        /**
+                         * 
+                         * @param {any} a Object to compare containing a item in the grid.
+                         * @param {any} b Object to compare containing a item in the grid.
+                         */
+                        compare: (a, b ) => {
+                            try {
+                                let acont = a?.props?.content.replace(/<.*?>/g, "");
+                                let bcont = b?.props?.content.replace(/<.*?>/g, "");
+                                if(acont > bcont)
+                                    return 1;
+                                else if(bcont > acont)
+                                    return -1;
+                                else
+                                    return 0;
+                            } catch(err) {
+                                console.log("Problem sorting Project.");
+                                return 0; // Default to 0 in case of an error.
+                            }
+
+                        }
+                    }},
+                { 
+                    name: "Decade Online", 
+                    width: "18%" 
+                },
                 "Sponsor",
-                { name: "Capital Cost", width: "16%" },
+                { 
+                    name: "Capital Cost", 
+                    width: "16%" ,
+                    sort: {
+                        /**
+                         * 
+                         * @param {any} a Object to compare containing a item in the grid.
+                         * @param {any} b Object to compare containing a item in the grid.
+                         */
+                        compare: (a, b) => {
+                            try {
+                                let acont = Number(a.replace(/(^\$|,)/g,''));
+                                let bcont = Number(b.replace(/(^\$|,)/g,''));
+                                if(acont > bcont)
+                                    return 1;
+                                else if(bcont > acont)
+                                    return -1;
+                                else
+                                    return 0;
+                            } catch(err) {
+                                console.log("Problem sorting Capital Cost.");
+                                return 0; // Default to 0 in case of an error.
+                            }
+                        }
+                    }
+                },
             ],
             pagination: true,
             sort: true,
