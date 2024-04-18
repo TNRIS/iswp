@@ -12,7 +12,7 @@
     import Header from "$lib/components/Header.svelte";
     import { load_indexeddb, getConstants } from "$lib/helper.js";
     import { page } from '$app/stores';
-    const entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`;
+    const entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`;
     let stratAd = [
         "Region",
         "Entity",

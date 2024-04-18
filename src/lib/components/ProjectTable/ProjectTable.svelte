@@ -2,7 +2,7 @@
     import { Grid, html } from "gridjs";
     import "gridjs/dist/theme/mermaid.css";
     import { onMount } from "svelte";
-    import { usd_format } from "$lib/helper.js";
+    import { usd_format, usd_format_whole } from "$lib/helper.js";
     const { swdata, type, project_title, project_title2 } = $$props;
     let sum = 0;
 
@@ -19,7 +19,7 @@
                 html(`<a href="/project/${project.WmsProjectId}">${project.ProjectName}`),
                 project.OnlineDecade,
                 project.ProjectSponsors,
-                usd_format.format(project.CapitalCost),
+                project.CapitalCost % 1 != 0 ? usd_format.format(project.CapitalCost) : usd_format_whole.format(project.CapitalCost)
             ];
 
             // Need to stringify array to use includes function because [1] !== [1] since they don't have the same reference.
@@ -131,7 +131,7 @@
                 {#if project_data.length}
                 <p>
                     Total capital cost of recommended projects:
-                    <strong>{usd_format.format(sum)}</strong>.
+                    <strong>{sum}</strong>.
                 </p>
                 {:else}
                 <p>There are no recommended projects.</p>

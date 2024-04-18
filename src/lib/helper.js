@@ -56,7 +56,12 @@ export let usd_format = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD'
     //maximumFractionDigits: decimalpoints
-    
+});
+
+export let usd_format_whole = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0
 });
 
 // Load indexeddb

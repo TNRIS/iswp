@@ -4,6 +4,7 @@
     import { commafy, onMountSync, usd_format } from "$lib/helper.js";
     let pivotLoaded = false;
     import CsvDownloads from "$lib/components/CsvDownloads.svelte";
+    import { sourceNames } from "$lib/pages/SourceNames";
 
     import { getContext } from "svelte";
     const decadeStore = getContext("myContext").decadeStore;
@@ -147,6 +148,9 @@
 
 
             formattedRows.forEach((f) => {
+                if(f.MapSourceId)
+                    f.SourceName = f.SourceName?.startsWith('<a') ? f.SourceName : `<a href="/source/${f.MapSourceId}">${f.SourceName}</a>`;
+                f.WugRegion = f.WugRegion?.startsWith('<a') ? f.WugRegion : `<a href="/region/${f.WugRegion}">${f.WugRegion}</a>`;
                 f.EntityName = f.EntityName?.startsWith('<a') ? f.EntityName : `<a href="/entity/${f.EntityId}">${f.EntityName}</a>`;
                 f.WugCounty = f.WugCounty?.startsWith('<a') ? f.WugCounty : `<a href="/county/${f.WugCounty}">${f.WugCounty}</a>`;
                 f.WmsName = f.WmsName?.startsWith('<a') ? f.WmsName : `<a href="/wms/${f.WmsId}">${f.WmsName}</a>`;
