@@ -4,7 +4,6 @@
     import { commafy, onMountSync, usd_format } from "$lib/helper.js";
     let pivotLoaded = false;
     import CsvDownloads from "$lib/components/CsvDownloads.svelte";
-    import { sourceNames } from "$lib/pages/SourceNames";
 
     import { getContext } from "svelte";
     const decadeStore = getContext("myContext").decadeStore;
