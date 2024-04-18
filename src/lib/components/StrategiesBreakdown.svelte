@@ -141,7 +141,7 @@
                 bind:this={srttable}
             >
                 {#if swdata?.strategies?.strategyTypeTotals}
-                    <tr>
+                    <tr id="strat_header">
                         <th on:click={() => {sortAlphabetic(srttable, 0, false)}}>Strategy Type</th>
                         <th on:click={() => {sortNumeric(srttable, 1, '(', ')', false)}}>Amount</th>
                     </tr>
@@ -171,5 +171,8 @@
         font-size: 1rem !important;
         color: #000 !important;
         fill: #000 !important;
+    }
+    #strat_header {
+        cursor: pointer;
     }
 </style>
