@@ -120,6 +120,12 @@
             },
         }).render(document.getElementById("table-container"));
     });
+
+    // Abstract the process of formatting the sum. With some checking.
+    const format_sum = () => {
+        return sum % 1 != 0 ? usd_format_whole.format(sum) : usd_format_whole.format(sum)
+    }
+
 </script>
 
 <div class="container">
@@ -131,13 +137,12 @@
                 {#if project_data.length}
                 <p>
                     Total capital cost of recommended projects:
-                    <strong>{sum}</strong>.
+                    <strong>{format_sum()}</strong>.
                 </p>
                 {:else}
                 <p>There are no recommended projects.</p>
                 {/if}
                 <div id="table-container" style='display:{display_table}' />
-
             </div>
         </div>
     </div>

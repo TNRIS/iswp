@@ -185,7 +185,7 @@
 {/await}
 
 <div class="row panel-row">
-    <span class="view-name">{csvTitle}</span>
+    <span class="view-name">{title}</span>
     <h4>Raw Data - {$decadeStore} - {themeTitles[$themeStore]}
         {#if $themeStore === "population"}
         <span class="units">(people)</span>
