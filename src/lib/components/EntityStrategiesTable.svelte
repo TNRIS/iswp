@@ -17,7 +17,7 @@
 
         // Copy object.
         let strat_raw = JSON.parse(JSON.stringify(swdata.strategies.rows));
-        strat_raw = srtat_raw.sort((a, b) => a.WmsName.localeCompare(b.WmsName));
+        strat_raw = strat_raw.sort((a, b) => a.WmsName.localeCompare(b.WmsName));
 
         let strat_condensed = strat_raw.reduce((acc, d) => {
             const found = acc.find(a => a.WmsName === d.WmsName);
