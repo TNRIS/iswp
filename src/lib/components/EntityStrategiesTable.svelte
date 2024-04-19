@@ -3,7 +3,7 @@
     import { Grid, html } from "gridjs";
     import "gridjs/dist/theme/mermaid.css";
     import { onMount } from "svelte";
-    import { usd_format } from "$lib/helper.js";
+    import { usd_format, commafy } from "$lib/helper.js";
     const { swdata, type, constants, title } = $$props;
     let sum = 0;
 
@@ -15,7 +15,7 @@
             strategies = true;
         let strategy_data = [];
 
-        // Copy object.
+        // Deep Copy object.
         let strat_raw = JSON.parse(JSON.stringify(swdata.strategies.rows));
         strat_raw = strat_raw.sort((a, b) => a.WmsName.localeCompare(b.WmsName));
 
@@ -39,11 +39,41 @@
             for (let decade of decades) {
                 to_array.push(strat?.[`SS${decade}`]);
             }
+            to_array.forEach((a, i) => {
+                if(typeof a === 'number')
+                    to_array[i] = commafy(a + "");
+            })
             strategy_data.push(to_array);
         }
+
         const grid = new Grid({
             columns: [
-                { name: "Strategy", width: "40%" },
+                { 
+                    name: "Strategy",
+                    width: "40%",
+                    sort: {
+                        /**
+                         * 
+                         * @param {any} a Object to compare containing a item in the grid.
+                         * @param {any} b Object to compare containing a item in the grid.
+                         */
+                        compare: (a, b ) => {
+                            try {
+                                let acont = a?.props?.content.replace(/<.*?>/g, "");
+                                let bcont = b?.props?.content.replace(/<.*?>/g, "");
+                                if(acont > bcont)
+                                    return 1;
+                                else if(bcont > acont)
+                                    return -1;
+                                else
+                                    return 0;
+                            } catch(err) {
+                                console.log("Problem sorting Project.");
+                                return 0; // Default to 0 in case of an error.
+                            }
+                        }
+                    }
+                },
                 decades?.[0],
                 decades?.[1],
                 decades?.[2],

@@ -220,6 +220,8 @@
                 let entity = swdata.demands.rows[0];
 
                 map.setView([entity.Latitude, entity.Longitude - .1], 10);
+
+                countyHoverSetup();
                 
             } else if (page == "source") {
                 buildGrid();
