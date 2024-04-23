@@ -20,7 +20,8 @@
         } catch(err) {
             console.log("Problem building Entity Map")
         }
-        $bindTreeMap(data);
+        if($bindTreeMap)
+            $bindTreeMap(data);
         $buildPie();
 
     };
