@@ -3,7 +3,7 @@
     const { swdata, csvTitle, title, constants, fileName } = $$props;
     import CsvDownloads from "$lib/components/CsvDownloads.svelte";
 
-    import { onMountSync, usd_format } from "$lib/helper.js";
+    import { onMountSync, usd_format, commafy } from "$lib/helper.js";
     let pivotLoaded = false;
 
     import { getContext } from "svelte";
@@ -29,7 +29,7 @@
                         title: titleCalcField,
                         value: "amountTotal",
                         template: function (val, row) {
-                            return val;
+                            return commafy(val + '');
                         },
                         sortBy: function (row) {
                             return isNaN(row.amountTotal) ? 0 : row.amountTotal;
@@ -44,7 +44,7 @@
             rows = swdata.projects;
 
             dimensions = [
-                { value: "WmsSponsorRegion", title: "Region" },
+                { value: "WugRegion", title: "Region" },
                 { value: "WugCounty", title: "County" },
                 { value: "EntityName", title: "Entity" },
             ];
@@ -62,8 +62,19 @@
 
             if (document.getElementById("reactpivot").firstChild)
                 document.getElementById("reactpivot").firstChild.remove();
+
+                let formattedRows = JSON.parse(JSON.stringify(rows));
+
+
+                formattedRows.forEach((f) => {
+                    f.WugRegion = f.WugRegion?.startsWith('<a') ? f.WugRegion : `<a href="/region/${f.WugRegion}">${f.WugRegion}</a>`;
+                    f.EntityName = f.EntityName?.startsWith('<a') ? f.EntityName : `<a href="/entity/${f.EntityId}">${f.EntityName}</a>`;
+                    f.WugCounty = f.WugCounty?.startsWith('<a') ? f.WugCounty : `<a href="/county/${f.WugCounty}">${f.WugCounty}</a>`;
+                })
+
+
             ReactPivot(document.getElementById("reactpivot"), {
-                rows: rows,
+                rows: formattedRows,
                 dimensions: dimensions,
                 calculations: calculations,
                 activeDimensions: activeDimensions,
@@ -93,7 +104,7 @@
 
 <div class="row panel-row">
     <span class="view-name">{title}</span>
-    <h4>Download Data</h4>
+    <h4>Raw Data - {$decadeStore} - Population Benefiting</h4>
     <div id="reactpivot" />
     <CsvDownloads {swdata} {csvTitle} {fileName} {constants} />
 </div>

@@ -4,7 +4,7 @@
     //@ts-nocheck
     import LineChart from "./LineChart.svelte";
     import ChartDataTable from "$lib/components/ChartDataTable.svelte";
-    const { title, swdata, mapOnly, constants, tagline } = $$props;
+    const { title, swdata, titleOnly, constants, tagline, noMap, dont_capitalize_title } = $$props;
     import PopulationMap from "$lib/components/Maps/PopulationMap.svelte";
     import { commafy } from "$lib/helper.js";
 
@@ -26,7 +26,7 @@
                             swdata.population.decadeTotals[decades[2]],
                             swdata.population.decadeTotals[decades[3]],
                             swdata.population.decadeTotals[decades[4]],
-                            swdata.population.decadeTotals[decades[5]],
+                            swdata.population.decadeTotals[decades[5]]
                         ],
                         meta: "population",
                         name: "population",
@@ -40,15 +40,19 @@
     };
 </script>
 
-<div class="view-top statewide-view-top">
+<div class={noMap ? "noMapTitle view-top statewide-view-top" : "view-top statewide-view-top"}>
     <div class="summary-wrapper container" style="z-index: 600">
         <div class="view-summary">
+            {#if dont_capitalize_title}
             <h2 class={title.length > 18 ? "long-name" : ""}>{title}</h2>
+            {:else}
+            <h2 class={title.length > 18 ? "long-name" : ""}>{title.toUpperCase()}</h2>
+            {/if}
             
             {#if tagline}
             <span id="tagline">{@html tagline}</span>
             {/if}
-            {#if mapOnly !== true}
+            {#if titleOnly !== true}
 
             <div class="chart-header">
                 <h5>Population</h5>
@@ -86,11 +90,17 @@
             {/if}
         </div>
     </div>
+    {#if !noMap}
     <PopulationMap {title} {swdata} {constants} />
+    {/if}
 </div>
 
 <style>
     #tagline {
         font-style:italic;
+    }
+
+    .noMapTitle {
+        height: auto!important;
     }
 </style>

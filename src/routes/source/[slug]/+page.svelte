@@ -40,7 +40,7 @@
 {#await loadForSource()}
 <div class="loader"></div>
 {:then out}
-<PopulationChart {tagline} mapOnly={true} {title} {constants} />
+<PopulationChart {tagline} titleOnly={true} {title} {constants} />
 <ProjectTable swdata={out} type={"region"} project_title={"WATER SOURCE - " + title} project_title2={"Projects Associated with Source"} {title} />
 <DataViewChoiceWrapInd  {title} {entityMapBlurb} swdata={out} type={"source"} fileName={`source_${data.slug}`} {constants} csvTitle={title} sourcePage={true} />
 

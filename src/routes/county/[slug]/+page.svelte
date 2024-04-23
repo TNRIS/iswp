@@ -87,6 +87,7 @@
                 swdata={out}
                 {tagline}
                 {constants}
+                dont_capitalize_title={true}
             />
             <ThemeTotalsByDecadeChart title={`${data.slug} County`} swdata={out} {constants} />
             <ThemeTypesByDecadeChart

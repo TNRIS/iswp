@@ -878,12 +878,12 @@
 </script>
 
 <div class="row panel-row">
-    <span class="view-name">{title}</span>
+    <!-- Only project has type pop because it has an entity map with population only. -->
     {#if type == "pop"}
-    <h4>Water User Groups - {$decadeStore} - {theme_titles["population"]}<span class="units">(people)</span></h4>
+    <span class="view-name">{title}</span>
+    <h4>Water User Groups - {$decadeStore} - {theme_titles["population"]} Benefiting</h4>
     {:else}
-
-
+    <span class="view-name">{title}</span>
     <h4>Water User Groups - {$decadeStore} - {theme_titles[$themeStore]}
     {#if $themeStore === "population"}
     <span class="units">(people)</span>

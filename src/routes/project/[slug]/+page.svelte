@@ -49,9 +49,9 @@
 {#await loadForSource()}
 <div class="loader"></div>
 {:then out}
-    <PopulationChart {tagline} title={out.projects[0].ProjectName} mapOnly={true} swdata={out} {constants} />
+    <PopulationChart {tagline} title={out.projects[0].ProjectName} titleOnly={true} swdata={out} {constants} />
     <ProjectTable2 project_title={`WMS PROJECT - ${out.projects[0].ProjectName}`} project_title2={"Water Management Strategies related to Project"} swdata={out} type={"region"} />
-    <DataViewChoiceWrapInd {entityMapBlurb} swdata={out} type={"pop"} hideTheme={true} {constants} csvTitle={cap(out.projects[0].ProjectName)} fileName={`project_${data.slug}`} />
+    <DataViewChoiceWrapInd title={`WMS PROJECT - ${out.projects[0].ProjectName}`} {entityMapBlurb} swdata={out} type={"pop"} hideTheme={true} {constants} csvTitle={`${cap(out.projects[0].ProjectName)} WMS`} fileName={`project_${data.slug}`} />
 {:catch error}
     <span>Error starting database {error.message}</span>
 {/await}

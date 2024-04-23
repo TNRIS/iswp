@@ -62,6 +62,7 @@
     
     let regions = constants.getRegions().reduce((a, o) => (a.push({"value": o, "label": "Region " + o}), a), []);
     let chosen = selected.id;
+    let label = "";
     if(chosen == "statewide") {
         chosen = "";
     }
@@ -116,6 +117,7 @@
     */
     let reset = (value) => {
         chosen = value.detail.value;
+        label = value.detail.placeholder_override ? value.detail.placeholder_override : value.detail.label;
         chosen2 = categories[chosen][0]["value"];
     }
 
@@ -124,7 +126,7 @@
     }
    let items =  [
             { value: "", label: "All of Texas" },
-            { value: "region", label: "Planning Region" },
+            { value: "region", label: "Planning Region", placeholder_override: "Region"},
             { value: "county", label: "County" },
             { value: "entity", label: "Water User Group" },
             { value: "usagetype", label: "Usage Type" },
@@ -150,7 +152,7 @@
 
                 {#if chosen == "region" || chosen == "county" || chosen == "usagetype" || chosen == "source" || chosen == "wmstype"}
                 <div class="select-container" style="width:400px;">
-                    <Select items={categories[chosen]} clearable={false} on:change={box2Change} placeholder={`Select ${chosen}`} showChevron />
+                    <Select items={categories[chosen]} clearable={false} on:change={box2Change} placeholder={`Select ${label}`} showChevron />
                 </div>
                 {:else}
                 <div class="select-container">

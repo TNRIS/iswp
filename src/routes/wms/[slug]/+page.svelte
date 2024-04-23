@@ -27,7 +27,10 @@
     const wmsSetting2 = new QuerySettings("wms", "WmsId");
     wmsSetting2.setAll(Number(data.slug));
     let csvTitle = "";
-    const entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`;
+    let entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`;
+    if($page.url.host.includes("2022"))
+        entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`
+
     let loadForWms = async () => {
         let start = Date.now();
         db = await load_indexeddb();
@@ -54,9 +57,9 @@
 {#await loadForWms()}
 <div class="loader"></div>
 {:then out}
-    <PopulationChart {tagline} title={csvTitle} mapOnly={true} swdata={out} {constants} />
+    <PopulationChart {tagline} title={csvTitle} titleOnly={true} swdata={out} {constants} noMap={true} />
     <ProjectTable project_title={`WATER MANAGEMENT STRATEGY - ${csvTitle}`} project_title2={"Projects related to Water Management Strategy"} swdata={out} type={"region"} />
-    <DataViewChoiceWrapInd {entityMapBlurb} {stratAd} swdata={out} hideTheme={true} type={"wms"} {constants} {csvTitle} />
+    <DataViewChoiceWrapInd title={`WATER MANAGEMENT STRATEGY - ${csvTitle}`} {entityMapBlurb} {stratAd} swdata={out} hideTheme={true} type={"wms"} {constants} {csvTitle} />
 {:catch error}
     <span>Error starting database {error.message}</span>
 {/await}
