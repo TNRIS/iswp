@@ -26,7 +26,7 @@
                 title="Texas Water Development Board"
             >
                 <img
-                    src="/old_static/img/twdb-logo-dark-bkgd-w200px-3c.png"
+                    src="/img/twdb-logo-dark-bkgd-w200px-3c.png"
                     class="logo"
                     alt="Texas Water Development Board Logo"
                 />

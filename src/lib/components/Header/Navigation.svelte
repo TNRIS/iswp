@@ -140,7 +140,7 @@
 </script>
 
 <div class="header-nav sticky-div">
-    <div class="wrapper">
+    <div class="wrapper" id="wrapper">
         <form>
             <label for="navcat">View data for</label>
             <div class="select-container" aria-live="polte" id="navcat_container">
@@ -151,7 +151,7 @@
             {#if chosen && chosen !== "" && chosen !== "statewide"}
 
                 {#if chosen == "region" || chosen == "county" || chosen == "usagetype" || chosen == "source" || chosen == "wmstype"}
-                <div class="select-container" style="width:400px;">
+                <div class="select-container" style="width:200px;">
                     <Select items={categories[chosen]} clearable={false} on:change={box2Change} placeholder={`Select ${label}`} showChevron />
                 </div>
                 {:else}
@@ -263,5 +263,9 @@
 
     :global(.nav-option) {
         color: green !important;
+    }
+
+    #wrapper {
+        padding-top:5px;
     }
 </style>
