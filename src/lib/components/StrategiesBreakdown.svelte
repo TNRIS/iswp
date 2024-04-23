@@ -21,10 +21,8 @@
         .reduce((accumulator, currentValue) => {
             currentValue[1] = currentValue[1][$decadeStore];
             accumulator.push(currentValue);
-            if(stt_entries_empty && currentValue[1]) {
+            if(stt_entries_empty && currentValue[1])
                 stt_entries_empty = false;
-                console.log("here");
-            }
             return accumulator;
         }, [])
     }
@@ -47,10 +45,8 @@
                         .replace(" ", "-")
                         .toLowerCase(),
                 });
-                if(strats_empty && currentValue[1][$decadeStore]) {
+                if(strats_empty && currentValue[1][$decadeStore])
                     strats_empty = false;
-                    console.log("here");
-                }
                     
                 return accumulator;
             },

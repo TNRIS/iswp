@@ -533,26 +533,6 @@
                  * Step4 for supplies
                  * Add the entities!
                  */
-                /*
-                 Idea behind this snippet is to limit requests by making one request for all geojson data then filter the results using JSON.
-                 But the query is too slow. I will need to wait until the GeoJson get's preprocessed in mapserver to explore this further.. 
-
-                //https://mapserver.tnris.org/?map=/tnris_mapfiles/iswp_sourcefeatures2022.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=CountyBoundaries&outputformat=geojson&SRSNAME=EPSG:4326&Filter=%3CFilter%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Esourceid%3C/PropertyName%3E%3CLiteral%3E293%3C/Literal%3E%3C/PropertyIsEqualTo%3E%3C/Filter%3E
-                (async () => {
-                    try {
-                        let mapSource = await fetch(
-                            `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PolygonSources&outputformat=geojson&SRSNAME=EPSG:4326`);
-                        let text = await mapSource.text();
-                        let a = JSON.parse(text);
-
-                        console.log(a);
-                    } catch(Err) {
-                        console.log("Here");
-                    }
-
-                })();
-                //https://mapserver.tnris.org/?map=/tnris_mapfiles/iswp_sourcefeatures2022.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PolygonSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=%3CFilter%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Esourceid%3C/PropertyName%3E%3CLiteral%3E%3COr%3E293%3C/Or%3E%3C/Literal%3E%3C/PropertyIsEqualTo%3E%3C/Filter%3E
-                */
                 let feat_coll = {"type":"FeatureCollection","numberMatched":0,"name":"AllSources","features":[]}
                 let counter = true;
 
