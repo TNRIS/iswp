@@ -118,7 +118,15 @@
                     border: "none",
                 },
             },
-        }).render(document.getElementById("table-container"));
+        // @ts-ignore because document is defined since this is onMount();
+    }).render(document.getElementById("table-container"));
+
+
+        // No built in way to customize the placeholder for gridjs-input so I need to do this workaround.
+        // @ts-ignore because document is defined since this is onMount();
+        let gridjs_input = document.getElementById("rpc").getElementsByClassName("gridjs-input")[0];
+        if(gridjs_input)
+            gridjs_input.setAttribute("placeholder", `Filter by Project`);
     });
 
     // Abstract the process of formatting the sum. With some checking.
@@ -132,7 +140,7 @@
     <div class="row panel-row">
         <div class="twelve columns">
             <span class="view-name">{project_title}</span>
-            <div class="recommended-projects-container">
+            <div class="recommended-projects-container" id="rpc">
                 <h4>Recommended {project_title2}</h4>
                 {#if project_data.length}
                 <p>

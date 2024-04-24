@@ -12,17 +12,26 @@
     import "chartist/dist/index.css"
 
     import { PieChart } from 'chartist';
-    $: stt_entries = Object.entries(swdata.strategies.strategyTypeTotals)
+
+    let buildEntries = () => {
+        return Object.entries(swdata.strategies.strategyTypeTotals)
         .sort((a, b) => {
             return b[1][$decadeStore] - a[1][$decadeStore];
         })
         .reduce((accumulator, currentValue) => {
             currentValue[1] = currentValue[1][$decadeStore];
             accumulator.push(currentValue);
+            if(stt_entries_empty && currentValue[1])
+                stt_entries_empty = false;
             return accumulator;
-        }, []);
+        }, [])
+    }
+    let stt_entries_empty = true;
+    let stt_entries = buildEntries();
 
-    $: strats = Object.entries(swdata.strategies.strategySourceTotals)
+
+    const buildStrats = () => {
+        return Object.entries(swdata.strategies.strategySourceTotals)
         .sort((a, b) => {
             return b[1][$decadeStore] - a[1][$decadeStore];
         })
@@ -36,13 +45,36 @@
                         .replace(" ", "-")
                         .toLowerCase(),
                 });
+                if(strats_empty && currentValue[1][$decadeStore])
+                    strats_empty = false;
+                    
                 return accumulator;
             },
             {
                 labels: [],
                 data: [],
             }
-        );
+        )
+    }
+
+    let strats_empty = true;
+    let strats = buildStrats();
+
+    // Run a function to reset stt_entries_empty if stt_entries is modified. I need fine control over when entries and stats are updated. So I check decadeStore change.
+    $: if ($decadeStore) {
+        stt_entries_empty = true;
+        strats_empty = true;
+        stt_entries = buildEntries();
+        strats = buildStrats();
+    }
+
+    $: if ($themeStore) {
+        stt_entries_empty = true;
+        strats_empty = true;
+        stt_entries = buildEntries();
+        strats = buildStrats();
+    }
+
 
     let buildCtchart = async () => {
         var data = {
@@ -122,6 +154,8 @@
     <div class="row">
         <h4>Strategy Supplies Breakdown - {$decadeStore}<span class="units">(acre-feet/year)</span></h4>
     </div>
+    {#if !strats_empty && !stt_entries_empty}
+
     <div class="row">
         <div class="six columns strategies-by-source-type-container">
 
@@ -140,7 +174,6 @@
                 class="table-condensed u-full-width strategies-by-type-table"
                 bind:this={srttable}
             >
-                {#if swdata?.strategies?.strategyTypeTotals}
                     <tr id="strat_header">
                         <th on:click={() => {sortAlphabetic(srttable, 0, false)}}>Strategy Type</th>
                         <th on:click={() => {sortNumeric(srttable, 1, '(', ')', false)}}>Amount</th>
@@ -155,12 +188,13 @@
                         </tr>
                         {/if}
                     {/each}
-                {:else}
-                    <span>No Strategy types found</span>
-                {/if}
+
             </table>
         </div>
     </div>
+    {:else}
+    <span>The strategies do not affect any water user groups in the chosen decade: {$decadeStore}</span>
+    {/if}
 </div>
 
 <style>

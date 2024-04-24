@@ -245,6 +245,7 @@
                         const center = gj.getBounds().getCenter();
                         center.lng -= .25 // Move center a bit to get out of the way of the population line graph
                         map.setView(center, 10);
+                        countyHoverSetup();
                     })
                 })
 
@@ -260,6 +261,7 @@
                     icon
                 }).addTo(map)
                 map.setView([project.ProjectLatCoord, project.ProjectLongCoord - .5], 9);
+                countyHoverSetup();
             }
         }
     });

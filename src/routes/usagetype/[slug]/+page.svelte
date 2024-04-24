@@ -13,7 +13,9 @@
     import Livestock from "/static/img/icon-livestock.svg";
     import Mining from "/static/img/icon-mining.svg";
     import { page } from '$app/stores';
-    const entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`
+    let entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`;
+    if($page.url.host.includes("2022"))
+        entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`;
 
     let constants = getConstants($page.url.host)
     let utSetting = new QuerySettings("usagetype", "WugType");
@@ -60,26 +62,26 @@
             <h2><Irrigation class="usage-type-icon icon-irrigation legend-marker" />{data.slug}</h2>
             {/if}
             {#if data.slug == "MUNICIPAL"}
-            <h2><Municipal class="usage-type-icon icon-irrigation legend-marker" />{data.slug}</h2>
+            <h2><Municipal class="usage-type-icon icon-municipal legend-marker" />{data.slug}</h2>
             {/if}
             {#if data.slug == "MANUFACTURING"}
-            <h2><Manufacturing class="usage-type-icon icon-irrigation legend-marker" />{data.slug}</h2>
+            <h2><Manufacturing class="usage-type-icon icon-manufacturing legend-marker" />{data.slug}</h2>
             {/if}
             {#if data.slug == "STEAM ELECTRIC POWER"}
-            <h2><SteamElectricPower class="usage-type-icon icon-irrigation legend-marker" />{data.slug}</h2>
+            <h2><SteamElectricPower class="usage-type-icon icon-steam-electric-power legend-marker" />{data.slug}</h2>
             {/if}
             {#if data.slug == "LIVESTOCK"}
-            <h2><Livestock class="usage-type-icon icon-irrigation legend-marker" />{data.slug}</h2>
+            <h2><Livestock class="usage-type-icon icon-livestock legend-marker" />{data.slug}</h2>
             {/if}
             {#if data.slug == "MINING"}
-            <h2><Mining class="usage-type-icon icon-irrigation legend-marker" />{data.slug}</h2>
+            <h2><Mining class="usage-type-icon icon-mining legend-marker" />{data.slug}</h2>
             {/if}
             <p>{constants.USAGE_TYPE_DESCRIPTIONS[data.slug]}</p>
         </div>
     </div>
 </div>
-<ThemeTotalsByDecadeChart swdata={out} {constants} title={`${slugify(data.slug)} Usage Type`} />
-<DataViewChoiceWrapInd {entityMapBlurb} showPopulation={false} {stratAd} {activeDem} swdata={out} csvTitle={`${cap(data.slug)} Usage Type`} fileName={`usagetype_${data.slug.toLowerCase()}`} {constants} />
+<ThemeTotalsByDecadeChart swdata={out} {constants} title={`Usage Type - ${slugify(data.slug)}`} />
+<DataViewChoiceWrapInd title={`Usage Type - ${cap(data.slug)}`} {entityMapBlurb} showPopulation={false} {stratAd} {activeDem} swdata={out} csvTitle={`${cap(data.slug)} Usage Type`} fileName={`usagetype_${data.slug.toLowerCase()}`} {constants} />
 
 {:catch error}
 <span>Error starting database {error.message}</span>
