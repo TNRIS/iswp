@@ -46,7 +46,7 @@
     }
 
     const makeMarker = (item, ID, maxValue, class_name="") => {
-        // Add the blue circle entites with a popup!
+        // Add the blue circle entites
         let radius = scaleTonew(
             item[`${ID}${$decadeStore}`],
             maxValue,
@@ -511,7 +511,6 @@
                 layers.push(legend)
             };
 
-
             const buildSupplies = () => {
                 let totalEntity = compress(swdata.supplies.rows, "WS");
 
@@ -615,17 +614,9 @@
                     if (item[`WS${$decadeStore}`] > 0) {
 
                         const marker = makeMarker(item, "WS", maxValue, "entity-marker-supplies");
-                        marker
-                            .bindPopup(
-                                `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${commafy(item[`WS${$decadeStore}`] + "")}</p>
-                    <p><a href="/entity/${
-                        item.EntityId
-                    }">View Entity Page</a></p>`,
-                            )
-                            .openPopup();
-                            spiderfier.addMarker(marker);
-
+                        marker.bindPopup(makeEntityPopup(item, "WS")).openPopup();
+                        
+                        spiderfier.addMarker(marker);
                         marker.addTo(map);
                         marker.setStyle({fillColor: "grey"})
 
@@ -686,16 +677,8 @@
                             color: "black"
                         })
 
-                        marker
-                            .bindPopup(
-                                `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${commafy(item[`D${$decadeStore}`] + "")}</p>
-                    <p><a href="/entity/${
-                        item.EntityId
-                    }">View Entity Page</a></p>`,
-                            )
-                            .openPopup();
-                            spiderfier.addMarker(marker);
+                        marker.bindPopup(makeEntityPopup(item, "D")).openPopup();
+                        spiderfier.addMarker(marker);
                         marker.addTo(map);
                         layers.push(marker);
                     }
@@ -720,17 +703,8 @@
                         const marker = makeMarker(item, "P", maxValue);
                         marker.setStyle({fillColor: "orange", opacity: 1, fillOpacity: 1, weight: 1, color: "black"})
 
-                        marker
-                            .bindPopup(
-                                `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${commafy(item[`P${$decadeStore}`] + "")}</p>
-                    <p><a href="/entity/${
-                        item.EntityId
-                    }">View Entity Page</a></p>`,
-                            )
-                            .openPopup();
-                            spiderfier.addMarker(marker);
-
+                        marker.bindPopup(makeEntityPopup(item, "P")).openPopup();
+                        spiderfier.addMarker(marker);
                         marker.addTo(map);
                         layers.push(marker);
                     }
@@ -760,7 +734,7 @@
                     }">View Project Page</a></p>`,
                             )
                             .openPopup();
-                            spiderfier.addMarker(marker);
+                        spiderfier.addMarker(marker);
 
                         marker.addTo(map);
                         layers.push(marker);
@@ -774,18 +748,8 @@
                             markerOpts,
                         );
                         cmarker.setStyle({fillColor: "green", opacity: 1, fillOpacity: 1, weight: 1, color: "black"})
-
-                        cmarker
-                            .bindPopup(
-                                `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${commafy(item[`P${$decadeStore}`] + "")}</p>
-                    <p><a href="/entity/${
-                        item.EntityId
-                    }">View Entity Page</a></p>`,
-                            )
-                            .openPopup();
-                            spiderfier.addMarker(cmarker);
-
+                        cmarker.bindPopup(makeEntityPopup(item, "P")).openPopup();
+                        spiderfier.addMarker(cmarker);
                         cmarker.addTo(map);
                         layers.push(cmarker);
 
