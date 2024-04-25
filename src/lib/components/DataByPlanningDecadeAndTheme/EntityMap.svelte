@@ -37,6 +37,31 @@
         return total;
     }
 
+    const makeEntityPopup = (item, ID) => {
+        return `<h3>${item.EntityName}</h3>`
+            + `<p>Total Value: ${commafy(item[`${ID}${$decadeStore}`] + "")}</p>`
+            + `<p><a href="/entity/${
+                item.EntityId
+            }">View Entity Page</a></p>`;
+    }
+
+    const makeMarker = (item, ID, maxValue, class_name="") => {
+        // Add the blue circle entites with a popup!
+        let radius = scaleTonew(
+            item[`${ID}${$decadeStore}`],
+            maxValue,
+            constants.MAX_RADIUS
+        );
+        const markerOpts = {
+            radius,
+            className: class_name,
+            pane: "labels"
+        };
+        return L.circleMarker(
+            [item.Latitude, item.Longitude],
+            markerOpts
+        );
+    }
 
     onMount(async () => {
         runOMS();
@@ -215,9 +240,7 @@
                 },
             });
             region.addTo(map);
-
         }
-
 
         async function buildGrid() {
             // Remove old layers
@@ -286,7 +309,6 @@
                     lats.push(item.Latitude);
                     lngs.push(item.Longitude);
 
-
                     if (item[`SS${$decadeStore}`] > 0) {
                         // Add the blue aquifer Geojson entities with a popup!
                         if (item.SourceType == "GROUNDWATER" || item.SourceType == "SURFACE WATER") {
@@ -329,32 +351,8 @@
                         } else {
                             counter++;
                         }
-
- 
-                        // Add the blue circle entites with a popup!
-                        let radius = scaleTonew(
-                            item[`SS${$decadeStore}`],
-                            maxValue,
-                            constants.MAX_RADIUS,
-                        );
-                        const markerOpts = {
-                            radius,
-                            className: `entity-marker-strategies`,
-                            pane: "labels",
-                        };
-                        const marker = L.circleMarker(
-                            [item.Latitude, item.Longitude],
-                            markerOpts,
-                        );
-                        marker
-                            .bindPopup(
-                                `<h3>${item.EntityName}</h3>
-                                <p>Total Value: ${commafy(item[`SS${$decadeStore}`] + "")}</p>
-                                <p><a href="/entity/${
-                                    item.EntityId
-                                }">View Entity Page</a></p>`,
-                            )
-                            .openPopup();
+                        const marker = makeMarker(item, "SS", maxValue, "entity-marker-strategies")
+                        marker.bindPopup(makeEntityPopup(item, "SS")).openPopup();
                         spiderfier.addMarker(marker);
                         marker.addTo(map);
                         layers.push(marker);
@@ -441,34 +439,11 @@
                     }
 
                     if (item[`N${$decadeStore}`] > 0) {
-
-                        // Add the blue circle entites with a popup!
-                        let radius = scaleTonew(
-                            item[`N${$decadeStore}`],
-                            maxValue,
-                            constants.MAX_RADIUS,
-                        );
-                        const markerOpts = {
-                            radius,
-                            className: `entity-marker-needs`,
-                            pane: "labels",
-                        };
-                        const marker = L.circleMarker(
-                            [item.Latitude, item.Longitude],
-                            markerOpts,
-                        );
+                        const marker = makeMarker(item, "N", maxValue)
 
                         let percentage = Math.round((item[`N${$decadeStore}`] / item[`D${$decadeStore}`]) * 100);
 
-                        marker
-                            .bindPopup(
-                                `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${commafy(JSON.stringify(item[`N${$decadeStore}`] + ""))}</p>
-                    <p><a href="/entity/${
-                        item.EntityId
-                    }">View Entity Page</a></p>`,
-                            )
-                            .openPopup();
+                        marker.bindPopup(makeEntityPopup(item, "N")).openPopup();
                         spiderfier.addMarker(marker);
 
                         marker.addTo(map);
@@ -638,21 +613,8 @@
                     }
 
                     if (item[`WS${$decadeStore}`] > 0) {
-                        // Add the grey circle entites with a popup!
-                        let radius = scaleTonew(
-                            item[`WS${$decadeStore}`],
-                            maxValue,
-                            constants.MAX_RADIUS,
-                        );
-                        const markerOpts = {
-                            radius,
-                            className: `entity-marker-supplies`,
-                            pane: "labels",
-                        };
-                        const marker = L.circleMarker(
-                            [item.Latitude, item.Longitude],
-                            markerOpts,
-                        );
+
+                        const marker = makeMarker(item, "WS", maxValue, "entity-marker-supplies");
                         marker
                             .bindPopup(
                                 `<h3>${item.EntityName}</h3>
@@ -714,19 +676,8 @@
                     }
 
                     if (item[`D${$decadeStore}`] > 0) {
-                        let radius = scaleTonew(
-                            item[`D${$decadeStore}`],
-                            maxValue,
-                            constants.MAX_RADIUS,
-                        );
-                        const markerOpts = {
-                            radius,
-                            pane: "labels",
-                        };
-                        const marker = L.circleMarker(
-                            [item.Latitude, item.Longitude],
-                            markerOpts,
-                        );
+                        const marker = makeMarker(item, "D", maxValue);
+
                         marker.setStyle({
                             fillColor: "purple",
                             opacity: 1,
@@ -766,19 +717,7 @@
                     }
 
                     if (item[`P${$decadeStore}`] > 0) {
-                        let radius = scaleTonew(
-                            item[`P${$decadeStore}`],
-                            maxValue,
-                            constants.MAX_RADIUS,
-                        );
-                        const markerOpts = {
-                            radius,
-                            pane: "labels",
-                        };
-                        const marker = L.circleMarker(
-                            [item.Latitude, item.Longitude],
-                            markerOpts,
-                        );
+                        const marker = makeMarker(item, "P", maxValue);
                         marker.setStyle({fillColor: "orange", opacity: 1, fillOpacity: 1, weight: 1, color: "black"})
 
                         marker
