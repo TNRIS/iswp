@@ -1,4 +1,5 @@
 <script>
+    import {ProjectItem, EntityItem} from "$lib/TypeDefinitions";
     import { getContext, onMount } from "svelte";
     import { scaleTonew, usd_format, objLeftjoin, commafy } from "$lib/helper";
     import { hoverHelper, clearInteraction } from "$lib/actions/HoverAction";
@@ -20,7 +21,20 @@
     let spiderfier;
     let switch_unlocked = true;
 
+    const triangle_icon = L.divIcon({
+        className: "triangle-marker",
+        html: '<div class="triangle-marker-inner"></div>',
+    });
+
+    /**
+     * 
+     * @param {object[]} rows TODO
+     * @param {string} ID  A ID appended to the decade to indicate which group it belongs to. (Inspect rows to find more info.)
+     */
     const compress = (rows, ID) => {
+        /**
+         * @type {any[]} TODO
+         */
         let total = [];
         // Compress
         rows.forEach((item) => {
@@ -44,6 +58,13 @@
                 item.EntityId
             }">View Entity Page</a></p>`;
     }
+    /**
+     * 
+     * @param {EntityItem} item
+     * @param ID
+     * @param maxValue
+     * @param class_name
+     */
 
     const makeMarker = (item, ID, maxValue, class_name="") => {
         // Add the blue circle entites
@@ -61,6 +82,32 @@
             [item.Latitude, item.Longitude],
             markerOpts
         );
+    }
+
+    /**
+     * @param {ProjectItem} item
+     */
+    const makeTriangleMarker = (item) => {
+        const marker = L.marker(
+            [item.LatCoord, item.LongCoord],
+            {
+                icon: triangle_icon,
+                pane: "project_labels",
+            },
+        );
+
+        marker
+            .bindPopup(
+                `<h3>${item.ProjectName}</h3>
+                <p>Decade Online: ${item.OnlineDecade}</p>
+                <p>Sponsor: ${item.ProjectSponsors}</p>
+                <p>Capital Cost: ${usd_format.format(item.CapitalCost)}</p>
+                <p><a href="/project/${
+                    item.WmsProjectId
+                }">View Project Page</a></p>`,
+            )
+            .openPopup();
+        return marker;
     }
 
     onMount(async () => {
@@ -177,10 +224,6 @@
 
         let key = window.location.pathname.split("/")[2];
         let page = window.location.pathname.split("/")[1];
-        const triangle_icon = L.divIcon({
-            className: "triangle-marker",
-            html: '<div class="triangle-marker-inner"></div>',
-        });
 
         /**
          * Step1
@@ -369,25 +412,7 @@
                 /* Add the red triangle Projects! */
                 swdata.projects.forEach((item) => {
                     if (item.OnlineDecade <= $decadeStore) {
-                        const marker = L.marker(
-                            [item.LatCoord, item.LongCoord],
-                            {
-                                icon: triangle_icon,
-                                pane: "project_labels",
-                            },
-                        );
-
-                        marker
-                            .bindPopup(
-                                `<h3>${item.ProjectName}</h3>
-                    <p>Decade Online: ${item.OnlineDecade}</p>
-                    <p>Sponsor: ${item.ProjectSponsors}</p>
-                    <p>Capital Cost: ${usd_format.format(item.CapitalCost)}</p>
-                    <p><a href="/project/${
-                        item.WmsProjectId
-                    }">View Project Page</a></p>`,
-                            )
-                            .openPopup();
+                        const marker = makeTriangleMarker(item);
                         spiderfier.addMarker(marker);
 
                         marker.addTo(map);
@@ -701,8 +726,8 @@
 
                     if (item[`P${$decadeStore}`] > 0) {
                         const marker = makeMarker(item, "P", maxValue);
-                        marker.setStyle({fillColor: "orange", opacity: 1, fillOpacity: 1, weight: 1, color: "black"})
 
+                        marker.setStyle({fillColor: "orange", opacity: 1, fillOpacity: 1, weight: 1, color: "black"})
                         marker.bindPopup(makeEntityPopup(item, "P")).openPopup();
                         spiderfier.addMarker(marker);
                         marker.addTo(map);
@@ -712,33 +737,9 @@
             };
 
             const buildProjects = () => {
-                /* Add the red triangle Projects! */
                 swdata.projects.forEach((item) => {
                     if (item.OnlineDecade <= $decadeStore) {
-                        const marker = L.marker(
-                            [item.EntityLatCoord, item.EntityLongCoord],
-                            {
-                                icon: triangle_icon,
-                                pane: "project_labels",
-                            },
-                        );
-
-                        marker
-                            .bindPopup(
-                                `<h3>${item.ProjectName}</h3>
-                    <p>Decade Online: ${item.OnlineDecade}</p>
-                    <p>Sponsor: ${item.ProjectSponsors}</p>
-                    <p>Capital Cost: ${usd_format.format(item.CapitalCost)}</p>
-                    <p><a href="/project/${
-                        item.WmsProjectId
-                    }">View Project Page</a></p>`,
-                            )
-                            .openPopup();
-                        spiderfier.addMarker(marker);
-
-                        marker.addTo(map);
-                        layers.push(marker);
-
+                        const marker = makeTriangleMarker(item);
                         const markerOpts = {
                             radius: 6,
                             pane: "labels",
@@ -747,12 +748,15 @@
                             [item.EntityLatCoord, item.EntityLongCoord],
                             markerOpts,
                         );
+
+                        spiderfier.addMarker(marker);
+                        marker.addTo(map);
+                        layers.push(marker);
                         cmarker.setStyle({fillColor: "green", opacity: 1, fillOpacity: 1, weight: 1, color: "black"})
                         cmarker.bindPopup(makeEntityPopup(item, "P")).openPopup();
                         spiderfier.addMarker(cmarker);
                         cmarker.addTo(map);
                         layers.push(cmarker);
-
                     }
                 });
             };
