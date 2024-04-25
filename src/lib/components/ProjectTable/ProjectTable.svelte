@@ -126,7 +126,7 @@
         // @ts-ignore because document is defined since this is onMount();
         let gridjs_input = document.getElementById("rpc").getElementsByClassName("gridjs-input")[0];
         if(gridjs_input)
-            gridjs_input.setAttribute("placeholder", `Filter by Project`);
+            gridjs_input.setAttribute("placeholder", `Type to filter by project name`);
     });
 
     // Abstract the process of formatting the sum. With some checking.
