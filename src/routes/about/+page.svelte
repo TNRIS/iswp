@@ -62,7 +62,7 @@
               A good place to start is the <strong>‘View data for’</strong> drop down menu found in the upper left of the home page. From this drop down you can navigate to pages with state water plan data organized by a specific area of interest or data type.
             </p>
 
-            <img src="/public/static/img/HowDoIFindData.png" width="80%" style="padding:10px;">
+            <img src="/img/HowDoIFindData.png" width="80%" style="padding:10px;">
 
             <p>
               Once you’ve navigated to a specific page you can start exploring the data related to that topic/area. Each page will contain demand, existing supply, need (potential shortage), and strategy supply data related to that page topic. The data are presented in a variety of formats such as graphs, figures, tables, and maps. Many of the page elements are interactive so you can hover over and click elements to show more detail, use embedded search and sort functions to locate information, or click hyperlinks to navigate to other pages in the application. If you are interested in digging deeper and interacting more with the data on a page, scroll down to the <strong>‘Raw Data’</strong> section. In addition to reflecting the decade and theme button selections in the banner above the map, the data displayed in this section can be filtered and sorted using the drop-down boxes below the <strong>‘Raw Data’</strong> section heading. The column toggles allow you to control the aggregation levels of the data.
@@ -74,13 +74,13 @@
               <li>To add a new column, select it from the <strong>‘Sub Dimension…’</strong> drop down list</li>
             </ul>
 
-            <img src="/public/static/img/HowDoIFindData2.png" width="90%" style="padding:10px;">
+            <img src="/img/HowDoIFindData2.png" width="90%" style="padding:10px;">
 
             <p>
               Additionally, you can filter by specific data within the table using the 'solo' feature. To do this, hover the mouse over the data element you wish to filter by until a 'solo' button appears. Selecting this feature will filter all the data in the table based on your selection. Multiple filters may be added using the same method, and all applied filters will be listed in the area above the column headers. To remove a solo filter, simply click the 'X' button to the left of the item listed in the area above the column headers.
             </p>
 
-            <img src="/public/static/img/HowDoIFindData3.png" width="90%" style="padding:10px;">
+            <img src="/img/HowDoIFindData3.png" width="90%" style="padding:10px;">
 
             <p>
               Wholesale water provider (WWP) contract and sales data is collected, but not displayed in the 2022 Interactive State Water Plan since this application is designed to be a summary of water user group (WUG) data. Water management strategy supply being developed, but not assigned to a specific WUG is also collected and not displayed in the 2022 Interactive State Water Plan because that data is not included in recommended strategy supply totals in the state water plan. To find information related to WWPs and unassigned water volumes, click the following link to go to a TWDB webpage containing an Excel workbook summary of the 2022 State Water Plan data which includes that information <a href='http://www.twdb.texas.gov/waterplanning/data/rwp-database/index.asp'>here</a>. You can also contact <a href='mailto:wrpdatarequests@twdb.texas.gov'>wrpdatarequests@twdb.texas.gov</a> to request these types of datasets.
@@ -107,7 +107,7 @@
               <li><strong>Symbol Popups –</strong> You can click on individual symbols to open a popup displaying data associated with that item. If there are overlapping symbols clicking on the cluster will cause them to spread out and allow you to select each one individually.</li>
             </ul>
 
-            <img src="/public/static/img/HowDoIUseTheMap.png" width="90%" style="padding:10px;">
+            <img src="/img/HowDoIUseTheMap.png" width="90%" style="padding:10px;">
 
             <p>
               Due to the nature of the state water plan data, not everything is relevant to display on the map. Please keep the following in mind when exploring the interactive maps:

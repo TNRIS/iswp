@@ -1,4 +1,5 @@
 <script>
+    import {ProjectItem, EntityItem} from "$lib/TypeDefinitions";
     import { getContext, onMount } from "svelte";
     import { scaleTonew, usd_format, objLeftjoin, commafy } from "$lib/helper";
     import { hoverHelper, clearInteraction } from "$lib/actions/HoverAction";
@@ -20,6 +21,94 @@
     let spiderfier;
     let switch_unlocked = true;
 
+    const triangle_icon = L.divIcon({
+        className: "triangle-marker",
+        html: '<div class="triangle-marker-inner"></div>',
+    });
+
+    /**
+     * 
+     * @param {object[]} rows TODO
+     * @param {string} ID  A ID appended to the decade to indicate which group it belongs to. (Inspect rows to find more info.)
+     */
+    const compress = (rows, ID) => {
+        /**
+         * @type {any[]} TODO
+         */
+        let total = [];
+        // Compress
+        rows.forEach((item) => {
+            const last = total[total.length - 1];
+            const ENT_EXISTS = !(last?.EntityId !== item.EntityId);
+
+            if(!ENT_EXISTS) {
+                total.push({... item});
+            } else {
+                last[`${ID}${$decadeStore}`] += item[`${ID}${$decadeStore}`]
+            }
+        });
+
+        return total;
+    }
+
+    const makeEntityPopup = (item, ID) => {
+        return `<h3>${item.EntityName}</h3>`
+            + `<p>Total Value: ${commafy(item[`${ID}${$decadeStore}`] + "")}</p>`
+            + `<p><a href="/entity/${
+                item.EntityId
+            }">View Entity Page</a></p>`;
+    }
+    /**
+     * 
+     * @param {EntityItem} item
+     * @param ID
+     * @param maxValue
+     * @param class_name
+     */
+
+    const makeMarker = (item, ID, maxValue, class_name="") => {
+        // Add the blue circle entites
+        let radius = scaleTonew(
+            item[`${ID}${$decadeStore}`],
+            maxValue,
+            constants.MAX_RADIUS
+        );
+        const markerOpts = {
+            radius,
+            className: class_name,
+            pane: "labels"
+        };
+        return L.circleMarker(
+            [item.Latitude, item.Longitude],
+            markerOpts
+        );
+    }
+
+    /**
+     * @param {ProjectItem} item
+     */
+    const makeTriangleMarker = (item) => {
+        const marker = L.marker(
+            [item.LatCoord, item.LongCoord],
+            {
+                icon: triangle_icon,
+                pane: "project_labels",
+            },
+        );
+
+        marker
+            .bindPopup(
+                `<h3>${item.ProjectName}</h3>
+                <p>Decade Online: ${item.OnlineDecade}</p>
+                <p>Sponsor: ${item.ProjectSponsors}</p>
+                <p>Capital Cost: ${usd_format.format(item.CapitalCost)}</p>
+                <p><a href="/project/${
+                    item.WmsProjectId
+                }">View Project Page</a></p>`,
+            )
+            .openPopup();
+        return marker;
+    }
 
     onMount(async () => {
         runOMS();
@@ -37,7 +126,7 @@
             /* If there are GeoJson features then fitbounds to them. Otherwise move on. */
             if(fc.features.length) {
                 let gj = L.geoJson(fc);
-                map.fitBounds(gj.getBounds());
+                //map.fitBounds(gj.getBounds());
             }
         }
 
@@ -121,7 +210,7 @@
         });
         toggleLockButton.addTo(map)
 
-        map.fitBounds(TEXAS);
+        //map.fitBounds(TEXAS);
         const baseLayer = L.tileLayer(
             "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png",
             {
@@ -135,10 +224,6 @@
 
         let key = window.location.pathname.split("/")[2];
         let page = window.location.pathname.split("/")[1];
-        const triangle_icon = L.divIcon({
-            className: "triangle-marker",
-            html: '<div class="triangle-marker-inner"></div>',
-        });
 
         /**
          * Step1
@@ -198,11 +283,7 @@
                 },
             });
             region.addTo(map);
-
-            if(switch_unlocked)
-                map.fitBounds(region.getBounds());
         }
-
 
         async function buildGrid() {
             // Remove old layers
@@ -221,10 +302,6 @@
             // The maxValue is used to determine how big the circle icon will be. You can scale based on a percentage of maxValue to determine the circle icon size!
             let maxValue = 1;
             const buildStrategies = () => {
-                if(switch_unlocked)
-                    /* Not all page types have a region so check for autofocus here. */
-                    if(region)
-                        map.fitBounds(region.getBounds());
                 let counter = 0;
                 let feat_coll = {"type":"FeatureCollection","numberMatched":0,"name":"AllSources","features":[]}
 
@@ -252,15 +329,16 @@
                         })
                     }
 
-
                     return accumulator;
                 }, []);
-
 
                 /**
                  * Step4 for strategies
                  * Add the entities!
                  */
+                let lats = [];
+                let lngs = [];
+
                 totalEntity?.forEach(async (item, i, ar) => {
                     if (
                         item.SourceType == "DIRECT REUSE" ||
@@ -271,10 +349,13 @@
                     ) {
                         return;
                     }
+                    lats.push(item.Latitude);
+                    lngs.push(item.Longitude);
 
                     if (item[`SS${$decadeStore}`] > 0) {
                         // Add the blue aquifer Geojson entities with a popup!
                         if (item.SourceType == "GROUNDWATER" || item.SourceType == "SURFACE WATER") {
+
                             let mapSource = await fetch(
                                 `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PolygonSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
                             let text = await mapSource.text();
@@ -288,12 +369,12 @@
                                 },
                                 pane: "geom",
                             });
+
                             gj.bindPopup(
                                 `<h3>${item.SourceName}</h3><p><a href="/source/${item.MapSourceId}">View Source Page</a></p>`,
                             );
                             gj.on("mousemove", (event) => {
                                 //let name = item.feature.properties.name;
-                                console.log("moving");
                                 const me = event.originalEvent;
                                 hoverHelper(me, "map-entity-hover", item.SourceName);
                             })
@@ -313,32 +394,8 @@
                         } else {
                             counter++;
                         }
-
- 
-                        // Add the blue circle entites with a popup!
-                        let radius = scaleTonew(
-                            item[`SS${$decadeStore}`],
-                            maxValue,
-                            constants.MAX_RADIUS,
-                        );
-                        const markerOpts = {
-                            radius,
-                            className: `entity-marker-strategies`,
-                            pane: "labels",
-                        };
-                        const marker = L.circleMarker(
-                            [item.Latitude, item.Longitude],
-                            markerOpts,
-                        );
-                        marker
-                            .bindPopup(
-                                `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${commafy(item[`SS${$decadeStore}`] + "")}</p>
-                    <p><a href="/entity/${
-                        item.EntityId
-                    }">View Entity Page</a></p>`,
-                            )
-                            .openPopup();
+                        const marker = makeMarker(item, "SS", maxValue, "entity-marker-strategies")
+                        marker.bindPopup(makeEntityPopup(item, "SS")).openPopup();
                         spiderfier.addMarker(marker);
                         marker.addTo(map);
                         layers.push(marker);
@@ -346,58 +403,45 @@
                         counter ++;
                     }
 
+                    // Upon completion of loop run cb.
                     if(switch_unlocked && counter >= ar.length) {
                         cb(feat_coll);
-                    }     
+                    }
                 });
 
                 /* Add the red triangle Projects! */
                 swdata.projects.forEach((item) => {
                     if (item.OnlineDecade <= $decadeStore) {
-                        const marker = L.marker(
-                            [item.LatCoord, item.LongCoord],
-                            {
-                                icon: triangle_icon,
-                                pane: "project_labels",
-                            },
-                        );
-
-                        marker
-                            .bindPopup(
-                                `<h3>${item.ProjectName}</h3>
-                    <p>Decade Online: ${item.OnlineDecade}</p>
-                    <p>Sponsor: ${item.ProjectSponsors}</p>
-                    <p>Capital Cost: ${usd_format.format(item.CapitalCost)}</p>
-                    <p><a href="/project/${
-                        item.WmsProjectId
-                    }">View Project Page</a></p>`,
-                            )
-                            .openPopup();
+                        const marker = makeTriangleMarker(item);
                         spiderfier.addMarker(marker);
 
                         marker.addTo(map);
                         layers.push(marker);
                     }
                 });
+
+                // calc the min and max lng and lat
+                let minlat = Math.min.apply(null, lats);
+                let maxlat = Math.max.apply(null, lats);
+                let minlng = Math.min.apply(null, lngs);
+                let maxlng = Math.max.apply(null, lngs);
+
+                let rbounds;
+                // Expand bounding box to encompass region if needed. 
+                if(region) {
+                    rbounds = region.getBounds();
+                    minlat = rbounds._southWest.lat < minlat ? rbounds._southWest.lat : minlat;
+                    minlng = rbounds._southWest.lng < minlng ? rbounds._southWest.lng : minlng;
+
+                    maxlat = rbounds._northEast.lat > maxlat ? rbounds._northEast.lat : maxlat;
+                    maxlng = rbounds._northEast.lng > maxlng ? rbounds._northEast.lng : maxlng;
+                }
+                if(switch_unlocked)
+                    map.fitBounds([[minlat,minlng],[maxlat,maxlng]]);
             };
 
             const buildNeeds = async () => {
-                if(switch_unlocked)
-                    /* Not all page types have a region so check for autofocus here. */
-                    if(region)
-                        map.fitBounds(region.getBounds());
-                let totalEntity = [];
-                // Compress entities on EntityID. Combine needs data!
-                swdata.needs.rows.forEach((item) => {
-                    const last = totalEntity[totalEntity.length - 1];
-                    const ENT_EXISTS = !(last?.EntityId !== item.EntityId);
-
-                    if(!ENT_EXISTS) {
-                        totalEntity.push({... item});
-                    } else {
-                        last[`N${$decadeStore}`] += item[`N${$decadeStore}`]
-                    }
-                });
+                let totalEntity = compress(swdata.needs.rows, "N");
                 objLeftjoin(totalEntity, swdata.demands.rows, ["EntityId"]);
 
                 // Join needs with supplies in order to calculate percentage fulfilled efficiently!
@@ -420,34 +464,11 @@
                     }
 
                     if (item[`N${$decadeStore}`] > 0) {
-
-                        // Add the blue circle entites with a popup!
-                        let radius = scaleTonew(
-                            item[`N${$decadeStore}`],
-                            maxValue,
-                            constants.MAX_RADIUS,
-                        );
-                        const markerOpts = {
-                            radius,
-                            className: `entity-marker-needs`,
-                            pane: "labels",
-                        };
-                        const marker = L.circleMarker(
-                            [item.Latitude, item.Longitude],
-                            markerOpts,
-                        );
+                        const marker = makeMarker(item, "N", maxValue)
 
                         let percentage = Math.round((item[`N${$decadeStore}`] / item[`D${$decadeStore}`]) * 100);
 
-                        marker
-                            .bindPopup(
-                                `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${commafy(JSON.stringify(item[`N${$decadeStore}`] + ""))}</p>
-                    <p><a href="/entity/${
-                        item.EntityId
-                    }">View Entity Page</a></p>`,
-                            )
-                            .openPopup();
+                        marker.bindPopup(makeEntityPopup(item, "N")).openPopup();
                         spiderfier.addMarker(marker);
 
                         marker.addTo(map);
@@ -515,20 +536,9 @@
                 layers.push(legend)
             };
 
-
             const buildSupplies = () => {
-                let totalEntity = [];
-                // Compress entities on EntityID. Combine supplies data!
-                swdata.supplies.rows.forEach((item) => {
-                    const last = totalEntity[totalEntity.length - 1];
-                    const ENT_EXISTS = !(last?.EntityId !== item.EntityId);
+                let totalEntity = compress(swdata.supplies.rows, "WS");
 
-                    if(!ENT_EXISTS) {
-                        totalEntity.push({... item});
-                    } else {
-                        last[`WS${$decadeStore}`] += item[`WS${$decadeStore}`]
-                    }
-                });
                 /**
                  * Step4 for supplies
                  * Add the entities!
@@ -536,11 +546,14 @@
                 let feat_coll = {"type":"FeatureCollection","numberMatched":0,"name":"AllSources","features":[]}
                 let counter = true;
 
+                let lats = [];
+                let lngs = [];
 
                 swdata.supplies.rows.forEach(async (item, index, ar) => {
                     let sources = "PolygonSources";
                     let color = "#526e8d";
-
+                    lats.push(item.Latitude);
+                    lngs.push(item.Longitude);
 
                     if(item.SourceName !== "DIRECT REUSE" && item.SourceName !== "LOCAL SURFACE WATER SUPPLY" && item.SourceName !== "ATMOSPHERE" && item.SourceName !== "Rainwater Harvesting") {
                         if(item.SourceName.includes("RIVER")) {
@@ -549,7 +562,6 @@
                         } else if(item.SourceName.includes("RESERVOIR")) {
                             color = "#0097d6";
                         }
-                        sources = "LineSources";
                         let mapSource = await fetch(
                             `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
                         let text = await mapSource.text();
@@ -581,19 +593,25 @@
                             },
                             pane: "geom",
                         });
+
+                        let gBounds = gj.getBounds();
+                        lats.push(gBounds._northEast.lat);
+                        lats.push(gBounds._southWest.lat);
+                        lngs.push(gBounds._northEast.lng);
+                        lngs.push(gBounds._southWest.lng);
+
                         gj.bindPopup(
                             `<h3>${item.SourceName}</h3><p><a href="/source/${item.MapSourceId}">View Source Page</a></p>`,
                         );
 
                         gj.on("mousemove", (event) => {
-                                //let name = item.feature.properties.name;
-                                console.log("moving");
-                                const me = event.originalEvent;
-                                hoverHelper(me, "map-entity-hover", item.SourceName);
-                            })
-                            gj.on("mouseout", (event) => {
-                                clearInteraction("map-entity-hover");
-                            })
+                            //let name = item.feature.properties.name;
+                            const me = event.originalEvent;
+                            hoverHelper(me, "map-entity-hover", item.SourceName);
+                        })
+                        gj.on("mouseout", (event) => {
+                            clearInteraction("map-entity-hover");
+                        })
                         gj.addTo(map);
                         layers.push(gj);
                     } else {
@@ -619,55 +637,48 @@
                     }
 
                     if (item[`WS${$decadeStore}`] > 0) {
-                        // Add the grey circle entites with a popup!
-                        let radius = scaleTonew(
-                            item[`WS${$decadeStore}`],
-                            maxValue,
-                            constants.MAX_RADIUS,
-                        );
-                        const markerOpts = {
-                            radius,
-                            className: `entity-marker-supplies`,
-                            pane: "labels",
-                        };
-                        const marker = L.circleMarker(
-                            [item.Latitude, item.Longitude],
-                            markerOpts,
-                        );
-                        marker
-                            .bindPopup(
-                                `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${commafy(item[`WS${$decadeStore}`] + "")}</p>
-                    <p><a href="/entity/${
-                        item.EntityId
-                    }">View Entity Page</a></p>`,
-                            )
-                            .openPopup();
-                            spiderfier.addMarker(marker);
 
+                        const marker = makeMarker(item, "WS", maxValue, "entity-marker-supplies");
+                        marker.bindPopup(makeEntityPopup(item, "WS")).openPopup();
+                        
+                        spiderfier.addMarker(marker);
                         marker.addTo(map);
                         marker.setStyle({fillColor: "grey"})
 
                         layers.push(marker);
                     }
                 })
+
+                // calc the min and max lng and lat
+
+                // Expand bounding box to encompass region if needed. 
+                if(region) {
+                    rbounds = region.getBounds();
+                    /*minlat = rbounds._southWest.lat < minlat ? rbounds._southWest.lat : minlat;
+                    minlng = rbounds._southWest.lng < minlng ? rbounds._southWest.lng : minlng;
+
+                    maxlat = rbounds._northEast.lat > maxlat ? rbounds._northEast.lat : maxlat;
+                    maxlng = rbounds._northEast.lng > maxlng ? rbounds._northEast.lng : maxlng;
+                    */
+                   lats.push(rbounds._southWest.lat);
+                   lats.push(rbounds._northEast.lat);
+                   lngs.push(rbounds._southWest.lng);
+                   lngs.push(rbounds._northEast.lng);
+                }
+                let minlat = Math.min.apply(null, lats);
+                let maxlat = Math.max.apply(null, lats);
+                let minlng = Math.min.apply(null, lngs);
+                let maxlng = Math.max.apply(null, lngs);
+
+                let rbounds;
+
+                if(switch_unlocked)
+                    map.fitBounds([[minlat,minlng],[maxlat,maxlng]]);
+
             };
 
             const buildDemands = () => {
-                if(switch_unlocked)
-                    map.fitBounds(region.getBounds());
-                let totalEntity = [];
-                // Compress entities on EntityID. Combine supplies data!
-                swdata.demands.rows.forEach((item) => {
-                    const last = totalEntity[totalEntity.length - 1];
-                    const ENT_EXISTS = !(last?.EntityId !== item.EntityId);
-
-                    if(!ENT_EXISTS) {
-                        totalEntity.push({... item});
-                    } else {
-                        last[`D${$decadeStore}`] += item[`D${$decadeStore}`]
-                    }
-                });
+                let totalEntity = compress(swdata.demands.rows, "D");
 
                 /**
                  * Step4 for demands
@@ -681,19 +692,8 @@
                     }
 
                     if (item[`D${$decadeStore}`] > 0) {
-                        let radius = scaleTonew(
-                            item[`D${$decadeStore}`],
-                            maxValue,
-                            constants.MAX_RADIUS,
-                        );
-                        const markerOpts = {
-                            radius,
-                            pane: "labels",
-                        };
-                        const marker = L.circleMarker(
-                            [item.Latitude, item.Longitude],
-                            markerOpts,
-                        );
+                        const marker = makeMarker(item, "D", maxValue);
+
                         marker.setStyle({
                             fillColor: "purple",
                             opacity: 1,
@@ -702,16 +702,8 @@
                             color: "black"
                         })
 
-                        marker
-                            .bindPopup(
-                                `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${commafy(item[`D${$decadeStore}`] + "")}</p>
-                    <p><a href="/entity/${
-                        item.EntityId
-                    }">View Entity Page</a></p>`,
-                            )
-                            .openPopup();
-                            spiderfier.addMarker(marker);
+                        marker.bindPopup(makeEntityPopup(item, "D")).openPopup();
+                        spiderfier.addMarker(marker);
                         marker.addTo(map);
                         layers.push(marker);
                     }
@@ -719,21 +711,7 @@
             };
 
             const buildPopulation = () => {
-                if(switch_unlocked)
-                    map.fitBounds(region.getBounds());
-                let totalEntity = [];
-
-                // Compress entities on EntityID. Combine population data!
-                swdata.population.rows.forEach((item) => {
-                    const last = totalEntity[totalEntity.length - 1];
-                    const ENT_EXISTS = !(last?.EntityId !== item.EntityId);
-
-                    if(!ENT_EXISTS) {
-                        totalEntity.push({... item});
-                    } else {
-                        last[`P${$decadeStore}`] += item[`P${$decadeStore}`]
-                    }
-                });
+                let totalEntity = compress(swdata.population.rows, "P");
 
                 /**
                  * Step4: For population
@@ -747,32 +725,11 @@
                     }
 
                     if (item[`P${$decadeStore}`] > 0) {
-                        let radius = scaleTonew(
-                            item[`P${$decadeStore}`],
-                            maxValue,
-                            constants.MAX_RADIUS,
-                        );
-                        const markerOpts = {
-                            radius,
-                            pane: "labels",
-                        };
-                        const marker = L.circleMarker(
-                            [item.Latitude, item.Longitude],
-                            markerOpts,
-                        );
+                        const marker = makeMarker(item, "P", maxValue);
+
                         marker.setStyle({fillColor: "orange", opacity: 1, fillOpacity: 1, weight: 1, color: "black"})
-
-                        marker
-                            .bindPopup(
-                                `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${commafy(item[`P${$decadeStore}`] + "")}</p>
-                    <p><a href="/entity/${
-                        item.EntityId
-                    }">View Entity Page</a></p>`,
-                            )
-                            .openPopup();
-                            spiderfier.addMarker(marker);
-
+                        marker.bindPopup(makeEntityPopup(item, "P")).openPopup();
+                        spiderfier.addMarker(marker);
                         marker.addTo(map);
                         layers.push(marker);
                     }
@@ -780,33 +737,9 @@
             };
 
             const buildProjects = () => {
-                /* Add the red triangle Projects! */
                 swdata.projects.forEach((item) => {
                     if (item.OnlineDecade <= $decadeStore) {
-                        const marker = L.marker(
-                            [item.EntityLatCoord, item.EntityLongCoord],
-                            {
-                                icon: triangle_icon,
-                                pane: "project_labels",
-                            },
-                        );
-
-                        marker
-                            .bindPopup(
-                                `<h3>${item.ProjectName}</h3>
-                    <p>Decade Online: ${item.OnlineDecade}</p>
-                    <p>Sponsor: ${item.ProjectSponsors}</p>
-                    <p>Capital Cost: ${usd_format.format(item.CapitalCost)}</p>
-                    <p><a href="/project/${
-                        item.WmsProjectId
-                    }">View Project Page</a></p>`,
-                            )
-                            .openPopup();
-                            spiderfier.addMarker(marker);
-
-                        marker.addTo(map);
-                        layers.push(marker);
-
+                        const marker = makeTriangleMarker(item);
                         const markerOpts = {
                             radius: 6,
                             pane: "labels",
@@ -815,22 +748,15 @@
                             [item.EntityLatCoord, item.EntityLongCoord],
                             markerOpts,
                         );
+
+                        spiderfier.addMarker(marker);
+                        marker.addTo(map);
+                        layers.push(marker);
                         cmarker.setStyle({fillColor: "green", opacity: 1, fillOpacity: 1, weight: 1, color: "black"})
-
-                        cmarker
-                            .bindPopup(
-                                `<h3>${item.EntityName}</h3>
-                    <p>Total Value: ${commafy(item[`P${$decadeStore}`] + "")}</p>
-                    <p><a href="/entity/${
-                        item.EntityId
-                    }">View Entity Page</a></p>`,
-                            )
-                            .openPopup();
-                            spiderfier.addMarker(cmarker);
-
+                        cmarker.bindPopup(makeEntityPopup(item, "P")).openPopup();
+                        spiderfier.addMarker(cmarker);
                         cmarker.addTo(map);
                         layers.push(cmarker);
-
                     }
                 });
             };
