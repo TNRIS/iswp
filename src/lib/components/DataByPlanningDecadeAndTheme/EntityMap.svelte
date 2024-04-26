@@ -61,9 +61,9 @@
     /**
      * 
      * @param {EntityItem} item
-     * @param ID
-     * @param maxValue
-     * @param class_name
+     * @param {string} ID
+     * @param {number} maxValue
+     * @param {string} class_name
      */
 
     const makeMarker = (item, ID, maxValue, class_name="") => {
@@ -108,6 +108,18 @@
             )
             .openPopup();
         return marker;
+    }
+
+    const mergeLatLong = (leafletobj, lats, lngs) => {
+        let rbounds;
+        if(leafletobj) {
+            rbounds = leafletobj.getBounds();
+
+            lats.push(rbounds._southWest.lat);
+            lats.push(rbounds._northEast.lat);
+            lngs.push(rbounds._southWest.lng);
+            lngs.push(rbounds._northEast.lng);
+        }
     }
 
     onMount(async () => {
@@ -536,7 +548,7 @@
                 layers.push(legend)
             };
 
-            const buildSupplies = () => {
+            const buildSupplies = async () => {
                 let totalEntity = compress(swdata.supplies.rows, "WS");
 
                 /**
@@ -544,137 +556,155 @@
                  * Add the entities!
                  */
                 let feat_coll = {"type":"FeatureCollection","numberMatched":0,"name":"AllSources","features":[]}
-                let counter = true;
 
                 let lats = [];
                 let lngs = [];
+                const buildPolygons = () => {
+                    let counter = 0;
+                    return new Promise((resolve, reject) => {
+                        swdata.supplies.rows.forEach(async (item, index, ar) => {
+                            let sources = "PolygonSources";
+                            let color = "#526e8d";
+                            lats.push(item.Latitude);
+                            lngs.push(item.Longitude);
 
-                swdata.supplies.rows.forEach(async (item, index, ar) => {
-                    let sources = "PolygonSources";
-                    let color = "#526e8d";
-                    lats.push(item.Latitude);
-                    lngs.push(item.Longitude);
+                            if(item.SourceName !== "DIRECT REUSE" && item.SourceName !== "LOCAL SURFACE WATER SUPPLY" && item.SourceName !== "ATMOSPHERE" && item.SourceName !== "Rainwater Harvesting") {
+                                if(item.SourceName.includes("RIVER")) {
+                                    sources = "LineSources";
+                                    color = "#0097d6";
+                                } else if(item.SourceName.includes("RESERVOIR")) {
+                                    color = "#0097d6";
+                                }
+                                let mapSource = await fetch(
+                                    `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
+                                let text = await mapSource.text();
+                                let j = JSON.parse(text);
+                                counter++;
 
-                    if(item.SourceName !== "DIRECT REUSE" && item.SourceName !== "LOCAL SURFACE WATER SUPPLY" && item.SourceName !== "ATMOSPHERE" && item.SourceName !== "Rainwater Harvesting") {
-                        if(item.SourceName.includes("RIVER")) {
-                            sources = "LineSources";
-                            color = "#0097d6";
-                        } else if(item.SourceName.includes("RESERVOIR")) {
-                            color = "#0097d6";
-                        }
-                        let mapSource = await fetch(
-                            `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
-                        let text = await mapSource.text();
-                        let j = JSON.parse(text);
-                        if(j.numberMatched <= 0) { // Try a polygon source then.
-                            sources = "PolygonSources";
-                            mapSource = await fetch(
-                                `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
+                                if(j.numberMatched <= 0) { // Try a polygon source then.
+                                    sources = "PolygonSources";
+                                    mapSource = await fetch(
+                                        `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
 
-                            text = await mapSource.text();
-                            j = JSON.parse(text);
-                        }
-                        counter++;
+                                    text = await mapSource.text();
+                                    j = JSON.parse(text);
+                                }
 
-                        if(switch_unlocked) {
-                            feat_coll.features.push(... j.features)
-                            if(counter > ar.length) {
-                                cb(feat_coll);
+                                if(switch_unlocked) {
+                                    feat_coll.features.push(... j.features)
+                                    if(counter > ar.length) {
+                                        cb(feat_coll);
+                                    }
+                                }
+
+                                // After Trying Lines and Polygons push whatever we got.
+                                let gj = L.geoJson(j, {
+                                    style: {
+                                        color,
+                                        opacity: 1,
+                                        weight: 2,
+                                        fillOpacity: .4,
+                                    },
+                                    pane: "geom",
+                                });
+
+                                let gBounds = gj.getBounds();
+                                try {
+                                    lats.push(gBounds._northEast.lat);
+                                    lats.push(gBounds._southWest.lat);
+                                    lngs.push(gBounds._northEast.lng);
+                                    lngs.push(gBounds._southWest.lng);
+                                } catch(err) {
+                                }
+
+                                gj.bindPopup(
+                                    `<h3>${item.SourceName}</h3><p><a href="/source/${item.MapSourceId}">View Source Page</a></p>`,
+                                );
+
+                                gj.on("mousemove", (event) => {
+                                    //let name = item.feature.properties.name;
+                                    const me = event.originalEvent;
+                                    hoverHelper(me, "map-entity-hover", item.SourceName);
+                                })
+                                gj.on("mouseout", (event) => {
+                                    clearInteraction("map-entity-hover");
+                                })
+                                gj.addTo(map);
+                                layers.push(gj);
+                            } else {
+                                counter++;
+                                console.log(item.SourceName)
                             }
-                        }
-
-                        // After Trying Lines and Polygons push whatever we got.
-                        let gj = L.geoJson(j, {
-                            style: {
-                                color,
-                                opacity: 1,
-                                weight: 2,
-                                fillOpacity: .4,
-                            },
-                            pane: "geom",
+                            if(switch_unlocked && counter >= ar.length) {
+                                resolve("Done");
+                            }
                         });
+                    });
+                }
 
-                        let gBounds = gj.getBounds();
-                        lats.push(gBounds._northEast.lat);
-                        lats.push(gBounds._southWest.lat);
-                        lngs.push(gBounds._northEast.lng);
-                        lngs.push(gBounds._southWest.lng);
 
-                        gj.bindPopup(
-                            `<h3>${item.SourceName}</h3><p><a href="/source/${item.MapSourceId}">View Source Page</a></p>`,
-                        );
+                const buildMarkers = () => {
+                    let counter = 0;
 
-                        gj.on("mousemove", (event) => {
-                            //let name = item.feature.properties.name;
-                            const me = event.originalEvent;
-                            hoverHelper(me, "map-entity-hover", item.SourceName);
-                        })
-                        gj.on("mouseout", (event) => {
-                            clearInteraction("map-entity-hover");
-                        })
-                        gj.addTo(map);
-                        layers.push(gj);
-                    } else {
-                        counter++;
-                        console.log(item.SourceName)
-                    }
-                });
+                    return new Promise((resolve, reject) => {
+                        try{
+                            totalEntity.forEach((item, i, ar) => {
+                                for (let i = 0; i < swdata.supplies.rows.length; i++) {
+                                    if (swdata.supplies.rows[i][`WS${$decadeStore}`] > maxValue) {
+                                        maxValue = swdata.supplies.rows[i][`WS${$decadeStore}`];
+                                    }
+                                }
 
-                totalEntity.forEach((item) => {
-                    for (let i = 0; i < swdata.supplies.rows.length; i++) {
-                        if (swdata.supplies.rows[i][`WS${$decadeStore}`] > maxValue) {
-                            maxValue = swdata.supplies.rows[i][`WS${$decadeStore}`];
+                                if (
+                                    item.SourceType == "DIRECT REUSE" ||
+                                    item.SourceType == "LOCAL SURFACE WATER SUPPLY" ||
+                                    item.SourceType == "ATMOSPHERE" ||
+                                    item.SourceType == "RAINWATER HARVESTING"
+                                ) {
+                                    couner++;
+                                    return;
+                                }
+
+                                if (item[`WS${$decadeStore}`] > 0) {
+
+                                    const marker = makeMarker(item, "WS", maxValue, "entity-marker-supplies");
+                                    marker.bindPopup(makeEntityPopup(item, "WS")).openPopup();
+                                    
+                                    spiderfier.addMarker(marker);
+                                    marker.addTo(map);
+                                    marker.setStyle({fillColor: "grey"})
+
+                                    layers.push(marker);
+                                }
+                                counter++;
+                                if(switch_unlocked && counter >= ar.length) {
+                                    resolve("Done");
+                                }
+                            })
+                        } catch(err) {
+                            reject(err);
                         }
-                    }
+                    });
+                }
 
-                    if (
-                        item.SourceType == "DIRECT REUSE" ||
-                        item.SourceType == "LOCAL SURFACE WATER SUPPLY" ||
-                        item.SourceType == "ATMOSPHERE" ||
-                        item.SourceType == "RAINWATER HARVESTING"
-                    ) {
-                        return;
-                    }
-
-                    if (item[`WS${$decadeStore}`] > 0) {
-
-                        const marker = makeMarker(item, "WS", maxValue, "entity-marker-supplies");
-                        marker.bindPopup(makeEntityPopup(item, "WS")).openPopup();
-                        
-                        spiderfier.addMarker(marker);
-                        marker.addTo(map);
-                        marker.setStyle({fillColor: "grey"})
-
-                        layers.push(marker);
-                    }
-                })
 
                 // calc the min and max lng and lat
 
                 // Expand bounding box to encompass region if needed. 
-                if(region) {
-                    rbounds = region.getBounds();
-                    /*minlat = rbounds._southWest.lat < minlat ? rbounds._southWest.lat : minlat;
-                    minlng = rbounds._southWest.lng < minlng ? rbounds._southWest.lng : minlng;
+                await Promise.all([buildPolygons(), buildMarkers()]);
+                
+                //Note: Arrays are pass by reference in Javascript so I don't need to return anything here. 
+                mergeLatLong(region, lats, lngs);
 
-                    maxlat = rbounds._northEast.lat > maxlat ? rbounds._northEast.lat : maxlat;
-                    maxlng = rbounds._northEast.lng > maxlng ? rbounds._northEast.lng : maxlng;
-                    */
-                   lats.push(rbounds._southWest.lat);
-                   lats.push(rbounds._northEast.lat);
-                   lngs.push(rbounds._southWest.lng);
-                   lngs.push(rbounds._northEast.lng);
-                }
+                // Create bounding box.
                 let minlat = Math.min.apply(null, lats);
                 let maxlat = Math.max.apply(null, lats);
                 let minlng = Math.min.apply(null, lngs);
                 let maxlng = Math.max.apply(null, lngs);
 
-                let rbounds;
-
-                if(switch_unlocked)
+                if(switch_unlocked) {
                     map.fitBounds([[minlat,minlng],[maxlat,maxlng]]);
-
+                }
             };
 
             const buildDemands = () => {
