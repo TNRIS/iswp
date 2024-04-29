@@ -22,7 +22,9 @@
         }
         if($bindTreeMap)
             $bindTreeMap(data);
-        $buildPie();
+
+        if($buildPie)
+            $buildPie();
 
     };
     let showTheme = async (event) => {

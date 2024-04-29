@@ -51,6 +51,21 @@
         return total;
     }
 
+    const zoom = (map, lats, lngs, region) => {
+        if(region)
+            mergeLatLong(region, lats, lngs);
+
+        // Create bounding box.
+        let minlat = Math.min.apply(null, lats);
+        let maxlat = Math.max.apply(null, lats);
+        let minlng = Math.min.apply(null, lngs);
+        let maxlng = Math.max.apply(null, lngs);
+
+        if(switch_unlocked) {
+            map.fitBounds([[minlat,minlng],[maxlat,maxlng]]);
+        }
+    }
+
     const makeEntityPopup = (item, ID) => {
         return `<h3>${item.EntityName}</h3>`
             + `<p>Total Value: ${commafy(item[`${ID}${$decadeStore}`] + "")}</p>`
@@ -61,9 +76,9 @@
     /**
      * 
      * @param {EntityItem} item
-     * @param ID
-     * @param maxValue
-     * @param class_name
+     * @param {string} ID
+     * @param {number} maxValue
+     * @param {string} class_name
      */
 
     const makeMarker = (item, ID, maxValue, class_name="") => {
@@ -84,12 +99,35 @@
         );
     }
 
+    // Some items use EntityLatCoord instead of LatCoord. So check for which is used. This is a workaround because the entities don't consistently use one or the other.
+    const coordFitter = (item) => {
+        let lat, lng;
+
+        // 0 is valid so check for undefined.
+        if(item.LatCoord !== undefined && item.LongCoord !== undefined) {
+            lat = item.LatCoord;
+            lng = item.LongCoord;
+        } else if(item.EntityLatCoord !== undefined && item.EntityLongCoord !== undefined) {
+            lat = item.EntityLatCoord;
+            lng = item.EntityLongCoord;
+        } else if(item.Latitude !== undefined && item.Longitude !== undefined) {
+            lat = item.Latitude;
+            lng = item.Longitude;
+        }
+
+        return [lat, lng]
+    }
+
     /**
      * @param {ProjectItem} item
      */
     const makeTriangleMarker = (item) => {
+        let coords = coordFitter(item);
+        let lat = coords[0];
+        let lng = coords[1]
+
         const marker = L.marker(
-            [item.LatCoord, item.LongCoord],
+            [lat, lng],
             {
                 icon: triangle_icon,
                 pane: "project_labels",
@@ -110,6 +148,18 @@
         return marker;
     }
 
+    const mergeLatLong = (leafletobj, lats, lngs) => {
+        let rbounds;
+        if(leafletobj) {
+            rbounds = leafletobj.getBounds();
+
+            lats.push(rbounds._southWest.lat);
+            lats.push(rbounds._northEast.lat);
+            lngs.push(rbounds._southWest.lng);
+            lngs.push(rbounds._northEast.lng);
+        }
+    }
+
     onMount(async () => {
         runOMS();
         /*
@@ -126,7 +176,7 @@
             /* If there are GeoJson features then fitbounds to them. Otherwise move on. */
             if(fc.features.length) {
                 let gj = L.geoJson(fc);
-                //map.fitBounds(gj.getBounds());
+                map.fitBounds(gj.getBounds());
             }
         }
 
@@ -210,7 +260,7 @@
         });
         toggleLockButton.addTo(map)
 
-        //map.fitBounds(TEXAS);
+        map.fitBounds(TEXAS);
         const baseLayer = L.tileLayer(
             "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png",
             {
@@ -301,7 +351,7 @@
 
             // The maxValue is used to determine how big the circle icon will be. You can scale based on a percentage of maxValue to determine the circle icon size!
             let maxValue = 1;
-            const buildStrategies = () => {
+            const buildStrategies = async () => {
                 let counter = 0;
                 let feat_coll = {"type":"FeatureCollection","numberMatched":0,"name":"AllSources","features":[]}
 
@@ -314,7 +364,12 @@
 
                 /** Store unique Entity Names. @type {string[]} */
                 let ename_store = [];
-                let totalEntity = swdata.strategies.rows.reduce((
+
+
+                // Need to hard copy swdata.
+                let swdataclone = JSON.parse(JSON.stringify(swdata));
+                // Use for circular and triangular markers not geometry.
+                let totalEntityReduced = swdataclone?.strategies?.rows?.reduce((
                     /** @type {any[]}*/ accumulator , /** @type {object} */ currentValue) => {
                     if(!ename_store.includes(currentValue.EntityName)) {
                         ename_store.push(currentValue.EntityName);
@@ -331,7 +386,7 @@
 
                     return accumulator;
                 }, []);
-
+                let totalEntity = swdata.strategies.rows;
                 /**
                  * Step4 for strategies
                  * Add the entities!
@@ -339,34 +394,9 @@
                 let lats = [];
                 let lngs = [];
 
-                totalEntity?.forEach(async (item, i, ar) => {
-                    if (
-                        item.SourceType == "DIRECT REUSE" ||
-                        item.SourceType == "LOCAL SURFACE WATER SUPPLY" ||
-                        item.SourceType == "ATMOSPHERE" ||
-                        item.SourceType == "RAINWATER HARVESTING" ||
-                        item.SourceName == "ATMOSPHERE"
-                    ) {
-                        return;
-                    }
-                    lats.push(item.Latitude);
-                    lngs.push(item.Longitude);
-
-                    if (item[`SS${$decadeStore}`] > 0) {
-                        // Add the blue aquifer Geojson entities with a popup!
-                        if (item.SourceType == "GROUNDWATER" || item.SourceType == "SURFACE WATER") {
-
-                            let mapSource = await fetch(
-                                `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PolygonSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
-                            let text = await mapSource.text();
-                            let j = JSON.parse(text);
-                            let gj = L.geoJson(j, {
-                                style: {
-                                    color: "#3F556D",
-                                    opacity: 1,
-                                    weight: 4,
-                                    fillOpacity: 0.3,
-                                },
+                const displayGeom = (j, item, style) => {
+                    let gj = L.geoJson(j, {
+                                style,
                                 pane: "geom",
                             });
 
@@ -381,44 +411,131 @@
                             gj.on("mouseout", (event) => {
                                 clearInteraction("map-entity-hover");
                             })
-                            gj.addTo(map);
 
-                            
-                            layers.push(gj);
-                            counter++;
+                    return gj
+                }
 
-                            if(switch_unlocked) {
-                                feat_coll.features.push(... j.features)
-                            }
+                let totalEntitySync = () => {
+                    return new Promise((resolve, reject) => {
+                        try {
+                            if(!totalEntity)
+                                resolve("Done")
+                            totalEntity?.forEach(async (item, i, ar) => {
+                                if (
+                                    item.SourceName == "DIRECT REUSE" ||
+                                    item.SourceName == "LOCAL SURFACE WATER SUPPLY" ||
+                                    item.SourceName == "ATMOSPHERE" ||
+                                    item.SourceName == "RAINWATER HARVESTING" ||
+                                    item.SourceName == "ATMOSPHERE"
+                                ) {
+                                    counter++;
+                                    return;
+                                }
+                                lats.push(item.Latitude);
+                                lngs.push(item.Longitude);
 
-                        } else {
-                            counter++;
+                                if (item[`SS${$decadeStore}`] > 0 && item.SourceName !== title) {
+                                    // Add the blue aquifer Geojson entities with a popup!
+                                    if (item.SourceType == "GROUNDWATER" || item.SourceType == "SURFACE WATER") {
+                                        let mapSource = fetch(
+                                            `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PolygonSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
+                                        let lineSource = fetch(
+                                            `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=LineSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
+                                        
+
+                                        [mapSource, lineSource] = await Promise.all([mapSource, lineSource]);
+                                        let [text, linetext] = await Promise.all([mapSource.text(), await lineSource.text()])
+                                        let j = JSON.parse(text);
+                                        let linej = JSON.parse(linetext);
+
+                                        
+                                        let gj = displayGeom(j, item, {
+                                                    color:  "#3F556D",
+                                                    opacity: 1,
+                                                    weight: 4,
+                                                    fillOpacity: 0.3
+                                                })
+
+                                            
+                                        let jj = displayGeom(linej, item,{
+                                                color:  "#33B0FF",
+                                                opacity: 1,
+                                                weight: 2,
+                                                fillOpacity: 0.3
+                                            });
+                                            
+                                        gj.addTo(map);
+                                        layers.push(gj);
+                                        jj.addTo(map);
+                                        layers.push(jj);
+                                        counter++;
+
+                                        // Add boundaries to list of latitudes and longitudes to calculate the bounding box below.
+                                        let boundStorer = (geojson) => {
+                                            let bounds = geojson.getBounds();
+                                            let sw = bounds._southWest;
+                                            let ne = bounds._northEast;
+                                            if(sw) {
+                                                lats.push(sw.lat);
+                                                lngs.push(sw.lng);
+                                            }
+                                            if(ne) {
+                                                lats.push(ne.lat);
+                                                lngs.push(ne.lng);
+                                            }
+                                        }
+
+                                        if(switch_unlocked) {
+                                            boundStorer(jj);
+                                            boundStorer(gj);
+                                        }
+                                        counter++;
+
+                                    } else {
+                                        counter++;
+                                    }
+
+                                } else {
+                                    counter ++;
+                                }
+                                if(counter >= ar.length) {
+                                    resolve("Done");
+                                }
+                            });
                         }
+                        catch(err) {
+                            reject(err);
+                        }
+                    })
+                }
+
+                await totalEntitySync();
+
+                /* Add the circle markers */
+                if(totalEntityReduced) {
+                    totalEntityReduced.forEach((item) => {
                         const marker = makeMarker(item, "SS", maxValue, "entity-marker-strategies")
                         marker.bindPopup(makeEntityPopup(item, "SS")).openPopup();
                         spiderfier.addMarker(marker);
                         marker.addTo(map);
                         layers.push(marker);
-                    } else {
-                        counter ++;
-                    }
+                    })
+                }
 
-                    // Upon completion of loop run cb.
-                    if(switch_unlocked && counter >= ar.length) {
-                        cb(feat_coll);
-                    }
-                });
+
 
                 /* Add the red triangle Projects! */
-                swdata.projects.forEach((item) => {
-                    if (item.OnlineDecade <= $decadeStore) {
-                        const marker = makeTriangleMarker(item);
-                        spiderfier.addMarker(marker);
+                if(swdata.projects && swdata.projects.length) {
+                    swdata.projects.forEach((item) => {
+                        if (item.OnlineDecade <= $decadeStore) {
+                            const marker = makeTriangleMarker(item);
+                            spiderfier.addMarker(marker);
 
-                        marker.addTo(map);
-                        layers.push(marker);
-                    }
-                });
+                            marker.addTo(map);
+                            layers.push(marker);
+                        }
+                    });
+                }
 
                 // calc the min and max lng and lat
                 let minlat = Math.min.apply(null, lats);
@@ -436,8 +553,11 @@
                     maxlat = rbounds._northEast.lat > maxlat ? rbounds._northEast.lat : maxlat;
                     maxlng = rbounds._northEast.lng > maxlng ? rbounds._northEast.lng : maxlng;
                 }
-                if(switch_unlocked)
+                // Validate data.
+                if(switch_unlocked && Number.isFinite(minlat) && Number.isFinite(minlng) && Number.isFinite(maxlat) && Number.isFinite(maxlng)
+                    && minlat && minlng && maxlat && maxlng)
                     map.fitBounds([[minlat,minlng],[maxlat,maxlng]]);
+
             };
 
             const buildNeeds = async () => {
@@ -453,17 +573,23 @@
                         maxValue = perc_needs[i][`N${$decadeStore}`];
                     }
                 }
-                perc_needs.forEach(async (item) => {
+                let counter = 0;
+                let lats = [];
+                let lngs = [];
+                perc_needs.forEach(async (item, i, ar) => {
                     if (
                         item.SourceType == "DIRECT REUSE" ||
                         item.SourceType == "LOCAL SURFACE WATER SUPPLY" ||
                         item.SourceType == "ATMOSPHERE" ||
                         item.SourceType == "RAINWATER HARVESTING"
                     ) {
+                        counter++;
                         return;
                     }
 
                     if (item[`N${$decadeStore}`] > 0) {
+                        lats.push(item.Latitude);
+                        lngs.push(item.Longitude);
                         const marker = makeMarker(item, "N", maxValue)
 
                         let percentage = Math.round((item[`N${$decadeStore}`] / item[`D${$decadeStore}`]) * 100);
@@ -471,7 +597,6 @@
                         marker.bindPopup(makeEntityPopup(item, "N")).openPopup();
                         spiderfier.addMarker(marker);
 
-                        marker.addTo(map);
                         let fillColor = '#84D68C'
                         if(percentage < 10) {
                             fillColor = '#84D68C';
@@ -482,13 +607,27 @@
                         } else {
                             fillColor = 'rgb(237, 27, 47)';
                         }
-                        marker.setStyle({fillColor: fillColor})
+                        marker.setStyle({
+                            fillColor: fillColor,
+                            fillOpacity: 1,
+                            weight: 1,
+                            color: "black"
+                        })
 
                         layers.push(marker);
+                        marker.addTo(map);
+
                     }
+
+                    counter++;
+
+                    if(counter >= ar.length)
+                        zoom(map, lats, lngs, region);
                 });
 
                 
+
+                // Build legend 
                 var legend = L.control({position: 'bottomleft'});
                 var div = L.DomUtil.create('div', 'info legend');
 
@@ -536,7 +675,9 @@
                 layers.push(legend)
             };
 
-            const buildSupplies = () => {
+            const buildSupplies = async () => {
+                if(!swdata.supplies.rows)
+                    return;
                 let totalEntity = compress(swdata.supplies.rows, "WS");
 
                 /**
@@ -544,141 +685,150 @@
                  * Add the entities!
                  */
                 let feat_coll = {"type":"FeatureCollection","numberMatched":0,"name":"AllSources","features":[]}
-                let counter = true;
 
                 let lats = [];
                 let lngs = [];
+                const buildPolygons = () => {
+                    let counter = 0;
+                    return new Promise((resolve, reject) => {
+                        swdata.supplies.rows.forEach(async (item, index, ar) => {
+                            let sources = "PolygonSources";
+                            let color = "#526e8d";
+                            lats.push(item.Latitude);
+                            lngs.push(item.Longitude);
 
-                swdata.supplies.rows.forEach(async (item, index, ar) => {
-                    let sources = "PolygonSources";
-                    let color = "#526e8d";
-                    lats.push(item.Latitude);
-                    lngs.push(item.Longitude);
+                            if(item.SourceName !== "DIRECT REUSE" && item.SourceName !== "LOCAL SURFACE WATER SUPPLY" && item.SourceName !== "ATMOSPHERE" && item.SourceName !== "Rainwater Harvesting") {
+                                if(item.SourceName.includes("RIVER")) {
+                                    sources = "LineSources";
+                                    color = "#0097d6";
+                                } else if(item.SourceName.includes("RESERVOIR")) {
+                                    color = "#0097d6";
+                                }
+                                let mapSource = await fetch(
+                                    `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
+                                let text = await mapSource.text();
+                                let j = JSON.parse(text);
+                                counter++;
 
-                    if(item.SourceName !== "DIRECT REUSE" && item.SourceName !== "LOCAL SURFACE WATER SUPPLY" && item.SourceName !== "ATMOSPHERE" && item.SourceName !== "Rainwater Harvesting") {
-                        if(item.SourceName.includes("RIVER")) {
-                            sources = "LineSources";
-                            color = "#0097d6";
-                        } else if(item.SourceName.includes("RESERVOIR")) {
-                            color = "#0097d6";
-                        }
-                        let mapSource = await fetch(
-                            `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
-                        let text = await mapSource.text();
-                        let j = JSON.parse(text);
-                        if(j.numberMatched <= 0) { // Try a polygon source then.
-                            sources = "PolygonSources";
-                            mapSource = await fetch(
-                                `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
+                                if(j.numberMatched <= 0) { // Try a polygon source then.
+                                    sources = "PolygonSources";
+                                    mapSource = await fetch(
+                                        `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
 
-                            text = await mapSource.text();
-                            j = JSON.parse(text);
-                        }
-                        counter++;
+                                    text = await mapSource.text();
+                                    j = JSON.parse(text);
+                                }
 
-                        if(switch_unlocked) {
-                            feat_coll.features.push(... j.features)
-                            if(counter > ar.length) {
-                                cb(feat_coll);
+                                if(switch_unlocked) {
+                                    feat_coll.features.push(... j.features)
+                                    if(counter > ar.length) {
+                                        cb(feat_coll);
+                                    }
+                                }
+
+                                // After Trying Lines and Polygons push whatever we got.
+                                let gj = L.geoJson(j, {
+                                    style: {
+                                        color,
+                                        opacity: 1,
+                                        weight: 2,
+                                        fillOpacity: .4,
+                                    },
+                                    pane: "geom",
+                                });
+
+                                let gBounds = gj.getBounds();
+                                try {
+                                    lats.push(gBounds._northEast.lat);
+                                    lats.push(gBounds._southWest.lat);
+                                    lngs.push(gBounds._northEast.lng);
+                                    lngs.push(gBounds._southWest.lng);
+                                } catch(err) {
+                                }
+
+                                gj.bindPopup(
+                                    `<h3>${item.SourceName}</h3><p><a href="/source/${item.MapSourceId}">View Source Page</a></p>`,
+                                );
+
+                                gj.on("mousemove", (event) => {
+                                    //let name = item.feature.properties.name;
+                                    const me = event.originalEvent;
+                                    hoverHelper(me, "map-entity-hover", item.SourceName);
+                                })
+                                gj.on("mouseout", (event) => {
+                                    clearInteraction("map-entity-hover");
+                                })
+                                gj.addTo(map);
+                                layers.push(gj);
+                            } else {
+                                counter++;
+                                console.log(item.SourceName)
                             }
-                        }
-
-                        // After Trying Lines and Polygons push whatever we got.
-                        let gj = L.geoJson(j, {
-                            style: {
-                                color,
-                                opacity: 1,
-                                weight: 2,
-                                fillOpacity: .4,
-                            },
-                            pane: "geom",
+                            if(counter >= ar.length) {
+                                resolve("Done");
+                            }
                         });
+                    });
+                }
 
-                        let gBounds = gj.getBounds();
-                        lats.push(gBounds._northEast.lat);
-                        lats.push(gBounds._southWest.lat);
-                        lngs.push(gBounds._northEast.lng);
-                        lngs.push(gBounds._southWest.lng);
 
-                        gj.bindPopup(
-                            `<h3>${item.SourceName}</h3><p><a href="/source/${item.MapSourceId}">View Source Page</a></p>`,
-                        );
+                const buildMarkers = () => {
+                    let counter = 0;
 
-                        gj.on("mousemove", (event) => {
-                            //let name = item.feature.properties.name;
-                            const me = event.originalEvent;
-                            hoverHelper(me, "map-entity-hover", item.SourceName);
-                        })
-                        gj.on("mouseout", (event) => {
-                            clearInteraction("map-entity-hover");
-                        })
-                        gj.addTo(map);
-                        layers.push(gj);
-                    } else {
-                        counter++;
-                        console.log(item.SourceName)
-                    }
-                });
+                    return new Promise((resolve, reject) => {
+                        try{
+                            totalEntity.forEach((item, i, ar) => {
+                                for (let i = 0; i < swdata.supplies.rows.length; i++) {
+                                    if (swdata.supplies.rows[i][`WS${$decadeStore}`] > maxValue) {
+                                        maxValue = swdata.supplies.rows[i][`WS${$decadeStore}`];
+                                    }
+                                }
 
-                totalEntity.forEach((item) => {
-                    for (let i = 0; i < swdata.supplies.rows.length; i++) {
-                        if (swdata.supplies.rows[i][`WS${$decadeStore}`] > maxValue) {
-                            maxValue = swdata.supplies.rows[i][`WS${$decadeStore}`];
+                                if (
+                                    item.SourceType == "DIRECT REUSE" ||
+                                    item.SourceType == "LOCAL SURFACE WATER SUPPLY" ||
+                                    item.SourceType == "ATMOSPHERE" ||
+                                    item.SourceType == "RAINWATER HARVESTING"
+                                ) {
+                                    counter++;
+                                    return;
+                                }
+
+                                if (item[`WS${$decadeStore}`] > 0) {
+
+                                    const marker = makeMarker(item, "WS", maxValue, "entity-marker-supplies");
+                                    marker.bindPopup(makeEntityPopup(item, "WS")).openPopup();
+                                    
+                                    spiderfier.addMarker(marker);
+                                    marker.addTo(map);
+                                    marker.setStyle({fillColor: "grey"})
+
+                                    layers.push(marker);
+                                }
+                                counter++;
+                                if(switch_unlocked && counter >= ar.length) {
+                                    resolve("Done");
+                                }
+                            })
+                        } catch(err) {
+                            reject(err);
                         }
-                    }
+                    });
+                }
 
-                    if (
-                        item.SourceType == "DIRECT REUSE" ||
-                        item.SourceType == "LOCAL SURFACE WATER SUPPLY" ||
-                        item.SourceType == "ATMOSPHERE" ||
-                        item.SourceType == "RAINWATER HARVESTING"
-                    ) {
-                        return;
-                    }
-
-                    if (item[`WS${$decadeStore}`] > 0) {
-
-                        const marker = makeMarker(item, "WS", maxValue, "entity-marker-supplies");
-                        marker.bindPopup(makeEntityPopup(item, "WS")).openPopup();
-                        
-                        spiderfier.addMarker(marker);
-                        marker.addTo(map);
-                        marker.setStyle({fillColor: "grey"})
-
-                        layers.push(marker);
-                    }
-                })
 
                 // calc the min and max lng and lat
 
                 // Expand bounding box to encompass region if needed. 
-                if(region) {
-                    rbounds = region.getBounds();
-                    /*minlat = rbounds._southWest.lat < minlat ? rbounds._southWest.lat : minlat;
-                    minlng = rbounds._southWest.lng < minlng ? rbounds._southWest.lng : minlng;
-
-                    maxlat = rbounds._northEast.lat > maxlat ? rbounds._northEast.lat : maxlat;
-                    maxlng = rbounds._northEast.lng > maxlng ? rbounds._northEast.lng : maxlng;
-                    */
-                   lats.push(rbounds._southWest.lat);
-                   lats.push(rbounds._northEast.lat);
-                   lngs.push(rbounds._southWest.lng);
-                   lngs.push(rbounds._northEast.lng);
-                }
-                let minlat = Math.min.apply(null, lats);
-                let maxlat = Math.max.apply(null, lats);
-                let minlng = Math.min.apply(null, lngs);
-                let maxlng = Math.max.apply(null, lngs);
-
-                let rbounds;
-
-                if(switch_unlocked)
-                    map.fitBounds([[minlat,minlng],[maxlat,maxlng]]);
-
+                await Promise.all([buildPolygons(), buildMarkers()]);
+                
+                zoom(map, lats, lngs, region);
             };
 
             const buildDemands = () => {
                 let totalEntity = compress(swdata.demands.rows, "D");
+                let lats = [];
+                let lngs = [];
 
                 /**
                  * Step4 for demands
@@ -692,6 +842,11 @@
                     }
 
                     if (item[`D${$decadeStore}`] > 0) {
+
+                        let coords = coordFitter(item);
+                        lats.push(coords[0]);
+                        lngs.push(coords[1]);
+
                         const marker = makeMarker(item, "D", maxValue);
 
                         marker.setStyle({
@@ -708,11 +863,14 @@
                         layers.push(marker);
                     }
                 });
+                zoom(map, lats, lngs);
+
             };
 
             const buildPopulation = () => {
                 let totalEntity = compress(swdata.population.rows, "P");
-
+                let lats = [];
+                let lngs = [];
                 /**
                  * Step4: For population
                  * Add the entities for population!
@@ -725,6 +883,10 @@
                     }
 
                     if (item[`P${$decadeStore}`] > 0) {
+                        let coords = coordFitter(item);
+                        lats.push(coords[0]);
+                        lngs.push(coords[1]);
+
                         const marker = makeMarker(item, "P", maxValue);
 
                         marker.setStyle({fillColor: "orange", opacity: 1, fillOpacity: 1, weight: 1, color: "black"})
@@ -734,11 +896,19 @@
                         layers.push(marker);
                     }
                 });
+                zoom(map, lats, lngs);
+
             };
 
             const buildProjects = () => {
+                let lats = [];
+                let lngs = [];
+
                 swdata.projects.forEach((item) => {
                     if (item.OnlineDecade <= $decadeStore) {
+                        let coords = coordFitter(item);
+                        lats.push(coords[0]);
+                        lngs.push(coords[1]);
                         const marker = makeTriangleMarker(item);
                         const markerOpts = {
                             radius: 6,
@@ -759,6 +929,7 @@
                         layers.push(cmarker);
                     }
                 });
+                zoom(map, lats, lngs);
             };
 
             if ($themeStore === "strategies") {
