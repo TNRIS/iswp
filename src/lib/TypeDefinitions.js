@@ -7,6 +7,8 @@ export class ProjectItem {
      * @property {number} id: Identification number
      * @property {number} LatCoord: Latitude
      * @property {number} LongCoord: Longitude
+     * @property {number} EntityLatCoord: Latitude alternative name.
+     * @property {number} EntityLongCoord: Longitude alternative name.
      * @property {string} OnlineDecade: Decade Online
      * @property {string} ProjectName: Name of Project
      * @property {string} ProjectSponsors: Sponsor of Project
@@ -19,6 +21,8 @@ export class ProjectItem {
         this.id = undefined;
         this.LatCoord = undefined;
         this.LongCoord = undefined;
+        this.EntityLatCoord = undefined;
+        this.EntityLongCoord = undefined;
         this.OnlineDecade = undefined;
         this.ProjectName = undefined;
         this.ProjectSponsors = undefined;
