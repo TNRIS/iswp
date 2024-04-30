@@ -16,6 +16,10 @@
 
     const titles = constants.chosenTitles;
 
+    const TEXAS = [
+            [36.5, -106.65],
+            [25.84, -93.51],
+        ]
     const theme_titles = constants.getThemeTitles();
     let layers = [];
     let spiderfier;
@@ -61,8 +65,11 @@
         let minlng = Math.min.apply(null, lngs);
         let maxlng = Math.max.apply(null, lngs);
 
-        if(switch_unlocked) {
+        if(switch_unlocked && Number.isFinite(minlat) && Number.isFinite(minlng) && Number.isFinite(maxlat) && Number.isFinite(maxlng)
+            && minlat && minlng && maxlat && maxlng) {
             map.fitBounds([[minlat,minlng],[maxlat,maxlng]]);
+        } else {
+            map.fitBounds(TEXAS)
         }
     }
 
@@ -169,7 +176,7 @@
         const map = L.map("entity_map", {
             scrollWheelZoom: false,
             zoomControl: false,
-            maxZoom: 10,
+            maxZoom: 15,
             minZoom: 1,
         });
         let cb = (fc) => {
@@ -219,10 +226,6 @@
         L.control.zoom({ position: "topright" }).addTo(map);
 
 
-        const TEXAS = [
-            [36.5, -106.65],
-            [25.84, -93.51],
-        ]
 
 
         L.easyButton({
@@ -557,6 +560,9 @@
                 if(switch_unlocked && Number.isFinite(minlat) && Number.isFinite(minlng) && Number.isFinite(maxlat) && Number.isFinite(maxlng)
                     && minlat && minlng && maxlat && maxlng)
                     map.fitBounds([[minlat,minlng],[maxlat,maxlng]]);
+                else {
+                    map.fitBounds(TEXAS);
+                }
 
             };
 

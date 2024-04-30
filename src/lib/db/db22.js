@@ -39,7 +39,7 @@ const storeChecksum = async () => {
 
 export function startDb22() {
     return new Promise(async (resolve, reject) => {
-        const request22 = window.indexedDB.open("iswpDB22", 175);
+        const request22 = window.indexedDB.open("iswpDB22", 180);
     
 
 
@@ -92,6 +92,7 @@ export function startDb22() {
                 //OK: So fast not even 1ms Load time here. It measures 0ms!
                 console.log(`get checksum from localstorage time: ${Date.now() - start}ms.`)
 
+                //TODO check table length as well.
                 if(db22.objectStoreNames.length !== Object.keys(checksum).length) {
                     request22.result.close();
                     delete_database22();
@@ -185,7 +186,8 @@ export function startDb22() {
                 "WugRegion",
                 "WmsType",
                 "WugType",
-                "WmsId"
+                "WmsId",
+                "WmsSponsorRegion"
             ]);
             build_func(event, "vwWMSWugSupplyA1", ["id",]);
             build_func(event, "vwWMSProjects", ["id", "WmsProjectId", "WugRegion", "WmsProjectSponsorRegion"]);
