@@ -6,7 +6,7 @@
     export let data;
     let db;
     import { QuerySettings } from "$lib/QuerySettings.js";
-    import { load_indexeddb, getConstants } from "$lib/helper.js";
+    import { load_indexeddb, getConstants, cap } from "$lib/helper.js";
     import Statewide from "$lib/db/statewide.js";
     import Header from "$lib/components/Header.svelte";
 
@@ -21,12 +21,23 @@
     let sourceSetting = new QuerySettings("source", "MapSourceId");
     sourceSetting.setAll(Number(data.slug));
     let title = "";
-    const tagline = `Surface Water Source in <a href="/">Texas</a>`
+    let tagline = `Surface Water Source in <a href="/">Texas</a>`
 
     let loadForSource = async () => {
         let start = Date.now();
 
         title = sourceNames.find(x => x.label == parseInt(data.slug))?.value;
+
+        if (title.includes("|")) {
+            const county = title.split("|")[1].trim();
+            const countyName = cap(county);
+
+            tagline = `Groundwater Source in <a href="/county/${countyName}">${countyName}</a>`
+        }
+        else {
+            tagline = `Surface Water Source in <a href="/">Texas</a>`
+        }
+
         db = await load_indexeddb();
         let sw = new Statewide(db);
         let dat = await sw.get(sourceSetting);
