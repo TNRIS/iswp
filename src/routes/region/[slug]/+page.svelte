@@ -34,6 +34,7 @@
     let constants = getConstants($page.url.host)
     let regionSetting = new QuerySettings("region", "WugRegion");
     regionSetting.setAll(data.slug);
+    regionSetting.setProjects(data.slug, "WmsProjectSponsorRegion")
     let db;
     let loadForRegion = async () => {
         let start = Date.now();

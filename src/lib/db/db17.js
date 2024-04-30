@@ -38,7 +38,7 @@ const storeChecksum = async () => {
 
 export function startDb17() {
     return new Promise(async (resolve, reject) => {
-        const request17 = window.indexedDB.open("iswpDB17", 141);
+        const request17 = window.indexedDB.open("iswpDB17", 142);
 
         request17.onerror = (event) => {
             reject(event);
@@ -173,7 +173,8 @@ export function startDb17() {
                 "WugRegion",
                 "WmsType",
                 "WugType",
-                "WmsId"
+                "WmsId",
+                "WmsSponsorRegion"
             ]);
             build_func(event, "vw2017MapWMSWugSupplyA1", ["id"]);
             build_func(event, "vw2017MapWMSProjects", ["id", "WmsProjectId", "WugRegion", "WmsProjectSponsorRegion"]);

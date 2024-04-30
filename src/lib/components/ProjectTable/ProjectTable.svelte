@@ -13,6 +13,9 @@
     $: project_data = []
     $: display_table = "none";
     onMount(async () => {
+        /** @type {Array<Object>}*/
+        let project_ids = [];
+
         if (swdata.projects && swdata.projects.length) projects = true;
         for (let project of swdata.projects) {
             let to_array = [
@@ -32,8 +35,12 @@
                         type !== "region") // Specific to region.
                 )
             ) {
-                sum += project.CapitalCost;
-                project_data.push(to_array);
+                if(!project_ids.includes(project.WmsProjectId)) {
+                    sum += Number(project.CapitalCost);
+                    project_data.push(to_array);
+                    project_ids.push(project.WmsProjectId);
+                }
+
             }
         }
         project_data = project_data

@@ -254,7 +254,7 @@ export default class Statewide {
         // Get wug data for the map!
         if(page !== "" && page !== "statewide") {
             let b = await this.#getAllTransaction(`${this.constants.tappend}EntityCoordinates`);
-            let ent5 = await this.#getAllTransaction(`${this.constants.tappend}WMSProjects`, "WugRegion", "A")
+            let ent5 = await this.#getAllTransaction(`${this.constants.tappend}WMSProjects`)
             let ent6 = await this.#getAllTransaction(`${this.constants.tappend}WMSProjectBySource`)
             console.log(`get time 5 in ms: ${Date.now() - start}`);
     
