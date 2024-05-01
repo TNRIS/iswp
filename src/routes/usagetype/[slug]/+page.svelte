@@ -24,10 +24,10 @@
     let db;
 
     let stratAd = [
+        "Region",
         "Strategy",
         "WMS Type",
         "Source",
-        "Region",
         "County",
         "Entity"
     ];

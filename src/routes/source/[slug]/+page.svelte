@@ -22,7 +22,14 @@
     sourceSetting.setAll(Number(data.slug));
     let title = "";
     let tagline = `Surface Water Source in <a href="/">Texas</a>`
-
+    let stratAd = [
+        "Region",
+        "County",
+        "Entity",
+        "Strategy",
+        "WMS Type",
+        "Source"
+    ];
     let loadForSource = async () => {
         let start = Date.now();
 
@@ -53,7 +60,7 @@
 {:then out}
 <PopulationChart {tagline} titleOnly={true} {title} {constants} />
 <ProjectTable swdata={out} type={"region"} project_title={"WATER SOURCE - " + title} project_title2={"Projects Associated with Source"} {title} />
-<DataViewChoiceWrapInd  {title} {entityMapBlurb} swdata={out} type={"source"} fileName={`source_${data.slug}`} {constants} csvTitle={title} sourcePage={true} />
+<DataViewChoiceWrapInd {stratAd} slug={data.slug} {title} {entityMapBlurb} swdata={out} type={"source"} fileName={`source_${data.slug}`} {constants} csvTitle={title} sourcePage={true} />
 
 {:catch error}
     <span>Error starting database {error.message}</span>

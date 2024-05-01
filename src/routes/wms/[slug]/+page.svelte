@@ -12,10 +12,10 @@
     import { page } from '$app/stores';
     $: tagline = "";
     let stratAd = [
+        "Region",
         "Strategy",
         "WMS Type",
         "Source",
-        "Region",
         "County",
         "Entity"
     ];

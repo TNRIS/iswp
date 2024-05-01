@@ -13,10 +13,10 @@
     
     import { page } from '$app/stores';
     let stratAd = [
+        "Region",
         "WMS Type",
         "Strategy",
         "Source",
-        "Region",
         "County",
         "Entity"
     ];

@@ -46,7 +46,7 @@
     <div class="container">
         <!-- <StrategiesBreakdown {swdata} /> -->
 
-        <EntityMap {swdata} {title} {constants} {type} {entityMapBlurb} />
+        <EntityMap {slug} {swdata} {title} {constants} {type} {entityMapBlurb} />
         {#if type !== "source" && type !== "pop" && type !== "wms" && type !== "wmstype"}
         <StrategiesBreakdown {swdata} {title} />
         {/if}
