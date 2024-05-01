@@ -1,6 +1,6 @@
 <script>
     //@ts-nocheck
-    const { swdata, csvTitle, title, fileName, constants, stratAd, activeDem, showPopulation } = $$props;
+    const { page, slug, swdata, csvTitle, title, fileName, constants, stratAd, activeDem, showPopulation } = $$props;
     import { commafy, onMountSync, usd_format } from "$lib/helper.js";
     let pivotLoaded = false;
     import CsvDownloads from "$lib/components/CsvDownloads.svelte";
@@ -194,5 +194,9 @@
         {/if}
     </h4>
     <div id="reactpivot" />
+    {#if slug == "MUNICIPAL" && page == "usagetype"}
+    <CsvDownloads {swdata} {csvTitle} {fileName} {constants} downloadPopulation={true} />
+    {:else}
     <CsvDownloads {swdata} {csvTitle} {fileName} {constants} downloadPopulation={showPopulation} />
+    {/if}
 </div>

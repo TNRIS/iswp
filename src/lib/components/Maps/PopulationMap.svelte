@@ -6,7 +6,7 @@
     const regionTable = 'rwpas';
     const { title, swdata, constants } = $$props;
     import { cap, commafy } from '$lib/helper';
-    const sourceTable = constants.sourcetables;
+    const sourceMap = constants.sourcemap;
     import { hoverHelper, clearInteraction } from "$lib/actions/HoverAction";
 
 	function navigateToRegion({data}) {
@@ -226,12 +226,12 @@
             } else if (page == "source") {
                 buildGrid();
 
-                fetch(`https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=AllSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${key}</Literal></PropertyIsEqualTo></Filter>`)
+                fetch(`https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=AllSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${key}</Literal></PropertyIsEqualTo></Filter>`)
                 .then(res => res.text()).then(res => {
                     let data = JSON.parse(res);
                     const featureTyp = data.features[0].properties.featuretyp;
                     const layerName = featureTyp.charAt(0).toUpperCase() + featureTyp.slice(1);
-                    fetch(`https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${layerName}Sources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${key}</Literal></PropertyIsEqualTo></Filter>`)
+                    fetch(`https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${layerName}Sources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${key}</Literal></PropertyIsEqualTo></Filter>`)
                     .then(r => r.text()).then(r => {
                         let gj = L.geoJson(JSON.parse(r), {
                                 style: {

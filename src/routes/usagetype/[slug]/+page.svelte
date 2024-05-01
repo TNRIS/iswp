@@ -24,10 +24,10 @@
     let db;
 
     let stratAd = [
+        "Region",
         "Strategy",
         "WMS Type",
         "Source",
-        "Region",
         "County",
         "Entity"
     ];
@@ -81,7 +81,7 @@
     </div>
 </div>
 <ThemeTotalsByDecadeChart swdata={out} {constants} title={`Usage Type - ${slugify(data.slug)}`} />
-<DataViewChoiceWrapInd title={`Usage Type - ${cap(data.slug)}`} {entityMapBlurb} showPopulation={false} {stratAd} {activeDem} swdata={out} csvTitle={`${cap(data.slug)} Usage Type`} fileName={`usagetype_${data.slug.toLowerCase()}`} {constants} />
+<DataViewChoiceWrapInd page="usagetype" slug={data.slug} title={`Usage Type - ${cap(data.slug)}`} {entityMapBlurb} showPopulation={false} {stratAd} {activeDem} swdata={out} csvTitle={`${cap(data.slug)} Usage Type`} fileName={`usagetype_${data.slug.toLowerCase()}`} {constants} />
 
 {:catch error}
 <span>Error starting database {error.message}</span>

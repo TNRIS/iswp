@@ -8,7 +8,7 @@ export class Constant2027 {
 
     tappend = "vw";
     sourcemap = "iswp_sourcefeatures2027.map";
-    sourcetables = "iswp_sourcefeatures2027.map";
+    sourcetables = "iswp_sourcefeatures2027";
 
     regionalDescription = {
         A: "The Panhandle (Region A) Regional Water Planning Area includes 21 counties split between the Canadian and Red river basins. The major cities in the region include Amarillo, Pampa, Borger, and Dumas.",

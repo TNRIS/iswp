@@ -7,9 +7,10 @@
 
     const countyTable = "county_extended";
     const regionTable = "rwpas";
-    const { title, swdata, constants, type, entityMapBlurb } = $$props;
+    const { slug, title, swdata, constants, type, entityMapBlurb } = $$props;
     const DECADES = constants.getDecades();
-    const sourceTable = constants.sourcemap;
+    const sourceMap = constants.sourcemap;
+    const sourceTable = constants.sourcetables;
     const dataviewContext = getContext("dataviewContext");
     const decadeStore = getContext("myContext").decadeStore;
     const themeStore = getContext("myContext").themeStore;
@@ -69,7 +70,8 @@
             && minlat && minlng && maxlat && maxlng) {
             map.fitBounds([[minlat,minlng],[maxlat,maxlng]]);
         } else {
-            map.fitBounds(TEXAS)
+            if(switch_unlocked)
+                map.fitBounds(TEXAS)
         }
     }
 
@@ -225,9 +227,6 @@
 
         L.control.zoom({ position: "topright" }).addTo(map);
 
-
-
-
         L.easyButton({
             position: 'topright',
             states: [{
@@ -320,10 +319,14 @@
             table = countyTable;
         } else if(page === "project") {
             themeStore.set("projects");
+        } else if (page === "source") {
+            table = sourceTable;
+            property_name = "sourceid";
+            type_name = "PolygonSources"
         }
 
         // Create a border for region and county.
-        if(page === "region" || page === "county") {
+        if(page === "region" || page === "county" || page == "source") {
             region_query = await fetch(
             `https://mapserver.tnris.org/?map=/tnris_mapfiles/${table}.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${type_name}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>${property_name}</PropertyName><Literal>${key}</Literal></PropertyIsEqualTo></Filter>`);
 
@@ -356,7 +359,6 @@
             let maxValue = 1;
             const buildStrategies = async () => {
                 let counter = 0;
-                let feat_coll = {"type":"FeatureCollection","numberMatched":0,"name":"AllSources","features":[]}
 
                 // Get the max value of SSDecadeStore!
                 for (let i = 0; i < swdata.strategies.rows?.length; i++) {
@@ -399,23 +401,23 @@
 
                 const displayGeom = (j, item, style) => {
                     let gj = L.geoJson(j, {
-                                style,
-                                pane: "geom",
-                            });
+                            style,
+                            pane: "geom",
+                        });
 
-                            gj.bindPopup(
-                                `<h3>${item.SourceName}</h3><p><a href="/source/${item.MapSourceId}">View Source Page</a></p>`,
-                            );
-                            gj.on("mousemove", (event) => {
-                                //let name = item.feature.properties.name;
-                                const me = event.originalEvent;
-                                hoverHelper(me, "map-entity-hover", item.SourceName);
-                            })
-                            gj.on("mouseout", (event) => {
-                                clearInteraction("map-entity-hover");
-                            })
+                        gj.bindPopup(
+                            `<h3>${item.SourceName}</h3><p><a href="/source/${item.MapSourceId}">View Source Page</a></p>`,
+                        );
+                        gj.on("mousemove", (event) => {
+                            //let name = item.feature.properties.name;
+                            const me = event.originalEvent;
+                            hoverHelper(me, "map-entity-hover", item.SourceName);
+                        })
+                        gj.on("mouseout", (event) => {
+                            clearInteraction("map-entity-hover");
+                        })
 
-                    return gj
+                    return gj;
                 }
 
                 let totalEntitySync = () => {
@@ -425,13 +427,18 @@
                                 resolve("Done")
                             totalEntity?.forEach(async (item, i, ar) => {
                                 if (
-                                    item.SourceName == "DIRECT REUSE" ||
-                                    item.SourceName == "LOCAL SURFACE WATER SUPPLY" ||
-                                    item.SourceName == "ATMOSPHERE" ||
-                                    item.SourceName == "RAINWATER HARVESTING" ||
-                                    item.SourceName == "ATMOSPHERE"
+                                    item.SourceName === "DIRECT REUSE" ||
+                                    item.SourceName === "LOCAL SURFACE WATER SUPPLY" ||
+                                    item.SourceName === "ATMOSPHERE" ||
+                                    item.SourceName === "RAINWATER HARVESTING" ||
+                                    item.SourceName === "ATMOSPHERE" ||
+                                    (type === "source" && slug == item.MapSourceId)
                                 ) {
+                                    console.log("Here")
                                     counter++;
+                                    if(counter >= ar.length) {
+                                        resolve("Done");
+                                    }
                                     return;
                                 }
                                 lats.push(item.Latitude);
@@ -441,9 +448,9 @@
                                     // Add the blue aquifer Geojson entities with a popup!
                                     if (item.SourceType == "GROUNDWATER" || item.SourceType == "SURFACE WATER") {
                                         let mapSource = fetch(
-                                            `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PolygonSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
+                                            `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PolygonSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
                                         let lineSource = fetch(
-                                            `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=LineSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
+                                            `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=LineSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
                                         
 
                                         [mapSource, lineSource] = await Promise.all([mapSource, lineSource]);
@@ -513,19 +520,20 @@
                 }
 
                 await totalEntitySync();
-
+                console.log("here");
                 /* Add the circle markers */
                 if(totalEntityReduced) {
                     totalEntityReduced.forEach((item) => {
-                        const marker = makeMarker(item, "SS", maxValue, "entity-marker-strategies")
-                        marker.bindPopup(makeEntityPopup(item, "SS")).openPopup();
-                        spiderfier.addMarker(marker);
-                        marker.addTo(map);
-                        layers.push(marker);
+                        // Don't include items with 0.
+                        if(item[`SS${$decadeStore}`] > 0) {
+                            const marker = makeMarker(item, "SS", maxValue, "entity-marker-strategies")
+                            marker.bindPopup(makeEntityPopup(item, "SS")).openPopup();
+                            spiderfier.addMarker(marker);
+                            marker.addTo(map);
+                            layers.push(marker);
+                        }
                     })
                 }
-
-
 
                 /* Add the red triangle Projects! */
                 if(swdata.projects && swdata.projects.length) {
@@ -541,29 +549,26 @@
                 }
 
                 // calc the min and max lng and lat
+                if(region) {
+                    let rbounds = region.getBounds();
+                    lats.push(rbounds._southWest.lat);
+                    lats.push(rbounds._northEast.lat);
+                    lngs.push(rbounds._southWest.lng);
+                    lngs.push(rbounds._northEast.lng);
+                }
                 let minlat = Math.min.apply(null, lats);
                 let maxlat = Math.max.apply(null, lats);
                 let minlng = Math.min.apply(null, lngs);
                 let maxlng = Math.max.apply(null, lngs);
 
-                let rbounds;
-                // Expand bounding box to encompass region if needed. 
-                if(region) {
-                    rbounds = region.getBounds();
-                    minlat = rbounds._southWest.lat < minlat ? rbounds._southWest.lat : minlat;
-                    minlng = rbounds._southWest.lng < minlng ? rbounds._southWest.lng : minlng;
-
-                    maxlat = rbounds._northEast.lat > maxlat ? rbounds._northEast.lat : maxlat;
-                    maxlng = rbounds._northEast.lng > maxlng ? rbounds._northEast.lng : maxlng;
-                }
                 // Validate data.
                 if(switch_unlocked && Number.isFinite(minlat) && Number.isFinite(minlng) && Number.isFinite(maxlat) && Number.isFinite(maxlng)
                     && minlat && minlng && maxlat && maxlng)
                     map.fitBounds([[minlat,minlng],[maxlat,maxlng]]);
                 else {
-                    map.fitBounds(TEXAS);
+                    if(switch_unlocked)
+                        map.fitBounds(TEXAS);
                 }
-
             };
 
             const buildNeeds = async () => {
@@ -596,7 +601,7 @@
                     if (item[`N${$decadeStore}`] > 0) {
                         lats.push(item.Latitude);
                         lngs.push(item.Longitude);
-                        const marker = makeMarker(item, "N", maxValue)
+                        const marker = makeMarker(item, "N", maxValue);
 
                         let percentage = Math.round((item[`N${$decadeStore}`] / item[`D${$decadeStore}`]) * 100);
 
@@ -642,11 +647,10 @@
                         {
                             text: "Greater than 50%",
                             color: "rgb(237, 27, 47)"
-                            
                         }, {
                             text: "Greater than 25%",
                             color: "#FDAE61"
-                        }, 
+                        },
                         {
                             text: "Greater than 10%",
                             color: "#FFFFBF"
@@ -703,7 +707,12 @@
                             lats.push(item.Latitude);
                             lngs.push(item.Longitude);
 
-                            if(item.SourceName !== "DIRECT REUSE" && item.SourceName !== "LOCAL SURFACE WATER SUPPLY" && item.SourceName !== "ATMOSPHERE" && item.SourceName !== "Rainwater Harvesting") {
+                            if((item.SourceName !== "DIRECT REUSE" 
+                                && item.SourceName !== "LOCAL SURFACE WATER SUPPLY"
+                                && item.SourceName !== "ATMOSPHERE"
+                                && item.SourceName !== "Rainwater Harvesting") 
+                                && !(type === "source" && slug == item.MapSourceId)
+                            ) {
                                 if(item.SourceName.includes("RIVER")) {
                                     sources = "LineSources";
                                     color = "#0097d6";
@@ -711,7 +720,7 @@
                                     color = "#0097d6";
                                 }
                                 let mapSource = await fetch(
-                                    `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
+                                    `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
                                 let text = await mapSource.text();
                                 let j = JSON.parse(text);
                                 counter++;
@@ -719,7 +728,7 @@
                                 if(j.numberMatched <= 0) { // Try a polygon source then.
                                     sources = "PolygonSources";
                                     mapSource = await fetch(
-                                        `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceTable}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
+                                        `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
 
                                     text = await mapSource.text();
                                     j = JSON.parse(text);
