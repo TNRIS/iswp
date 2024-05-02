@@ -1,5 +1,8 @@
 <script>
     import Banner from "$lib/components/Header/Banner.svelte";
+    //Remove temporary banner
+    document.getElementById("temp-content")?.remove();
+
     import Navigation from "$lib/components/Header/Navigation.svelte";
     import { onMountSync } from "$lib/helper.js"
     const { db, constants, hideNav } = $$props;

@@ -65,14 +65,10 @@
             </div>
         </div>
         <ProjectTable project_title={`WMS TYPE - ${data.slug}`} project_title2={"Projects related to Water Management Strategy Type"} swdata={out} type={"region"} />
-        <DataViewChoiceWrapInd title={`WMS TYPE - ${data.slug}`} {entityMapBlurb} {stratAd} swdata={out} hideTheme={true} type={"wmstype"} csvTitle={`${cap(data.slug)} WMS Type`} {constants} />
+        <DataViewChoiceWrapInd title={`WMS TYPE - ${data.slug}`} fileName={`wmstype_${data.slug}`} {entityMapBlurb} {stratAd} swdata={out} hideTheme={true} type={"wmstype"} csvTitle={`${cap(data.slug)} WMS Type`} {constants} />
 
         {:catch error}
             <span>Error starting database {error.message}</span>
         {/await}
     </section>
 </div>
-
-<style type="text/scss">
-    @import '$lib/sass/main.scss';
-</style>  

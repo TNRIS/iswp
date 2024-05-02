@@ -194,7 +194,8 @@
         {/if}
     </h4>
     <div id="reactpivot" />
-    {#if slug == "MUNICIPAL" && page == "usagetype"}
+    <!-- If page is usagetype then only download if it's specifically Municipal. Download other pages with population if available. -->
+    {#if (slug == "MUNICIPAL" && page == "usagetype") || page !== "usagetype"}
     <CsvDownloads {swdata} {csvTitle} {fileName} {constants} downloadPopulation={true} />
     {:else}
     <CsvDownloads {swdata} {csvTitle} {fileName} {constants} downloadPopulation={showPopulation} />

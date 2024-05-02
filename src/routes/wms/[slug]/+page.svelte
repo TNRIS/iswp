@@ -59,11 +59,8 @@
 {:then out}
     <PopulationChart {tagline} title={csvTitle} titleOnly={true} swdata={out} {constants} noMap={true} />
     <ProjectTable project_title={`WATER MANAGEMENT STRATEGY - ${csvTitle}`} project_title2={"Projects related to Water Management Strategy"} swdata={out} type={"region"} />
-    <DataViewChoiceWrapInd title={`WATER MANAGEMENT STRATEGY - ${csvTitle}`} {entityMapBlurb} {stratAd} swdata={out} hideTheme={true} type={"wms"} {constants} {csvTitle} />
+    <DataViewChoiceWrapInd title={`WATER MANAGEMENT STRATEGY - ${csvTitle}`} fileName={`wms_${data.slug}`} {entityMapBlurb} {stratAd} swdata={out} hideTheme={true} type={"wms"} {constants} {csvTitle} />
 {:catch error}
     <span>Error starting database {error.message}</span>
 {/await}
 </div>
-<style type="text/scss">
-    @import '$lib/sass/main.scss';
-</style>  
