@@ -87,6 +87,3 @@
         {/await}
     </section>
 </div>
-<style type="text/scss">
-    @import '$lib/sass/main.scss';
-</style>  

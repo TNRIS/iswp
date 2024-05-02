@@ -63,19 +63,17 @@
 {#if constants.allow_dl}
 <h5>Download Data</h5>
 <ul>
-    {#if csvTitle !== "Agricultural Conservation WMS Type"}
-        {#if population.length && downloadPopulation}
-        <li><a href="#" on:click={() => {dlpop(population, "population.csv")}}>Download {csvTitle} Population data (Comma-Separated Values)</a></li>
-        {/if}
-        {#if demands.length}
-        <li><a href="#" on:click={() => {dlpop(demands, "demands.csv")}}>Download {csvTitle} Demands data (Comma-Separated Values)</a></li>
-        {/if}
-        {#if existing.length}
-        <li><a href="#" on:click={() => {dlpop(existing, "existing.csv")}}>Download {csvTitle} Existing Supplies data (Comma-Separated Values)</a></li>
-        {/if}
-        {#if needs.length}
-        <li><a href="#" on:click={() => {dlpop(needs, "needs.csv")}}>Download {csvTitle} Needs (Potential Shortages) data (Comma-Separated Values)</a></li>
-        {/if}
+    {#if (population.length && downloadPopulation)}
+    <li><a href="#" on:click={() => {dlpop(population, "population.csv")}}>Download {csvTitle} Population data (Comma-Separated Values)</a></li>
+    {/if}
+    {#if demands.length}
+    <li><a href="#" on:click={() => {dlpop(demands, "demands.csv")}}>Download {csvTitle} Demands data (Comma-Separated Values)</a></li>
+    {/if}
+    {#if existing.length}
+    <li><a href="#" on:click={() => {dlpop(existing, "existing.csv")}}>Download {csvTitle} Existing Supplies data (Comma-Separated Values)</a></li>
+    {/if}
+    {#if needs.length}
+    <li><a href="#" on:click={() => {dlpop(needs, "needs.csv")}}>Download {csvTitle} Needs (Potential Shortages) data (Comma-Separated Values)</a></li>
     {/if}
     {#if strategy.length}
     <li><a href="#" on:click={() => {dlpop(strategy, "strategies.csv")}}>Download {csvTitle} Strategy Supplies data (Comma-Separated Values)</a></li>

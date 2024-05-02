@@ -23,6 +23,8 @@ To create a production version of your app:
 ```bash
 npm run build
 ```
+3. compile main.scss `sass main.scss main.css`
+Designed to be compiled manually due to sveltekit not allowing prerender = true on dynamic routes AKA [slug] pages. Resulting in a split second where the css is not loaded causing a flicker effect.
 
 You can preview the production build with `npm run preview`.
 

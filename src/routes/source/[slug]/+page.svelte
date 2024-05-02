@@ -66,6 +66,3 @@
     <span>Error starting database {error.message}</span>
 {/await}
 </div>
-<style type="text/scss">
-    @import '$lib/sass/main.scss';
-</style>  
