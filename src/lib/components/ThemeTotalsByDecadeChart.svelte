@@ -1,6 +1,6 @@
 <script>
     import BarChart from "$lib/components/Charts/BarChart.svelte";
-    const { swdata, wugRegionFilter, constants, title } = $$props;
+    const { lrp, wugRegionFilter, constants, title } = $$props;
     import ChartDataTable from "$lib/components/ChartDataTable.svelte";
     import { commafy } from "$lib/helper.js";
     import ColorCodeSpread from "$lib/components/ColorCodeIcons/ColorCodeSpread.svelte";
@@ -31,6 +31,7 @@
 
     let getData = () => {
         return new Promise(async (resolve, reject) => {
+            let swdata = await lrp;
             try {
                 const titles = constants.getThemeTitles();
                 const data2 = [

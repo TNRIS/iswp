@@ -26,6 +26,9 @@
         console.log(`loadForState() time in ms: ${Date.now() - start}`);
         return dat;
     };
+
+    // Pass the promise to load for state in order to load each entity one at a time.
+    const lrp = loadForState();
 </script>
 
 {#await HeaderPromise}
@@ -35,50 +38,45 @@
 {/await}
 <div class="statewide-view">
     <section>
-        {#await loadForState()}
+
+        {#await popChartPromise}
         <div class="loader"></div>
-        {:then out}
-            {#await popChartPromise}
-            <div class="loader"></div>
-            {:then {default: Component}}
-            <Component title={`TEXAS`} swdata={out} {constants} />
-            {/await}
+        {:then {default: Component}}
+        <Component title={`TEXAS`} {lrp} {constants} />
+        {/await}
 
-            {#await TitleBlurbPromise}
-            <div class="loader"></div>
-            {:then {default: Component}}
-            <Component {constants} />
-            {/await}
+        {#await TitleBlurbPromise}
+        <div class="loader"></div>
+        {:then {default: Component}}
+        <Component {constants} />
+        {/await}
 
-            {#await ThemeTotalsByDecadeChartPromise}
-            <div class="loader"></div>
-            {:then {default: Component}}
-            <Component swdata={out} {constants} />
-            {/await}
+        {#await ThemeTotalsByDecadeChartPromise}
+        <div class="loader"></div>
+        {:then {default: Component}}
+        <Component {lrp} {constants} />
+        {/await}
 
-            {#await ThemeTypesByDecadeChartPromise}
-            <div class="loader"></div>
-            {:then {default: Component}}
-            <Component
-            chartTitle={"ct-usage-chart"}
-            swdata={out}
-            {constants}
-            />  
-            {/await}
- 
-            {#await DataUsageTypePromise}
-            <div class="loader"></div>
-            {:then {default: Component}}
-            <Component swdata={out} {constants} />
-            {/await}
+        {#await ThemeTypesByDecadeChartPromise}
+        <div class="loader"></div>
+        {:then {default: Component}}
+        <Component
+        chartTitle={"ct-usage-chart"}
+        {lrp}
+        {constants}
+        />  
+        {/await}
 
-            {#await DataViewChoiceWrapPromise}
-            <div class="loader"></div>
-            {:then {default: Component}}
-            <Component {db} swdata={out} csvTitle= {"Statewide"} {constants} />
-            {/await}
-        {:catch error}
-            <span>Error starting database {error.message}</span>
+        {#await DataUsageTypePromise}
+        <div class="loader"></div>
+        {:then {default: Component}}
+        <Component {lrp} {constants} />
+        {/await}
+
+        {#await DataViewChoiceWrapPromise}
+        <div class="loader"></div>
+        {:then {default: Component}}
+        <Component {db} {lrp} csvTitle= {"Statewide"} {constants} />
         {/await}
     </section>
 </div>

@@ -50,7 +50,6 @@ export function clearSeriesHighlight() {
 }
 
 export function hoverHelper(event, chartTitle, message=undefined) {
-    console.log(event.target.classList);
     if ( event.target.classList.contains( 'leaflet-interactive' ) ) {
         const me = event.target;
         const matrix = me.getScreenCTM().translate(
@@ -194,9 +193,6 @@ export function hoverHelper(event, chartTitle, message=undefined) {
         tooltip.style.top = `${event.clientY - height - 10}px`;
         tooltip.style.left = `${event.clientX - width / 2}px`;
         tooltip.className = `ct-tooltip tooltip-${slugify(seriesName.toLowerCase())}`;
-
-        console.log(`top: ${tooltip.style.top} left: ${tooltip.style.left}`);
-
     }
 }
 

@@ -7,7 +7,7 @@
     import ChartDataTable from "$lib/components/ChartDataTable.svelte";
     import { slugify } from "$lib/helper.js";
     import ColorCodeSpread from "$lib/components/ColorCodeIcons/ColorCodeSpread.svelte";
-    const { swdata, constants, title } = $$props;
+    const { lrp, constants, title } = $$props;
 
     const everyTwoTypes = split_every(2, constants.getUsageTypes());
 
@@ -15,6 +15,7 @@
     var getData = () => {
         return new Promise((resolve, reject) => {
             onMount(async () => {
+                let swdata = await lrp;
                 try {
                     dataUsageTypeData = await buildDataUsageTypeData(swdata);
 
@@ -70,7 +71,6 @@
 
                 {#await getData()}
                     <div class="loader"></div>
-
                 {:then data}
                     {#each everyTwoTypes as group_name, i}
                         <div class="row" key={i} id="bar_chart_container_dut">

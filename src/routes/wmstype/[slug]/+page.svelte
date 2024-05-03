@@ -46,15 +46,15 @@
 
     setContext("dataviewContext", {
         getData: writable()
-    });   
+    });
+
+    const lrp = loadForWmsType();
 </script>
 <Header {constants} />
 
 <div class="statewide-view">
     <section>
-        {#await loadForWmsType()}
-        <div class="loader"></div>
-        {:then out}
+
         <div class="view-top usage-type-view-top">
             <div class="summary-wrapper container">
                 
@@ -64,11 +64,7 @@
                 </div>
             </div>
         </div>
-        <ProjectTable project_title={`WMS TYPE - ${data.slug}`} project_title2={"Projects related to Water Management Strategy Type"} swdata={out} type={"region"} />
-        <DataViewChoiceWrapInd title={`WMS TYPE - ${data.slug}`} fileName={`wmstype_${data.slug}`} {entityMapBlurb} {stratAd} swdata={out} hideTheme={true} type={"wmstype"} csvTitle={`${cap(data.slug)} WMS Type`} {constants} />
-
-        {:catch error}
-            <span>Error starting database {error.message}</span>
-        {/await}
+        <ProjectTable project_title={`WMS TYPE - ${data.slug}`} project_title2={"Projects related to Water Management Strategy Type"} {lrp} type={"region"} />
+        <DataViewChoiceWrapInd title={`WMS TYPE - ${data.slug}`} fileName={`wmstype_${data.slug}`} {entityMapBlurb} {stratAd} {lrp} hideTheme={true} type={"wmstype"} csvTitle={`${cap(data.slug)} WMS Type`} {constants} />
     </section>
 </div>

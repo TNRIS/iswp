@@ -18,7 +18,7 @@
 
     const sourceSetting2 = new QuerySettings("wms", "WmsProjectId");
     sourceSetting2.setAll(Number(data.slug));
-
+    let projectName = "";
     const loadForSource = async () => {
         const start = Date.now();
         db = await load_indexeddb();
@@ -40,18 +40,26 @@
 
         tagline = `<span>Decade Online: ${decade_online}</span><br /><span>Capital Cost: ${capital_cost}</span>`
         console.log(`loadForRegion time in ms: ${Date.now() - start}`);
+
+        projectName = r.projects[0].ProjectName
         return r;
     };
+
+    // Promise to load for source. Do not await here. Await later in individual entities.
+    const lrp =  loadForSource();
+
+    console.log("Here")
 </script>
 <Header {constants} />
 <div class="statewide-view">
 
+<!--TODO weigh whether it's a good idea to cache project information in the future here. In order to load each entity one at a time.-->
 {#await loadForSource()}
 <div class="loader"></div>
 {:then out}
-    <PopulationChart {tagline} title={out.projects[0].ProjectName} titleOnly={true} swdata={out} {constants} />
-    <ProjectTable2 project_title={`WMS PROJECT - ${out.projects[0].ProjectName}`} project_title2={"Water Management Strategies related to Project"} swdata={out} type={"region"} />
-    <DataViewChoiceWrapInd title={`WMS PROJECT - ${out.projects[0].ProjectName}`} {entityMapBlurb} swdata={out} type={"pop"} hideTheme={true} {constants} csvTitle={`${cap(out.projects[0].ProjectName)} WMS`} fileName={`project_${data.slug}`} />
+    <PopulationChart {tagline} title={projectName} titleOnly={true} {lrp} {constants} />
+    <ProjectTable2 project_title={`WMS PROJECT - ${projectName}`} project_title2={"Water Management Strategies related to Project"} {lrp} type={"region"} />
+    <DataViewChoiceWrapInd title={`WMS PROJECT - ${projectName}`} {entityMapBlurb} {lrp} type={"pop"} hideTheme={true} {constants} csvTitle={`${cap(projectName)} WMS`} fileName={`project_${data.slug}`} />
 {:catch error}
     <span>Error starting database {error.message}</span>
 {/await}

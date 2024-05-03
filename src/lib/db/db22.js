@@ -39,7 +39,7 @@ const storeChecksum = async () => {
 
 export function startDb22() {
     return new Promise(async (resolve, reject) => {
-        const request22 = window.indexedDB.open("iswpDB22", 180);
+        const request22 = window.indexedDB.open("iswpDB22", 187);
     
 
 
@@ -80,6 +80,29 @@ export function startDb22() {
                 doc.style.display = 'block';
             }
 
+            // Check we set entityCoordinates up and redownload if needed.
+            if(localStorage.getItem("entitySuccess") !== "true") {
+                const transaction = db22.transaction(['vwEntityCoordinates']);
+                const objectStore = transaction.objectStore('vwEntityCoordinates');
+                const entityCoordinates = objectStore.getAll();
+    
+                entityCoordinates.onsuccess = (event) => {
+                    // Do something with the request.result!
+                    localStorage.setItem("entityCoordinates", JSON.stringify(event.target.result));
+
+                    // Practical check to make sure this has at least 1000 entities.
+                    if(event.target.result.length > 1000)
+                        localStorage.setItem("entitySuccess", "true");
+                };
+                entityCoordinates.onerror = (event) => {
+                    localStorage.setItem("entitySuccess", "false");
+                    console.log("error making entitycache")
+                }
+            }
+
+
+
+
             // Check databases before resolving
             // Not very efficient so only do once per database refresh
             if(localStorage.getItem("checkedDB22") !== "true") {
@@ -97,6 +120,8 @@ export function startDb22() {
                     request22.result.close();
                     delete_database22();
                     reject("There was a problem loading database. Reload please.");
+
+                    //TODO Limit this to 5 tries
                     window.location.reload();
                 }
     

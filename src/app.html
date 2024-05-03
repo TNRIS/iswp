@@ -19,22 +19,6 @@
   <link rel="stylesheet" type="text/css" href="/css/normalize.css">
   <link rel="stylesheet" type="text/css" href="/css/skeleton.css">
   <link rel="stylesheet" type="text/css" href="/css/main.css">
-
-
-  <script>
-    var starter = Date.now();
-    
-    if(window.location.host.includes('2022')) {
-      document.getElementById('temp-header').innerHTML = 2022
-    } else if(window.location.host.includes('2017')) {
-      document.getElementById('temp-header').innerHTML = 2017
-    } else if(window.location.host.includes('2027')) {
-      document.getElementById('temp-header').innerHTML = 2027
-    }
-
-  </script>
-
-
 </head>
 
 <body>
@@ -61,7 +45,7 @@ This is only needed in the live version of the site due to prerender=true not wo
       <header class="header" id="Top">
           <div class="header-title-container">
               <div class="header-title wrapper">
-                  <h1><a href="/" title="Home"><span id="temp-header" class="first-line">2022</span> <br> Texas State Water
+                  <h1><a href="/" title="Home"><span id="temp-header" class="first-line"></span> <br> Texas State Water
                           Plan</a></h1><img
                           src="/img/twdb-logo-dark-bkgd-w200px-3c.png" class="logo"
                           alt="Texas Water Development Board Logo">
@@ -109,9 +93,7 @@ This is only needed in the live version of the site due to prerender=true not wo
     gtag('js', new Date());
 
     gtag('config', '{{ gaTrackingCode }}');
-  </script>
 
-  <script>
     document.getElementById('skip-link').onclick = function (e) {
       e.stopPropagation();
       e.preventDefault();
