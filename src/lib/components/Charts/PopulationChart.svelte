@@ -4,12 +4,13 @@
     //@ts-nocheck
     import LineChart from "./LineChart.svelte";
     import ChartDataTable from "$lib/components/ChartDataTable.svelte";
-    const { title, swdata, titleOnly, constants, tagline, noMap, dont_capitalize_title } = $$props;
+    let { title, lrp, titleOnly, constants, tagline, noMap, dont_capitalize_title } = $$props;
     import PopulationMap from "$lib/components/Maps/PopulationMap.svelte";
     import { commafy } from "$lib/helper.js";
 
     let decades = constants.getDecades();
     var getData = async () => {
+        let swdata = await lrp;
         try {
 
             // Create a simple line chart
@@ -91,7 +92,9 @@
         </div>
     </div>
     {#if !noMap}
+    {#await lrp then swdata}
     <PopulationMap {title} {swdata} {constants} />
+    {/await}
     {/if}
 </div>
 

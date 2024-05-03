@@ -70,7 +70,8 @@
     let counties = constants.getCountyNames().reduce((a, o) => (a.push({"value": o, "label": o}), a), []);
     let usageTypes = constants.getUsageTypes().reduce((a, o) => (a.push({"value": o, "label": o}), a), []);
     let wmstype = constants.WMS_TYPES.reduce((a, o) => (a.push({"value": o, "label": o}), a), []);
-    $: region = chosen && chosen2 ? `/${chosen}/${chosen2}/`: `/${chosen}/`;
+
+    $: region = chosen && chosen2 ? `/${chosen}/${chosen2}/`: !(chosen && chosen2) ? '/' : `/${chosen}/`;
 
     const titles = constants.chosenTitles;
 

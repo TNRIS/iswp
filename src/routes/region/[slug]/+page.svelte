@@ -57,15 +57,15 @@
     if($page.url.host.includes("2022"))
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`
 
+    let loadForRegionPromise = loadForRegion();
+
 </script>
 <Header {constants} />
 
 <div class="statewide-view">
     <section>
-        {#await loadForRegion()}
-        <div class="loader"></div>
-        {:then out}
-        <PopulationChart title={`Planning Region ${data.slug}`} swdata={out} {constants} {tagline} />
+
+        <PopulationChart title={`Planning Region ${data.slug}`} lrp={loadForRegionPromise} {constants} {tagline} />
         <div class="container">
             <div class="row panel-row">
                 <div class="twelve columns">
@@ -86,13 +86,10 @@
                 </div> 
             </div>
         </div>
-        <ThemeTotalsByDecadeChart swdata={out} {constants} title={`Planning Region ${data.slug}`} />
-        <ThemeTypesByDecadeChart chartTitle={"ct-usage-chart"} swdata={out} {constants} title={`Planning Region ${data.slug}`} />
-        <DataUsageType title={`Planning Region ${data.slug}`} swdata={out} {constants} />
-        <ProjectTable project_title={`PLANNING REGION ${data.slug}`} project_title2={"Projects "} swdata={out} type={"region"} />
-        <DataViewChoiceWrapInd title={`Planning Region ${data.slug}`} showPopulation={true} type={"region"} {stratAd} {activeDem} {constants} csvTitle={`Planning Region ${data.slug}`} swdata={out} fileName={`region_${data.slug.toLowerCase()}`} {entityMapBlurb} />
-        {:catch error}
-            <span>Error starting database {error.message}</span>
-        {/await}
+        <ThemeTotalsByDecadeChart lrp={loadForRegionPromise} {constants} title={`Planning Region ${data.slug}`} />
+        <ThemeTypesByDecadeChart chartTitle={"ct-usage-chart"} lrp={loadForRegionPromise} {constants} title={`Planning Region ${data.slug}`} />
+        <DataUsageType title={`Planning Region ${data.slug}`} lrp={loadForRegionPromise} {constants} />
+        <ProjectTable project_title={`PLANNING REGION ${data.slug}`} project_title2={"Projects "} lrp={loadForRegionPromise} type={"region"} />
+        <DataViewChoiceWrapInd title={`Planning Region ${data.slug}`} showPopulation={true} type={"region"} {stratAd} {activeDem} {constants} csvTitle={`Planning Region ${data.slug}`} lrp={loadForRegionPromise} fileName={`region_${data.slug.toLowerCase()}`} {entityMapBlurb} />
     </section>
 </div>

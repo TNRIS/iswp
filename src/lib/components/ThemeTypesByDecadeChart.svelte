@@ -8,7 +8,7 @@
     import ctAxisTitle from "chartist-plugin-axistitle";
 
     import { commafy } from "$lib/helper.js";
-    const { chartTitle, swdata, constants, title } = $$props;
+    const { chartTitle, lrp, constants, title } = $$props;
     let decades = constants.getDecades();
     let titleMap = {
         irrigation: "Irrigation",
@@ -107,6 +107,7 @@
         return new Promise((resolve, reject) => {
             onMount(async () => {
                 try {
+                    const swdata = await lrp;
                     // Create a simple line chart
                     let data = {};
                     data.demands = {

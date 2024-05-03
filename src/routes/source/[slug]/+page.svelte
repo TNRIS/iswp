@@ -51,18 +51,14 @@
         console.log(`loadForRegion time in ms: ${Date.now() - start}`);
         return dat;
     };
+
+    // Promise to load for source. Do not await here. Await later in individual entities.
+    const lrp = loadForSource();
 </script>
 <Header {constants} />
 <div class="statewide-view">
 
-{#await loadForSource()}
-<div class="loader"></div>
-{:then out}
 <PopulationChart {tagline} titleOnly={true} {title} {constants} />
-<ProjectTable swdata={out} type={"region"} project_title={"WATER SOURCE - " + title} project_title2={"Projects Associated with Source"} {title} />
-<DataViewChoiceWrapInd {stratAd} slug={data.slug} {title} {entityMapBlurb} swdata={out} type={"source"} fileName={`source_${data.slug}`} {constants} csvTitle={title} sourcePage={true} />
-
-{:catch error}
-    <span>Error starting database {error.message}</span>
-{/await}
+<ProjectTable {lrp} type={"region"} project_title={"WATER SOURCE - " + title} project_title2={"Projects Associated with Source"} {title} />
+<DataViewChoiceWrapInd {stratAd} slug={data.slug} {title} {entityMapBlurb} {lrp} type={"source"} fileName={`source_${data.slug}`} {constants} csvTitle={title} sourcePage={true} />
 </div>

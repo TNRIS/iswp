@@ -69,6 +69,26 @@ export function startDb27() {
                     });
                 }
             }
+        // Check we set entityCoordinates up and redownload if needed.
+        if(localStorage.getItem("entitySuccess") !== "true") {
+            const transaction = db27.transaction(['vwEntityCoordinates']);
+            const objectStore = transaction.objectStore('vwEntityCoordinates');
+            const entityCoordinates = objectStore.getAll();
+
+            entityCoordinates.onsuccess = (event) => {
+                // Do something with the request.result!
+                localStorage.setItem("entityCoordinates", JSON.stringify(event.target.result));
+
+                // Practical check to make sure this has at least 1000 entities.
+                if(event.target.result.length > 1000)
+                    localStorage.setItem("entitySuccess", "true");
+            };
+            entityCoordinates.onerror = (event) => {
+                localStorage.setItem("entitySuccess", "false");
+                console.log("error making entitycache")
+            }
+        }
+            
 
 
             // Check databases before resolving
@@ -131,8 +151,8 @@ export function startDb27() {
             UPGRADE_NEEDED = true;
             console.log("Starting building of the 2027 database.");
 
-            build_func(event, "vwEntityCoordinates", ["EntityId"]);
-            build_func(event, "vwEntityNeedsAsPctOfDemand", ["EntityId"]);
+            build_func(event, "vwEntityCoordinates", ["id", "EntityId"]);
+            build_func(event, "vwEntityNeedsAsPctOfDemand", ["id", "EntityId"]);
             build_func(event, "vwExistingWugSupply", [
                 "EntityId",
                 "MapSourceId",

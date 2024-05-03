@@ -9,7 +9,7 @@
     import { writable } from "svelte/store";
     import EntityMap from "./EntityMap.svelte";
 
-    const { page, slug, swdata, type, hideTheme, csvTitle, title, fileName, constants, stratAd, activeDem, showPopulation, sourcePage, entityMapBlurb} = $$props;
+    const { page, slug, lrp, type, hideTheme, csvTitle, title, fileName, constants, stratAd, activeDem, showPopulation, sourcePage, entityMapBlurb} = $$props;
 
     let decadeStore = writable(constants.getDecades()[0]);
     let themeStore = writable("strategies");
@@ -45,7 +45,9 @@
     <!-- insert 3 sub-widgets here -->
     <div class="container">
         <!-- <StrategiesBreakdown {swdata} /> -->
-
+        {#await lrp}
+        <div class="loader"></div>
+        {:then swdata}
         <EntityMap {slug} {swdata} {title} {constants} {type} {entityMapBlurb} />
         {#if type !== "source" && type !== "pop" && type !== "wms" && type !== "wmstype"}
         <StrategiesBreakdown {swdata} {title} />
@@ -55,5 +57,6 @@
         {:else}
             <PopPivotTable {swdata} {csvTitle} {title} {fileName} {constants} />
         {/if}
+        {/await}
     </div>
 </div>

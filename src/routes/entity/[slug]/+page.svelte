@@ -22,7 +22,7 @@
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`
 
     let db;
-    let entityName = '';
+    let entityName = JSON.parse(localStorage.entityCoordinates).find((element) => element.EntityId == data.slug).EntityName;
 
     let stratAd = [
         "Region",
@@ -47,7 +47,6 @@
         let dat =  await sw.get(entitySetting);
         const pops = dat?.population?.rows;
 
-        entityName = pops?.[0]?.EntityName;
         console.log(`loadForRegion time in ms: ${Date.now() - start}`);
         let groups = '';
 
@@ -69,21 +68,19 @@
 
         return dat;
     }
+    // Promise to load for entity. Do not await here. Await later in individual entities.
+    const lrp = loadForEntity();
 </script>
 <Header {constants} />
 
 <div class="statewide-view">
     <section>
-        {#await loadForEntity()}
-        <div class="loader"></div>
-        {:then out}
-            <PopulationChart {tagline} title={entityName} swdata={out} {constants}/>
-            <ThemeTotalsByDecadeChart swdata={out} {constants} title={`Water User Group - ${entityName}`} />
-            <EntityStrategiesTable swdata={out} {constants} title={`Water User Group - ${entityName}`} />
-            <ProjectTable project_title={`WATER USER GROUP - ${entityName}`} project_title2={"Projects Serving Area Of Interest"} swdata={ out } type="county"  />
-            <DataViewChoiceWrapInd showPopulation={true} swdata={out} title = {`Water User Group - ${entityName}`} csvTitle={entityName} fileName={`entity_${data.slug}`} {constants} {stratAd} {activeDem} {entityMapBlurb} />
-        {:catch error}
-            <span>Error starting database {error.message}</span>
-        {/await}
+
+        <PopulationChart {tagline} bind:title={entityName} {lrp} {constants}/>
+        <ThemeTotalsByDecadeChart {lrp} {constants} title={`Water User Group - ${entityName}`} />
+        <EntityStrategiesTable {lrp} {constants} title={`Water User Group - ${entityName}`} />
+        <ProjectTable project_title={`WATER USER GROUP - ${entityName}`} project_title2={"Projects Serving Area Of Interest"} {lrp} type="county"  />
+        <DataViewChoiceWrapInd showPopulation={true} {lrp} title = {`Water User Group - ${entityName}`} csvTitle={entityName} fileName={`entity_${data.slug}`} {constants} {stratAd} {activeDem} {entityMapBlurb} />
+
     </section>
 </div>

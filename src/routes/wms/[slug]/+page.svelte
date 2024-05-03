@@ -50,17 +50,15 @@
 
         return r;
     };
+    // Promise to load for wms. Do not await here. Await later in individual entities.
+    const lrp = loadForWms()
 </script>
 <Header {constants} />
 <div class="statewide-view">
-
-{#await loadForWms()}
-<div class="loader"></div>
-{:then out}
-    <PopulationChart {tagline} title={csvTitle} titleOnly={true} swdata={out} {constants} noMap={true} />
-    <ProjectTable project_title={`WATER MANAGEMENT STRATEGY - ${csvTitle}`} project_title2={"Projects related to Water Management Strategy"} swdata={out} type={"region"} />
-    <DataViewChoiceWrapInd title={`WATER MANAGEMENT STRATEGY - ${csvTitle}`} fileName={`wms_${data.slug}`} {entityMapBlurb} {stratAd} swdata={out} hideTheme={true} type={"wms"} {constants} {csvTitle} />
-{:catch error}
-    <span>Error starting database {error.message}</span>
+<!-- Need to load in all entities at once due to calculating title in loadForWms(). Might be worth storing that info statically in the future. -->
+{#await loadForWms() then}
+<PopulationChart {tagline} title={csvTitle} titleOnly={true} {lrp} {constants} noMap={true} />
+<ProjectTable project_title={`WATER MANAGEMENT STRATEGY - ${csvTitle}`} project_title2={"Projects related to Water Management Strategy"} {lrp} type={"region"} />
+<DataViewChoiceWrapInd title={`WATER MANAGEMENT STRATEGY - ${csvTitle}`} fileName={`wms_${data.slug}`} {entityMapBlurb} {stratAd} {lrp} hideTheme={true} type={"wms"} {constants} {csvTitle} />
 {/await}
 </div>

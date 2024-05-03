@@ -68,41 +68,35 @@
         tagline = groups.length ? `County in ${groups}` : undefined;
 
 
-
-
+        // Do not await here. Await in the individual entities to allow loading of page before entities gather their data.
 
         return dat;
     };
+    const lrp = loadForCounty();
 
 </script>
 <Header {constants} />
 
 <div class="statewide-view">
     <section>
-        {#await loadForCounty()}
-            <div class="loader"></div>
-        {:then out}
+
             <PopulationChart
                 title={`${data.slug} County`}
-                swdata={out}
+                {lrp}
                 {tagline}
                 {constants}
                 dont_capitalize_title={true}
             />
-            <ThemeTotalsByDecadeChart title={`${data.slug} County`} swdata={out} {constants} />
+            <ThemeTotalsByDecadeChart title={`${data.slug} County`} {lrp} {constants} />
             <ThemeTypesByDecadeChart
                 chartTitle={"ct-usage-chart"}
-                swdata={out}
+                {lrp}
                 title={`${data.slug} County`}
                 {constants}
             />
 
-            <DataUsageType swdata={out} {constants} title={`${data.slug} County`} />
-            <ProjectTable project_title={`${data.slug} COUNTY`} project_title2={"Projects Serving Area Of Interest"} swdata={out} type={"region"} />
-            <DataViewChoiceWrapInd title={`${data.slug} County`} {entityMapBlurb} showPopulation={true} {stratAd} {activeDem} swdata={out} csvTitle={`${data.slug} County`} fileName={`county_${data.slug.toLowerCase()}`} {constants} />
-
-        {:catch error}
-            <span>Error starting database {error.message}</span>
-        {/await}
+            <DataUsageType {lrp} {constants} title={`${data.slug} County`} />
+            <ProjectTable project_title={`${data.slug} COUNTY`} project_title2={"Projects Serving Area Of Interest"} {lrp} type={"region"} />
+            <DataViewChoiceWrapInd title={`${data.slug} County`} {entityMapBlurb} showPopulation={true} {stratAd} {activeDem} {lrp} csvTitle={`${data.slug} County`} fileName={`county_${data.slug.toLowerCase()}`} {constants} />
     </section>
 </div>

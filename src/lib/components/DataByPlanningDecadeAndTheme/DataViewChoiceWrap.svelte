@@ -6,7 +6,7 @@
     import StrategiesBreakdown from "$lib/components/StrategiesBreakdown.svelte";
     import { setContext } from "svelte";
     import { writable } from "svelte/store";
-    const { db, swdata, csvTitle, constants } = $$props;
+    const { db, lrp, csvTitle, constants } = $$props;
 
     let decadeStore = writable(constants.getDecades()[0]);
     let themeStore = writable("strategies");
@@ -37,8 +37,12 @@
     </div>
     <!-- insert 3 sub-widgets here -->
     <div class="container">
+        {#await lrp}
+        <div class="loader"></div>
+        {:then swdata}
         <RegionalSummaryTreeMap {db} selectedTreemap={"region"}/>
         <StrategiesBreakdown {swdata} />
         <RegionalSummaryTable {db} {swdata} {csvTitle} {constants} />
+        {/await}
     </div>
 </div>

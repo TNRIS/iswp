@@ -3,7 +3,7 @@
     import "gridjs/dist/theme/mermaid.css";
     import { onMount } from "svelte";
     import { usd_format, usd_format_whole } from "$lib/helper.js";
-    const { swdata, type, project_title, project_title2 } = $$props;
+    const { lrp, type, project_title, project_title2 } = $$props;
     let sum = 0;
 
     let projects = false;
@@ -15,7 +15,7 @@
     onMount(async () => {
         /** @type {Array<Object>}*/
         let project_ids = [];
-
+        let swdata = await lrp;
         if (swdata.projects && swdata.projects.length) projects = true;
         for (let project of swdata.projects) {
             let to_array = [

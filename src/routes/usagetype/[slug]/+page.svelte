@@ -47,14 +47,13 @@
         return dat;
     }
 
-    
+    // Promise to load for region. Do not await here. Await later in individual entities.
+    const lrp = loadForRegion();
+
 </script>
 <Header {constants} />
 
 <div class="statewide-view">
-{#await loadForRegion()}
-<div class="loader"></div>
-{:then out}
 <div class="view-top usage-type-view-top">
     <div class="summary-wrapper container">
         <div class="view-summary usage-type-summary">
@@ -80,10 +79,6 @@
         </div>
     </div>
 </div>
-<ThemeTotalsByDecadeChart swdata={out} {constants} title={`Usage Type - ${slugify(data.slug)}`} />
-<DataViewChoiceWrapInd page="usagetype" slug={data.slug} title={`Usage Type - ${cap(data.slug)}`} {entityMapBlurb} showPopulation={false} {stratAd} {activeDem} swdata={out} csvTitle={`${cap(data.slug)} Usage Type`} fileName={`usagetype_${data.slug.toLowerCase()}`} {constants} />
-
-{:catch error}
-<span>Error starting database {error.message}</span>
-{/await}
+<ThemeTotalsByDecadeChart {lrp} {constants} title={`Usage Type - ${slugify(data.slug)}`} />
+<DataViewChoiceWrapInd page="usagetype" slug={data.slug} title={`Usage Type - ${cap(data.slug)}`} {entityMapBlurb} showPopulation={false} {stratAd} {activeDem} {lrp} csvTitle={`${cap(data.slug)} Usage Type`} fileName={`usagetype_${data.slug.toLowerCase()}`} {constants} />
 </div>

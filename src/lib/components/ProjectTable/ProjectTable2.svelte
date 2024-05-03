@@ -4,12 +4,13 @@
     import "gridjs/dist/theme/mermaid.css";
     import { onMount } from "svelte";
     import { usd_format } from "$lib/helper.js";
-    const { swdata, type, project_title, project_title2 } = $$props;
+    const { lrp, type, project_title, project_title2 } = $$props;
 
     let projects = false;
     $: project_data = []
     $: display_table = "none";
     onMount(async () => {
+        const swdata = await lrp;
         if (swdata.projects && swdata.projects.length) projects = true;
         for (let project of swdata.projects) {
             let to_array = [
