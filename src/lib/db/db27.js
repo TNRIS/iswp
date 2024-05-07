@@ -93,7 +93,7 @@ export function startDb27() {
 
             // Check databases before resolving
             // Not very efficient so only do once per database refresh
-            if(localStorage.getItem("checkedDB27") !== "true") {
+            if(localStorage.getItem("checkedDB") !== "true") {
                 await checksumPromise;
                 const start = Date.now();
                 let checksum = localStorage.getItem("checksum2027");
@@ -109,30 +109,29 @@ export function startDb27() {
                     reject("There was a problem loading database. Reload please.");
                     window.location.reload();
                 }
-    
+                
+                let j = 0;
                 Object.values(db27.objectStoreNames).forEach((item, i) => {
                     const transaction = db27.transaction([item], "readonly");
                     const objectStore = transaction.objectStore(item);
-                    const myIndex = objectStore.index("id");
-                    const countRequest = myIndex.count();
+                    const countRequest = objectStore.count();
     
-                    let j = 0;
                     let error = false;
                     countRequest.onsuccess = async (event) => {
     
                         let recordcount = event.currentTarget.result;
-                        let record = event.currentTarget.source.objectStore.name;
+                        let record = event.currentTarget.source.name;
     
                         if(recordcount !== checksum[record]) {
-                            request27.result.close();
-                            delete_database27();
-                            reject("There was a problem loading database. Reload please.");
-                            window.location.reload();         
+                            request22.result.close();
+                            delete_database22();
+                            window.location.reload();
+                            reject("There was a problem loading database. Reload please.");  
                         }
                         j++;
     
                         if(j == Object.keys(checksum).length - 1) {
-                            localStorage.setItem("checkedDB27", true);
+                            localStorage.setItem("checkedDB", true);
                         }
                     }
     
@@ -145,7 +144,7 @@ export function startDb27() {
         request27.onupgradeneeded = async (event) => {
             localStorage.clear(); // Clear all cached queries.
             checksumPromise = storeChecksum();
-            localStorage.setItem("checkedDB27", false);
+            localStorage.setItem("checkedDB", false);
             // Begin upgrade now.
 
             UPGRADE_NEEDED = true;

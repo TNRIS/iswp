@@ -60,5 +60,5 @@
 
 <PopulationChart {tagline} titleOnly={true} {title} {constants} />
 <ProjectTable {lrp} type={"region"} project_title={"WATER SOURCE - " + title} project_title2={"Projects Associated with Source"} {title} />
-<DataViewChoiceWrapInd {stratAd} slug={data.slug} {title} {entityMapBlurb} {lrp} type={"source"} fileName={`source_${data.slug}`} {constants} csvTitle={title} sourcePage={true} />
+<DataViewChoiceWrapInd {stratAd} slug={data.slug} title={"WATER SOURCE - " + title} {entityMapBlurb} {lrp} type={"source"} fileName={`source_${data.slug}`} {constants} csvTitle={title} sourcePage={true} />
 </div>

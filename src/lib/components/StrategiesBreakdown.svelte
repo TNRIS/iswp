@@ -14,6 +14,8 @@
     import { PieChart } from 'chartist';
 
     let buildEntries = () => {
+        if(!swdata?.strategies?.strategyTypeTotals)
+            return [];
         return Object.entries(swdata.strategies.strategyTypeTotals)
         .sort((a, b) => {
             return b[1][$decadeStore] - a[1][$decadeStore];
@@ -29,8 +31,12 @@
     let stt_entries_empty = true;
     let stt_entries = buildEntries();
 
-
     const buildStrats = () => {
+        if(!swdata?.strategies?.strategyTypeTotals)
+            return {
+                labels: [],
+                data: [],
+            }
         return Object.entries(swdata.strategies.strategySourceTotals)
         .sort((a, b) => {
             return b[1][$decadeStore] - a[1][$decadeStore];

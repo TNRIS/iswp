@@ -23,7 +23,6 @@ export const delete_database22 = () => {
     } catch (err) {
         console.log(`error deleting database: ${err}`);
     }
-
 }
 
 const storeChecksum = async () => {
@@ -39,7 +38,7 @@ const storeChecksum = async () => {
 
 export function startDb22() {
     return new Promise(async (resolve, reject) => {
-        const request22 = window.indexedDB.open("iswpDB22", 187);
+        const request22 = window.indexedDB.open("iswpDB22", 189);
     
 
 
@@ -50,8 +49,6 @@ export function startDb22() {
         request22.onsuccess = async (event) => {
             db22 = event.target.result;
             if (UPGRADE_NEEDED) {
-                let doc = document.getElementsByClassName("statewide-view")[0];
-                doc.style.display = 'none';
 
                 const BASE_URL = "https://tnris-droc.s3.amazonaws.com/iswp/";
                 const cache_2022 = "2022/cache.json";
@@ -77,7 +74,7 @@ export function startDb22() {
                     });
                 }
                 console.log(`Time step 3: ${Date.now() - start}`);
-                doc.style.display = 'block';
+                document.getElementById("main-content").style.display = 'block';
             }
 
             // Check we set entityCoordinates up and redownload if needed.
@@ -105,7 +102,7 @@ export function startDb22() {
 
             // Check databases before resolving
             // Not very efficient so only do once per database refresh
-            if(localStorage.getItem("checkedDB22") !== "true") {
+            if(localStorage.getItem("checkedDB") !== "true") {
                 await checksumPromise;
                 const start = Date.now();
                 let checksum = localStorage.getItem("checksum2022");
@@ -124,33 +121,29 @@ export function startDb22() {
                     //TODO Limit this to 5 tries
                     window.location.reload();
                 }
-    
+                let j = 0;
+
                 Object.values(db22.objectStoreNames).forEach((item, i) => {
                     const transaction = db22.transaction([item], "readonly");
                     const objectStore = transaction.objectStore(item);
-                    const myIndex = objectStore.index("id");
-                    const countRequest = myIndex.count();
+                    const countRequest = objectStore.count();
     
-                    let j = 0;
                     let error = false;
                     countRequest.onsuccess = async (event) => {
-    
                         let recordcount = event.currentTarget.result;
-                        let record = event.currentTarget.source.objectStore.name;
-    
+                        let record = event.currentTarget.source.name;
                         if(recordcount !== checksum[record]) {
                             request22.result.close();
                             delete_database22();
+                            window.location.reload();
                             reject("There was a problem loading database. Reload please.");
-                            window.location.reload();       
                         }
                         j++;
     
                         if(j == Object.keys(checksum).length - 1) {
-                            localStorage.setItem("checkedDB22", true);
+                            localStorage.setItem("checkedDB", true);
                         }
                     }
-    
                 })
             }
 
@@ -158,9 +151,10 @@ export function startDb22() {
         };
 
         request22.onupgradeneeded = async (event) => {
+            document.getElementById("main-content").style.display = 'none';
             localStorage.clear(); // Clear all cached queries.
             checksumPromise = storeChecksum();
-            localStorage.setItem("checkedDB22", false);
+            localStorage.setItem("checkedDB", false);
             // Begin upgrade now.
             UPGRADE_NEEDED = true;
             console.log("Starting building of the 2022 database.");

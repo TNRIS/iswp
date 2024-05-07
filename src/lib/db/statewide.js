@@ -332,6 +332,7 @@ export default class Statewide {
                 rdemands.onerror = (event) => {
                     reject(event);
                 }
+            } else {
                 resolve(JSON.parse(stored));
             }
         })
