@@ -149,8 +149,9 @@
 </script>
 
 <div class="strategies-breakdown-container row panel-row" class:hider={checkShow}>
+    {#if title}
     <span class="view-name">{title}</span>
-
+    {/if}
     <div class="row">
         <h4>Strategy Supplies Breakdown - {$decadeStore}<span class="units">(acre-feet/year)</span></h4>
     </div>
