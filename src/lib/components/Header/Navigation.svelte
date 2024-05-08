@@ -154,7 +154,7 @@
 
                 {#if chosen == "region" || chosen == "county" || chosen == "usagetype" || chosen == "source" || chosen == "wmstype"}
                 <div class="select-container" style="width:300px;">
-                    <Select items={categories[chosen]} clearable={false} on:change={box2Change} placeholder={`Select ${label}`} showChevron />
+                    <Select items={categories[chosen]} clearable={false} on:change={box2Change} placeholder="Select {titles[chosen]}" showChevron />
                 </div>
                 {:else}
                 <div class="select-container">
@@ -174,7 +174,7 @@
             <span>Error loading nav {error}</span>
             {/await}
             <form action={region} id="submit-button">
-                <input type="submit" class="button button-nav-submit" disabled={chosen == "" ? false :  !(chosen && chosen.length && chosen2 && chosen2.length)} value="Go" />
+                <input type="submit" class="button button-nav-submit" disabled={chosen == "" ? false :  !(chosen && chosen.length && chosen2 && chosen2 !== undefined /* 0 is fine so check explicitly for undefined */)} value="Go" />
             </form>
         </form>
     </div>

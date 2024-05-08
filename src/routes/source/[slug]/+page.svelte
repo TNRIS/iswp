@@ -12,6 +12,7 @@
 
     import { sourceNames } from "$lib/SourceNames.js";
     import { page } from '$app/stores';
+    import Banner from "$lib/components/Header/Banner.svelte";
 
     let entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`;
     if($page.url.host.includes("2022"))
@@ -58,8 +59,9 @@
 </script>
 <Header {constants} />
 <div class="statewide-view">
-
+{#await lrp then} <!-- TODO remove this await and await in individual entities. For now await because of title generation. -->
 <PopulationChart {tagline} titleOnly={true} {title} {constants} />
 <ProjectTable {lrp} type={"region"} project_title={"WATER SOURCE - " + title} project_title2={"Projects Associated with Source"} {title} />
 <DataViewChoiceWrapInd {stratAd} slug={data.slug} title={"WATER SOURCE - " + title} {entityMapBlurb} {lrp} type={"source"} fileName={`source_${data.slug}`} {constants} csvTitle={title} sourcePage={true} />
+{/await}
 </div>

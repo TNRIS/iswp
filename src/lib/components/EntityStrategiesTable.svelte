@@ -10,12 +10,17 @@
 
     let decades = constants.getDecades();
     let strategies = false;
+    $: strats = true;
     onMount(async () => {
         const swdata = await lrp;
         if (swdata?.strategies?.rows && swdata.strategies.rows.length)
             strategies = true;
         let strategy_data = [];
 
+        if(!swdata.strategies.rows) {
+            strats = false;
+            return;
+        }
         // Deep Copy object.
         let strat_raw = JSON.parse(JSON.stringify(swdata.strategies.rows));
         strat_raw = strat_raw.sort((a, b) => a.WmsName.localeCompare(b.WmsName));
@@ -113,7 +118,11 @@
             <div class="recommended-projects-container">
 
                 <h4>Water Management Strategies</h4>
+                {#if strats}
                 <div id="tab-con" />
+                {:else}
+                There are no water management strategies.
+                {/if}
             </div>
         </div>
     </div>

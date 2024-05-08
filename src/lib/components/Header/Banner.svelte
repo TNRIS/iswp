@@ -1,6 +1,15 @@
 <script>
     const { constants } = $$props;
+    import { page } from '$app/stores';
+
 </script>
+{#if $page.url.host.includes("2017")}
+<div class="draft-note">
+    <div class="wrapper">
+      Please visit the 2017 State Water Plan homepage to view the published plan at: <a title="TWDB State Water Planning home" href="http://www.twdb.texas.gov/waterplanning/swp/2017/index.asp" target="_blank">http://www.twdb.texas.gov/waterplanning/swp/2017/index.asp</a>.
+    </div>
+  </div>
+{/if}
 <header class="header" id="Top">
     <a
         class="skip-link"
@@ -11,7 +20,9 @@
     >
         Skip to Main Content
     </a>
+
     <div class="header-title-container">
+
         <div class="header-title wrapper">
             <h1>
                 <a href="/" title="Home">

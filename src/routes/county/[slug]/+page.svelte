@@ -80,7 +80,17 @@
 
 <div class="statewide-view">
     <section>
-
+            <!-- We need to await lrp for the tagline here.-->
+            {#await lrp}
+            <br />
+            <div class="summary-wrapper container" style="z-index: 600;">
+                <div class="row panel-row" style="pointer-events: auto;">
+                    <div class="twelve columns">
+                        <div class="loader"></div>
+                    </div>
+                </div>
+            </div>
+            {:then}
             <PopulationChart
                 title={`${data.slug} County`}
                 {lrp}
@@ -88,6 +98,7 @@
                 {constants}
                 dont_capitalize_title={true}
             />
+            {/await}
             <ThemeTotalsByDecadeChart title={`${data.slug} County`} {lrp} {constants} />
             <ThemeTypesByDecadeChart
                 chartTitle={"ct-usage-chart"}

@@ -78,9 +78,12 @@
 <div style="pointer-events:auto;" class="row panel-row">
     <div class="chart-header">
         <h4>
-            Regional Summary Data - {$decadeStore} - {themetitles[$themeStore]} <span
-                class="units">(acre-feet/year)</span
-            >
+            Regional Summary Data - {$decadeStore} - {themetitles[$themeStore]} 
+            {#if $themeStore === "population"}
+            <span class="units">(people)</span>
+            {:else}
+            <span class="units">(acre-feet/year)</span>
+            {/if}
         </h4>
     </div>        
     <table class="table-condensed regional-summary-table {$themeStore == "population" ? 'skinny' : ''}" bind:this={rtable}>
