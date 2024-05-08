@@ -119,7 +119,8 @@ export class Constant2022 {
         "source": "Water Source",
         "project": "Project",
         "wms": "WMS",
-        "wmstype": "WMS Type"
+        "wmstype": "WMS Type",
+        "county": "County"
     }
 
     getThemeTitles() {

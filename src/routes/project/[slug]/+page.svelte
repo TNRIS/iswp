@@ -24,8 +24,21 @@
         const start = Date.now();
         db = await db;
         const sw = new Statewide(db);
-        const dat = await sw.get(sourceSetting2);
-        const dat2 = await sw.get(sourceSetting);
+        let dat2 = await sw.get(sourceSetting);
+        let dat = await sw.get(sourceSetting2);
+
+
+        for(let i = 0; i < dat.projects.length; i++) {
+            try{ 
+                dat2.projects[0] = {
+                    ...dat.projects[0],
+                    ...dat2.projects[0]
+                }
+            } catch(err) {
+                console.log("problem merging data in projects. Attempting to continue.")
+            }
+        }
+
         const r = {
             ...dat,
             ...dat2,

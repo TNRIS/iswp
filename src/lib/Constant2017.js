@@ -125,7 +125,8 @@ export class Constant2017 {
         "source": "Water Source",
         "project": "Project",
         "wms": "WMS",
-        "wmstype": "WMS Type"
+        "wmstype": "WMS Type",
+        "county": "County"
     }
     #year = 2017;
     #regions = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'];

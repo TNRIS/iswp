@@ -14,7 +14,7 @@
         if (swdata.projects && swdata.projects.length) projects = true;
         for (let project of swdata.projects) {
             let to_array = [
-                html(`<a href="/wms/${project.WmsProjectId}">${project.ProjectName}`),
+                html(`<a href="/wms/${project.WmsId}">${project.ProjectName}`),
                 html(`<a href="/region/${project.WugRegion}">${project.WugRegion}`)
             ];
 

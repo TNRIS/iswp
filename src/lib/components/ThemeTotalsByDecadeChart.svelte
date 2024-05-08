@@ -21,6 +21,9 @@
     };
 
     let dfunc = (dat, id) => {
+        if(!dat[id].rows) {
+            return [0,0,0,0,0];
+        }
         let d = constants.getDecades();
         let data = [];
         for (let i = 0; i < d.length; i++) {
