@@ -6,7 +6,7 @@
     import StrategiesBreakdown from "$lib/components/StrategiesBreakdown.svelte";
     import { setContext } from "svelte";
     import { writable } from "svelte/store";
-    const { db, lrp, csvTitle, constants } = $$props;
+    const { db, lrp, csvTitle, constants, downloadPopulation } = $$props;
 
     let decadeStore = writable(constants.getDecades()[0]);
     let themeStore = writable("strategies");
@@ -42,7 +42,7 @@
         {:then swdata}
         <RegionalSummaryTreeMap {db} selectedTreemap={"region"}/>
         <StrategiesBreakdown {swdata} />
-        <RegionalSummaryTable {db} {swdata} {csvTitle} {constants} />
+        <RegionalSummaryTable {db} {swdata} {csvTitle} {constants} {downloadPopulation} />
         {/await}
     </div>
 </div>

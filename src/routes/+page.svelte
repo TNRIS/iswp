@@ -32,9 +32,7 @@
     const lrp = loadForState();
 </script>
 
-{#await HeaderPromise}
-<div class="loader"></div>
-{:then {default: Component}}
+{#await HeaderPromise then {default: Component}}
 <Component {db} {constants} />
 {/await}
 <div class="statewide-view">
@@ -77,7 +75,7 @@
         {#await DataViewChoiceWrapPromise}
         <div class="loader"></div>
         {:then {default: Component}}
-        <Component {db} {lrp} csvTitle= {"Statewide"} {constants} />
+        <Component {db} {lrp} csvTitle= {"Statewide"} {constants} downloadPopulation={true} />
         {/await}
     </section>
 </div>

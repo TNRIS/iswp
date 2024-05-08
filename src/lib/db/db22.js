@@ -74,7 +74,6 @@ export function startDb22() {
                     });
                 }
                 console.log(`Time step 3: ${Date.now() - start}`);
-                document.getElementById("main-content").style.display = 'block';
             }
 
             // Check we set entityCoordinates up and redownload if needed.
@@ -151,7 +150,6 @@ export function startDb22() {
         };
 
         request22.onupgradeneeded = async (event) => {
-            document.getElementById("main-content").style.display = 'none';
             localStorage.clear(); // Clear all cached queries.
             checksumPromise = storeChecksum();
             localStorage.setItem("checkedDB", false);

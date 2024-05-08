@@ -4,9 +4,9 @@
     import PopulationChart from "$lib/components/Charts/PopulationChart.svelte";
 
     export let data;
-    let db;
+    let db = load_indexeddb();
     import { QuerySettings } from "$lib/QuerySettings.js";
-    import { load_indexeddb, getConstants, cap } from "$lib/helper.js";
+    import { load_indexeddb, getConstants, cap, is_idb_loaded} from "$lib/helper.js";
     import Statewide from "$lib/db/statewide.js";
     import Header from "$lib/components/Header.svelte";
     import { page } from '$app/stores';
@@ -32,8 +32,9 @@
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`
 
     let loadForWms = async () => {
+        await is_idb_loaded();
         let start = Date.now();
-        db = await load_indexeddb();
+        db = await db;
         let sw = new Statewide(db);
         let dat = await sw.get(wmsSetting);
         let dat2 = await sw.get(wmsSetting2);

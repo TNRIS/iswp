@@ -6,7 +6,7 @@
     import ThemeTypesByDecadeChart from "$lib/components/ThemeTypesByDecadeChart.svelte";
     import ThemeTotalsByDecadeChart from "$lib/components/ThemeTotalsByDecadeChart.svelte";
     import DataViewChoiceWrapInd from "$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte";
-    import { load_indexeddb, getConstants } from "$lib/helper.js";
+    import { load_indexeddb, getConstants, is_idb_loaded } from "$lib/helper.js";
     import Statewide from "$lib/db/statewide.js";
     import Counties from "$lib/db/counties.js"
 
@@ -35,10 +35,12 @@
     let regionSetting = new QuerySettings("region", "WugRegion");
     regionSetting.setAll(data.slug);
     regionSetting.setProjects(data.slug, "WmsProjectSponsorRegion")
-    let db;
+    let db = load_indexeddb();
     let loadForRegion = async () => {
+        db = await db;
+
+        await is_idb_loaded();
         let start = Date.now();
-        db = await load_indexeddb()
         let sw = new Statewide(db);
         let cc = new Counties(db);
         let [ccounties, dat] = await Promise.all([cc.get(data.slug), sw.get(regionSetting)]) ;

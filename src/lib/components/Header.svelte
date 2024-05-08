@@ -10,7 +10,6 @@
     import { page } from '$app/stores';
     let selected = {id: $page.url.pathname.split(["/"])[1] };
 
-let doc = document.getElementById("main-content");
 </script>
 {#if constants.id == 27}
 <div class="draft-note">

@@ -1,5 +1,5 @@
 <script>
-    import { load_indexeddb, slugify, getConstants, cap } from "$lib/helper.js";
+    import { load_indexeddb, slugify, getConstants, cap, is_idb_loaded } from "$lib/helper.js";
     import Statewide from "$lib/db/statewide.js";
     import { QuerySettings } from "$lib/QuerySettings.js"
     import ThemeTotalsByDecadeChart from "$lib/components/ThemeTotalsByDecadeChart.svelte";
@@ -21,7 +21,7 @@
     let utSetting = new QuerySettings("usagetype", "WugType");
     utSetting.setAll(data.slug.toUpperCase());
 
-    let db;
+    let db = load_indexeddb();
 
     let stratAd = [
         "Region",
@@ -39,8 +39,9 @@
     ];
 
     let loadForRegion = async () => {
+        await is_idb_loaded();
         let start = Date.now();
-        db = await load_indexeddb()
+        db = await db;
         let sw = new Statewide(db);
         let dat =  await sw.get(utSetting);
         console.log(`loadForRegion time in ms: ${Date.now() - start}`);

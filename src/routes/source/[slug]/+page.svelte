@@ -4,9 +4,9 @@
     import PopulationChart from "$lib/components/Charts/PopulationChart.svelte";
 
     export let data;
-    let db;
+    let db = load_indexeddb();
     import { QuerySettings } from "$lib/QuerySettings.js";
-    import { load_indexeddb, getConstants, cap } from "$lib/helper.js";
+    import { load_indexeddb, getConstants, cap, is_idb_loaded } from "$lib/helper.js";
     import Statewide from "$lib/db/statewide.js";
     import Header from "$lib/components/Header.svelte";
 
@@ -31,6 +31,7 @@
         "Source"
     ];
     let loadForSource = async () => {
+        await is_idb_loaded();
         let start = Date.now();
 
         title = sourceNames.find(x => x.label == parseInt(data.slug))?.value;
@@ -45,7 +46,7 @@
             tagline = `Surface Water Source in <a href="/">Texas</a>`
         }
 
-        db = await load_indexeddb();
+        db = await db;
         let sw = new Statewide(db);
         let dat = await sw.get(sourceSetting);
         console.log(`loadForRegion time in ms: ${Date.now() - start}`);
