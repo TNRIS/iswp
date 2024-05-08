@@ -174,7 +174,7 @@
             <span>Error loading nav {error}</span>
             {/await}
             <form action={region} id="submit-button">
-                <input type="submit" class="button button-nav-submit" disabled={chosen == "" ? false :  !(chosen && chosen.length && chosen2 && chosen2.length)} value="Go" />
+                <input type="submit" class="button button-nav-submit" disabled={chosen == "" ? false :  !(chosen && chosen.length && chosen2 && chosen2.length !== undefined /* 0 is fine so check explicitly for undefined */)} value="Go" />
             </form>
         </form>
     </div>

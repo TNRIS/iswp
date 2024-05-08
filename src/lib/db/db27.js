@@ -39,7 +39,7 @@ const storeChecksum = async () => {
 
 export function startDb27() {
     return new Promise(async (resolve, reject) => {
-        const request27 = window.indexedDB.open("iswpdb27", 3);
+        const request27 = window.indexedDB.open("iswpdb27", 4);
 
 
 
