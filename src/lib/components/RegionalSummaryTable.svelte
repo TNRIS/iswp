@@ -4,7 +4,7 @@
     import { onMountSync, commafy, sortNumeric, sortAlphabetic } from "$lib/helper.js"
     import CsvDownloads from "$lib/components/CsvDownloads.svelte";
 
-    export let { db, swdata, csvTitle, constants } = $$props;
+    export let { db, swdata, csvTitle, constants, downloadPopulation } = $$props;
 
     const themetitles = constants.getThemeTitles();
     let decades = constants.getDecades();
@@ -136,7 +136,7 @@
         <span>Error in regionalsummarytable error: {error}</span>
     {/await}
     </table>
-    <CsvDownloads {swdata} {csvTitle} fileName={"statewide"} {constants} />
+    <CsvDownloads {swdata} {csvTitle} fileName={"statewide"} {constants} {downloadPopulation} />
 
 </div>
 

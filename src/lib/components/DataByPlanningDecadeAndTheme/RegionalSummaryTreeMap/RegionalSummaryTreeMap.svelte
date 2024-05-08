@@ -124,9 +124,7 @@
                     By Usage Type
                 </button>
             </div>
-            {#await getData()}
-                <div class="loader"></div>
-            {:then}
+            {#await getData() then}
                 <Treemap treemapData={df} {total} themeStore={$themeStore}/>
             {:catch err}
                 <span>Error</span>

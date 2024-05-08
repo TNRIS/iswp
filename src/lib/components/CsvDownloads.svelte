@@ -82,5 +82,11 @@
     {#if projects.length && window.location.pathname.includes('/project/')}
     <li><a href="#" on:click={() => {dlpop(projects, "projects.csv")}}>Download {csvTitle} Project data (Comma-Separated Values)</a></li>
     {/if}
+
+    {#if !((population.length && downloadPopulation) || demands.length || existing.length || needs.length || strategy.length || (projects.length && window.location.pathname.includes('/project/')))}
+        <ul>
+            <li>No csv available for download.</li>
+        </ul>
+    {/if}
 </ul>
 {/if}

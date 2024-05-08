@@ -19,6 +19,7 @@
   <link rel="stylesheet" type="text/css" href="/css/normalize.css">
   <link rel="stylesheet" type="text/css" href="/css/skeleton.css">
   <link rel="stylesheet" type="text/css" href="/css/main.css">
+
 </head>
 
 <body>
@@ -35,32 +36,55 @@
             The draft data displayed in this web application is to assist in review of the draft regional water plans and is as of 3/13/2020. Some features may not display properly until the data has been finalized (e.g. mapped sources). Although the data is subject to change as the draft plans are reviewed, the data displayed will not be refreshed until final regional water plans are approved (early 2021). Please visit the 2021 Draft Regional Water Plan homepage to view the published plan at: <a title="TWDB State Water Planning home" href="http://www.twdb.texas.gov/waterplanning/rwp/plans/2021/index.asp" target="_blank">http://www.twdb.texas.gov/waterplanning/rwp/plans/2021/index.asp</a>.
           </div>
         </div> -->
-        %sveltekit.head%
+      %sveltekit.head%
 
 
-<!-- Temporary header to be displayed while dynamic page is loaded in when the site is generated.
+      <!-- Temporary header to be displayed while dynamic page is loaded in when the site is generated.
 This is only needed in the live version of the site due to prerender=true not working if you use dynamic routing. -->
-<div id="temp-content">
-  <div style="display: contents">
-      <header class="header" id="Top">
-          <div class="header-title-container">
+      <div id="temp-content">
+        <div style="display: contents">
+          <div class="header">
+            <div class="header-title-container">
               <div class="header-title wrapper">
-                  <h1><a href="/" title="Home"><span id="temp-header" class="first-line"></span> <br> Texas State Water
-                          Plan</a></h1><img
-                          src="/img/twdb-logo-dark-bkgd-w200px-3c.png" class="logo"
-                          alt="Texas Water Development Board Logo">
-                  <div class="nav-container" style="font-size:0px"><a class="button button-home"
-                          aria-label="Home" href="/" title="Home"><svg version="1" viewBox="0 0 24 24"
-                              data-reactid=".0.1.0.3.0.0">
-                              <path d="M20 20v-8h2L12 3 2 12h2v8c0 .6.4 1 1 1h5v-7h4v7h5c.6 0 1-.4 1-1z"
-                                  data-reactid=".0.1.0.3.0.0.0"></path>
-                          </svg></a> <a class="button active" title="About" href="/about"
-                          data-svelte-h="svelte-n9qb8m">About</a></div>
+                <h1><a href="/" title="Home"><span id="temp-header" class="first-line"></span> <br> Texas State Water
+                    Plan</a></h1><img src="/img/twdb-logo-dark-bkgd-w200px-3c.png" class="logo"
+                  alt="Texas Water Development Board Logo">
+                <div class="nav-container" style="font-size:0px"><a class="button button-home" aria-label="Home"
+                    href="/" title="Home"><svg version="1" viewBox="0 0 24 24" data-reactid=".0.1.0.3.0.0">
+                      <path d="M20 20v-8h2L12 3 2 12h2v8c0 .6.4 1 1 1h5v-7h4v7h5c.6 0 1-.4 1-1z"
+                        data-reactid=".0.1.0.3.0.0.0"></path>
+                    </svg></a> <a class="button active" title="About" href="/about"
+                    data-svelte-h="svelte-n9qb8m">About</a></div>
               </div>
+            </div>
           </div>
-      </header>
-  </div>
-</div>
+        </div>
+      </div>
+
+      <div id="main-loader" style="display: none;">
+        <div>
+          <div class="header">
+            <div class="header-title-container">
+              <div class="header-title wrapper">
+                <h1><a href="/" title="Home"><span id="temp-header" class="first-line"></span> <br> Texas State Water
+                    Plan</a></h1><img src="/img/twdb-logo-dark-bkgd-w200px-3c.png" class="logo"
+                  alt="Texas Water Development Board Logo">
+                <div class="nav-container" style="font-size:0px"><a class="button button-home" aria-label="Home"
+                    href="/" title="Home"><svg version="1" viewBox="0 0 24 24" data-reactid=".0.1.0.3.0.0">
+                      <path d="M20 20v-8h2L12 3 2 12h2v8c0 .6.4 1 1 1h5v-7h4v7h5c.6 0 1-.4 1-1z"
+                        data-reactid=".0.1.0.3.0.0.0"></path>
+                    </svg></a> <a class="button active" title="About" href="/about"
+                    data-svelte-h="svelte-n9qb8m">About</a></div>
+              </div>
+            </div>
+          </div>
+          <div class="w3-light-grey">
+            <div id="myBar" class="w3-container w3-green" style="height:24px;width:1%;background-color: blue;"></div>
+          </div>
+          Welcome. Please be patient while Interactive State Water Plan loads.
+        </div>
+      </div>
+
 
 
       <div id="main-content">
@@ -94,12 +118,21 @@ This is only needed in the live version of the site due to prerender=true not wo
 
     gtag('config', '{{ gaTrackingCode }}');
 
-    document.getElementById('skip-link').onclick = function (e) {
-      e.stopPropagation();
-      e.preventDefault();
-      document.getElementById('main-content').scrollIntoView();
-      return;
-    };
+
+
+    function move() {
+      var width = 1;
+      var id = setInterval(frame, 150);
+      function frame() {
+        if (width >= 100) {
+          clearInterval(id);
+        } else {
+          width++;
+          document.getElementById("myBar").style.width = width + '%';
+        }
+      }
+    }
+    move();
   </script>
 
   <!-- {% block bodyscripts %} -->
@@ -108,6 +141,8 @@ This is only needed in the live version of the site due to prerender=true not wo
         ga('send', 'pageview');
       </script>-->
   <!-- {% endblock bodyscripts %} -->
+
+
 </body>
 
 </html>

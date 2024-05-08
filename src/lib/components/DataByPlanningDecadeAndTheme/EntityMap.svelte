@@ -4,6 +4,7 @@
     import { scaleTonew, usd_format, objLeftjoin, commafy } from "$lib/helper";
     import { hoverHelper, clearInteraction } from "$lib/actions/HoverAction";
     import {runOMS} from "$lib/leaflet.oms.js";
+    import { map } from "d3";
 
     const countyTable = "county_extended";
     const regionTable = "rwpas";
@@ -30,6 +31,8 @@
         className: "triangle-marker",
         html: '<div class="triangle-marker-inner"></div>',
     });
+
+    let markers = [];
 
     /**
      * 
@@ -342,6 +345,7 @@
         }
 
         async function buildGrid() {
+            markers = [];
             // Remove old layers
             for (let i = 0; i < layers.length; i++) {
                 map.removeLayer(layers[i]);
@@ -434,7 +438,6 @@
                                     item.SourceName === "ATMOSPHERE" ||
                                     (type === "source" && slug == item.MapSourceId)
                                 ) {
-                                    console.log("Here")
                                     counter++;
                                     if(counter >= ar.length) {
                                         resolve("Done");
@@ -520,7 +523,6 @@
                 }
 
                 await totalEntitySync();
-                console.log("here");
                 /* Add the circle markers */
                 if(totalEntityReduced) {
                     totalEntityReduced.forEach((item) => {
@@ -535,7 +537,7 @@
                     })
                 }
 
-                /* Add the red triangle Projects! */
+                /* Add the red triangle Projects. */
                 if(swdata.projects && swdata.projects.length) {
                     swdata.projects.forEach((item) => {
                         if (item.OnlineDecade <= $decadeStore) {
@@ -544,6 +546,7 @@
 
                             marker.addTo(map);
                             layers.push(marker);
+                            markers.push(marker);
                         }
                     });
                 }
@@ -692,7 +695,7 @@
 
                 /**
                  * Step4 for supplies
-                 * Add the entities!
+                 * Add the entities.
                  */
                 let feat_coll = {"type":"FeatureCollection","numberMatched":0,"name":"AllSources","features":[]}
 
@@ -967,6 +970,24 @@
         dataviewContext.buildEntMap.set(buildGrid);
     });
 
+    let hidden_marker = false;
+    const hideshowmarkers = () => {
+        const hp_link = document.getElementById("hp_link");
+        if(!hidden_marker) {
+            markers.forEach((marker) => {
+                marker.setOpacity(0);
+            })
+            hp_link.innerText = "Show Projects";
+        } else {
+            markers.forEach((marker) => {
+                marker.setOpacity(1);
+            })
+            hp_link.innerText = "Hide Projects";
+        }
+        hidden_marker = !hidden_marker;
+
+    }
+
 </script>
 
 <div class="row panel-row">
@@ -991,7 +1012,7 @@
         
         <span>{@html entityMapBlurb}</span>
         {#if $themeStore === "strategies"}
-        <p class="note">Red triangles indicate capital projects associated with strategy supplies that have been assigned to a Water User Group.<a class="pointerHover">Hide Projects</a></p>
+        <p class="note">Red triangles indicate capital projects associated with strategy supplies that have been assigned to a Water User Group.<a id="hp_link" on:click={() => hideshowmarkers()} class="pointerHover">Hide Projects</a></p>
         {/if}
     </div>
 </div>

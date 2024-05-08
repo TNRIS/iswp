@@ -11,7 +11,7 @@
 
     export let data;
 
-    import { load_indexeddb, getConstants, cap } from "$lib/helper.js"
+    import { load_indexeddb, getConstants, cap, is_idb_loaded } from "$lib/helper.js"
     import { page } from '$app/stores';
 
     let constants = getConstants($page.url.host)
@@ -21,7 +21,7 @@
     if($page.url.host.includes("2022"))
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`
 
-    let db;
+    let db = load_indexeddb();
     let entityName = JSON.parse(localStorage.entityCoordinates).find((element) => element.EntityId == data.slug).EntityName;
 
     let stratAd = [
@@ -41,8 +41,9 @@
     $: tagline = "";
 
     let loadForEntity = async () => {
+        await is_idb_loaded();
         let start = Date.now();
-        db = await load_indexeddb();
+        db = await db;
         let sw = new Statewide(db);
         let dat =  await sw.get(entitySetting);
         const pops = dat?.population?.rows;

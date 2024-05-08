@@ -66,7 +66,7 @@
     if(chosen == "statewide") {
         chosen = "";
     }
-    let chosen2 = selected2;
+    let chosen2;
     let counties = constants.getCountyNames().reduce((a, o) => (a.push({"value": o, "label": o}), a), []);
     let usageTypes = constants.getUsageTypes().reduce((a, o) => (a.push({"value": o, "label": o}), a), []);
     let wmstype = constants.WMS_TYPES.reduce((a, o) => (a.push({"value": o, "label": o}), a), []);
@@ -119,7 +119,8 @@
     let reset = (value) => {
         chosen = value.detail.value;
         label = value.detail.placeholder_override ? value.detail.placeholder_override : value.detail.label;
-        chosen2 = categories[chosen][0]["value"];
+        chosen2 = '';
+        console.log(`chosen: ${chosen} chosen2: ${chosen2}`);
     }
 
     let box2Change = (value) => {
@@ -152,12 +153,12 @@
             {#if chosen && chosen !== "" && chosen !== "statewide"}
 
                 {#if chosen == "region" || chosen == "county" || chosen == "usagetype" || chosen == "source" || chosen == "wmstype"}
-                <div class="select-container" style="width:200px;">
+                <div class="select-container" style="width:300px;">
                     <Select items={categories[chosen]} clearable={false} on:change={box2Change} placeholder={`Select ${label}`} showChevron />
                 </div>
                 {:else}
                 <div class="select-container">
-                    <input  style="padding: 8px;" type="text" id="secondary-category-select" autocomplete="off" on:keyup={myFunction} placeholder="Find {titles[chosen]}">
+                    <input  style="padding: 8px;" type="text" id="secondary-category-select" autocomplete="off" on:keyup={myFunction} placeholder="Start typing to find {titles[chosen]}">
                     <ul id="secondList" class="nav-category-select">
                         {#each categories?.[chosen] as r}
                             <li style="display:none;" >
@@ -173,13 +174,16 @@
             <span>Error loading nav {error}</span>
             {/await}
             <form action={region} id="submit-button">
-                <input type="submit" class="button button-nav-submit" disabled={false} value="Go" />
+                <input type="submit" class="button button-nav-submit" disabled={chosen == "" ? false :  !(chosen && chosen.length && chosen2 && chosen2.length)} value="Go" />
             </form>
         </form>
     </div>
 </div>
 
 <style>
+    .button-nav-submit:disabled {
+        color: gray;
+    }
     #navcat {
         height: default !important;
     }

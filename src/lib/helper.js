@@ -39,6 +39,33 @@ export let real_clone = (obj) => {
     return JSON.parse(JSON.stringify(obj));
 }
 
+export let is_idb_loaded = () => {
+    return new Promise((resolve, reject) => {
+        try{
+
+            const checkDBDone = () => {
+                //console.log("Checking idb");
+                //console.log("checkedDB" + localStorage.getItem("checkedDB"));
+                if(localStorage.getItem("checkedDB") == "true") {
+                    //console.log("resolving.")
+                    clearInterval(interval);
+                    document.getElementById("main-content").style.display = 'block';
+                    document.getElementById("main-loader").style.display = 'none';
+                    resolve("Done");
+                } else {
+                    document.getElementById("main-content").style.display = 'none';
+                    document.getElementById("main-loader").style.display = 'block';
+                }
+            }
+            let interval = setInterval(checkDBDone, 50);
+
+        } catch(err) {
+            reject("error checking idb")
+        }
+
+    })
+}
+
 export let afterUpdateSync = () => {
     return new Promise((resolve, reject) => {
         try {

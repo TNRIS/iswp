@@ -8,7 +8,7 @@
     const HeaderPromise = import("$lib/components/Header.svelte");
 
     import { QuerySettings } from "$lib/QuerySettings.js";
-    import { load_indexeddb, onMountSync, getConstants } from "$lib/helper.js";
+    import { load_indexeddb, onMountSync, getConstants, is_idb_loaded } from "$lib/helper.js";
     import Statewide from "$lib/db/statewide.js";
     import { page } from '$app/stores';
 
@@ -18,6 +18,7 @@
 
     let loadForState = async () => {
         await onMountSync();
+        await is_idb_loaded();
         let start = Date.now();
         db = await db;
         let sw = new Statewide(db);
@@ -31,9 +32,7 @@
     const lrp = loadForState();
 </script>
 
-{#await HeaderPromise}
-<div class="loader"></div>
-{:then {default: Component}}
+{#await HeaderPromise then {default: Component}}
 <Component {db} {constants} />
 {/await}
 <div class="statewide-view">
@@ -76,7 +75,7 @@
         {#await DataViewChoiceWrapPromise}
         <div class="loader"></div>
         {:then {default: Component}}
-        <Component {db} {lrp} csvTitle= {"Statewide"} {constants} />
+        <Component {db} {lrp} csvTitle= {"Statewide"} {constants} downloadPopulation={true} />
         {/await}
     </section>
 </div>

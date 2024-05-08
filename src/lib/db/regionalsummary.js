@@ -42,8 +42,10 @@ export default class RegionalSummary {
 
 
     #getAllTransaction = (key) => {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             try {
+                this.db = await this.db;
+
                 const transaction = this.db.transaction([key]);
                 const objectStore = transaction.objectStore(key);
                 const rdemands = objectStore.getAll();

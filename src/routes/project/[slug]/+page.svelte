@@ -3,9 +3,9 @@
     import DataViewChoiceWrapInd from "$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte";
 
     export let data;
-    let db;
+    let db = load_indexeddb();
     import { QuerySettings } from "$lib/QuerySettings.js";
-    import { load_indexeddb, getConstants, cap } from "$lib/helper.js";
+    import { load_indexeddb, getConstants, cap, is_idb_loaded } from "$lib/helper.js";
     import Statewide from "$lib/db/statewide.js";
     import Header from "$lib/components/Header.svelte";
     import PopulationChart from "$lib/components/Charts/PopulationChart.svelte";
@@ -20,8 +20,9 @@
     sourceSetting2.setAll(Number(data.slug));
     let projectName = "";
     const loadForSource = async () => {
+        await is_idb_loaded();
         const start = Date.now();
-        db = await load_indexeddb();
+        db = await db;
         const sw = new Statewide(db);
         const dat = await sw.get(sourceSetting2);
         const dat2 = await sw.get(sourceSetting);
@@ -47,8 +48,6 @@
 
     // Promise to load for source. Do not await here. Await later in individual entities.
     const lrp =  loadForSource();
-
-    console.log("Here")
 </script>
 <Header {constants} />
 <div class="statewide-view">

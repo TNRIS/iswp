@@ -339,7 +339,7 @@
     };
 </script>
 
-<div class="summary-wrapper container">
+<div class="summary-wrapper container" id="point-chart-usage-type">
     <div style="pointer-events:auto;" class="row panel-row">
         <div class="chart-header">
             <div class="row">
@@ -434,3 +434,9 @@
         {/await}
     </div>
 </div>
+
+<style>
+    #point-chart-usage-type {
+        min-height: 390px;
+    }
+</style>
