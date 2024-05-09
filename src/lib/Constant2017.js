@@ -92,7 +92,6 @@ export class Constant2017 {
         MINING: "Mining water demand consists of water used in the exploration, development, and extraction of oil, gas, coal, aggregates, and other materials."
     };
     WMS_TYPES = [
-        'AGRICULTURAL CONSERVATION',
         'AQUIFER STORAGE AND RECOVERY',
         'CONJUNCTIVE USE',
         'DIRECT POTABLE REUSE',
@@ -100,9 +99,10 @@ export class Constant2017 {
         'GROUNDWATER DESALINATION',
         'GROUNDWATER WELLS AND OTHER',
         'INDIRECT REUSE',
-        'INDUSTRIAL CONSERVATION',
+        'IRRIGATION CONSERVATION',
         'MUNICIPAL CONSERVATION',
         'NEW MAJOR RESERVOIR',
+        'OTHER CONSERVATION',
         'OTHER DIRECT REUSE',
         'OTHER STRATEGIES',
         'OTHER SURFACE WATER',

@@ -124,7 +124,7 @@ export function startDb27() {
     
                         if(recordcount !== checksum[record]) {
                             request22.result.close();
-                            delete_database22();
+                            delete_database27();
                             window.location.reload();
                             reject("There was a problem loading database. Reload please.");  
                         }
