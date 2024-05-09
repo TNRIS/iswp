@@ -101,7 +101,9 @@ export function startDb22() {
 
             // Check databases before resolving
             // Not very efficient so only do once per database refresh
-            if(localStorage.getItem("checkedDB") !== "true") {
+
+            //Change to this eventually. But later localStorage.getItem("checkedDB") !== "true"
+            if(true) {
                 await checksumPromise;
                 const start = Date.now();
                 let checksum = localStorage.getItem("checksum2022");
