@@ -137,7 +137,7 @@
                         parseFloat(row["P" + $decadeStore]);
                     return memo;
                 };
-                calculations = getCalculations(`${$decadeStore} Demands`);
+                calculations = getCalculations(`${$decadeStore} Population`);
             }
 
             if (document.getElementById("reactpivot").firstChild)
