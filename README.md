@@ -25,7 +25,11 @@ npm run build
 ```
 3. compile main.scss `sass main.scss main.css`
 Designed to be compiled manually due to sveltekit not allowing prerender = true on dynamic routes AKA [slug] pages. Resulting in a split second where the css is not loaded causing a flicker effect.
-
+4. Compile a version of chartist located here. https://github.com/L-Har/chartist (Trying to get this in upstream)
+5. Make sure to pull from https://github.com/chartist-js/chartist and merge new changes if this still isn't upstream.
+6. Place dist folder in lib/chartist folder and place package.json from the repo here.
+7. Create a local modules folder and place src and dist in it. 
+8. link to library with `npm link src/lib/chartist`
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
