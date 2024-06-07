@@ -109,6 +109,7 @@
                     labelOffset: 10,
                     labelDirection: "neutral",
                     labelPosition: "neutral",
+                    preventOverlappingLabelOffset: 6,
                     labelInterpolationFnc: function (value, i) {
                         return `${value}  (${Math.round((((data.series[i].value / total) * 100)) * 10) / 10.0}%)`;
                     },

@@ -75,7 +75,7 @@
     };
 </script>
 
-<div style="pointer-events:auto;" class="row panel-row">
+<div style="pointer-events:auto; overflow: auto;" class="row panel-row">
     <div class="chart-header">
         <h4>
             Regional Summary Data - {$decadeStore} - {themetitles[$themeStore]} 

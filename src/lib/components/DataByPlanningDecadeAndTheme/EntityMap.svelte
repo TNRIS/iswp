@@ -1,4 +1,6 @@
 <script>
+    //@ts-nocheck
+    
     import {ProjectItem, EntityItem} from "$lib/TypeDefinitions";
     import { getContext, onMount } from "svelte";
     import { scaleTonew, usd_format, objLeftjoin, commafy } from "$lib/helper";
@@ -448,8 +450,6 @@
                                 lngs.push(item.Longitude);
 
                                 if (item[`SS${$decadeStore}`] > 0 && item.SourceName !== title) {
-                                    // Add the blue aquifer Geojson entities with a popup!
-                                    if (item.SourceType == "GROUNDWATER" || item.SourceType == "SURFACE WATER") {
                                         let mapSource = fetch(
                                             `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PolygonSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
                                         let lineSource = fetch(
@@ -457,7 +457,7 @@
                                         
 
                                         [mapSource, lineSource] = await Promise.all([mapSource, lineSource]);
-                                        let [text, linetext] = await Promise.all([mapSource.text(), await lineSource.text()])
+                                        let [text, linetext] = await Promise.all([mapSource.text(), lineSource.text()])
                                         let j = JSON.parse(text);
                                         let linej = JSON.parse(linetext);
 
@@ -504,9 +504,6 @@
                                         }
                                         counter++;
 
-                                    } else {
-                                        counter++;
-                                    }
 
                                 } else {
                                     counter ++;
@@ -522,7 +519,6 @@
                     })
                 }
 
-                await totalEntitySync();
                 /* Add the circle markers */
                 if(totalEntityReduced) {
                     totalEntityReduced.forEach((item) => {
@@ -550,6 +546,7 @@
                         }
                     });
                 }
+                await totalEntitySync();
 
                 // calc the min and max lng and lat
                 if(region) {
@@ -705,38 +702,8 @@
                     let counter = 0;
                     return new Promise((resolve, reject) => {
                         swdata.supplies.rows.forEach(async (item, index, ar) => {
-                            let sources = "PolygonSources";
-                            let color = "#526e8d";
-                            lats.push(item.Latitude);
-                            lngs.push(item.Longitude);
 
-                            if((item.SourceName !== "DIRECT REUSE" 
-                                && item.SourceName !== "LOCAL SURFACE WATER SUPPLY"
-                                && item.SourceName !== "ATMOSPHERE"
-                                && item.SourceName !== "Rainwater Harvesting") 
-                                && !(type === "source" && slug == item.MapSourceId)
-                            ) {
-                                if(item.SourceName.includes("RIVER")) {
-                                    sources = "LineSources";
-                                    color = "#0097d6";
-                                } else if(item.SourceName.includes("RESERVOIR")) {
-                                    color = "#0097d6";
-                                }
-                                let mapSource = await fetch(
-                                    `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
-                                let text = await mapSource.text();
-                                let j = JSON.parse(text);
-                                counter++;
-
-                                if(j.numberMatched <= 0) { // Try a polygon source then.
-                                    sources = "PolygonSources";
-                                    mapSource = await fetch(
-                                        `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${sources}&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
-
-                                    text = await mapSource.text();
-                                    j = JSON.parse(text);
-                                }
-
+                            const placeItems = (color, j) => {
                                 if(switch_unlocked) {
                                     feat_coll.features.push(... j.features)
                                     if(counter > ar.length) {
@@ -778,6 +745,32 @@
                                 })
                                 gj.addTo(map);
                                 layers.push(gj);
+                            }
+
+                            lats.push(item.Latitude);
+                            lngs.push(item.Longitude);
+
+                            if((item.SourceName !== "DIRECT REUSE" 
+                                && item.SourceName !== "LOCAL SURFACE WATER SUPPLY"
+                                && item.SourceName !== "ATMOSPHERE"
+                                && item.SourceName !== "Rainwater Harvesting") 
+                                && !(type === "source" && slug == item.MapSourceId)
+                            ) {
+                                let mapSource = await fetch(
+                                    `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PolygonSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
+
+                                let text = await mapSource.text();
+                                let j = JSON.parse(text);
+                                placeItems("#0097d6", j);
+
+
+                                mapSource = await fetch(
+                                    `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=LineSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
+
+                                text = await mapSource.text();
+                                j = JSON.parse(text);
+                                placeItems("#526e8d", j);
+                                counter++;
                             } else {
                                 counter++;
                                 console.log(item.SourceName)
