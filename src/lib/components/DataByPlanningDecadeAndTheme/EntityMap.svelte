@@ -519,7 +519,7 @@
                     })
                 }
 
-                await totalEntitySync();
+                totalEntitySync();
                 /* Add the circle markers */
                 if(totalEntityReduced) {
                     totalEntityReduced.forEach((item) => {

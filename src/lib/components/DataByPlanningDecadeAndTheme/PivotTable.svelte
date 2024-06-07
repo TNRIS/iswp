@@ -184,7 +184,7 @@
     <span>Error loading pivottable</span>
 {/await}
 
-<div class="row panel-row">
+<div class="row panel-row" style="overflow:auto;">
     <span class="view-name">{title}</span>
     <h4>Raw Data - {$decadeStore} - {themeTitles[$themeStore]}
         {#if $themeStore === "population"}

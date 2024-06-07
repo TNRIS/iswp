@@ -23,7 +23,8 @@ To create a production version of your app:
 ```bash
 npm run build
 ```
-3. compile main.scss `sass main.scss main.css`
+
+3. compile main.scss `sass main.scss main.css` (Install sass first `npm install -g sass`) Then move it into static/css
 Designed to be compiled manually due to sveltekit not allowing prerender = true on dynamic routes AKA [slug] pages. Resulting in a split second where the css is not loaded causing a flicker effect.
 4. Compile a version of chartist located here. https://github.com/L-Har/chartist (Trying to get this in upstream)
 5. Make sure to pull from https://github.com/chartist-js/chartist and merge new changes if this still isn't upstream.
