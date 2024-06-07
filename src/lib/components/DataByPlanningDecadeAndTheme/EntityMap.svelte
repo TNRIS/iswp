@@ -457,7 +457,7 @@
                                         
 
                                         [mapSource, lineSource] = await Promise.all([mapSource, lineSource]);
-                                        let [text, linetext] = await Promise.all([mapSource.text(), await lineSource.text()])
+                                        let [text, linetext] = await Promise.all([mapSource.text(), lineSource.text()])
                                         let j = JSON.parse(text);
                                         let linej = JSON.parse(linetext);
 
@@ -519,7 +519,6 @@
                     })
                 }
 
-                totalEntitySync();
                 /* Add the circle markers */
                 if(totalEntityReduced) {
                     totalEntityReduced.forEach((item) => {
@@ -547,6 +546,7 @@
                         }
                     });
                 }
+                await totalEntitySync();
 
                 // calc the min and max lng and lat
                 if(region) {
