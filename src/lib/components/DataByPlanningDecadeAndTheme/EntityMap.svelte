@@ -261,7 +261,6 @@
                 onClick: (btn ) => {
                     btn.state('unlocked');
                     switch_unlocked = true;
-
                 }
             }]
         });
@@ -449,7 +448,7 @@
                                 lats.push(item.Latitude);
                                 lngs.push(item.Longitude);
 
-                                if (item[`SS${$decadeStore}`] > 0 && item.SourceName !== title) {
+                                if (item[`SS${$decadeStore}`] > 0 && item.SourceName !== title && item.MapSourceId) {
                                         let mapSource = fetch(
                                             `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PolygonSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`);
                                         let lineSource = fetch(
