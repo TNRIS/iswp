@@ -1,9 +1,9 @@
 import { onMount, beforeUpdate,
     afterUpdate} from "svelte";
-import { start_all_db, start_db_2017, start_db_2022, start_db_2027 } from "$lib/db/db.js";
-import { Constant2027 } from "$lib/Constant2027.js";
-import { Constant2022 } from "$lib/Constant2022.js";
-import { Constant2017 } from "$lib/Constant2017.js";
+import { start_all_db, start_db_2017, start_db_2022, start_db_2027 } from "./db/db.js";
+import { Constant2027 } from "./Constant2027.js";
+import { Constant2022 } from "./Constant2022.js";
+import { Constant2017 } from "./Constant2017.js";
 const c22 = new Constant2022();
 
 export let getConstants = (host) => {
@@ -93,22 +93,27 @@ export let usd_format_whole = new Intl.NumberFormat('en-US', {
 
 // Load indexeddb
 export let load_indexeddb = async () => {
-    const start = Date.now();
-    await onMountSync();
-    let IS_2017_WEBSITE = window.location.href.indexOf("2017") > -1;
-    let IS_2022_WEBSITE = window.location.href.indexOf("2022") > -1;
-    let IS_2027_WEBSITE = window.location.href.indexOf("2027") > -1;
-    
-    if (IS_2022_WEBSITE) {
-        return start_db_2022();
-    } else if (IS_2017_WEBSITE) {
-        return start_db_2017();
-    } else if (IS_2027_WEBSITE) {
-        return start_db_2027();
-    } else {
-        // SET TEST HERE
-        return start_db_2022();
+    try {
+        const start = Date.now();
+        //await onMountSync();
+        let IS_2017_WEBSITE = window.location.href.indexOf("2017") > -1;
+        let IS_2022_WEBSITE = window.location.href.indexOf("2022") > -1;
+        let IS_2027_WEBSITE = window.location.href.indexOf("2027") > -1;
+        
+        if (IS_2022_WEBSITE) {
+            return start_db_2022();
+        } else if (IS_2017_WEBSITE) {
+            return start_db_2017();
+        } else if (IS_2027_WEBSITE) {
+            return start_db_2027();
+        } else {
+            // SET TEST HERE
+            return start_db_2022();
+        }
+    } catch(err) {
+        console.log(err);
     }
+
 };
 
 export let cap = (s) => {
