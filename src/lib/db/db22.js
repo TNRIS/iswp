@@ -40,8 +40,6 @@ export function startDb22() {
     return new Promise(async (resolve, reject) => {
         const request22 = window.indexedDB.open("iswpDB22", 190);
     
-
-
         request22.onerror = (event) => {
             reject(event);
         };
@@ -113,7 +111,6 @@ export function startDb22() {
                 //OK: So fast not even 1ms Load time here. It measures 0ms!
                 console.log(`get checksum from localstorage time: ${Date.now() - start}ms.`)
 
-                //TODO check table length as well.
                 if(db22.objectStoreNames.length !== Object.keys(checksum).length) {
                     request22.result.close();
                     delete_database22();
