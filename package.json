@@ -28,7 +28,7 @@
 		"node-sass": "^9.0.0",
 		"prettier": "^3.0.3",
 		"prettier-plugin-svelte": "^3.0.3",
-		"puppeteer": "^22.10.0",
+		"puppeteer": "^22.11.2",
 		"sass": "^1.64.2",
 		"smui-theme": "^7.0.0-beta.16",
 		"svelte": "^4.2",
