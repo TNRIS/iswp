@@ -76,14 +76,37 @@
                 map.addLayer(countyLabelsLayer);
         }
 
-        function countyHoverSetup() {
-                    // TODO: Cache this query
-                    let countyString = encodeURI(`https://mapserver.tnris.org/?map=/tnris_mapfiles/county_extended.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=CountyBoundaries&outputformat=geojson&SRSNAME=EPSG:4326`)
-                    fetch(countyString)
-                    .then(res => res.text())
-                    .then(body => {
 
-                        let gj = L.geoJson(JSON.parse(body), {
+        /*
+         * getCountyGeoJson(): Fetch County information from mapserver. Then add cache it. If cached then just resolve the cache the cache.
+         * Returns a promise.
+         */
+        function getCountyEntity() {
+            return new Promise(async (resolve, reject) => {
+                try {
+
+
+                    let countyUri = "https://mapserver.tnris.org/";
+                    countyUri += "?map=/tnris_mapfiles/county_extended.map";
+                    countyUri += "&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature";
+                    countyUri += "&TYPENAMES=CountyBoundaries";
+                    countyUri += "&outputformat=geojson";
+                    countyUri += "&SRSNAME=EPSG:4326";
+                    
+                    // Store and finish
+                    const countyCache = await caches.open('countyCache');
+                    const cachekeys = await countyCache.keys();
+                    // Check if we need to clear the cached entry. (All localstorage including this flag is cleared when indexeddb is updated)
+                    // Then check that the url is actually cached.
+                    if(localStorage.countyCacheFlag !== "cached" || !cachekeys.map(item => item.url).includes(countyUri)) {
+                        await countyCache.add(countyUri);
+                        localStorage.countyCacheFlag = "cached";
+                    }
+
+                    const gj_resp = await countyCache.match(countyUri)
+                    const gj = await gj_resp?.text();
+
+                    const entity = L.geoJson(JSON.parse(gj), {
                             style: {
                                 color: "#3F556D",
                                 opacity: 0,
@@ -91,21 +114,32 @@
                                 fillOpacity: 0,
                             }
                         });
+                        //Success return a entity from the geojson.
+                        resolve(entity)
 
-                        Object.values(gj._layers).forEach((item) => {
-                            gj.on('click', navigateToCounty);
+                } catch(err) {
+                    reject(err)
+                }
+            })
+        }
 
-                            item.on("mousemove", (event) => {
-                                let name = item.feature.properties.name;
-                                const me = event.originalEvent;
-                                hoverHelper(me, "map-hover", name);
-                            })
-                            item.on("mouseout", () => {
-                                onLeave();
-                            })
-                            item.addTo(map)
-                        })
-                    })
+        async function countyHoverSetup() {
+            const gj = await getCountyEntity();
+
+            // Add each County to the map and set it up.
+            Object.values(gj._layers).forEach((item) => {
+                gj.on('click', navigateToCounty);
+
+                item.on("mousemove", (event) => {
+                    let name = item.feature.properties.name;
+                    const me = event.originalEvent;
+                    hoverHelper(me, "map-hover", name);
+                })
+                item.on("mouseout", () => {
+                    onLeave();
+                })
+                item.addTo(map)
+            })
         }
 
 

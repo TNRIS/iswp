@@ -95,7 +95,7 @@ export let usd_format_whole = new Intl.NumberFormat('en-US', {
 export let load_indexeddb = async () => {
     try {
         const start = Date.now();
-        //await onMountSync();
+        await onMountSync();
         let IS_2017_WEBSITE = window.location.href.indexOf("2017") > -1;
         let IS_2022_WEBSITE = window.location.href.indexOf("2022") > -1;
         let IS_2027_WEBSITE = window.location.href.indexOf("2027") > -1;
