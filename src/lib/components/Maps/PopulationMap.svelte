@@ -210,7 +210,7 @@
                     gj.addTo(map);
                 })
 
-                await countyHoverSetup();
+                countyHoverSetup();
             } 
             //vwSelectRegionsInCounty
             //https://mapserver.tnris.org/?map=/tnris_mapfiles/county_extended.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=CountyBoundaries&outputformat=geojson&SRSNAME=EPSG:4326&Filter=%3CFilter%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Ename%3C/PropertyName%3E%3CLiteral%3EDallam%3C/Literal%3E%3C/PropertyIsEqualTo%3E%3C/Filter%3E
