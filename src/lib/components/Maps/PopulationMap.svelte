@@ -95,11 +95,10 @@
                     
                     // Store and finish
                     const countyCache = await caches.open('countyCache');
-
-                    let keys = await countyCache.keys();
+                    const cachekeys = await countyCache.keys();
                     // Check if we need to clear the cached entry. (All localstorage including this flag is cleared when indexeddb is updated)
                     // Then check that the url is actually cached.
-                    if(localStorage.countyCacheFlag !== "cached" || !keys.map(item => item.url).includes(countyUri)) {
+                    if(localStorage.countyCacheFlag !== "cached" || !cachekeys.map(item => item.url).includes(countyUri)) {
                         await countyCache.add(countyUri);
                         localStorage.countyCacheFlag = "cached";
                     }
