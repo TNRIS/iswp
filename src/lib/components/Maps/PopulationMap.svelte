@@ -195,20 +195,21 @@
                 });
                 //
                 let rString = encodeURI(`https://mapserver.tnris.org/?map=/tnris_mapfiles/county_extended.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=CountyBoundaries&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><OR>${properties}</OR></Filter>`)
-                fetch(rString)
-                .then(res => res.text())
-                .then(body => {
-                    let gj = L.geoJson(JSON.parse(body), {
-                                style: {
-                                    color: "#3F556D",
-                                    opacity: 1,
-                                    weight: 0,
-                                    fillOpacity: 0.1,
-                                }
-                            });
+                
+                const res = await fetch(rString);
+                const body = await res.text();
 
-                    gj.addTo(map);
-                })
+                let gj = L.geoJson(JSON.parse(body), {
+                            style: {
+                                color: "#3F556D",
+                                opacity: 1,
+                                weight: 0,
+                                fillOpacity: 0.1,
+                            }
+                        });
+
+                gj.addTo(map);
+ 
 
                 countyHoverSetup();
             } 
