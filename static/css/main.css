@@ -74,7 +74,6 @@ button[disabled]:hover, button[disabled]:focus {
 
 #content {
   padding-bottom: 200px;
-  overflow: hidden;
 }
 @media (min-width: 550px) {
   #content {
