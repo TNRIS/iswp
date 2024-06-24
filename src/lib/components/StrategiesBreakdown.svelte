@@ -85,7 +85,7 @@
     let buildCtchart = async () => {
         var data = {
             labels: strats.labels,
-            series: strats.data,
+            series: strats.data
         };
 
         let total = 0;
@@ -99,7 +99,8 @@
                 total += data.series[i].value;
             }
         };
-        
+        if(data?.series?.length === 1 && data.series[0]?.className)
+            data.series[0].className += ' single-slice'
 
         var responsiveOptions = [
             [
