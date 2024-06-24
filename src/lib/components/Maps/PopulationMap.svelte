@@ -5,9 +5,8 @@
     const countyTable = 'county_extended';
     const regionTable = 'rwpas';
     const { title, swdata, constants } = $$props;
-    import { cap, commafy } from '$lib/helper';
+    import { cap } from '$lib/helper';
     const sourceMap = constants.sourcemap;
-    import { hoverHelper, clearInteraction } from "$lib/actions/HoverAction";
 
 	function navigateToRegion({data}) {
 		window.location.replace(`/region/${data.letter}`);
@@ -16,10 +15,6 @@
     function navigateToCounty(item) {
 		window.location.replace(`/county/${item?.layer?.feature?.properties?.name}`);
 	}
-
-    function onLeave() {
-        clearInteraction("map-hover");
-    }
 
     onMount(async () => {
         // Leaflet must be loaded after mount. 
@@ -129,6 +124,27 @@
             // Add each County to the map and set it up.
             Object.values(gj._layers).forEach((item) => {
                 gj.on('click', navigateToCounty);
+
+                let popup;
+                
+                item.on('mousemove', function(e) {
+                    //open popup;
+                    if(!popup) {
+                        popup = L.tooltip(e.latlng, {
+                                content: `${item.feature.properties.name}`,
+                                direction: "right"
+                            })
+                        .openOn(map);
+                    } else {
+                        popup.setLatLng(e.latlng);
+                    }
+                });
+
+                item.on("mouseout", function(e) {
+                    popup.close();
+                    popup = null;
+                });
+
 
                 item.on("mousemove", (event) => {
                     let name = item.feature.properties.name;
