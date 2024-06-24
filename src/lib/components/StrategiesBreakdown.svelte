@@ -99,7 +99,7 @@
                 total += data.series[i].value;
             }
         };
-        if(data?.series?.length == 1 && data.series[0]?.className)
+        if(data?.series?.length === 1 && data.series[0]?.className)
             data.series[0].className += ' single-slice'
 
         var responsiveOptions = [
