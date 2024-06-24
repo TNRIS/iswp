@@ -4,7 +4,6 @@
     import {ProjectItem, EntityItem} from "$lib/TypeDefinitions";
     import { getContext, onMount } from "svelte";
     import { scaleTonew, usd_format, objLeftjoin, commafy } from "$lib/helper";
-    import { hoverHelper, clearInteraction } from "$lib/actions/HoverAction";
     import {runOMS} from "$lib/leaflet.oms.js";
     import { map } from "d3";
 
@@ -406,21 +405,30 @@
 
                 const displayGeom = (j, item, style) => {
                     let gj = L.geoJson(j, {
-                            style,
-                            pane: "geom",
-                        });
-
-                        gj.bindPopup(
+                        style,
+                        pane: "geom",
+                    });
+                    let popup;
+                    gj.bindPopup(
                             `<h3>${item.SourceName}</h3><p><a href="/source/${item.MapSourceId}">View Source Page</a></p>`,
                         );
-                        gj.on("mousemove", (event) => {
-                            //let name = item.feature.properties.name;
-                            const me = event.originalEvent;
-                            hoverHelper(me, "map-entity-hover", item.SourceName);
-                        })
-                        gj.on("mouseout", (event) => {
-                            clearInteraction("map-entity-hover");
-                        })
+                    gj.on('mousemove', function(e) {
+                        //open popup;
+                        if(!popup) {
+                            popup = L.tooltip(e.latlng, {
+                                content: `${item.SourceName}`,
+                                direction: "right"
+                            })
+                            .openOn(map);
+                        } else {
+                            popup.setLatLng(e.latlng);
+                        }
+                    });
+
+                    gj.on("mouseout", function(e) {
+                        popup.close();
+                        popup = null;
+                    });
 
                     return gj;
                 }
@@ -730,18 +738,26 @@
                                 } catch(err) {
                                 }
 
+                                let popup;
                                 gj.bindPopup(
                                     `<h3>${item.SourceName}</h3><p><a href="/source/${item.MapSourceId}">View Source Page</a></p>`,
                                 );
+                                gj.on('mousemove', function(e) {
+                                    //open popup;
+                                    if(!popup) {
+                                        popup = L.tooltip(e.latlng, {
+                                        content: `${item.SourceName}`,
+                                        direction: "right"
+                                    }).openOn(map);
+                                    } else {
+                                        popup.setLatLng(e.latlng);
+                                    }
+                                });
 
-                                gj.on("mousemove", (event) => {
-                                    //let name = item.feature.properties.name;
-                                    const me = event.originalEvent;
-                                    hoverHelper(me, "map-entity-hover", item.SourceName);
-                                })
-                                gj.on("mouseout", (event) => {
-                                    clearInteraction("map-entity-hover");
-                                })
+                                gj.on("mouseout", function(e) {
+                                    popup.close();
+                                    popup = null;
+                                });
                                 gj.addTo(map);
                                 layers.push(gj);
                             }
