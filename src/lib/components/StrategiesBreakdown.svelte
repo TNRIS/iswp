@@ -134,7 +134,6 @@
                 width: "100%",
                 height: 250,
                 startAngle: 270,
-
             },
             responsiveOptions
         );
@@ -170,7 +169,7 @@
 
             <h5>Share by Water Resource</h5>
             <div class="pie-chart-container">
-                <div class="strat-chart" 
+                <div class="strat-chart"
                 on:mousemove={onHover}
                 on:mouseleave={onLeave}
                 />
