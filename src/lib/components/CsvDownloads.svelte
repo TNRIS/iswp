@@ -61,7 +61,7 @@
     }
 </script>
 {#if constants.allow_dl}
-<h5>Download Data</h5>
+<h5 id="dl_header">Download Data</h5>
 <ul>
     {#if (population.length && downloadPopulation)}
     <li><a href="#" on:click={() => {dlpop(population, "population.csv")}}>Download {csvTitle} Population data (Comma-Separated Values)</a></li>
@@ -90,3 +90,9 @@
     {/if}
 </ul>
 {/if}
+
+<style>
+    #dl_header {
+        font-weight: bold;
+    }
+</style>
