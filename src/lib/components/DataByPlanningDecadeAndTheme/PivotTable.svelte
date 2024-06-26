@@ -196,10 +196,14 @@
     <!-- Could be done in one if statement but it looks cleaner in an if else if in my opinion. -->
     {#if ($themeStore === "strategies" && !swdata?.strategies?.rows?.length)}
         Sorry, there is no {themeTitles[$themeStore]} data.
-
-        {:else if ($themeStore === "supplies" && !swdata?.strategies?.rows?.length) }
+    {:else if ($themeStore === "supplies" && !swdata?.supplies?.rows?.length) }
         Sorry, there is no {themeTitles[$themeStore]} data.
-
+    {:else if ($themeStore === "population"  && !swdata?.population?.rows?.length) }
+        Sorry, there is no {themeTitles[$themeStore]} data.
+    {:else if ($themeStore === "demands" && !swdata?.demands?.rows?.length)}
+        Sorry, there is no {themeTitles[$themeStore]} data.
+    {:else if ($themeStore === "needs" && !swdata?.needs?.rows?.length)}
+        Sorry, there is no {themeTitles[$themeStore]} data.
     {/if}
 
     <div id="reactpivot"><!-- Sorry there is no raw data. --></div>

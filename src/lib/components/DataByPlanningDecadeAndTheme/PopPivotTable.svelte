@@ -105,6 +105,9 @@
 <div class="row panel-row">
     <span class="view-name">{title}</span>
     <h4>Raw Data - {$decadeStore} - Population Benefiting</h4>
+    {#if !swdata?.population?.rows?.length }
+    Sorry, there is no Population data.
+    {/if}
     <div id="reactpivot" />
     <CsvDownloads {swdata} {csvTitle} {fileName} {constants} />
 </div>
