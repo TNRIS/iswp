@@ -62,6 +62,18 @@
   visibility: hidden;
 }
 
+.gridjs-wrapper {
+  width: unset !important;
+}
+
+@media (min-width: 860px) {
+  .table_project {
+    td {
+      padding: 2px 20px 0 100px!important
+    }
+  };
+}
+
 .table-condensed {
   font-size: smaller;
 

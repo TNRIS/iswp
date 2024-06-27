@@ -51,7 +51,7 @@
             columns: [
                 { 
                     name: "Project",
-                    width: "45%",
+                    width: "40%",
                     sort: {
                         /**
                          * 
@@ -77,12 +77,12 @@
                     }},
                 { 
                     name: "Decade Online", 
-                    width: "18%" 
+                    width: "12%" 
                 },
                 "Sponsor",
                 { 
                     name: "Capital Cost", 
-                    width: "16%" ,
+                    width: "14%" ,
                     sort: {
                         /**
                          * 
@@ -113,13 +113,14 @@
             data: project_data,
             className: {
                 table: "table-condensed",
+                th: "rec-proj"
             },
             style: {
                 td: {
-                    padding: "2px 20px 0 0",
+                    padding: "0px 0px 0 0",
                 },
                 th: {
-                    padding: "2px 20px 0 0",
+                    padding: "0px 0px 0 0",
                 },
                 table: {
                     border: "none",
@@ -127,7 +128,14 @@
             },
         // @ts-ignore because document is defined since this is onMount();
     }).render(document.getElementById("table-container"));
-
+        setTimeout(() => {
+            try {
+                document.getElementsByClassName("rec-proj")[0].click()
+            } catch(err) {
+                console.log("Problem sorting by project, proceeding.")
+            }
+            
+        }, 100)
 
         // No built in way to customize the placeholder for gridjs-input so I need to do this workaround.
         // @ts-ignore because document is defined since this is onMount();
