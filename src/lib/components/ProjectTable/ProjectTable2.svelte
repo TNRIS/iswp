@@ -45,7 +45,7 @@
             search: false,
             data: project_data,
             className: {
-                table: "table-condensed",
+                table: "table-condensed table_project",
             },
             style: {
                 td: {
@@ -56,8 +56,12 @@
                 },
                 table: {
                     border: "none",
+                    "table-layout": "unset",
                 },
-            },
+                tr: {
+                    padding: "2px 20px 0 0",
+                }
+            }
         }).render(document.getElementById("table-container"));
     });
 </script>
