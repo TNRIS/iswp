@@ -72,7 +72,7 @@
     // Promise to load for entity. Do not await here. Await later in individual entities.
     const lrp = loadForEntity();
 </script>
-<Header {constants} />
+<Header {constants} {db} />
 
 <div class="statewide-view">
     <section>

@@ -34,7 +34,7 @@
     import {cap, onMountSync} from "$lib/helper.js";
     import Select from 'svelte-select'
     let sw;
-    let thing = async () => {
+    let setupChoices = async () => {
         await onMountSync();
         db = await db;
         sw = new Statewide(db);
@@ -149,7 +149,7 @@
                 <Select {items} clearable={false} on:change={reset} value={chosen ? chosen : "All of Texas"} showChevron />
             </div>
 
-            {#await thing() then}
+            {#await setupChoices() then}
             {#if chosen && chosen !== "" && chosen !== "statewide"}
 
                 {#if chosen == "region" || chosen == "county" || chosen == "usagetype" || chosen == "source" || chosen == "wmstype"}

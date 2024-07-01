@@ -52,7 +52,7 @@
     const lrp = loadForRegion();
 
 </script>
-<Header {constants} />
+<Header {constants} {db} />
 
 <div class="statewide-view">
 <div class="view-top usage-type-view-top">

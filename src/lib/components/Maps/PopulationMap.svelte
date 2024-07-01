@@ -145,15 +145,6 @@
                     popup = null;
                 });
 
-
-                item.on("mousemove", (event) => {
-                    let name = item.feature.properties.name;
-                    const me = event.originalEvent;
-                    hoverHelper(me, "map-hover", name);
-                })
-                item.on("mouseout", () => {
-                    onLeave();
-                })
                 item.addTo(map)
             })
         }

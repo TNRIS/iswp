@@ -76,7 +76,7 @@
     const lrp = loadForCounty();
 
 </script>
-<Header {constants} />
+<Header {constants} {db} />
 
 <div class="statewide-view">
     <section>

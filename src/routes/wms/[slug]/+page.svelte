@@ -54,7 +54,7 @@
     // Promise to load for wms. Do not await here. Await later in individual entities.
     const lrp = loadForWms()
 </script>
-<Header {constants} />
+<Header {constants} {db} />
 <div class="statewide-view">
 <!-- Need to load in all entities at once due to calculating title in loadForWms(). Might be worth storing that info statically in the future. -->
 {#await loadForWms() then}

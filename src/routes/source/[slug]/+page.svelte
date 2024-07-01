@@ -57,7 +57,7 @@
     // Promise to load for source. Do not await here. Await later in individual entities.
     const lrp = loadForSource();
 </script>
-<Header {constants} />
+<Header {constants} {db} />
 <div class="statewide-view">
 {#await lrp then} <!-- TODO remove this await and await in individual entities. For now await because of title generation. -->
 <PopulationChart {tagline} titleOnly={true} {title} {constants} />
