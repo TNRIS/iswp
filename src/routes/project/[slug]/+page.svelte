@@ -62,7 +62,7 @@
     // Promise to load for source. Do not await here. Await later in individual entities.
     const lrp =  loadForSource();
 </script>
-<Header {constants} />
+<Header {constants} {db} />
 <div class="statewide-view">
 
 <!--TODO weigh whether it's a good idea to cache project information in the future here. In order to load each entity one at a time.-->
