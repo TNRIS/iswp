@@ -63,6 +63,9 @@
     const lrp =  loadForSource();
 </script>
 <Header {constants} {db} />
+<svelte:head>
+    <title>Project</title>
+</svelte:head>
 <div class="statewide-view">
 
 <!--TODO weigh whether it's a good idea to cache project information in the future here. In order to load each entity one at a time.-->

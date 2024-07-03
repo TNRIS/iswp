@@ -73,7 +73,9 @@
     const lrp = loadForEntity();
 </script>
 <Header {constants} {db} />
-
+<svelte:head>
+    <title>Water User Group</title>
+</svelte:head>
 <div class="statewide-view">
     <section>
 

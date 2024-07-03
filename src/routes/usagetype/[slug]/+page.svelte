@@ -53,7 +53,9 @@
 
 </script>
 <Header {constants} {db} />
-
+<svelte:head>
+    <title>Usage Type</title>
+</svelte:head>
 <div class="statewide-view">
 <div class="view-top usage-type-view-top">
     <div class="summary-wrapper container">

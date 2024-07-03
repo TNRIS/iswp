@@ -35,6 +35,10 @@
 {#await HeaderPromise then {default: Component}}
 <Component {db} {constants} />
 {/await}
+
+<svelte:head>
+    <title>Home</title>
+</svelte:head>
 <div class="statewide-view">
     <section>
 

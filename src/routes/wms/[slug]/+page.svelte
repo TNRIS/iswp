@@ -55,6 +55,9 @@
     const lrp = loadForWms()
 </script>
 <Header {constants} {db} />
+<svelte:head>
+    <title>Water Management Strategy</title>
+</svelte:head>
 <div class="statewide-view">
 <!-- Need to load in all entities at once due to calculating title in loadForWms(). Might be worth storing that info statically in the future. -->
 {#await loadForWms() then}

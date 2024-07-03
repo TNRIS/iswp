@@ -77,7 +77,9 @@
 
 </script>
 <Header {constants} {db} />
-
+<svelte:head>
+    <title>County</title>
+</svelte:head>
 <div class="statewide-view">
     <section>
             <!-- We need to await lrp for the tagline here.-->

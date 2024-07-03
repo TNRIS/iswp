@@ -52,7 +52,9 @@
     const lrp = loadForWmsType();
 </script>
 <Header {constants} {db} />
-
+<svelte:head>
+    <title>Water Management Strategy Type</title>
+</svelte:head>
 <div class="statewide-view">
     <section>
 

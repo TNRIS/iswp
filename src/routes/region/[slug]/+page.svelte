@@ -63,7 +63,9 @@
 
 </script>
 <Header {constants} {db} />
-
+<svelte:head>
+    <title>Region</title>
+</svelte:head>
 <div class="statewide-view">
     <section>
 

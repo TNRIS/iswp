@@ -145,7 +145,7 @@
     <div class="wrapper" id="wrapper">
         <form>
             <label for="navcat">View data for</label>
-            <div class="select-container" aria-live="polte" id="navcat_container">
+            <div class="select-container" aria-label="Category Selector for Navigation" id="navcat_container">
                 <Select {items} clearable={false} on:change={reset} value={chosen ? chosen : "All of Texas"} showChevron />
             </div>
 
