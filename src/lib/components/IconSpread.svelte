@@ -3,12 +3,11 @@
 -->
 
 <script>
-    import UsageTypeIcon from "$lib/components/UsageTypeIcon.svelte"
+    import UsageTypeIcon from '$lib/components/UsageTypeIcon.svelte';
 </script>
 
 <div
-    class="chart-legend usage-type-chart-legend u-pull-right legend-types-by-decade"
->
+    class="chart-legend usage-type-chart-legend u-pull-right legend-types-by-decade">
     <ul>
         <li class="legend-entry">
             <UsageTypeIcon group_name="IRRIGATION" />Irrigation</li>
@@ -17,7 +16,8 @@
         <li class="legend-entry">
             <UsageTypeIcon group_name="MANUFACTURING" />Manufacturing</li>
         <li class="legend-entry">
-            <UsageTypeIcon group_name="STEAM ELECTRIC POWER" />Steam Electric Power</li>
+            <UsageTypeIcon group_name="STEAM ELECTRIC POWER" />Steam Electric
+            Power</li>
         <li class="legend-entry">
             <UsageTypeIcon group_name="LIVESTOCK" />Livestock</li>
         <li class="legend-entry">

@@ -1,12 +1,12 @@
 <script>
     // @ts-nocheck
-    import { onMount } from "svelte";
+    import { onMount } from 'svelte';
     //import TitlePlugin from './ChartistAxisTitlePlugin';
-    import { commafy } from "$lib/helper.js";
-    import { hoverHelper, clearInteraction } from "$lib/actions/HoverAction";
-    import ctAxisTitle from "chartist-plugin-axistitle";
-    import "chartist/dist/index.css"
-    import { BarChart } from "chartist"
+    import { commafy } from '$lib/helper.js';
+    import { hoverHelper, clearInteraction } from '$lib/actions/HoverAction';
+    import ctAxisTitle from 'chartist-plugin-axistitle';
+    import 'chartist/dist/index.css';
+    import { BarChart } from 'chartist';
     const { iterator, data, group_name, chartTitle, constants } = $$props;
 
     /**
@@ -18,12 +18,11 @@
         let group = data[group_name];
 
         // Return false if anything in any of the keys are non zero.
-        // Use regular for Loop not a forEach to return out of isAllZero function. 
-        for(let i = 0; i < group.length; i++) {
+        // Use regular for Loop not a forEach to return out of isAllZero function.
+        for (let i = 0; i < group.length; i++) {
             let series = group[i].data;
-            for(let j = 0; j < series.length; j++) {
-                if(series[j])
-                    return false;
+            for (let j = 0; j < series.length; j++) {
+                if (series[j]) return false;
             }
         }
         //If we get through the above loop without a match all items are zero.
@@ -33,41 +32,41 @@
     let buildChart = () => {
         const defaultOptions = {
             fullWidth: false,
-            width: "100%",
+            width: '100%',
             seriesBarDistance: 10,
             chartPadding: {
-                left: 40,
+                left: 40
             },
-            height: "200px",
+            height: '200px',
             axisY: {
                 low: 0,
-                labelInterpolationFnc: function(value) {
+                labelInterpolationFnc: function (value) {
                     return commafy(value + '');
                 }
             },
             plugins: [
                 ctAxisTitle({
-                axisY: {
-                    axisTitle: 'acre-feet/year',
-                    axisClass: 'ct-axis-title',
-                    offset: {
-                        x: 0,
-                        y: 0
-                    },
-                    textAnchor: 'middle',
-                    flipTitle: false
-                }
+                    axisY: {
+                        axisTitle: 'acre-feet/year',
+                        axisClass: 'ct-axis-title',
+                        offset: {
+                            x: 0,
+                            y: 0
+                        },
+                        textAnchor: 'middle',
+                        flipTitle: false
+                    }
                 })
             ]
         };
 
         const responsiveOptions = [
             [
-                "screen and (max-width: 550px)",
+                'screen and (max-width: 550px)',
                 {
-                    seriesBarDistance: 7,
-                },
-            ],
+                    seriesBarDistance: 7
+                }
+            ]
         ];
 
         //const chartOptions = R.merge(defaultOptions, {});
@@ -75,7 +74,7 @@
             `.ct-chart-bar-${iterator}`,
             {
                 labels: constants.getDecades(),
-                series: data[group_name],
+                series: data[group_name]
             },
             defaultOptions,
             responsiveOptions
@@ -93,11 +92,11 @@
     let onLeave = () => {
         clearInteraction(chartTitle);
     };
-
 </script>
+
 <div class="bar-chart-container">
     {#if isAllZero()}
-    <div class="zero-message">All values are zero</div>
+        <div class="zero-message">All values are zero</div>
     {/if}
     <div class="ct-chart">
         <div
@@ -107,8 +106,7 @@
             on:mouseout={onLeave}
             on:blur
             class="{chartTitle} ct-chart-bar-{iterator} ct-chart"
-            role="region"
-        />
+            role="region" />
         <div role="tooltip" id={`${chartTitle}-tooltip`} />
     </div>
 </div>

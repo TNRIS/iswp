@@ -1,15 +1,28 @@
 <script>
-    const popChartPromise = import("$lib/components/Charts/PopulationChart.svelte");
-    const TitleBlurbPromise = import("$lib/components/TitleBlurb.svelte");
-    const ThemeTotalsByDecadeChartPromise = import("$lib/components/ThemeTotalsByDecadeChart.svelte");
-    const ThemeTypesByDecadeChartPromise = import("$lib/components/ThemeTypesByDecadeChart.svelte");
-    const DataUsageTypePromise = import("$lib/components/DataUsageType.svelte");
-    const DataViewChoiceWrapPromise = import("$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrap.svelte");
-    const HeaderPromise = import("$lib/components/Header.svelte");
+    const popChartPromise = import(
+        '$lib/components/Charts/PopulationChart.svelte'
+    );
+    const TitleBlurbPromise = import('$lib/components/TitleBlurb.svelte');
+    const ThemeTotalsByDecadeChartPromise = import(
+        '$lib/components/ThemeTotalsByDecadeChart.svelte'
+    );
+    const ThemeTypesByDecadeChartPromise = import(
+        '$lib/components/ThemeTypesByDecadeChart.svelte'
+    );
+    const DataUsageTypePromise = import('$lib/components/DataUsageType.svelte');
+    const DataViewChoiceWrapPromise = import(
+        '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrap.svelte'
+    );
+    const HeaderPromise = import('$lib/components/Header.svelte');
 
-    import { QuerySettings } from "$lib/QuerySettings.js";
-    import { load_indexeddb, onMountSync, getConstants, is_idb_loaded } from "$lib/helper.js";
-    import Statewide from "$lib/db/statewide.js";
+    import { QuerySettings } from '$lib/QuerySettings.js';
+    import {
+        load_indexeddb,
+        onMountSync,
+        getConstants,
+        is_idb_loaded
+    } from '$lib/helper.js';
+    import Statewide from '$lib/db/statewide.js';
     import { page } from '$app/stores';
 
     let constants = getConstants($page.url.host);
@@ -23,7 +36,7 @@
         db = await db;
         let sw = new Statewide(db);
         let dat = await sw.get(stateSettings);
-        
+
         console.log(`loadForState() time in ms: ${Date.now() - start}`);
         return dat;
     };
@@ -32,50 +45,48 @@
     const lrp = loadForState();
 </script>
 
-{#await HeaderPromise then {default: Component}}
-<Component {db} {constants} />
+{#await HeaderPromise then { default: Component }}
+    <Component {db} {constants} />
 {/await}
+<svelte:head>
+    <title>Home</title>
+</svelte:head>
 <div class="statewide-view">
     <section>
-
         {#await popChartPromise}
-        <div class="loader"></div>
-        {:then {default: Component}}
-        <Component title={`TEXAS`} {lrp} {constants} />
+            <div class="loader"></div>
+        {:then { default: Component }}
+            <Component title={`TEXAS`} {lrp} {constants} />
         {/await}
 
         {#await TitleBlurbPromise}
-        <div class="loader"></div>
-        {:then {default: Component}}
-        <Component {constants} />
+            <div class="loader"></div>
+        {:then { default: Component }}
+            <Component {constants} />
         {/await}
 
         {#await ThemeTotalsByDecadeChartPromise}
-        <div class="loader"></div>
-        {:then {default: Component}}
-        <Component {lrp} {constants} />
+            <div class="loader"></div>
+        {:then { default: Component }}
+            <Component {lrp} {constants} />
         {/await}
 
         {#await ThemeTypesByDecadeChartPromise}
-        <div class="loader"></div>
-        {:then {default: Component}}
-        <Component
-        chartTitle={"ct-usage-chart"}
-        {lrp}
-        {constants}
-        />  
+            <div class="loader"></div>
+        {:then { default: Component }}
+            <Component chartTitle={'ct-usage-chart'} {lrp} {constants} />
         {/await}
 
         {#await DataUsageTypePromise}
-        <div class="loader"></div>
-        {:then {default: Component}}
-        <Component {lrp} {constants} />
+            <div class="loader"></div>
+        {:then { default: Component }}
+            <Component {lrp} {constants} />
         {/await}
 
         {#await DataViewChoiceWrapPromise}
-        <div class="loader"></div>
-        {:then {default: Component}}
-        <Component {db} {lrp} csvTitle= {"Statewide"} {constants} />
+            <div class="loader"></div>
+        {:then { default: Component }}
+            <Component {db} {lrp} csvTitle={'Statewide'} {constants} />
         {/await}
     </section>
 </div>

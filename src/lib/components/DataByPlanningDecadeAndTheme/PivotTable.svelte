@@ -1,14 +1,25 @@
 <script>
     //@ts-nocheck
-    const { page, slug, swdata, csvTitle, title, fileName, constants, stratAd, activeDem, showPopulation } = $$props;
-    import { commafy, onMountSync, usd_format } from "$lib/helper.js";
+    const {
+        page,
+        slug,
+        swdata,
+        csvTitle,
+        title,
+        fileName,
+        constants,
+        stratAd,
+        activeDem,
+        showPopulation
+    } = $$props;
+    import { commafy, onMountSync, usd_format } from '$lib/helper.js';
     let pivotLoaded = false;
-    import CsvDownloads from "$lib/components/CsvDownloads.svelte";
+    import CsvDownloads from '$lib/components/CsvDownloads.svelte';
 
-    import { getContext } from "svelte";
-    const decadeStore = getContext("myContext").decadeStore;
-    const themeStore = getContext("myContext").themeStore;
-    const dataviewContext = getContext("dataviewContext");
+    import { getContext } from 'svelte';
+    const decadeStore = getContext('myContext').decadeStore;
+    const themeStore = getContext('myContext').themeStore;
+    const dataviewContext = getContext('dataviewContext');
     const themeTitles = constants.getThemeTitles();
 
     let getData = async () => {
@@ -27,143 +38,153 @@
                 return [
                     {
                         title: titleCalcField,
-                        value: "amountTotal",
+                        value: 'amountTotal',
                         template: function (val, row) {
                             return commafy(val + '');
                         },
                         sortBy: function (row) {
                             return isNaN(row.amountTotal) ? 0 : row.amountTotal;
-                        },
-                    },
+                        }
+                    }
                 ];
             };
 
-            if ($themeStore == "strategies") {
+            if ($themeStore == 'strategies') {
                 activeDimensions = stratAd;
-                sorter = "Strategy";
+                sorter = 'Strategy';
                 rows = swdata.strategies.rows;
                 dimensions = [
-                    { value: "WmsName", title: "Strategy" },
-                    { value: "WmsType", title: "WMS Type" },
-                    { value: "SourceName", title: "Source" },
-                    { value: "WugCounty", title: "County" },
-                    { value: "EntityName", title: "Entity" },
-                    { value: "WugRegion", title: "Region"}
+                    { value: 'WmsName', title: 'Strategy' },
+                    { value: 'WmsType', title: 'WMS Type' },
+                    { value: 'SourceName', title: 'Source' },
+                    { value: 'WugCounty', title: 'County' },
+                    { value: 'EntityName', title: 'Entity' },
+                    { value: 'WugRegion', title: 'Region' }
                 ];
 
                 reduce = function (row, memo) {
                     memo.amountTotal =
                         (memo.amountTotal || 0) +
-                        parseFloat(row["SS" + $decadeStore]);
+                        parseFloat(row['SS' + $decadeStore]);
                     return memo;
                 };
 
                 calculations = getCalculations(
                     `${$decadeStore} Strategy Supplies`
                 );
-            } else if ($themeStore == "needs") {
+            } else if ($themeStore == 'needs') {
                 activeDimensions = activeDem;
-                sorter = "County";
+                sorter = 'County';
                 rows = swdata.needs.rows;
                 dimensions = [
-                    { value: "WugCounty", title: "County" },
-                    { value: "EntityName", title: "Entity" },
-                    { value: "WugRegion", title: "Region" }
+                    { value: 'WugCounty', title: 'County' },
+                    { value: 'EntityName', title: 'Entity' },
+                    { value: 'WugRegion', title: 'Region' }
                 ];
 
                 reduce = function (row, memo) {
                     memo.amountTotal =
                         (memo.amountTotal || 0) +
-                        parseFloat(row["N" + $decadeStore]);
+                        parseFloat(row['N' + $decadeStore]);
                     return memo;
                 };
 
                 calculations = getCalculations(
                     `${$decadeStore} Needs (Potential Shortages)`
                 );
-            } else if ($themeStore == "supplies") {
-                const supArray = activeDem.concat(['Source'])
-                activeDimensions = supArray
-                sorter = "County";
+            } else if ($themeStore == 'supplies') {
+                const supArray = activeDem.concat(['Source']);
+                activeDimensions = supArray;
+                sorter = 'County';
                 rows = swdata.supplies.rows;
                 dimensions = [
-                    { value: "WugCounty", title: "County" },
-                    { value: "EntityName", title: "Entity" },
-                    { value: "SourceName", title: "Source" },
-                    { value: "WugRegion", title: "Region" }
-
+                    { value: 'WugCounty', title: 'County' },
+                    { value: 'EntityName', title: 'Entity' },
+                    { value: 'SourceName', title: 'Source' },
+                    { value: 'WugRegion', title: 'Region' }
                 ];
 
                 reduce = function (row, memo) {
                     memo.amountTotal =
                         (memo.amountTotal || 0) +
-                        parseFloat(row["WS" + $decadeStore]);
+                        parseFloat(row['WS' + $decadeStore]);
                     return memo;
                 };
 
                 calculations = getCalculations(
                     `${$decadeStore} Existing Supplies`
                 );
-            } else if ($themeStore == "demands") {
+            } else if ($themeStore == 'demands') {
                 activeDimensions = activeDem;
-                sorter = "County";
+                sorter = 'County';
                 rows = swdata.demands.rows;
                 dimensions = [
-                    { value: "WugCounty", title: "County" },
-                    { value: "EntityName", title: "Entity" },
-                    { value: "WugRegion", title: "Region" }
+                    { value: 'WugCounty', title: 'County' },
+                    { value: 'EntityName', title: 'Entity' },
+                    { value: 'WugRegion', title: 'Region' }
                 ];
 
                 reduce = function (row, memo) {
                     memo.amountTotal =
                         (memo.amountTotal || 0) +
-                        parseFloat(row["D" + $decadeStore]);
+                        parseFloat(row['D' + $decadeStore]);
                     return memo;
                 };
                 calculations = getCalculations(`${$decadeStore} Demands`);
-            } else if ($themeStore == "population") {
+            } else if ($themeStore == 'population') {
                 activeDimensions = activeDem;
-                sorter = "County";
+                sorter = 'County';
                 rows = swdata.population.rows;
                 dimensions = [
-                    { value: "WugCounty", title: "County" },
-                    { value: "EntityName", title: "Entity" },
-                    { value: "WugRegion", title: "Region" }
+                    { value: 'WugCounty', title: 'County' },
+                    { value: 'EntityName', title: 'Entity' },
+                    { value: 'WugRegion', title: 'Region' }
                 ];
 
                 reduce = function (row, memo) {
                     memo.amountTotal =
                         (memo.amountTotal || 0) +
-                        parseFloat(row["P" + $decadeStore]);
+                        parseFloat(row['P' + $decadeStore]);
                     return memo;
                 };
                 calculations = getCalculations(`${$decadeStore} Population`);
             }
 
-            if (document.getElementById("reactpivot").firstChild)
-                document.getElementById("reactpivot").firstChild.remove();
+            if (document.getElementById('reactpivot').firstChild)
+                document.getElementById('reactpivot').firstChild.remove();
 
             let formattedRows = JSON.parse(JSON.stringify(rows));
 
-
             formattedRows.forEach((f) => {
-                if(f.MapSourceId)
-                    f.SourceName = f.SourceName?.startsWith('<a') ? f.SourceName : `<a href="/source/${f.MapSourceId}">${f.SourceName}</a>`;
-                f.WugRegion = f.WugRegion?.startsWith('<a') ? f.WugRegion : `<a href="/region/${f.WugRegion}">${f.WugRegion}</a>`;
-                f.EntityName = f.EntityName?.startsWith('<a') ? f.EntityName : `<a href="/entity/${f.EntityId}">${f.EntityName}</a>`;
-                f.WugCounty = f.WugCounty?.startsWith('<a') ? f.WugCounty : `<a href="/county/${f.WugCounty}">${f.WugCounty}</a>`;
-                f.WmsName = f.WmsName?.startsWith('<a') ? f.WmsName : `<a href="/wms/${f.WmsId}">${f.WmsName}</a>`;
-                f.WmsType = f.WmsType?.startsWith('<a') ? f.WmsType : `<a href="/wmstype/${f.WmsType}">${f.WmsType}</a>`;
-            })
+                if (f.MapSourceId)
+                    f.SourceName = f.SourceName?.startsWith('<a')
+                        ? f.SourceName
+                        : `<a href="/source/${f.MapSourceId}">${f.SourceName}</a>`;
+                f.WugRegion = f.WugRegion?.startsWith('<a')
+                    ? f.WugRegion
+                    : `<a href="/region/${f.WugRegion}">${f.WugRegion}</a>`;
+                f.EntityName = f.EntityName?.startsWith('<a')
+                    ? f.EntityName
+                    : `<a href="/entity/${f.EntityId}">${f.EntityName}</a>`;
+                f.WugCounty = f.WugCounty?.startsWith('<a')
+                    ? f.WugCounty
+                    : `<a href="/county/${f.WugCounty}">${f.WugCounty}</a>`;
+                f.WmsName = f.WmsName?.startsWith('<a')
+                    ? f.WmsName
+                    : `<a href="/wms/${f.WmsId}">${f.WmsName}</a>`;
+                f.WmsType = f.WmsType?.startsWith('<a')
+                    ? f.WmsType
+                    : `<a href="/wmstype/${f.WmsType}">${f.WmsType}</a>`;
+            });
 
-            ReactPivot(document.getElementById("reactpivot"), {
+            ReactPivot(document.getElementById('reactpivot'), {
                 rows: formattedRows,
                 dimensions: dimensions,
                 calculations: calculations,
                 activeDimensions: activeDimensions,
                 reduce: reduce,
                 nPaginateRows: 50,
-                sortBy: sorter,
+                sortBy: sorter
             });
         } catch (err) {
             console.log(err);
@@ -186,31 +207,42 @@
 
 <div class="row panel-row" style="overflow:auto;">
     <span class="view-name">{title}</span>
-    <h4>Raw Data - {$decadeStore} - {themeTitles[$themeStore]}
-        {#if $themeStore === "population"}
-        <span class="units">(people)</span>
+    <h4
+        >Raw Data - {$decadeStore} - {themeTitles[$themeStore]}
+        {#if $themeStore === 'population'}
+            <span class="units">(people)</span>
         {:else}
-        <span class="units">(acre-feet/year)</span>
+            <span class="units">(acre-feet/year)</span>
         {/if}
     </h4>
     <!-- Could be done in one if statement but it looks cleaner in an if else if in my opinion. -->
-    {#if ($themeStore === "strategies" && !swdata?.strategies?.rows?.length)}
+    {#if $themeStore === 'strategies' && !swdata?.strategies?.rows?.length}
         Sorry, there is no {themeTitles[$themeStore]} data.
-    {:else if ($themeStore === "supplies" && !swdata?.supplies?.rows?.length) }
+    {:else if $themeStore === 'supplies' && !swdata?.supplies?.rows?.length}
         Sorry, there is no {themeTitles[$themeStore]} data.
-    {:else if ($themeStore === "population"  && !swdata?.population?.rows?.length) }
+    {:else if $themeStore === 'population' && !swdata?.population?.rows?.length}
         Sorry, there is no {themeTitles[$themeStore]} data.
-    {:else if ($themeStore === "demands" && !swdata?.demands?.rows?.length)}
+    {:else if $themeStore === 'demands' && !swdata?.demands?.rows?.length}
         Sorry, there is no {themeTitles[$themeStore]} data.
-    {:else if ($themeStore === "needs" && !swdata?.needs?.rows?.length)}
+    {:else if $themeStore === 'needs' && !swdata?.needs?.rows?.length}
         Sorry, there is no {themeTitles[$themeStore]} data.
     {/if}
 
     <div id="reactpivot"><!-- Sorry there is no raw data. --></div>
     <!-- If page is usagetype then only download if it's specifically Municipal. Download other pages with population if available. -->
-    {#if (slug == "MUNICIPAL" && page == "usagetype") || page !== "usagetype"}
-    <CsvDownloads {swdata} {csvTitle} {fileName} {constants} downloadPopulation={true} />
+    {#if (slug == 'MUNICIPAL' && page == 'usagetype') || page !== 'usagetype'}
+        <CsvDownloads
+            {swdata}
+            {csvTitle}
+            {fileName}
+            {constants}
+            downloadPopulation={true} />
     {:else}
-    <CsvDownloads {swdata} {csvTitle} {fileName} {constants} downloadPopulation={showPopulation} />
+        <CsvDownloads
+            {swdata}
+            {csvTitle}
+            {fileName}
+            {constants}
+            downloadPopulation={showPopulation} />
     {/if}
 </div>

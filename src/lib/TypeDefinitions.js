@@ -15,7 +15,7 @@ export class ProjectItem {
      * @property {number} WmsProjectId: Id of project
      * @property {string} WmsProjectSponsorRegion: Water Region
      * @property {string} WugRegion: Water User Group Region
-    */
+     */
     constructor() {
         this.CapitalCost = undefined;
         this.id = undefined;
@@ -61,5 +61,4 @@ export class EntityItem {
         this.WugRegion = undefined;
         this.WugType = undefined;
     }
-
 }

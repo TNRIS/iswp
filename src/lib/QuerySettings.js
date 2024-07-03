@@ -16,7 +16,7 @@ export class QuerySettings {
         this.s_strategies = new QuerySetting(type, undefined, whereClause);
         this.s_projects = new QuerySetting(type, undefined, whereClause);
     }
-    
+
     /**
      * @param {string} filter
      */
@@ -24,15 +24,23 @@ export class QuerySettings {
         this.s_demands = new QuerySetting(this.type, filter, this.whereClause);
         this.s_needs = new QuerySetting(this.type, filter, this.whereClause);
         this.s_supplies = new QuerySetting(this.type, filter, this.whereClause);
-        this.s_population = new QuerySetting(this.type, filter, this.whereClause);
-        this.s_strategies = new QuerySetting(this.type, filter, this.whereClause);
+        this.s_population = new QuerySetting(
+            this.type,
+            filter,
+            this.whereClause
+        );
+        this.s_strategies = new QuerySetting(
+            this.type,
+            filter,
+            this.whereClause
+        );
         this.s_projects = new QuerySetting(this.type, filter, this.whereClause);
     }
 
     /**
      * @param {string} demands
      */
-    setDemands(demands, wc=this.whereClause) {
+    setDemands(demands, wc = this.whereClause) {
         this.s_demands = new QuerySetting(this.type, demands, wc);
     }
 
@@ -47,7 +55,7 @@ export class QuerySettings {
     /**
      * @param {string} needs
      */
-    setNeeds(needs, wc=this.whereClause) {
+    setNeeds(needs, wc = this.whereClause) {
         this.s_needs = new QuerySetting(this.type, needs, wc);
     }
 
@@ -63,7 +71,7 @@ export class QuerySettings {
      * Setup a supplies setting object.
      * @param {string} supplies
      */
-    setSupplies(supplies, wc=this.whereClause) {
+    setSupplies(supplies, wc = this.whereClause) {
         this.s_supplies = new QuerySetting(this.type, supplies, wc);
     }
 
@@ -78,7 +86,7 @@ export class QuerySettings {
     /**
      * @param {string} population
      */
-    setPopulation(population, wc=this.whereClause) {
+    setPopulation(population, wc = this.whereClause) {
         this.s_population = new QuerySetting(this.type, population, wc);
     }
 
@@ -93,7 +101,7 @@ export class QuerySettings {
     /**
      * @param {string} strategies
      */
-    setStrategies(strategies, wc=this.whereClause) {
+    setStrategies(strategies, wc = this.whereClause) {
         this.s_strategies = new QuerySetting(this.type, strategies, wc);
     }
 
@@ -108,7 +116,7 @@ export class QuerySettings {
     /**
      * @param {string} projects
      */
-    setProjects(projects, wc=this.whereClause) {
+    setProjects(projects, wc = this.whereClause) {
         this.s_projects = new QuerySetting(this.type, projects, wc);
     }
 

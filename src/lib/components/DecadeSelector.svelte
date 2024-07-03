@@ -13,8 +13,7 @@
                 on:click={show}
                 key={`button-${decade}`}
                 class="button"
-                class:active={select_decade == decade}
-            >
+                class:active={select_decade == decade}>
                 {decade}
             </button>
         {/each}
