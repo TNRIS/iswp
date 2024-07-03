@@ -5,85 +5,97 @@
         input = document.getElementById('secondary-category-select');
         filter = input.value.toUpperCase();
 
-        ul = document.getElementById("secondList");
+        ul = document.getElementById('secondList');
         li = ul.getElementsByTagName('li');
-        if(!(filter.length > 0)) {
+        if (!(filter.length > 0)) {
             for (i = 0; i < li.length; i++) {
-                li[i].style.display = "none";
+                li[i].style.display = 'none';
             }
             return;
         }
         // Loop through all list items, and hide those who don't match the search query
         for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("a")[0];
+            a = li[i].getElementsByTagName('a')[0];
             txtValue = a.textContent || a.innerText;
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "";
+                li[i].style.display = '';
             } else {
-                li[i].style.display = "none";
+                li[i].style.display = 'none';
             }
         }
     }
 
-    import { page, navigating } from '$app/stores';  
-    let selected = {id: $page.url.pathname.split(["/"])[1] };
-    let selected2 = $page.url.pathname.split(["/"])[2];
-    import { sourceNames } from "$lib/pages/SourceNames";
+    import { page, navigating } from '$app/stores';
+    let selected = { id: $page.url.pathname.split(['/'])[1] };
+    let selected2 = $page.url.pathname.split(['/'])[2];
+    import { sourceNames } from '$lib/pages/SourceNames';
     let { db, constants } = $$props;
-    import Statewide from "$lib/db/statewide.js";
-    import {cap, onMountSync} from "$lib/helper.js";
-    import Select from 'svelte-select'
+    import Statewide from '$lib/db/statewide.js';
+    import { cap, onMountSync } from '$lib/helper.js';
+    import Select from 'svelte-select';
     let sw;
     let setupChoices = async () => {
         await onMountSync();
         db = await db;
         sw = new Statewide(db);
         await funcs();
-    }
+    };
 
     let clicker = async (event) => {
-        chosen2 = event.target.id
-        document.getElementById("secondary-category-select").value = event.target.text
+        chosen2 = event.target.id;
+        document.getElementById('secondary-category-select').value =
+            event.target.text;
         var input, filter, ul, li, a, i, txtValue;
         input = document.getElementById('secondary-category-select');
         filter = input.value.toUpperCase();
-        ul = document.getElementById("secondList");
+        ul = document.getElementById('secondList');
         li = ul.getElementsByTagName('li');
 
         // Loop through all list items, and hide those who don't match the search query
         for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("a")[0];
+            a = li[i].getElementsByTagName('a')[0];
             txtValue = a.textContent || a.innerText;
-            li[i].style.display = "none";
-
+            li[i].style.display = 'none';
         }
-    }
+    };
 
-    
-    let regions = constants.getRegions().reduce((a, o) => (a.push({"value": o, "label": "Region " + o}), a), []);
+    let regions = constants
+        .getRegions()
+        .reduce((a, o) => (a.push({ value: o, label: 'Region ' + o }), a), []);
     let chosen = selected.id;
-    let label = "";
-    if(chosen == "statewide") {
-        chosen = "";
+    let label = '';
+    if (chosen == 'statewide') {
+        chosen = '';
     }
     let chosen2;
-    let counties = constants.getCountyNames().reduce((a, o) => (a.push({"value": o, "label": o}), a), []);
-    let usageTypes = constants.getUsageTypes().reduce((a, o) => (a.push({"value": o, "label": o}), a), []);
-    let wmstype = constants.WMS_TYPES.reduce((a, o) => (a.push({"value": o, "label": o}), a), []);
+    let counties = constants
+        .getCountyNames()
+        .reduce((a, o) => (a.push({ value: o, label: o }), a), []);
+    let usageTypes = constants
+        .getUsageTypes()
+        .reduce((a, o) => (a.push({ value: o, label: o }), a), []);
+    let wmstype = constants.WMS_TYPES.reduce(
+        (a, o) => (a.push({ value: o, label: o }), a),
+        []
+    );
 
-    $: region = chosen && chosen2 ? `/${chosen}/${chosen2}/`: !(chosen && chosen2) ? '/' : `/${chosen}/`;
+    $: region =
+        chosen && chosen2
+            ? `/${chosen}/${chosen2}/`
+            : !(chosen && chosen2)
+              ? '/'
+              : `/${chosen}/`;
 
     const titles = constants.chosenTitles;
 
     let categories = {
-        "": [],
-        "region": regions,
-        "county": counties,
-        "source": sourceNames,
-        "usagetype": usageTypes,
-        "wmstype": wmstype
-    }
-
+        '': [],
+        region: regions,
+        county: counties,
+        source: sourceNames,
+        usagetype: usageTypes,
+        wmstype: wmstype
+    };
 
     let funcs = async () => {
         try {
@@ -92,25 +104,37 @@
             let a = await sw.getEntities();
             let zz = await sw.getProjects();
 
-            let dd = qq.reduce((a, o) => (a.push({"value": o.WmsName, "label": o.WmsId}), a), []);
-            let cc = zz.reduce((a, o) => (a.push({"value": o.ProjectName, "label": o.WmsProjectId}), a), []);
-            let b = a.reduce((a, o) => (a.push({"value": o.EntityName, "label": o.EntityId}), a), []);
+            let dd = qq.reduce(
+                (a, o) => (a.push({ value: o.WmsName, label: o.WmsId }), a),
+                []
+            );
+            let cc = zz.reduce(
+                (a, o) => (
+                    a.push({ value: o.ProjectName, label: o.WmsProjectId }), a
+                ),
+                []
+            );
+            let b = a.reduce(
+                (a, o) => (
+                    a.push({ value: o.EntityName, label: o.EntityId }), a
+                ),
+                []
+            );
 
             categories.entity = b;
             categories.project = cc;
             categories.wms = dd;
 
-            tmap = categories[chosen].reduce(function(map, obj) {
+            tmap = categories[chosen].reduce(function (map, obj) {
                 map[obj.value] = obj.label;
                 return map;
             }, {});
 
-            console.log(`Time to run navigation func ${Date.now() - start}`)
-        } catch(err) {
+            console.log(`Time to run navigation func ${Date.now() - start}`);
+        } catch (err) {
             console.log(err);
         }
-
-    }
+    };
     /*
         {#each sets as set}
             <option value={set.id}>{set.value}</option>
@@ -118,26 +142,32 @@
     */
     let reset = (value) => {
         chosen = value.detail.value;
-        label = value.detail.placeholder_override ? value.detail.placeholder_override : value.detail.label;
+        label = value.detail.placeholder_override
+            ? value.detail.placeholder_override
+            : value.detail.label;
         chosen2 = '';
         console.log(`chosen: ${chosen} chosen2: ${chosen2}`);
-    }
+    };
 
     let box2Change = (value) => {
         chosen2 = value.detail.value;
-    }
-   let items =  [
-            { value: "", label: "All of Texas" },
-            { value: "region", label: "Planning Region", placeholder_override: "Region"},
-            { value: "county", label: "County" },
-            { value: "entity", label: "Water User Group" },
-            { value: "usagetype", label: "Usage Type" },
-            { value: "source", label: "Water Source" },
-            { value: "project", label: "WMS Project" },
-            { value: "wms", label: "Water Management Strategy" },
-            { value: "wmstype", label: "WMS Type" },
-        ]
-        
+    };
+    let items = [
+        { value: '', label: 'All of Texas' },
+        {
+            value: 'region',
+            label: 'Planning Region',
+            placeholder_override: 'Region'
+        },
+        { value: 'county', label: 'County' },
+        { value: 'entity', label: 'Water User Group' },
+        { value: 'usagetype', label: 'Usage Type' },
+        { value: 'source', label: 'Water Source' },
+        { value: 'project', label: 'WMS Project' },
+        { value: 'wms', label: 'Water Management Strategy' },
+        { value: 'wmstype', label: 'WMS Type' }
+    ];
+
     let tmap;
 </script>
 
@@ -145,36 +175,71 @@
     <div class="wrapper" id="wrapper">
         <form>
             <label for="navcat">View data for</label>
-            <div class="select-container" aria-label="Category Selector for Navigation" id="navcat_container">
-                <Select {items} clearable={false} on:change={reset} value={chosen ? chosen : "All of Texas"} showChevron />
+            <div
+                class="select-container"
+                aria-label="Category Selector for Navigation"
+                id="navcat_container">
+                <Select
+                    {items}
+                    clearable={false}
+                    on:change={reset}
+                    value={chosen ? chosen : 'All of Texas'}
+                    showChevron />
             </div>
 
             {#await setupChoices() then}
-            {#if chosen && chosen !== "" && chosen !== "statewide"}
-
-                {#if chosen == "region" || chosen == "county" || chosen == "usagetype" || chosen == "source" || chosen == "wmstype"}
-                <div class="select-container" style="width:300px;">
-                    <Select items={categories[chosen]} clearable={false} on:change={box2Change} placeholder="Select {titles[chosen]}" showChevron />
-                </div>
-                {:else}
-                <div class="select-container">
-                    <input  style="padding: 8px;" type="text" id="secondary-category-select" autocomplete="off" on:keyup={myFunction} placeholder="Start typing to find {titles[chosen]}">
-                    <ul id="secondList" class="nav-category-select">
-                        {#each categories?.[chosen] as r}
-                            <li style="display:none;" >
-                                <a on:click={clicker} id={r.label} class="listItem">{cap(r.value)}</a>
-                            </li>
-                        {/each}
-                    </ul>
-                </div>
+                {#if chosen && chosen !== '' && chosen !== 'statewide'}
+                    {#if chosen == 'region' || chosen == 'county' || chosen == 'usagetype' || chosen == 'source' || chosen == 'wmstype'}
+                        <div class="select-container" style="width:300px;">
+                            <Select
+                                items={categories[chosen]}
+                                clearable={false}
+                                on:change={box2Change}
+                                placeholder="Select {titles[chosen]}"
+                                showChevron />
+                        </div>
+                    {:else}
+                        <div class="select-container">
+                            <input
+                                style="padding: 8px;"
+                                type="text"
+                                id="secondary-category-select"
+                                autocomplete="off"
+                                on:keyup={myFunction}
+                                placeholder="Start typing to find {titles[
+                                    chosen
+                                ]}" />
+                            <ul id="secondList" class="nav-category-select">
+                                {#each categories?.[chosen] as r}
+                                    <li style="display:none;">
+                                        <a
+                                            on:click={clicker}
+                                            id={r.label}
+                                            class="listItem">{cap(r.value)}</a>
+                                    </li>
+                                {/each}
+                            </ul>
+                        </div>
+                    {/if}
                 {/if}
-            {/if}
-
             {:catch error}
-            <span>Error loading nav {error}</span>
+                <span>Error loading nav {error}</span>
             {/await}
             <form action={region} id="submit-button">
-                <input type="submit" class="button button-nav-submit" disabled={chosen == "" ? false :  !(chosen && chosen.length && chosen2 && chosen2 !== undefined /* 0 is fine so check explicitly for undefined */)} value="Go" />
+                <input
+                    type="submit"
+                    class="button button-nav-submit"
+                    disabled={chosen == ''
+                        ? false
+                        : !(
+                              (
+                                  chosen &&
+                                  chosen.length &&
+                                  chosen2 &&
+                                  chosen2 !== undefined
+                              ) /* 0 is fine so check explicitly for undefined */
+                          )}
+                    value="Go" />
             </form>
         </form>
     </div>
@@ -189,18 +254,17 @@
     }
 
     #navcat_container {
-        width:200px;
+        width: 200px;
     }
 
     #submit-button {
         display: inline;
-    
     }
 
     .button-nav-submit {
         height: 42px;
         background-color: white;
-        font-size:revert;
+        font-size: revert;
     }
 
     #secondary-category-select {
@@ -211,7 +275,7 @@
     }
 
     .header-nav {
-        z-index:7000;
+        z-index: 7000;
     }
 
     .listItem {
@@ -231,9 +295,9 @@
         -o-border-radius: 4px;
         border-radius: 4px;
 
-        -webkit-appearance:none;
-        -moz-appearance:none;
-        appearance:none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
     }
 
     #secondList {
@@ -242,20 +306,20 @@
         margin: 0;
         position: absolute;
         width: 380px;
-        max-height:400px;
+        max-height: 400px;
         overflow-y: scroll;
         overflow-x: hidden;
     }
-    
+
     #secondList li {
         width: 100%;
         margin: 0;
     }
-    
+
     #secondList li a {
         padding-top: 8px;
         padding-bottom: 8px;
-        border: none; 
+        border: none;
         width: 100%;
         background-color: white;
         text-decoration: none;
@@ -264,7 +328,7 @@
     }
 
     :global(.mdc-select__anchor) {
-        color: green !important;      
+        color: green !important;
     }
 
     :global(.nav-option) {
@@ -272,6 +336,6 @@
     }
 
     #wrapper {
-        padding-top:5px;
+        padding-top: 5px;
     }
 </style>

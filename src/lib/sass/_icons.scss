@@ -1,8 +1,8 @@
 @each $type in $usageTypes {
-  $name: nth($type, 1);
-  $color: nth($type, 2);
+    $name: nth($type, 1);
+    $color: nth($type, 2);
 
-  .icon-#{$name} {
-    fill: $color;
-  }
+    .icon-#{$name} {
+        fill: $color;
+    }
 }

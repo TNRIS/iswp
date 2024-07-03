@@ -5,9 +5,8 @@ export class QuerySetting {
      * @param { string } [whereClause]
      */
     constructor(type, filter, whereClause) {
-        this.type = type,
-        this.filter = filter
-        this.whereClause = whereClause
+        (this.type = type), (this.filter = filter);
+        this.whereClause = whereClause;
     }
 
     getType() {

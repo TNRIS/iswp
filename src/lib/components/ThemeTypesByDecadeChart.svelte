@@ -1,59 +1,58 @@
 <script>
     // @ts-nocheck
-    import LineChart from "$lib/components/Charts/LineChart.svelte";
-    import IconSpread from "$lib/components/IconSpread.svelte";
-    import { onMount } from "svelte";
-    import ThemeSelector from "$lib/components/ThemeSelector.svelte";
-    import ChartDataTable from "$lib/components/ChartDataTable.svelte";
-    import ctAxisTitle from "chartist-plugin-axistitle";
+    import LineChart from '$lib/components/Charts/LineChart.svelte';
+    import IconSpread from '$lib/components/IconSpread.svelte';
+    import { onMount } from 'svelte';
+    import ThemeSelector from '$lib/components/ThemeSelector.svelte';
+    import ChartDataTable from '$lib/components/ChartDataTable.svelte';
+    import ctAxisTitle from 'chartist-plugin-axistitle';
 
-    import { commafy } from "$lib/helper.js";
+    import { commafy } from '$lib/helper.js';
     const { chartTitle, lrp, constants, title } = $$props;
     let decades = constants.getDecades();
     let titleMap = {
-        irrigation: "Irrigation",
-        livestock: "Livestock",
-        manufacturing: "Manufacturing",
-        "steam-electric-power": "Steam Electric Power",
-        mining: "Mining",
-        municipal: "Municipal"
-    }
+        irrigation: 'Irrigation',
+        livestock: 'Livestock',
+        manufacturing: 'Manufacturing',
+        'steam-electric-power': 'Steam Electric Power',
+        mining: 'Mining',
+        municipal: 'Municipal'
+    };
     const chartOptions = {
-        height: "240px",
+        height: '240px',
         lineSmooth: false,
         axisY: {
             low: 0,
-            labelInterpolationFnc: function(value) {
+            labelInterpolationFnc: function (value) {
                 return commafy(value + '');
             }
         },
         chartPadding: {
             left: 40,
-            right: 40,
+            right: 40
         },
         fullWidth: true,
         plugins: [
             ctAxisTitle({
-            axisY: {
-                axisTitle: 'acre-feet/year',
-                axisClass: 'ct-axis-title',
-                offset: {
-                    x: 0,
-                    y: 0
-                },
-                textAnchor: 'middle',
-                flipTitle: false
-            }
+                axisY: {
+                    axisTitle: 'acre-feet/year',
+                    axisClass: 'ct-axis-title',
+                    offset: {
+                        x: 0,
+                        y: 0
+                    },
+                    textAnchor: 'middle',
+                    flipTitle: false
+                }
             })
         ]
-
     };
 
     let titles = constants.getThemeTitles();
 
     let usage_types = constants.getUsageTypes();
 
-    let selectedTheme = "demands";
+    let selectedTheme = 'demands';
     let demands_visible = true;
     let supplies_visible = false;
     let needs_visible = false;
@@ -61,25 +60,25 @@
     let show = (event) => {
         selectedTheme = event.target.value;
         switch (event.target.value) {
-            case "demands":
+            case 'demands':
                 supplies_visible = false;
                 needs_visible = false;
                 strategies_visible = false;
                 demands_visible = true;
                 break;
-            case "supplies":
+            case 'supplies':
                 demands_visible = false;
                 needs_visible = false;
                 strategies_visible = false;
                 supplies_visible = true;
                 break;
-            case "needs":
+            case 'needs':
                 demands_visible = false;
                 supplies_visible = false;
                 strategies_visible = false;
                 needs_visible = true;
                 break;
-            case "strategies":
+            case 'strategies':
                 demands_visible = false;
                 supplies_visible = false;
                 needs_visible = false;
@@ -99,7 +98,7 @@
             className: `series-${name}`,
             data: series,
             meta: name,
-            name: name,
+            name: name
         };
     };
 
@@ -116,42 +115,42 @@
                         // Our series array that contains series objects or in this case series data arrays
                         series: [
                             makeSeries(
-                                "demands",
-                                "mining",
+                                'demands',
+                                'mining',
                                 usage_types[5],
                                 swdata
                             ),
                             makeSeries(
-                                "demands",
-                                "livestock",
+                                'demands',
+                                'livestock',
                                 usage_types[4],
                                 swdata
                             ),
                             makeSeries(
-                                "demands",
-                                "steam-electric-power",
+                                'demands',
+                                'steam-electric-power',
                                 usage_types[3],
                                 swdata
                             ),
                             makeSeries(
-                                "demands",
-                                "manufacturing",
+                                'demands',
+                                'manufacturing',
                                 usage_types[2],
                                 swdata
                             ),
                             makeSeries(
-                                "demands",
-                                "municipal",
+                                'demands',
+                                'municipal',
                                 usage_types[1],
                                 swdata
                             ),
                             makeSeries(
-                                "demands",
-                                "irrigation",
+                                'demands',
+                                'irrigation',
                                 usage_types[0],
                                 swdata
                             )
-                        ],
+                        ]
                     };
 
                     data.needs = {
@@ -160,42 +159,42 @@
                         // Our series array that contains series objects or in this case series data arrays
                         series: [
                             makeSeries(
-                                "needs",
-                                "irrigation",
+                                'needs',
+                                'irrigation',
                                 usage_types[0],
                                 swdata
                             ),
                             makeSeries(
-                                "needs",
-                                "livestock",
+                                'needs',
+                                'livestock',
                                 usage_types[4],
                                 swdata
                             ),
                             makeSeries(
-                                "needs",
-                                "manufacturing",
+                                'needs',
+                                'manufacturing',
                                 usage_types[2],
                                 swdata
                             ),
                             makeSeries(
-                                "needs",
-                                "steam-electric-power",
+                                'needs',
+                                'steam-electric-power',
                                 usage_types[3],
                                 swdata
                             ),
                             makeSeries(
-                                "needs",
-                                "mining",
+                                'needs',
+                                'mining',
                                 usage_types[5],
                                 swdata
                             ),
                             makeSeries(
-                                "needs",
-                                "municipal",
+                                'needs',
+                                'municipal',
                                 usage_types[1],
                                 swdata
-                            ),
-                        ],
+                            )
+                        ]
                     };
 
                     data.population = {
@@ -204,42 +203,42 @@
                         // Our series array that contains series objects or in this case series data arrays
                         series: [
                             makeSeries(
-                                "population",
-                                "irrigation",
+                                'population',
+                                'irrigation',
                                 usage_types[0],
                                 swdata
                             ),
                             makeSeries(
-                                "population",
-                                "livestock",
+                                'population',
+                                'livestock',
                                 usage_types[4],
                                 swdata
                             ),
                             makeSeries(
-                                "population",
-                                "manufacturing",
+                                'population',
+                                'manufacturing',
                                 usage_types[2],
                                 swdata
                             ),
                             makeSeries(
-                                "population",
-                                "steam-electric-power",
+                                'population',
+                                'steam-electric-power',
                                 usage_types[3],
                                 swdata
                             ),
                             makeSeries(
-                                "population",
-                                "mining",
+                                'population',
+                                'mining',
                                 usage_types[5],
                                 swdata
                             ),
                             makeSeries(
-                                "population",
-                                "municipal",
+                                'population',
+                                'municipal',
                                 usage_types[1],
                                 swdata
-                            ),
-                        ],
+                            )
+                        ]
                     };
 
                     data.strategies = {
@@ -248,42 +247,42 @@
                         // Our series array that contains series objects or in this case series data arrays
                         series: [
                             makeSeries(
-                                "strategies",
-                                "irrigation",
+                                'strategies',
+                                'irrigation',
                                 usage_types[0],
                                 swdata
                             ),
                             makeSeries(
-                                "strategies",
-                                "livestock",
+                                'strategies',
+                                'livestock',
                                 usage_types[4],
                                 swdata
                             ),
                             makeSeries(
-                                "strategies",
-                                "manufacturing",
+                                'strategies',
+                                'manufacturing',
                                 usage_types[2],
                                 swdata
                             ),
                             makeSeries(
-                                "strategies",
-                                "steam-electric-power",
+                                'strategies',
+                                'steam-electric-power',
                                 usage_types[3],
                                 swdata
                             ),
                             makeSeries(
-                                "strategies",
-                                "mining",
+                                'strategies',
+                                'mining',
                                 usage_types[5],
                                 swdata
                             ),
                             makeSeries(
-                                "strategies",
-                                "municipal",
+                                'strategies',
+                                'municipal',
                                 usage_types[1],
                                 swdata
-                            ),
-                        ],
+                            )
+                        ]
                     };
 
                     data.supplies = {
@@ -292,42 +291,42 @@
                         // Our series array that contains series objects or in this case series data arrays
                         series: [
                             makeSeries(
-                                "supplies",
-                                "irrigation",
+                                'supplies',
+                                'irrigation',
                                 usage_types[0],
                                 swdata
                             ),
                             makeSeries(
-                                "supplies",
-                                "livestock",
+                                'supplies',
+                                'livestock',
                                 usage_types[4],
                                 swdata
                             ),
                             makeSeries(
-                                "supplies",
-                                "manufacturing",
+                                'supplies',
+                                'manufacturing',
                                 usage_types[2],
                                 swdata
                             ),
                             makeSeries(
-                                "supplies",
-                                "steam-electric-power",
+                                'supplies',
+                                'steam-electric-power',
                                 usage_types[3],
                                 swdata
                             ),
                             makeSeries(
-                                "supplies",
-                                "mining",
+                                'supplies',
+                                'mining',
                                 usage_types[5],
                                 swdata
                             ),
                             makeSeries(
-                                "supplies",
-                                "municipal",
+                                'supplies',
+                                'municipal',
                                 usage_types[1],
                                 swdata
-                            ),
-                        ],
+                            )
+                        ]
                     };
 
                     resolve(data);
@@ -344,7 +343,7 @@
         <div class="chart-header">
             <div class="row">
                 {#if title}
-                <span class="view-name">{title}</span>
+                    <span class="view-name">{title}</span>
                 {/if}
                 <h4>
                     {titles[selectedTheme]} by Usage Type
@@ -354,7 +353,10 @@
                 <!--<UsageTypeChartLegend className="u-pull-right legend-types-by-decade" />-->
                 <IconSpread />
             </div>
-            <ThemeSelector {show} showPopulation={false} bind:select_theme={selectedTheme} />
+            <ThemeSelector
+                {show}
+                showPopulation={false}
+                bind:select_theme={selectedTheme} />
         </div>
 
         {#await getData()}
@@ -364,69 +366,63 @@
                 <LineChart
                     data={data.demands}
                     chartTitle={`${chartTitle}-demands`}
-                    options={chartOptions}
-                />
+                    options={chartOptions} />
                 <div class="toggle-container">
-                <ChartDataTable
-                header={decades}
-                body={data.demands.series}
-                titles={true}
-                showHide={true}
-                {titleMap} 
-                showTotal={true} />
+                    <ChartDataTable
+                        header={decades}
+                        body={data.demands.series}
+                        titles={true}
+                        showHide={true}
+                        {titleMap}
+                        showTotal={true} />
                 </div>
             {/if}
             {#if supplies_visible}
                 <LineChart
                     data={data.supplies}
                     chartTitle={`${chartTitle}-supplies`}
-                    options={chartOptions}
-                />
+                    options={chartOptions} />
 
                 <div class="toggle-container">
                     <ChartDataTable
-                    header={decades}
-                    body={data.supplies.series}
-                    titles={true}
-                    showHide={true}
-                    {titleMap} 
-                    showTotal={true}  />
+                        header={decades}
+                        body={data.supplies.series}
+                        titles={true}
+                        showHide={true}
+                        {titleMap}
+                        showTotal={true} />
                 </div>
             {/if}
             {#if needs_visible}
                 <LineChart
                     data={data.needs}
                     chartTitle={`${chartTitle}-needs`}
-                    options={chartOptions}
-                />
-
+                    options={chartOptions} />
 
                 <div class="toggle-container">
                     <ChartDataTable
-                    header={decades}
-                    body={data.needs.series}
-                    titles={true}
-                    showHide={true}
-                    {titleMap} 
-                    showTotal={true}  />
+                        header={decades}
+                        body={data.needs.series}
+                        titles={true}
+                        showHide={true}
+                        {titleMap}
+                        showTotal={true} />
                 </div>
             {/if}
             {#if strategies_visible}
                 <LineChart
                     data={data.strategies}
                     chartTitle={`${chartTitle}-strategies`}
-                    options={chartOptions}
-                />
+                    options={chartOptions} />
 
-    
                 <div class="toggle-container">
                     <ChartDataTable
-                    header={decades}
-                    body={data.strategies.series}
-                    titles={true}
-                    showHide={true}
-                    {titleMap} 
-                    showTotal={true}  />
+                        header={decades}
+                        body={data.strategies.series}
+                        titles={true}
+                        showHide={true}
+                        {titleMap}
+                        showTotal={true} />
                 </div>
             {/if}
         {:catch error}

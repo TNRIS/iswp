@@ -1,122 +1,124 @@
-
 $nav-color: lighten($twdb-blue, 10%);
 
 .nav-container {
-  position: absolute;
-  right: 0;
-  bottom: 0;
+    position: absolute;
+    right: 0;
+    bottom: 0;
 
-  @media (max-width: 960px) {
-    position: relative;
-    text-align: right;
-  }
-
-  button, .button {
-    color: white;
-    margin: 0 0 -1px -1px;
-    border-radius: 0;
-    border-color: white;
-    display: inline-block;
-
-    &.active {
-      background-color: $nav-color;
+    @media (max-width: 960px) {
+        position: relative;
+        text-align: right;
     }
 
-    &:focus, &:hover {
-      border-bottom: 1px solid white;
-      background-color: $nav-color;
-      text-decoration: none;
-    }
+    button,
+    .button {
+        color: white;
+        margin: 0 0 -1px -1px;
+        border-radius: 0;
+        border-color: white;
+        display: inline-block;
 
-    &:first-child {
-      margin-left: 0;
-    }
+        &.active {
+            background-color: $nav-color;
+        }
 
-    &.button-home {
-      padding: 0 12px;
+        &:focus,
+        &:hover {
+            border-bottom: 1px solid white;
+            background-color: $nav-color;
+            text-decoration: none;
+        }
 
-      > svg {
-        fill: white;
-        height: 18px;
-        width: 20px;
-        margin-bottom: 4px;
-        vertical-align: middle;
-      }
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &.button-home {
+            padding: 0 12px;
+
+            > svg {
+                fill: white;
+                height: 18px;
+                width: 20px;
+                margin-bottom: 4px;
+                vertical-align: middle;
+            }
+        }
     }
-  }
 }
 
 .header-nav {
-  background-color: $nav-color;
-  padding: 4px 0;
-  border-bottom: 1px solid white;
+    background-color: $nav-color;
+    padding: 4px 0;
+    border-bottom: 1px solid white;
 
-  form {
-    margin: 0;
-  }
-
-  label {
-    display: block;
-    color: white;
-
-    @media(min-width: $media-s) {
-      display: inline-block;
-    }
-  }
-
-  button {
-    margin-left: 0;
-    margin-bottom: 0;
-    margin-top: 0.5rem;
-
-    @media(min-width: $media-s) {
-      margin-left: 1rem;
-      margin-top: 0;
-    }
-  }
-
-  .select-container {
-    display: block;
-    vertical-align: middle;
-    margin-top: 0.5rem;
-
-    @media(min-width: $media-s) {
-      display: inline-block;
-      margin-left: 1rem;
-      margin-top: 0;
+    form {
+        margin: 0;
     }
 
-    &.category-select {
-      width: 200px;
+    label {
+        display: block;
+        color: white;
+
+        @media (min-width: $media-s) {
+            display: inline-block;
+        }
     }
 
-    &.entity-select {
-      width: 320px;
+    button {
+        margin-left: 0;
+        margin-bottom: 0;
+        margin-top: 0.5rem;
+
+        @media (min-width: $media-s) {
+            margin-left: 1rem;
+            margin-top: 0;
+        }
     }
 
-    .Select-control {
-      border-radius: 0;
-    }
+    .select-container {
+        display: block;
+        vertical-align: middle;
+        margin-top: 0.5rem;
 
-    .Select-placeholder {
-      margin-right: 30px;
-    }
+        @media (min-width: $media-s) {
+            display: inline-block;
+            margin-left: 1rem;
+            margin-top: 0;
+        }
 
-    .Select-menu-outer {
-      z-index: 10000;
+        &.category-select {
+            width: 200px;
+        }
+
+        &.entity-select {
+            width: 320px;
+        }
+
+        .Select-control {
+            border-radius: 0;
+        }
+
+        .Select-placeholder {
+            margin-right: 30px;
+        }
+
+        .Select-menu-outer {
+            z-index: 10000;
+        }
     }
-  }
 }
 
 .button-nav-submit {
-  background: #fff;
+    background: #fff;
 
-  &:focus {
-    border: 1px solid #33C3F0;
-  }
+    &:focus {
+        border: 1px solid #33c3f0;
+    }
 }
 
-#nav-category-select, #secondary-category-select {
-  display: inline-block;
-  margin-bottom: 0;
+#nav-category-select,
+#secondary-category-select {
+    display: inline-block;
+    margin-bottom: 0;
 }

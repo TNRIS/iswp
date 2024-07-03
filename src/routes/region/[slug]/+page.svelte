@@ -1,40 +1,35 @@
 <script>
     //@ts-nocheck
-    import PopulationChart from "$lib/components/Charts/PopulationChart.svelte";
-    import DataUsageType from "$lib/components/DataUsageType.svelte";
-    import ProjectTable from "$lib/components/ProjectTable/ProjectTable.svelte";
-    import ThemeTypesByDecadeChart from "$lib/components/ThemeTypesByDecadeChart.svelte";
-    import ThemeTotalsByDecadeChart from "$lib/components/ThemeTotalsByDecadeChart.svelte";
-    import DataViewChoiceWrapInd from "$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte";
-    import { load_indexeddb, getConstants, is_idb_loaded } from "$lib/helper.js";
-    import Statewide from "$lib/db/statewide.js";
-    import Counties from "$lib/db/counties.js"
+    import PopulationChart from '$lib/components/Charts/PopulationChart.svelte';
+    import DataUsageType from '$lib/components/DataUsageType.svelte';
+    import ProjectTable from '$lib/components/ProjectTable/ProjectTable.svelte';
+    import ThemeTypesByDecadeChart from '$lib/components/ThemeTypesByDecadeChart.svelte';
+    import ThemeTotalsByDecadeChart from '$lib/components/ThemeTotalsByDecadeChart.svelte';
+    import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
+    import {
+        load_indexeddb,
+        getConstants,
+        is_idb_loaded
+    } from '$lib/helper.js';
+    import Statewide from '$lib/db/statewide.js';
+    import Counties from '$lib/db/counties.js';
 
-    import { QuerySettings } from "$lib/QuerySettings.js"
+    import { QuerySettings } from '$lib/QuerySettings.js';
     export let data;
-    import { setContext } from "svelte";
-    import { writable } from "svelte/store";
-    import Header from "$lib/components/Header.svelte";
+    import { setContext } from 'svelte';
+    import { writable } from 'svelte/store';
+    import Header from '$lib/components/Header.svelte';
     import { page } from '$app/stores';
 
-    const tagline = 'Regional Water Planning Area in <a href="/">Texas</a>'
-    let stratAd = [
-        "Strategy",
-        "WMS Type",
-        "Source",
-        "County",
-        "Entity"
-    ];
+    const tagline = 'Regional Water Planning Area in <a href="/">Texas</a>';
+    let stratAd = ['Strategy', 'WMS Type', 'Source', 'County', 'Entity'];
 
-    let activeDem = [
-        "County",
-        "Entity"
-    ];
+    let activeDem = ['County', 'Entity'];
 
-    let constants = getConstants($page.url.host)
-    let regionSetting = new QuerySettings("region", "WugRegion");
+    let constants = getConstants($page.url.host);
+    let regionSetting = new QuerySettings('region', 'WugRegion');
     regionSetting.setAll(data.slug);
-    regionSetting.setProjects(data.slug, "WmsProjectSponsorRegion")
+    regionSetting.setProjects(data.slug, 'WmsProjectSponsorRegion');
     let db = load_indexeddb();
     let loadForRegion = async () => {
         db = await db;
@@ -43,57 +38,93 @@
         let start = Date.now();
         let sw = new Statewide(db);
         let cc = new Counties(db);
-        let [ccounties, dat] = await Promise.all([cc.get(data.slug), sw.get(regionSetting)]) ;
+        let [ccounties, dat] = await Promise.all([
+            cc.get(data.slug),
+            sw.get(regionSetting)
+        ]);
         //let ccounties = await cc.get(data.slug);
         //let dat =  await sw.get(regionSetting);
 
         dat.counties = ccounties;
         console.log(`loadForRegion time in ms: ${Date.now() - start}`);
         return dat;
-    }
+    };
 
-    setContext("dataviewContext", {
+    setContext('dataviewContext', {
         getData: writable()
     });
     let entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`;
-    if($page.url.host.includes("2022"))
-        entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`
+    if ($page.url.host.includes('2022'))
+        entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`;
 
     let loadForRegionPromise = loadForRegion();
-
 </script>
+
 <Header {constants} {db} />
 <svelte:head>
     <title>Region</title>
 </svelte:head>
 <div class="statewide-view">
     <section>
-
-        <PopulationChart title={`Planning Region ${data.slug}`} lrp={loadForRegionPromise} {constants} {tagline} />
+        <PopulationChart
+            title={`Planning Region ${data.slug}`}
+            lrp={loadForRegionPromise}
+            {constants}
+            {tagline} />
         <div class="container">
             <div class="row panel-row">
                 <div class="twelve columns">
                     <div>
                         {#if constants.regionalLink}
-                        <!-- 2016 description. -->
-                        <p>{constants.regionalDescription[data.slug]} <a href={`http://www.twdb.texas.gov/waterplanning/rwp/plans/2016/#region-${data.slug.toLowerCase()}`}>
-                                http://www.twdb.texas.gov/waterplanning/rwp/plans/2016/#region-{data.slug.toLowerCase()}
-                            </a>. {constants.regionalLink[data.slug]}<a href={`http://www.twdb.texas.gov/waterplanning/swp/2017/doc/2016_RegionalSummary_${data.slug}.pdf`}>
-                                http://www.twdb.texas.gov/waterplanning/swp/2017/doc/2016_RegionalSummary_{data.slug}.pdf
-                            </a>.
-                        </p>
+                            <!-- 2016 description. -->
+                            <p
+                                >{constants.regionalDescription[data.slug]}
+                                <a
+                                    href={`http://www.twdb.texas.gov/waterplanning/rwp/plans/2016/#region-${data.slug.toLowerCase()}`}>
+                                    http://www.twdb.texas.gov/waterplanning/rwp/plans/2016/#region-{data.slug.toLowerCase()}
+                                </a>. {constants.regionalLink[data.slug]}<a
+                                    href={`http://www.twdb.texas.gov/waterplanning/swp/2017/doc/2016_RegionalSummary_${data.slug}.pdf`}>
+                                    http://www.twdb.texas.gov/waterplanning/swp/2017/doc/2016_RegionalSummary_{data.slug}.pdf
+                                </a>.
+                            </p>
                         {:else}
-                        <!-- 2022 description. -->
-                        <p>{constants.regionalDescription[data.slug]} {@html constants.region_footer}</p>
+                            <!-- 2022 description. -->
+                            <p
+                                >{constants.regionalDescription[data.slug]}
+                                {@html constants.region_footer}</p>
                         {/if}
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
-        <ThemeTotalsByDecadeChart lrp={loadForRegionPromise} {constants} title={`Planning Region ${data.slug}`} />
-        <ThemeTypesByDecadeChart chartTitle={"ct-usage-chart"} lrp={loadForRegionPromise} {constants} title={`Planning Region ${data.slug}`} />
-        <DataUsageType title={`Planning Region ${data.slug}`} lrp={loadForRegionPromise} {constants} />
-        <ProjectTable project_title={`PLANNING REGION ${data.slug}`} project_title2={"Projects "} lrp={loadForRegionPromise} type={"region"} />
-        <DataViewChoiceWrapInd title={`Planning Region ${data.slug}`} showPopulation={true} type={"region"} {stratAd} {activeDem} {constants} csvTitle={`Planning Region ${data.slug}`} lrp={loadForRegionPromise} fileName={`region_${data.slug.toLowerCase()}`} {entityMapBlurb} />
+        <ThemeTotalsByDecadeChart
+            lrp={loadForRegionPromise}
+            {constants}
+            title={`Planning Region ${data.slug}`} />
+        <ThemeTypesByDecadeChart
+            chartTitle={'ct-usage-chart'}
+            lrp={loadForRegionPromise}
+            {constants}
+            title={`Planning Region ${data.slug}`} />
+        <DataUsageType
+            title={`Planning Region ${data.slug}`}
+            lrp={loadForRegionPromise}
+            {constants} />
+        <ProjectTable
+            project_title={`PLANNING REGION ${data.slug}`}
+            project_title2={'Projects '}
+            lrp={loadForRegionPromise}
+            type={'region'} />
+        <DataViewChoiceWrapInd
+            title={`Planning Region ${data.slug}`}
+            showPopulation={true}
+            type={'region'}
+            {stratAd}
+            {activeDem}
+            {constants}
+            csvTitle={`Planning Region ${data.slug}`}
+            lrp={loadForRegionPromise}
+            fileName={`region_${data.slug.toLowerCase()}`}
+            {entityMapBlurb} />
     </section>
 </div>

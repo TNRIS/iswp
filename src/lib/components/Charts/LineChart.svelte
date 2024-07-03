@@ -1,9 +1,9 @@
 <script>
     //@ts-nocheck
     const { data, chartTitle, options } = $$props;
-    import { onMount } from "svelte";
-    import { hoverHelper, clearInteraction } from "$lib/actions/HoverAction";
-    import "chartist/dist/index.css"
+    import { onMount } from 'svelte';
+    import { hoverHelper, clearInteraction } from '$lib/actions/HoverAction';
+    import 'chartist/dist/index.css';
     import { LineChart } from 'chartist';
 
     let buildChart = () => {
@@ -35,7 +35,6 @@
         on:focus
         on:mouseleave={onLeave}
         on:mouseout={onLeave}
-        on:blur
-    />
+        on:blur />
     <div id={`${chartTitle}-tooltip`} />
 </div>

@@ -1,28 +1,28 @@
 <script>
-    import BarChart from "$lib/components/Charts/BarChart.svelte";
+    import BarChart from '$lib/components/Charts/BarChart.svelte';
     const { lrp, wugRegionFilter, constants, title } = $$props;
-    import ChartDataTable from "$lib/components/ChartDataTable.svelte";
-    import { commafy } from "$lib/helper.js";
-    import ColorCodeSpread from "$lib/components/ColorCodeIcons/ColorCodeSpread.svelte";
+    import ChartDataTable from '$lib/components/ChartDataTable.svelte';
+    import { commafy } from '$lib/helper.js';
+    import ColorCodeSpread from '$lib/components/ColorCodeIcons/ColorCodeSpread.svelte';
     const chartOptions = {
-        height: "200px",
+        height: '200px',
         lineSmooth: false,
         axisY: {
             low: 0,
             labelInterpolationFnc: function (value) {
-                return commafy(value + "");
-            },
+                return commafy(value + '');
+            }
         },
         chartPadding: {
             left: 40,
-            right: 40,
+            right: 40
         },
-        fullWidth: true,
+        fullWidth: true
     };
 
     let dfunc = (dat, id) => {
-        if(!dat[id].rows) {
-            return [0,0,0,0,0];
+        if (!dat[id].rows) {
+            return [0, 0, 0, 0, 0];
         }
         let d = constants.getDecades();
         let data = [];
@@ -39,33 +39,33 @@
                 const titles = constants.getThemeTitles();
                 const data2 = [
                     {
-                        name: titles["demands"],
-                        meta: "demands",
+                        name: titles['demands'],
+                        meta: 'demands',
                         className: `series-demands`,
-                        data: dfunc(swdata, "demands"),
+                        data: dfunc(swdata, 'demands')
                     },
                     {
-                        name: titles["supplies"],
-                        meta: "supplies",
+                        name: titles['supplies'],
+                        meta: 'supplies',
                         className: `series-supplies`,
-                        data: dfunc(swdata, "supplies"),
+                        data: dfunc(swdata, 'supplies')
                     },
                     {
-                        name: titles["needs"],
-                        meta: "needs",
+                        name: titles['needs'],
+                        meta: 'needs',
                         className: `series-needs`,
-                        data: dfunc(swdata, "needs"),
+                        data: dfunc(swdata, 'needs')
                     },
                     {
-                        name: titles["strategies"],
-                        meta: "strategies",
+                        name: titles['strategies'],
+                        meta: 'strategies',
                         className: `series-strategies`,
-                        data: dfunc(swdata, "strategies"),
-                    },
+                        data: dfunc(swdata, 'strategies')
+                    }
                 ];
 
                 resolve({
-                    TBD: data2,
+                    TBD: data2
                 });
             } catch (err) {
                 reject(err);
@@ -88,7 +88,7 @@
                                     return a[theme].typeTotals[type][year];
                                 }
                                 return 0;
-                            }),
+                            })
                         };
                     });
                 });
@@ -102,12 +102,11 @@
 
 <div class="summary-wrapper container">
     <div style="pointer-events:auto;" class="row panel-row">
-            <div class="twelve columns">
-                {#if title}
+        <div class="twelve columns">
+            {#if title}
                 <span class="view-name">{title}</span>
-                {/if}
-                <div>
-
+            {/if}
+            <div>
                 <div class="chart-header">
                     <h4>
                         Totals by Decade
@@ -116,21 +115,25 @@
                     <ColorCodeSpread />
                 </div>
 
-                    {#await getData()}
-                        <div class="loader"></div>
-                    {:then data}
-                        <BarChart iterator={"tbd"} {data} group_name={"TBD"} chartTitle={"theme-totals-by-decade"} {constants} />
-                        <ChartDataTable
-                            header={constants.getDecades()}
-                            body={data["TBD"]}
-                            titles={true}
-                            showHide={false}
-                        />
-                    {:catch error}
-                        <span>
-                            There is an error getting totals by decade. {error.message}
-                        </span>
-                    {/await}
+                {#await getData()}
+                    <div class="loader"></div>
+                {:then data}
+                    <BarChart
+                        iterator={'tbd'}
+                        {data}
+                        group_name={'TBD'}
+                        chartTitle={'theme-totals-by-decade'}
+                        {constants} />
+                    <ChartDataTable
+                        header={constants.getDecades()}
+                        body={data['TBD']}
+                        titles={true}
+                        showHide={false} />
+                {:catch error}
+                    <span>
+                        There is an error getting totals by decade. {error.message}
+                    </span>
+                {/await}
             </div>
         </div>
     </div>

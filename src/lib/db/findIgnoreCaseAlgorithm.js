@@ -1,5 +1,3 @@
-
-
 export function findIgnoreCaseAlgorithm(needle, index, onfound, onfinish) {
     // needle: The string to search for
     // onfound: A function to call for each found item
@@ -11,15 +9,15 @@ export function findIgnoreCaseAlgorithm(needle, index, onfound, onfinish) {
 
     cursorReq.onsuccess = function (event) {
         var cursor = event.target.result;
-        if(!cursor || !cursor?.continue) {
+        if (!cursor || !cursor?.continue) {
             onfinish();
         }
 
-        if(cursor?.key?.toLowerCase() == needle?.toLowerCase()) {
+        if (cursor?.key?.toLowerCase() == needle?.toLowerCase()) {
             cursor.continue();
             onfound(cursor.value);
         } else {
             cursor.continue();
         }
-    }
+    };
 }

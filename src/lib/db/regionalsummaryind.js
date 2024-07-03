@@ -12,18 +12,17 @@
  * @property {Number} TOTAL User group total (Context determined by parent)
  */
 
-
-import { Constant2017 } from "$lib/Constant2017.js";
-import { Constant2022 } from "$lib/Constant2022.js";
-import { Constant2027 } from "$lib/Constant2027.js";
+import { Constant2017 } from '$lib/Constant2017.js';
+import { Constant2022 } from '$lib/Constant2022.js';
+import { Constant2027 } from '$lib/Constant2027.js';
 export default class RegionalSummaryInd {
     host = window.location.hostname;
     constructor(wkey, where, db) {
         this.wkey = wkey;
         this.where = where;
         this.db = db;
-    
-        if(this.host.includes(2027)) {
+
+        if (this.host.includes(2027)) {
             this.constants = new Constant2027();
         } else if (this.host.includes(year == 2022)) {
             this.constants = new Constant2022();
@@ -38,11 +37,9 @@ export default class RegionalSummaryInd {
             needs: `${this.constants.tappend}WugNeeds`,
             supplies: `${this.constants.tappend}ExistingWugSupply`,
             population: `${this.constants.tappend}WugPopulation`,
-            strategies: `${this.constants.tappend}WMSWugSupply`,
+            strategies: `${this.constants.tappend}WMSWugSupply`
         };
-    
     }
-
 
     #getAllTransaction = (key) => {
         return new Promise(async (resolve, reject) => {
@@ -68,8 +65,7 @@ export default class RegionalSummaryInd {
             r[a.DECADE] = r[a.DECADE] || [];
             r[a.DECADE].push(a);
             return r;
-        },
-        Object.create(null));
+        }, Object.create(null));
     };
     get = async () => {
         let demands_observable = this.#getAllTransaction(
@@ -94,7 +90,7 @@ export default class RegionalSummaryInd {
                 needs_observable,
                 supplies_observable,
                 population_observable,
-                strategies_observable,
+                strategies_observable
             ]);
 
         let item = {
@@ -102,35 +98,35 @@ export default class RegionalSummaryInd {
             needs: this.#decade_reducer(needs),
             population: this.#decade_reducer(population),
             strategies: this.#decade_reducer(strategies),
-            supplies: this.#decade_reducer(supplies),
+            supplies: this.#decade_reducer(supplies)
         };
-        let demands1 = sw.statewide_reducer(demands, "D");
-        let needs1 = sw.statewide_reducer(needs, "N");
-        let supplies1 = sw.statewide_reducer(supplies, "WS");
-        let population1 = sw.statewide_reducer(population, "P");
-        let strategies1 = sw.statewide_reducer(strategies, "SS");
+        let demands1 = sw.statewide_reducer(demands, 'D');
+        let needs1 = sw.statewide_reducer(needs, 'N');
+        let supplies1 = sw.statewide_reducer(supplies, 'WS');
+        let population1 = sw.statewide_reducer(population, 'P');
+        let strategies1 = sw.statewide_reducer(strategies, 'SS');
 
         return {
             demands: {
                 ...item.demands,
-                ...demands1,
+                ...demands1
             },
             needs: {
                 ...item.needs,
-                ...needs1,
+                ...needs1
             },
             supplies: {
                 ...item.supplies,
-                ...supplies1,
+                ...supplies1
             },
             population: {
                 ...item.population,
-                ...population1,
+                ...population1
             },
             strategies: {
                 ...item.strategies,
-                ...strategies1,
-            },
+                ...strategies1
+            }
         };
     };
 }

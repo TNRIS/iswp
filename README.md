@@ -47,3 +47,7 @@ How to create cache.
 ## Creating db check file
 1. Run getmdata.js file
 2. upload checkfile2023.json to https://tnris-droc.s3.amazonaws.com/iswp/
+
+## Prettier Configuration
+Prettier config is located in package.json.
+prettier-plugin-svelte Svelte for vs code extension has this installed.
