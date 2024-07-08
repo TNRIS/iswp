@@ -11,7 +11,8 @@
         class="show-medium"
         role="menubar"
         aria-label="Choose from the following to switch between decades."
-        title="Choose from the following to switch between decades.">
+        title="Choose from the following to switch between decades."
+        group="data by planning decade and theme menu">
         {#each DECADES as decade}
             <button
                 on:click={show}
@@ -29,11 +30,18 @@
         class="hide-medium"
         role="menubar"
         aria-label="Choose from the following to switch between decades."
-        title="Choose from the following to switch between decades.">
+        title="Choose from the following to switch between decades."
+        group="data by planning decade and theme menu">
         <label for="decade_nav">Decade:</label>
         <select id="decade_nav">
             {#each DECADES as decade}
-                <option key={`option-${decade}`} value={decade} role="menuitem" title={`${decade}`} aria-label={`${decade}`}>
+                <option
+                    key={`option-${decade}`}
+                    value={decade}
+                    role="menuitem"
+                    title={`${decade}`}
+                    aria-label={`${decade}`}
+                    group="data by planning decade and theme menu">
                     {decade}
                 </option>
             {/each}
