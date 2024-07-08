@@ -1089,7 +1089,8 @@
     };
 </script>
 
-<div class="row panel-row">
+<!-- EntityMap -->
+<div class="row panel-row" role="presentation">
     <!-- Only project has type pop because it has an entity map with population only. -->
     {#if type == 'pop'}
         <span class="view-name">{title}</span>

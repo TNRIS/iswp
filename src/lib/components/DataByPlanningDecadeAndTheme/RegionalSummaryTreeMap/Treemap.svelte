@@ -40,6 +40,6 @@
     dataviewContext.bindTreeMap.set(bindTreeMap);
 </script>
 
-<div class="treemap-chart">
+<div class="treemap-chart" role="presentation">
     <div bind:this={container} />
 </div>

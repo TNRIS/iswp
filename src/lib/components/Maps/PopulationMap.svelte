@@ -327,7 +327,7 @@
     });
 </script>
 
-<div id="map" style="width:100%; top:0; position:absolute; height:100%;">
+<div id="map" style="width:100%; top:0; position:absolute; height:100%;" role="presentation">
     <div id="map-hover-tooltip" />
 </div>
 
