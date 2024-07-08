@@ -1,3 +1,5 @@
+<!-- Purely Decorative images used to liven up the text labels. -->
+
 <script>
     // @ts-nocheck
 
@@ -39,22 +41,22 @@
     }
 </script>
 
+<!-- Setting alt to "" on purely decorative images was recommended by mozilla in 2024. -->
 {#if group_name == 'IRRIGATION'}
-    <Irrigation class="usage-type-icon icon-irrigation legend-marker" />
+    <Irrigation alt="" aria-hidden="true" class="usage-type-icon icon-irrigation legend-marker" />
 {/if}
 {#if group_name == 'MUNICIPAL'}
-    <Municipal class="usage-type-icon icon-municipal legend-marker" />
+    <Municipal alt="" aria-hidden="true" class="usage-type-icon icon-municipal legend-marker" />
 {/if}
 {#if group_name == 'MANUFACTURING'}
-    <Manufacturing class="usage-type-icon icon-manufacturing legend-marker" />
+    <Manufacturing alt="" aria-hidden="true" class="usage-type-icon icon-manufacturing legend-marker" />
 {/if}
 {#if group_name == 'STEAM ELECTRIC POWER'}
-    <SteamElectricPower
-        class="usage-type-icon icon-steam-electric-power legend-marker" />
+    <SteamElectricPower alt="" aria-hidden="true" class="usage-type-icon icon-steam-electric-power legend-marker" />
 {/if}
 {#if group_name == 'LIVESTOCK'}
-    <Livestock class="usage-type-icon icon-livestock legend-marker" />
+    <Livestock alt="" aria-hidden="true" class="usage-type-icon icon-livestock legend-marker" />
 {/if}
 {#if group_name == 'MINING'}
-    <Mining class="usage-type-icon icon-mining legend-marker" />
+    <Mining alt="" aria-hidden="true" class="usage-type-icon icon-mining legend-marker" />
 {/if}
