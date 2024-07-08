@@ -40,8 +40,9 @@
     class="selectors"
     role="menu"
     group="data by planning decade and theme menu"
-    aria-label="data by planning decade and theme"
-    title="data by planning decade and theme">
+    aria-label="data by planning decade and theme."
+    title="data by planning decade and theme."
+    aria-controls="dataview-group">
     <div>
         <span class="inline-label show-medium">Decade:</span>
         <DecadeSelector show={showDecade} bind:select_decade={$decadeStore} {constants} />
