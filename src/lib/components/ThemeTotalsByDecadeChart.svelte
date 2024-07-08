@@ -123,13 +123,14 @@
                         {data}
                         group_name={'TBD'}
                         chartTitle={'theme-totals-by-decade'}
-                        {constants} 
-                        title={"Theme Totals By Decade Bar Chart"} />
+                        {constants}
+                        title={'Theme Totals By Decade Bar Chart'} />
                     <ChartDataTable
                         header={constants.getDecades()}
                         body={data['TBD']}
                         titles={true}
-                        showHide={false} />
+                        showHide={false}
+                        ariaHint={'Theme Totals By Decade'} />
                 {:catch error}
                     <span>
                         There is an error getting totals by decade. {error.message}

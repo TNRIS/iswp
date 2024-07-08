@@ -87,12 +87,13 @@
                                     group_name={group_name[0]}
                                     chartTitle={group_name[0] + '-bc'}
                                     {constants}
-                                    title={"Data By Usage Type Bar Chart"} />
+                                    title={'Data By Usage Type Bar Chart'} />
                                 <ChartDataTable
                                     header={constants.getDecades()}
                                     body={data[group_name[0]]}
                                     titles={true}
-                                    showHide={true} />
+                                    showHide={true}
+                                    ariaHint={`${group_name[0]} water usage in acre feet / year`} />
                             </div>
 
                             <div class="six columns wide type-chart-container">
@@ -107,13 +108,14 @@
                                     {data}
                                     group_name={group_name[1]}
                                     chartTitle={group_name[0] + '-bc'}
-                                    {constants} 
-                                    title={"Data By Usage Type Bar Chart"} />
+                                    {constants}
+                                    title={'Data By Usage Type Bar Chart'} />
                                 <ChartDataTable
                                     header={constants.getDecades()}
                                     body={data[group_name[1]]}
                                     titles={true}
-                                    showHide={true} />
+                                    showHide={true}
+                                    ariaHint={`${group_name[1]} water usage in acre feet / year`} />
                             </div>
                         </div>
                     {/each}

@@ -173,7 +173,7 @@
 
 <div class="header-nav sticky-div">
     <div class="wrapper" id="wrapper">
-        <form aria-label="Navigate to a page related to the category and sub category selector">
+        <form aria-label="Choose a page related to the category and sub category selector" role="navigation">
             <label for="navcat">View data for</label>
             <div
                 class="select-container"

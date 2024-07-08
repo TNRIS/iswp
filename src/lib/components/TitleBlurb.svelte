@@ -7,7 +7,10 @@
 <div class="container">
     <div class="clear-float u-full-width">
         <div class="row panel-row">
-            <div class="twelve columns iswp-description">
+            <div
+                class="twelve columns iswp-description"
+                title="ISWP description"
+                role="article">
                 {#if constants.getYear() == 2027}
                     <p>
                         This website lets water users statewide take an up-close

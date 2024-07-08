@@ -7,7 +7,9 @@
 </script>
 
 <div
-    class="chart-legend usage-type-chart-legend u-pull-right legend-types-by-decade">
+    class="chart-legend usage-type-chart-legend u-pull-right legend-types-by-decade"
+    role="presentation"
+    title="Color coded legend.">
     <ul>
         <li class="legend-entry">
             <UsageTypeIcon group_name="IRRIGATION" />Irrigation</li>
