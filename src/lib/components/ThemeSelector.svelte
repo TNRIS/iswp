@@ -7,7 +7,11 @@
     export let select_theme;
 </script>
 
-<div class="selector theme-selector">
+<div
+    class="selector theme-selector"
+    role="navigation"
+    title="Submit button to change the data in the table below."
+    aria-label="Submit button to change the data in the table below.">
     <div class="show-medium">
         {#if showPopulation}
             <button

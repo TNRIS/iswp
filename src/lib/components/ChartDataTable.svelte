@@ -22,7 +22,10 @@
                     <!-- Try to add a good ariaHint. -->
                     <table
                         class="u-full-width"
-                        title={ariaHint ? ariaHint : 'Chart for Data table'}>
+                        title={ariaHint ? ariaHint : 'Chart for Data table'}
+                        aria-label={ariaHint
+                            ? ariaHint
+                            : 'Chart for Data table'}>
                         <thead>
                             <tr>
                                 <th />
@@ -67,7 +70,8 @@
         <div aria-live="polite" class="table-scroll-container">
             <table
                 class="u-full-width"
-                title={ariaHint ? ariaHint : 'Chart for Data table'}>
+                title={ariaHint ? ariaHint : 'Chart for Data table'}
+                aria-label={ariaHint ? ariaHint : 'Chart for Data table'}>
                 <thead>
                     <tr>
                         <th />

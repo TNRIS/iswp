@@ -9,7 +9,9 @@
 <div
     class="chart-legend usage-type-chart-legend u-pull-right legend-types-by-decade"
     role="presentation"
-    title="Color coded legend.">
+    aria-hidden="true"
+    title="Color coded legend."
+    aria-label="Color coded legend.">
     <ul>
         <li class="legend-entry">
             <UsageTypeIcon group_name="IRRIGATION" />Irrigation</li>
