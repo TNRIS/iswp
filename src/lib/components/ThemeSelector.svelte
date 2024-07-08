@@ -15,9 +15,9 @@
     <div
         class="show-medium"
         role="menubar"
-        aria-label="Choose from the following to switch between themes."
+        aria-label="Choose from the following themes to change the data displayed by the planning decade and theme widget."
         group="data by planning decade and theme menu"
-        title="Choose from the following to switch between themes.">
+        title="Choose from the following themes to change the data displayed by the planning decade and theme widget.">
         {#if showPopulation}
             <button
                 on:click={(event) => show(event)}
@@ -56,8 +56,8 @@
             on:change={(event) => show(event, true)}
             role="menubar"
             group="data by planning decade and theme menu"
-            aria-label="Choose from the following to switch between themes."
-            title="Choose from the following to switch between themes.">
+            aria-label="Choose from the following themes to change the data displayed by the planning decade and theme widget."
+            title="Choose from the following themes to change the data displayed by the planning decade and theme widget.">
             {#if showPopulation}
                 <option
                     value="population"

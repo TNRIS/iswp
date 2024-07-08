@@ -10,8 +10,8 @@
     <div
         class="show-medium"
         role="menubar"
-        aria-label="Choose from the following to switch between decades."
-        title="Choose from the following to switch between decades."
+        aria-label="Choose from the following decades to change the data displayed by the planning decade and theme widget"
+        title="Choose from the following to decades change the data displayed by the planning decade and theme widget."
         group="data by planning decade and theme menu">
         {#each DECADES as decade}
             <button
@@ -29,8 +29,8 @@
     <div
         class="hide-medium"
         role="menubar"
-        aria-label="Choose from the following to switch between decades."
-        title="Choose from the following to switch between decades."
+        aria-label="Choose from the following to decades change the data displayed by the planning decade and theme widget."
+        title="Choose from the following to decades change the data displayed by the planning decade and theme widget."
         group="data by planning decade and theme menu">
         <label for="decade_nav">Decade:</label>
         <select id="decade_nav">
