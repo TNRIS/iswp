@@ -32,6 +32,7 @@
     class="treemap-chart"
     id="treemap-chart"
     title={`Interactive treemap chart displaying by ${$selectedTreemapStore}`}
-    aria-label={`Interactive treemap chart displaying by ${$selectedTreemapStore}`}>
+    aria-label={`Interactive treemap chart displaying by ${$selectedTreemapStore}`}
+    role="presentation">
     <div bind:this={container} />
 </div>

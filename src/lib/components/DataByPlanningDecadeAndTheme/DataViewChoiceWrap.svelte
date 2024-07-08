@@ -38,8 +38,8 @@
     <div
         class="container"
         id="dataview-group"
-        title="Data by Planning Decade and Theme group"
-        aria-label="Data by Planning Decade and Theme group">
+        title="Data by Planning Decade and Theme widget group"
+        aria-label="Data by Planning Decade and Theme widget group">
         {#await lrp}
             <div class="loader"></div>
         {:then swdata}

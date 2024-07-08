@@ -114,7 +114,7 @@
                 role="menubar"
                 aria-label="Choose from the following to change what the treemap displays."
                 title="Choose from the following to change what the treemap displays."
-                aria-controls="treemap-chart">
+                aria-controls="dataview-group">
                 <button class="button" class:active={selectedTreemap === 'region'} on:click={() => ru('region')}> By Region </button>
                 <button class="button" class:active={selectedTreemap === 'usagetype'} on:click={() => ru('usagetype')}>
                     By Usage Type

@@ -1,16 +1,10 @@
 <script>
     import RegionalSummary from '$lib/db/regionalsummary.js';
     import { getContext } from 'svelte';
-    import {
-        onMountSync,
-        commafy,
-        sortNumeric,
-        sortAlphabetic
-    } from '$lib/helper.js';
+    import { onMountSync, commafy, sortNumeric, sortAlphabetic } from '$lib/helper.js';
     import CsvDownloads from '$lib/components/CsvDownloads.svelte';
 
-    export let { db, swdata, csvTitle, constants, downloadPopulation } =
-        $$props;
+    export let { db, swdata, csvTitle, constants, downloadPopulation } = $$props;
 
     const themetitles = constants.getThemeTitles();
     let decades = constants.getDecades();
@@ -48,13 +42,7 @@
                     this.duoTotal = 0;
                 }
             }
-            [
-                'population',
-                'demands',
-                'strategies',
-                'needs',
-                'supplies'
-            ].forEach((element) => {
+            ['population', 'demands', 'strategies', 'needs', 'supplies'].forEach((element) => {
                 let totalStore = {};
                 try {
                     for (let i = 0; i < decades.length; i++) {
@@ -89,7 +77,7 @@
 
 <div style="pointer-events:auto; overflow: auto;" class="row panel-row">
     <div class="chart-header">
-        <h4>
+        <h4 id="regional_summary_data_title">
             Regional Summary Data - {$decadeStore} - {themetitles[$themeStore]}
             {#if $themeStore === 'population'}
                 <span class="units">(people)</span>
@@ -99,11 +87,10 @@
         </h4>
     </div>
     <table
-        class="table-condensed regional-summary-table {$themeStore ==
-        'population'
-            ? 'skinny'
-            : ''}"
-        bind:this={rtable}>
+        class="table-condensed regional-summary-table {$themeStore == 'population' ? 'skinny' : ''}"
+        bind:this={rtable}
+        aria-describedby="regional_summary_data_title"
+        role="grid">
         {#await getData()}
             <div class="loader"></div>
         {:then data}
@@ -175,48 +162,21 @@
             <tr>
                 <td class="total_second_column bold">Total</td>
                 {#if $themeStore !== 'population'}
-                    <td class="total_second_column"
-                        >{commafy(
-                            dtstore[$themeStore][$decadeStore].irrigation + ''
-                        )}</td>
-                    <td class="total_second_column"
-                        >{commafy(
-                            dtstore[$themeStore][$decadeStore].municipal + ''
-                        )}</td>
-                    <td class="total_second_column"
-                        >{commafy(
-                            dtstore[$themeStore][$decadeStore].manufacturing +
-                                ''
-                        )}</td>
-                    <td class="total_second_column"
-                        >{commafy(
-                            dtstore[$themeStore][$decadeStore].sep + ''
-                        )}</td>
-                    <td class="total_second_column"
-                        >{commafy(
-                            dtstore[$themeStore][$decadeStore].livestock + ''
-                        )}</td>
-                    <td class="total_second_column"
-                        >{commafy(
-                            dtstore[$themeStore][$decadeStore].mining + ''
-                        )}</td>
+                    <td class="total_second_column">{commafy(dtstore[$themeStore][$decadeStore].irrigation + '')}</td>
+                    <td class="total_second_column">{commafy(dtstore[$themeStore][$decadeStore].municipal + '')}</td>
+                    <td class="total_second_column">{commafy(dtstore[$themeStore][$decadeStore].manufacturing + '')}</td>
+                    <td class="total_second_column">{commafy(dtstore[$themeStore][$decadeStore].sep + '')}</td>
+                    <td class="total_second_column">{commafy(dtstore[$themeStore][$decadeStore].livestock + '')}</td>
+                    <td class="total_second_column">{commafy(dtstore[$themeStore][$decadeStore].mining + '')}</td>
                 {/if}
 
-                <td class="total_column total_second_column bold"
-                    >{commafy(
-                        dtstore[$themeStore][$decadeStore].duoTotal + ''
-                    )}</td>
+                <td class="total_column total_second_column bold">{commafy(dtstore[$themeStore][$decadeStore].duoTotal + '')}</td>
             </tr>
         {:catch error}
             <span>Error in regionalsummarytable error: {error}</span>
         {/await}
     </table>
-    <CsvDownloads
-        {swdata}
-        {csvTitle}
-        fileName={'statewide'}
-        {constants}
-        {downloadPopulation} />
+    <CsvDownloads {swdata} {csvTitle} fileName={'statewide'} {constants} {downloadPopulation} />
 </div>
 
 <style>
