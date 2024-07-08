@@ -1,6 +1,7 @@
 <script>
     import ToggleDisplay from './ToggleDisplay.svelte';
-    const { header, body, titles, showHide, titleMap, showTotal } = $$props;
+    const { header, body, titles, showHide, titleMap, showTotal, ariaHint } =
+        $$props;
     let totals = [0, 0, 0, 0, 0, 0];
     if (showTotal) {
         body.forEach((b) => {
@@ -16,9 +17,15 @@
 <div class="chart-table-container">
     {#if showHide}
         <div class="toggle-container">
-            <ToggleDisplay>
+            <ToggleDisplay {ariaHint}>
                 <div aria-live="polite" class="table-scroll-container">
-                    <table class="u-full-width">
+                    <!-- Try to add a good ariaHint. -->
+                    <table
+                        class="u-full-width"
+                        title={ariaHint ? ariaHint : 'Chart for Data table'}
+                        aria-label={ariaHint
+                            ? ariaHint
+                            : 'Chart for Data table'}>
                         <thead>
                             <tr>
                                 <th />
@@ -61,7 +68,10 @@
         </div>
     {:else}
         <div aria-live="polite" class="table-scroll-container">
-            <table class="u-full-width">
+            <table
+                class="u-full-width"
+                title={ariaHint ? ariaHint : 'Chart for Data table'}
+                aria-label={ariaHint ? ariaHint : 'Chart for Data table'}>
                 <thead>
                     <tr>
                         <th />

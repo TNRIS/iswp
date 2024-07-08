@@ -1,17 +1,6 @@
 <script>
     //@ts-nocheck
-    const {
-        page,
-        slug,
-        swdata,
-        csvTitle,
-        title,
-        fileName,
-        constants,
-        stratAd,
-        activeDem,
-        showPopulation
-    } = $$props;
+    const { page, slug, swdata, csvTitle, title, fileName, constants, stratAd, activeDem, showPopulation } = $$props;
     import { commafy, onMountSync, usd_format } from '$lib/helper.js';
     let pivotLoaded = false;
     import CsvDownloads from '$lib/components/CsvDownloads.svelte';
@@ -28,12 +17,7 @@
                 await onMountSync();
             }
             pivotLoaded = true;
-            let rows,
-                dimensions,
-                reduce,
-                calculations,
-                sorter,
-                activeDimensions;
+            let rows, dimensions, reduce, calculations, sorter, activeDimensions;
             let getCalculations = (titleCalcField) => {
                 return [
                     {
@@ -63,15 +47,11 @@
                 ];
 
                 reduce = function (row, memo) {
-                    memo.amountTotal =
-                        (memo.amountTotal || 0) +
-                        parseFloat(row['SS' + $decadeStore]);
+                    memo.amountTotal = (memo.amountTotal || 0) + parseFloat(row['SS' + $decadeStore]);
                     return memo;
                 };
 
-                calculations = getCalculations(
-                    `${$decadeStore} Strategy Supplies`
-                );
+                calculations = getCalculations(`${$decadeStore} Strategy Supplies`);
             } else if ($themeStore == 'needs') {
                 activeDimensions = activeDem;
                 sorter = 'County';
@@ -83,15 +63,11 @@
                 ];
 
                 reduce = function (row, memo) {
-                    memo.amountTotal =
-                        (memo.amountTotal || 0) +
-                        parseFloat(row['N' + $decadeStore]);
+                    memo.amountTotal = (memo.amountTotal || 0) + parseFloat(row['N' + $decadeStore]);
                     return memo;
                 };
 
-                calculations = getCalculations(
-                    `${$decadeStore} Needs (Potential Shortages)`
-                );
+                calculations = getCalculations(`${$decadeStore} Needs (Potential Shortages)`);
             } else if ($themeStore == 'supplies') {
                 const supArray = activeDem.concat(['Source']);
                 activeDimensions = supArray;
@@ -105,15 +81,11 @@
                 ];
 
                 reduce = function (row, memo) {
-                    memo.amountTotal =
-                        (memo.amountTotal || 0) +
-                        parseFloat(row['WS' + $decadeStore]);
+                    memo.amountTotal = (memo.amountTotal || 0) + parseFloat(row['WS' + $decadeStore]);
                     return memo;
                 };
 
-                calculations = getCalculations(
-                    `${$decadeStore} Existing Supplies`
-                );
+                calculations = getCalculations(`${$decadeStore} Existing Supplies`);
             } else if ($themeStore == 'demands') {
                 activeDimensions = activeDem;
                 sorter = 'County';
@@ -125,9 +97,7 @@
                 ];
 
                 reduce = function (row, memo) {
-                    memo.amountTotal =
-                        (memo.amountTotal || 0) +
-                        parseFloat(row['D' + $decadeStore]);
+                    memo.amountTotal = (memo.amountTotal || 0) + parseFloat(row['D' + $decadeStore]);
                     return memo;
                 };
                 calculations = getCalculations(`${$decadeStore} Demands`);
@@ -142,39 +112,24 @@
                 ];
 
                 reduce = function (row, memo) {
-                    memo.amountTotal =
-                        (memo.amountTotal || 0) +
-                        parseFloat(row['P' + $decadeStore]);
+                    memo.amountTotal = (memo.amountTotal || 0) + parseFloat(row['P' + $decadeStore]);
                     return memo;
                 };
                 calculations = getCalculations(`${$decadeStore} Population`);
             }
 
-            if (document.getElementById('reactpivot').firstChild)
-                document.getElementById('reactpivot').firstChild.remove();
+            if (document.getElementById('reactpivot').firstChild) document.getElementById('reactpivot').firstChild.remove();
 
             let formattedRows = JSON.parse(JSON.stringify(rows));
 
             formattedRows.forEach((f) => {
                 if (f.MapSourceId)
-                    f.SourceName = f.SourceName?.startsWith('<a')
-                        ? f.SourceName
-                        : `<a href="/source/${f.MapSourceId}">${f.SourceName}</a>`;
-                f.WugRegion = f.WugRegion?.startsWith('<a')
-                    ? f.WugRegion
-                    : `<a href="/region/${f.WugRegion}">${f.WugRegion}</a>`;
-                f.EntityName = f.EntityName?.startsWith('<a')
-                    ? f.EntityName
-                    : `<a href="/entity/${f.EntityId}">${f.EntityName}</a>`;
-                f.WugCounty = f.WugCounty?.startsWith('<a')
-                    ? f.WugCounty
-                    : `<a href="/county/${f.WugCounty}">${f.WugCounty}</a>`;
-                f.WmsName = f.WmsName?.startsWith('<a')
-                    ? f.WmsName
-                    : `<a href="/wms/${f.WmsId}">${f.WmsName}</a>`;
-                f.WmsType = f.WmsType?.startsWith('<a')
-                    ? f.WmsType
-                    : `<a href="/wmstype/${f.WmsType}">${f.WmsType}</a>`;
+                    f.SourceName = f.SourceName?.startsWith('<a') ? f.SourceName : `<a href="/source/${f.MapSourceId}">${f.SourceName}</a>`;
+                f.WugRegion = f.WugRegion?.startsWith('<a') ? f.WugRegion : `<a href="/region/${f.WugRegion}">${f.WugRegion}</a>`;
+                f.EntityName = f.EntityName?.startsWith('<a') ? f.EntityName : `<a href="/entity/${f.EntityId}">${f.EntityName}</a>`;
+                f.WugCounty = f.WugCounty?.startsWith('<a') ? f.WugCounty : `<a href="/county/${f.WugCounty}">${f.WugCounty}</a>`;
+                f.WmsName = f.WmsName?.startsWith('<a') ? f.WmsName : `<a href="/wms/${f.WmsId}">${f.WmsName}</a>`;
+                f.WmsType = f.WmsType?.startsWith('<a') ? f.WmsType : `<a href="/wmstype/${f.WmsType}">${f.WmsType}</a>`;
             });
 
             ReactPivot(document.getElementById('reactpivot'), {
@@ -231,18 +186,8 @@
     <div id="reactpivot"><!-- Sorry there is no raw data. --></div>
     <!-- If page is usagetype then only download if it's specifically Municipal. Download other pages with population if available. -->
     {#if (slug == 'MUNICIPAL' && page == 'usagetype') || page !== 'usagetype'}
-        <CsvDownloads
-            {swdata}
-            {csvTitle}
-            {fileName}
-            {constants}
-            downloadPopulation={true} />
+        <CsvDownloads {swdata} {csvTitle} {fileName} {constants} downloadPopulation={true} />
     {:else}
-        <CsvDownloads
-            {swdata}
-            {csvTitle}
-            {fileName}
-            {constants}
-            downloadPopulation={showPopulation} />
+        <CsvDownloads {swdata} {csvTitle} {fileName} {constants} downloadPopulation={showPopulation} />
     {/if}
 </div>

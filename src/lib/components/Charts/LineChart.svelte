@@ -27,8 +27,8 @@
     };
 </script>
 
-<!-- Line Chart -->
-<div style="position:relative">
+<!-- Line Chart is hidden for aria due to the same data being presented in table form in an easier format in the table. -->
+<div style="position:relative" aria-hidden="true" role="presentation">
     <div
         class={`${chartTitle} ct-chart`}
         on:mouseover={onHover}

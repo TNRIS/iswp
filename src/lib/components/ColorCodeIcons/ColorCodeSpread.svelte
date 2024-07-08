@@ -6,7 +6,11 @@
     const titles = c22.getThemeTitles();
 </script>
 
-<div class="chart-legend u-pull-right">
+<div
+    class="chart-legend u-pull-right"
+    role="presentation"
+    title="Color coded legend."
+    aria-hidden="true">
     <ul>
         <li class="legend-entry">
             <Rectangle label={titles['demands']} key={'demands'} />

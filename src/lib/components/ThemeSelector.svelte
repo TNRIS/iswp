@@ -7,8 +7,17 @@
     export let select_theme;
 </script>
 
-<div class="selector theme-selector">
-    <div class="show-medium">
+<div
+    class="selector theme-selector"
+    role="navigation"
+    title="Submit button to change the data in the table below."
+    aria-label="Submit button to change the data in the table below.">
+    <div
+        class="show-medium"
+        role="menubar"
+        aria-label="Choose from the following themes to change the data displayed by the planning decade and theme widget."
+        group="data by planning decade and theme menu"
+        title="Choose from the following themes to change the data displayed by the planning decade and theme widget.">
         {#if showPopulation}
             <button
                 on:click={(event) => show(event)}
@@ -39,42 +48,57 @@
             on:click={(event) => show(event)}
             class="selectorButtons button"
             value="strategies"
-            class:active={'strategies' == select_theme}
-            >{themeTitle.strategies}</button>
+            class:active={'strategies' == select_theme}>{themeTitle.strategies}</button>
     </div>
     <div class="hide-medium">
-        <label>Theme:</label><select on:change={(event) => show(event, true)}>
-            {#if showPopulation}<option
+        <label for="theme_nav">Theme:</label><select
+            id="theme_nav"
+            on:change={(event) => show(event, true)}
+            role="menubar"
+            group="data by planning decade and theme menu"
+            aria-label="Choose from the following themes to change the data displayed by the planning decade and theme widget."
+            title="Choose from the following themes to change the data displayed by the planning decade and theme widget.">
+            {#if showPopulation}
+                <option
                     value="population"
                     class:active={'population' == select_theme}
-                    >{themeTitle.population}</option
-                >{/if}
-            {#if !sourcePage}<option
+                    role="menuitem"
+                    title="population"
+                    aria-label="population"
+                    group="data by planning decade and theme menu">{themeTitle.population}</option>
+            {/if}
+            {#if !sourcePage}
+                <option
                     value="demands"
                     class:active={'demands' == select_theme}
-                    >{themeTitle.demands}</option
-                >{/if}
-            <option value="supplies" class:active={'supplies' == select_theme}
-                >{themeTitle.supplies}</option>
-            {#if !sourcePage}<option
+                    role="menuitem"
+                    title="demands"
+                    aria-label="demands"
+                    group="data by planning decade and theme menu">{themeTitle.demands}</option>
+            {/if}
+            <option
+                value="supplies"
+                class:active={'supplies' == select_theme}
+                role="menuitem"
+                title="supplies"
+                aria-label="supplies"
+                group="data by planning decade and theme menu">{themeTitle.supplies}</option>
+            {#if !sourcePage}
+                <option
                     value="needs"
                     class:active={'needs' == select_theme}
-                    >{themeTitle.needs}</option
-                >{/if}
+                    role="menuitem"
+                    title="needs"
+                    aria-label="needs"
+                    group="data by planning decade and theme menu">{themeTitle.needs}</option>
+            {/if}
             <option
                 value="strategies"
                 class:active={'strategies' == select_theme}
-                >{themeTitle.strategies}</option>
+                role="menuitem"
+                title="strategies"
+                aria-label="strategies"
+                group="data by planning decade and theme menu">{themeTitle.strategies}</option>
         </select>
     </div>
 </div>
-
-<style>
-    .hide_space {
-        margin-left: -0.4em !important;
-    }
-
-    #themerow {
-        padding: 1em;
-    }
-</style>

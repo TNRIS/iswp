@@ -1,5 +1,5 @@
 <script>
-    function myFunction() {
+    function filterSubCategory() {
         // Declare variables
         var input, filter, ul, li, a, i, txtValue;
         input = document.getElementById('secondary-category-select');
@@ -173,18 +173,23 @@
 
 <div class="header-nav sticky-div">
     <div class="wrapper" id="wrapper">
-        <form>
+        <form aria-label="Choose a page related to the category and sub category selector" role="navigation">
             <label for="navcat">View data for</label>
             <div
                 class="select-container"
-                aria-label="Category Selector for Navigation"
-                id="navcat_container">
+                aria-label="Page Category"
+                id="navcat_container"
+                role="menu">
                 <Select
                     {items}
                     clearable={false}
                     on:change={reset}
                     value={chosen ? chosen : 'All of Texas'}
-                    showChevron />
+                    showChevron
+                    inputAttributes={{
+                        title: "Category"
+                    }}
+                    />
             </div>
 
             {#await setupChoices() then}
@@ -196,7 +201,11 @@
                                 clearable={false}
                                 on:change={box2Change}
                                 placeholder="Select {titles[chosen]}"
-                                showChevron />
+                                showChevron
+                                inputAttributes={{
+                                    title: "Sub Category"
+                                }}
+                                />
                         </div>
                     {:else}
                         <div class="select-container">
@@ -205,7 +214,7 @@
                                 type="text"
                                 id="secondary-category-select"
                                 autocomplete="off"
-                                on:keyup={myFunction}
+                                on:keyup={filterSubCategory}
                                 placeholder="Start typing to find {titles[
                                     chosen
                                 ]}" />
@@ -225,7 +234,6 @@
             {:catch error}
                 <span>Error loading nav {error}</span>
             {/await}
-            <form action={region} id="submit-button">
                 <input
                     type="submit"
                     class="button button-nav-submit"
@@ -239,8 +247,9 @@
                                   chosen2 !== undefined
                               ) /* 0 is fine so check explicitly for undefined */
                           )}
-                    value="Go" />
-            </form>
+                    value="Go" 
+                    title="Continue here after you’ve filled out all form elements to navigate to selected page."
+                    />
         </form>
     </div>
 </div>
@@ -249,6 +258,7 @@
     .button-nav-submit:disabled {
         color: gray;
     }
+
     #navcat {
         height: default !important;
     }

@@ -36,23 +36,22 @@
     };
 </script>
 
-<div class="selectors">
+<div
+    class="selectors"
+    role="menu"
+    group="data by planning decade and theme menu"
+    aria-label="data by planning decade and theme."
+    title="data by planning decade and theme."
+    aria-controls="dataview-group">
     <div>
         <span class="inline-label show-medium">Decade:</span>
-        <DecadeSelector
-            show={showDecade}
-            bind:select_decade={$decadeStore}
-            {constants} />
+        <DecadeSelector show={showDecade} bind:select_decade={$decadeStore} {constants} />
     </div>
 
     {#if !hideTheme}
         <div>
             <span class="inline-label show-medium">Theme:</span>
-            <ThemeSelector
-                {showPopulation}
-                show={showTheme}
-                bind:select_theme={$themeStore}
-                {sourcePage} />
+            <ThemeSelector {showPopulation} show={showTheme} bind:select_theme={$themeStore} {sourcePage} />
         </div>
     {/if}
 </div>

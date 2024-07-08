@@ -79,7 +79,8 @@ This is only needed in the live version of the site due to prerender=true not wo
           </div>
           <div class="summary-wrapper container" style="z-index: 600">
             <div class="w3-light-grey">
-              <div id="myBar" class="w3-container w3-green" style="height:24px;width:1%;background-color: #477fc7;">
+              <div role="progressbar" id="myBar" class="w3-container w3-green"
+                style="height:24px;width:1%;background-color: #477fc7;">
               </div>
             </div>
             Welcome. Please be patient while Interactive State Water Plan loads.
@@ -99,7 +100,8 @@ This is only needed in the live version of the site due to prerender=true not wo
       <p>This website is brought to you by the <a href="http://www.twdb.texas.gov"
           title="Texas Water Development Board">Texas Water Development Board</a></p>
       <p>
-        <a href="" target="_self" title="Site Policies">Site Policies</a> |
+        <a href="/about#SitePolicies" target="_self" title="Site Policies">Site Policies</a> |
+        <a href="https://www.twdb.texas.gov/waterplanning/swp/" title="State Water Plan">State Water Plan</a> |
         <a href="http://www.texas.gov/" title="Texas Online">Texas Online</a> |
         <a href="http://www.governor.texas.gov/homeland" title="Homeland Security">Homeland Security</a> |
         <a href="http://www2.tsl.state.tx.us/trail" title="TRAIL">TRAIL</a> |
@@ -117,9 +119,7 @@ This is only needed in the live version of the site due to prerender=true not wo
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
     gtag('config', '{{ gaTrackingCode }}');
-
 
 
     function move() {

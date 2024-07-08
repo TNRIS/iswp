@@ -58,14 +58,7 @@
         for (let item in keyids) {
             let array = [];
 
-            if (
-                !(
-                    keyids[item] == 'id' ||
-                    keyids[item] == 'TOTAL' ||
-                    keyids[item] == 'REGION' ||
-                    keyids[item] == 'DECADE'
-                )
-            ) {
+            if (!(keyids[item] == 'id' || keyids[item] == 'TOTAL' || keyids[item] == 'REGION' || keyids[item] == 'DECADE')) {
                 for (let i = 0; i < d.length; i++) {
                     array.push({
                         name: `Region ${d[i]['REGION']}`,
@@ -109,26 +102,21 @@
     <div class="twelve columns">
         <div>
             <h4>
-                Regional Summary Treemap - {$decadeStore} - {themetitles[
-                    $themeStore
-                ]}
+                Regional Summary Treemap - {$decadeStore} - {themetitles[$themeStore]}
                 {#if $themeStore === 'population'}
                     <span class="units">(people)</span>
                 {:else}
                     <span class="units">(acre-feet/year)</span>
                 {/if}
             </h4>
-            <div class="selector treemap-selector">
-                <button
-                    class="button"
-                    class:active={selectedTreemap === 'region'}
-                    on:click={() => ru('region')}>
-                    By Region
-                </button>
-                <button
-                    class="button"
-                    class:active={selectedTreemap === 'usagetype'}
-                    on:click={() => ru('usagetype')}>
+            <div
+                class="selector treemap-selector"
+                role="menubar"
+                aria-label="Choose from the following to change what the treemap displays."
+                title="Choose from the following to change what the treemap displays."
+                aria-controls="dataview-group">
+                <button class="button" class:active={selectedTreemap === 'region'} on:click={() => ru('region')}> By Region </button>
+                <button class="button" class:active={selectedTreemap === 'usagetype'} on:click={() => ru('usagetype')}>
                     By Usage Type
                 </button>
             </div>

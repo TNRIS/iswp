@@ -1,12 +1,7 @@
 <script>
     //@ts-nocheck
     const { swdata, title } = $$props;
-    import {
-        calcPercentage,
-        commafy,
-        sortAlphabetic,
-        sortNumeric
-    } from '$lib/helper.js';
+    import { calcPercentage, commafy, sortAlphabetic, sortNumeric } from '$lib/helper.js';
     import { getContext, onMount } from 'svelte';
     import { hoverHelper, clearInteraction } from '$lib/actions/HoverAction';
     const decadeStore = getContext('myContext').decadeStore;
@@ -27,8 +22,7 @@
             .reduce((accumulator, currentValue) => {
                 currentValue[1] = currentValue[1][$decadeStore];
                 accumulator.push(currentValue);
-                if (stt_entries_empty && currentValue[1])
-                    stt_entries_empty = false;
+                if (stt_entries_empty && currentValue[1]) stt_entries_empty = false;
                 return accumulator;
             }, []);
     };
@@ -51,12 +45,9 @@
                     accumulator.data.push({
                         value: currentValue[1][$decadeStore],
                         name: currentValue[0],
-                        className: `series-${currentValue[0]}`
-                            .replace(' ', '-')
-                            .toLowerCase()
+                        className: `series-${currentValue[0]}`.replace(' ', '-').toLowerCase()
                     });
-                    if (strats_empty && currentValue[1][$decadeStore])
-                        strats_empty = false;
+                    if (strats_empty && currentValue[1][$decadeStore]) strats_empty = false;
 
                     return accumulator;
                 },
@@ -102,8 +93,7 @@
                 total += data.series[i].value;
             }
         }
-        if (data?.series?.length === 1 && data.series[0]?.className)
-            data.series[0].className += ' single-slice';
+        if (data?.series?.length === 1 && data.series[0]?.className) data.series[0].className += ' single-slice';
 
         var responsiveOptions = [
             [
@@ -158,34 +148,33 @@
     $: checkShow = !($themeStore == 'strategies');
 </script>
 
-<div
-    class="strategies-breakdown-container row panel-row"
-    class:hider={checkShow}>
+<div class="strategies-breakdown-container row panel-row" class:hider={checkShow}>
     {#if title}
         <span class="view-name">{title}</span>
     {/if}
     <div class="row">
-        <h4
-            >Strategy Supplies Breakdown - {$decadeStore}<span class="units"
-                >(acre-feet/year)</span
-            ></h4>
+        <h4>Strategy Supplies Breakdown - {$decadeStore}<span class="units">(acre-feet/year)</span></h4>
     </div>
     {#if !strats_empty && !stt_entries_empty}
         <div class="row">
             <div class="six columns strategies-by-source-type-container">
-                <h5>Share by Water Resource</h5>
-                <div class="pie-chart-container">
-                    <div
-                        class="strat-chart"
-                        on:mousemove={onHover}
-                        on:mouseleave={onLeave} />
+                <h5 for="share_by_water_resource_chart">Share by Water Resource</h5>
+                <div
+                    class="pie-chart-container"
+                    title="Pie Chart describing Water Share usage percentages."
+                    aria-label="Pie Chart describing Water Share usage percentages."
+                    role="presentation"
+                    id="share_by_water_resource_chart">
+                    <div class="strat-chart" on:mousemove={onHover} on:mouseleave={onLeave} role="presentation" />
                 </div>
                 <div id="strat-chart-tooltip" />
             </div>
             <div class="six columns strategies-by-source-type-container">
-                <h5>Share by Strategy Type</h5>
+                <h5 id="sharelabel">Share by Strategy Type</h5>
                 <table
                     class="table-condensed u-full-width strategies-by-type-table"
+                    aria-describedby="sharelabel"
+                    role="grid"
                     bind:this={srttable}>
                     <tr id="strat_header">
                         <th
@@ -200,7 +189,7 @@
                     {#each stt_entries as t}
                         {#if t[1] > 0}
                             <tr>
-                                <td><a href="/wmstype/{t[0]}">{t[0]}</a></td>
+                                <td role="link"><a href="/wmstype/{t[0]}">{t[0]}</a></td>
                                 <td>
                                     {`${calcPercentage(stt_entries, t[1])} (${commafy(t[1].toString())})`}
                                 </td>
@@ -211,9 +200,7 @@
             </div>
         </div>
     {:else}
-        <span
-            >The strategies do not affect any water user groups in the chosen
-            decade: {$decadeStore}</span>
+        <span>The strategies do not affect any water user groups in the chosen decade: {$decadeStore}</span>
     {/if}
 </div>
 

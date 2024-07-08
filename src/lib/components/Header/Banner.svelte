@@ -21,7 +21,7 @@
         class="skip-link"
         id="skip-link"
         href="#main-content"
-        tabIndex="1"
+        tabIndex="0"
         title="Skip to main content">
         Skip to Main Content
     </a>

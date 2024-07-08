@@ -32,24 +32,20 @@
 <div class="view-choice-wrap">
     <div class="view-choice-container sticky-div-2">
         <h4>Data by Planning Decade and Theme</h4>
-        <DataViewChoiceSelectors
-            hideTheme={false}
-            showPopulation={true}
-            {constants} />
+        <DataViewChoiceSelectors hideTheme={false} showPopulation={true} {constants} />
     </div>
     <!-- insert 3 sub-widgets here -->
-    <div class="container">
+    <div
+        class="container"
+        id="dataview-group"
+        title="Data by Planning Decade and Theme widget group"
+        aria-label="Data by Planning Decade and Theme widget group">
         {#await lrp}
             <div class="loader"></div>
         {:then swdata}
             <RegionalSummaryTreeMap {db} selectedTreemap={'region'} />
             <StrategiesBreakdown {swdata} />
-            <RegionalSummaryTable
-                {db}
-                {swdata}
-                {csvTitle}
-                {constants}
-                {downloadPopulation} />
+            <RegionalSummaryTable {db} {swdata} {csvTitle} {constants} {downloadPopulation} />
         {/await}
     </div>
 </div>

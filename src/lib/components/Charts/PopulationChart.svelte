@@ -93,7 +93,8 @@
                         header={decades}
                         body={data.series}
                         titles={false}
-                        showHide={true} />
+                        showHide={true}
+                        ariaHint={`Population Chart for ${title}`} />
                 {:catch error}
                     <span>There is a error. {error.message}</span>
                 {/await}
