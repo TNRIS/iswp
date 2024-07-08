@@ -3,18 +3,15 @@
     import { Constant2022 } from '$lib/Constant2022.js';
     const c22 = new Constant2022();
     const themeTitle = c22.getThemeTitles();
-    const { show, showPopulation, sourcePage } = $$props;
+    const { show, showPopulation, sourcePage, id_pre } = $$props;
     export let select_theme;
 </script>
 
-<div
-    class="selector theme-selector"
-    role="navigation"
-    title="Submit button to change the data in the table below."
-    aria-label="Submit button to change the data in the table below.">
+<div class="selector theme-selector">
     <div
         class="show-medium"
         role="menubar"
+        aria-controls="dataview-group"
         aria-label="Choose from the following themes to change the data displayed by the planning decade and theme widget."
         group="data by planning decade and theme menu"
         title="Choose from the following themes to change the data displayed by the planning decade and theme widget.">
@@ -24,6 +21,7 @@
                 class="selectorButtons button"
                 value="population"
                 class:active={'population' == select_theme}
+                role="menuitem"
                 >{themeTitle.population}
                 <!-- Needs to be formatted this way to get rid of spaces unfortunately. -->
             </button>{/if}{#if !sourcePage}<button
@@ -31,30 +29,35 @@
                 class="selectorButtons button"
                 value="demands"
                 class:active={'demands' == select_theme}
+                role="menuitem"
                 >{themeTitle.demands}
             </button>{/if}<button
             on:click={(event) => show(event)}
             class="selectorButtons button"
             value="supplies"
             class:active={'supplies' == select_theme}
+            role="menuitem"
             >{themeTitle.supplies}
         </button>{#if !sourcePage}<button
                 on:click={(event) => show(event)}
                 class="selectorButtons button"
                 value="needs"
                 class:active={'needs' == select_theme}
+                role="menuitem"
                 >{themeTitle.needs}
             </button>{/if}<button
             on:click={(event) => show(event)}
             class="selectorButtons button"
             value="strategies"
+            role="menuitem"
             class:active={'strategies' == select_theme}>{themeTitle.strategies}</button>
     </div>
     <div class="hide-medium">
-        <label for="theme_nav">Theme:</label><select
-            id="theme_nav"
+        <label for={`${id_pre}theme_nav`}>Theme:</label><select
+            id={`${id_pre}theme_nav`}
             on:change={(event) => show(event, true)}
             role="menubar"
+            aria-controls="dataview-group"
             group="data by planning decade and theme menu"
             aria-label="Choose from the following themes to change the data displayed by the planning decade and theme widget."
             title="Choose from the following themes to change the data displayed by the planning decade and theme widget.">

@@ -114,42 +114,12 @@
                         labels: constants.getDecades(),
                         // Our series array that contains series objects or in this case series data arrays
                         series: [
-                            makeSeries(
-                                'demands',
-                                'mining',
-                                usage_types[5],
-                                swdata
-                            ),
-                            makeSeries(
-                                'demands',
-                                'livestock',
-                                usage_types[4],
-                                swdata
-                            ),
-                            makeSeries(
-                                'demands',
-                                'steam-electric-power',
-                                usage_types[3],
-                                swdata
-                            ),
-                            makeSeries(
-                                'demands',
-                                'manufacturing',
-                                usage_types[2],
-                                swdata
-                            ),
-                            makeSeries(
-                                'demands',
-                                'municipal',
-                                usage_types[1],
-                                swdata
-                            ),
-                            makeSeries(
-                                'demands',
-                                'irrigation',
-                                usage_types[0],
-                                swdata
-                            )
+                            makeSeries('demands', 'mining', usage_types[5], swdata),
+                            makeSeries('demands', 'livestock', usage_types[4], swdata),
+                            makeSeries('demands', 'steam-electric-power', usage_types[3], swdata),
+                            makeSeries('demands', 'manufacturing', usage_types[2], swdata),
+                            makeSeries('demands', 'municipal', usage_types[1], swdata),
+                            makeSeries('demands', 'irrigation', usage_types[0], swdata)
                         ]
                     };
 
@@ -158,42 +128,12 @@
                         labels: constants.getDecades(),
                         // Our series array that contains series objects or in this case series data arrays
                         series: [
-                            makeSeries(
-                                'needs',
-                                'irrigation',
-                                usage_types[0],
-                                swdata
-                            ),
-                            makeSeries(
-                                'needs',
-                                'livestock',
-                                usage_types[4],
-                                swdata
-                            ),
-                            makeSeries(
-                                'needs',
-                                'manufacturing',
-                                usage_types[2],
-                                swdata
-                            ),
-                            makeSeries(
-                                'needs',
-                                'steam-electric-power',
-                                usage_types[3],
-                                swdata
-                            ),
-                            makeSeries(
-                                'needs',
-                                'mining',
-                                usage_types[5],
-                                swdata
-                            ),
-                            makeSeries(
-                                'needs',
-                                'municipal',
-                                usage_types[1],
-                                swdata
-                            )
+                            makeSeries('needs', 'irrigation', usage_types[0], swdata),
+                            makeSeries('needs', 'livestock', usage_types[4], swdata),
+                            makeSeries('needs', 'manufacturing', usage_types[2], swdata),
+                            makeSeries('needs', 'steam-electric-power', usage_types[3], swdata),
+                            makeSeries('needs', 'mining', usage_types[5], swdata),
+                            makeSeries('needs', 'municipal', usage_types[1], swdata)
                         ]
                     };
 
@@ -202,42 +142,12 @@
                         labels: constants.getDecades(),
                         // Our series array that contains series objects or in this case series data arrays
                         series: [
-                            makeSeries(
-                                'population',
-                                'irrigation',
-                                usage_types[0],
-                                swdata
-                            ),
-                            makeSeries(
-                                'population',
-                                'livestock',
-                                usage_types[4],
-                                swdata
-                            ),
-                            makeSeries(
-                                'population',
-                                'manufacturing',
-                                usage_types[2],
-                                swdata
-                            ),
-                            makeSeries(
-                                'population',
-                                'steam-electric-power',
-                                usage_types[3],
-                                swdata
-                            ),
-                            makeSeries(
-                                'population',
-                                'mining',
-                                usage_types[5],
-                                swdata
-                            ),
-                            makeSeries(
-                                'population',
-                                'municipal',
-                                usage_types[1],
-                                swdata
-                            )
+                            makeSeries('population', 'irrigation', usage_types[0], swdata),
+                            makeSeries('population', 'livestock', usage_types[4], swdata),
+                            makeSeries('population', 'manufacturing', usage_types[2], swdata),
+                            makeSeries('population', 'steam-electric-power', usage_types[3], swdata),
+                            makeSeries('population', 'mining', usage_types[5], swdata),
+                            makeSeries('population', 'municipal', usage_types[1], swdata)
                         ]
                     };
 
@@ -246,42 +156,12 @@
                         labels: constants.getDecades(),
                         // Our series array that contains series objects or in this case series data arrays
                         series: [
-                            makeSeries(
-                                'strategies',
-                                'irrigation',
-                                usage_types[0],
-                                swdata
-                            ),
-                            makeSeries(
-                                'strategies',
-                                'livestock',
-                                usage_types[4],
-                                swdata
-                            ),
-                            makeSeries(
-                                'strategies',
-                                'manufacturing',
-                                usage_types[2],
-                                swdata
-                            ),
-                            makeSeries(
-                                'strategies',
-                                'steam-electric-power',
-                                usage_types[3],
-                                swdata
-                            ),
-                            makeSeries(
-                                'strategies',
-                                'mining',
-                                usage_types[5],
-                                swdata
-                            ),
-                            makeSeries(
-                                'strategies',
-                                'municipal',
-                                usage_types[1],
-                                swdata
-                            )
+                            makeSeries('strategies', 'irrigation', usage_types[0], swdata),
+                            makeSeries('strategies', 'livestock', usage_types[4], swdata),
+                            makeSeries('strategies', 'manufacturing', usage_types[2], swdata),
+                            makeSeries('strategies', 'steam-electric-power', usage_types[3], swdata),
+                            makeSeries('strategies', 'mining', usage_types[5], swdata),
+                            makeSeries('strategies', 'municipal', usage_types[1], swdata)
                         ]
                     };
 
@@ -290,42 +170,12 @@
                         labels: constants.getDecades(),
                         // Our series array that contains series objects or in this case series data arrays
                         series: [
-                            makeSeries(
-                                'supplies',
-                                'irrigation',
-                                usage_types[0],
-                                swdata
-                            ),
-                            makeSeries(
-                                'supplies',
-                                'livestock',
-                                usage_types[4],
-                                swdata
-                            ),
-                            makeSeries(
-                                'supplies',
-                                'manufacturing',
-                                usage_types[2],
-                                swdata
-                            ),
-                            makeSeries(
-                                'supplies',
-                                'steam-electric-power',
-                                usage_types[3],
-                                swdata
-                            ),
-                            makeSeries(
-                                'supplies',
-                                'mining',
-                                usage_types[5],
-                                swdata
-                            ),
-                            makeSeries(
-                                'supplies',
-                                'municipal',
-                                usage_types[1],
-                                swdata
-                            )
+                            makeSeries('supplies', 'irrigation', usage_types[0], swdata),
+                            makeSeries('supplies', 'livestock', usage_types[4], swdata),
+                            makeSeries('supplies', 'manufacturing', usage_types[2], swdata),
+                            makeSeries('supplies', 'steam-electric-power', usage_types[3], swdata),
+                            makeSeries('supplies', 'mining', usage_types[5], swdata),
+                            makeSeries('supplies', 'municipal', usage_types[1], swdata)
                         ]
                     };
 
@@ -353,20 +203,14 @@
                 <!--<UsageTypeChartLegend className="u-pull-right legend-types-by-decade" />-->
                 <IconSpread />
             </div>
-            <ThemeSelector
-                {show}
-                showPopulation={false}
-                bind:select_theme={selectedTheme} />
+            <ThemeSelector {show} showPopulation={false} bind:select_theme={selectedTheme} id_pre="usage_type" />
         </div>
 
         {#await getData()}
             <div class="loader"></div>
         {:then data}
             {#if demands_visible}
-                <LineChart
-                    data={data.demands}
-                    chartTitle={`${chartTitle}-demands`}
-                    options={chartOptions} />
+                <LineChart data={data.demands} chartTitle={`${chartTitle}-demands`} options={chartOptions} />
                 <div class="toggle-container">
                     <ChartDataTable
                         header={decades}
@@ -379,10 +223,7 @@
                 </div>
             {/if}
             {#if supplies_visible}
-                <LineChart
-                    data={data.supplies}
-                    chartTitle={`${chartTitle}-supplies`}
-                    options={chartOptions} />
+                <LineChart data={data.supplies} chartTitle={`${chartTitle}-supplies`} options={chartOptions} />
 
                 <div class="toggle-container">
                     <ChartDataTable
@@ -396,10 +237,7 @@
                 </div>
             {/if}
             {#if needs_visible}
-                <LineChart
-                    data={data.needs}
-                    chartTitle={`${chartTitle}-needs`}
-                    options={chartOptions} />
+                <LineChart data={data.needs} chartTitle={`${chartTitle}-needs`} options={chartOptions} />
 
                 <div class="toggle-container">
                     <ChartDataTable
@@ -413,10 +251,7 @@
                 </div>
             {/if}
             {#if strategies_visible}
-                <LineChart
-                    data={data.strategies}
-                    chartTitle={`${chartTitle}-strategies`}
-                    options={chartOptions} />
+                <LineChart data={data.strategies} chartTitle={`${chartTitle}-strategies`} options={chartOptions} />
 
                 <div class="toggle-container">
                     <ChartDataTable
