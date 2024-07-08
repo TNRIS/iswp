@@ -7,7 +7,7 @@
     import ctAxisTitle from 'chartist-plugin-axistitle';
     import 'chartist/dist/index.css';
     import { BarChart } from 'chartist';
-    const { iterator, data, group_name, chartTitle, constants } = $$props;
+    const { iterator, data, group_name, chartTitle, constants, title } = $$props;
 
     /**
      * Checks data series to see if it is all zeroes
@@ -94,7 +94,8 @@
     };
 </script>
 
-<div class="bar-chart-container">
+<!-- Hidden due to being a graphical description -->
+<div class="bar-chart-container" {title} role="presentation">
     {#if isAllZero()}
         <div class="zero-message">All values are zero</div>
     {/if}
@@ -107,6 +108,7 @@
             on:blur
             class="{chartTitle} ct-chart-bar-{iterator} ct-chart"
             role="region" />
-        <div role="tooltip" id={`${chartTitle}-tooltip`} />
+        <!-- This tooltip get's populated by chartist which should allow aria to view the text when hovered over. Title is just a placeholder-->
+        <div role="tooltip" id={`${chartTitle}-tooltip`} title={`${chartTitle} tooltip`} />
     </div>
 </div>

@@ -11,7 +11,7 @@
     }
 </script>
 
-<button on:click={toggleVisible} class="button-small">
+<button on:click={toggleVisible} class="button-small" title="Show Data Table">
     <small>{text}</small>
 </button>
 

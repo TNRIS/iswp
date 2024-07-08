@@ -123,7 +123,8 @@
                         {data}
                         group_name={'TBD'}
                         chartTitle={'theme-totals-by-decade'}
-                        {constants} />
+                        {constants} 
+                        title={"Theme Totals By Decade Bar Chart"} />
                     <ChartDataTable
                         header={constants.getDecades()}
                         body={data['TBD']}

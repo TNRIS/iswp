@@ -86,7 +86,8 @@
                                     {data}
                                     group_name={group_name[0]}
                                     chartTitle={group_name[0] + '-bc'}
-                                    {constants} />
+                                    {constants}
+                                    title={"Data By Usage Type Bar Chart"} />
                                 <ChartDataTable
                                     header={constants.getDecades()}
                                     body={data[group_name[0]]}
@@ -106,7 +107,8 @@
                                     {data}
                                     group_name={group_name[1]}
                                     chartTitle={group_name[0] + '-bc'}
-                                    {constants} />
+                                    {constants} 
+                                    title={"Data By Usage Type Bar Chart"} />
                                 <ChartDataTable
                                     header={constants.getDecades()}
                                     body={data[group_name[1]]}
