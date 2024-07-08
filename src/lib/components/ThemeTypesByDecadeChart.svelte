@@ -374,7 +374,8 @@
                         titles={true}
                         showHide={true}
                         {titleMap}
-                        showTotal={true} />
+                        showTotal={true}
+                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`} />
                 </div>
             {/if}
             {#if supplies_visible}
@@ -390,7 +391,8 @@
                         titles={true}
                         showHide={true}
                         {titleMap}
-                        showTotal={true} />
+                        showTotal={true}
+                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`} />
                 </div>
             {/if}
             {#if needs_visible}
@@ -406,7 +408,8 @@
                         titles={true}
                         showHide={true}
                         {titleMap}
-                        showTotal={true} />
+                        showTotal={true}
+                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`} />
                 </div>
             {/if}
             {#if strategies_visible}
@@ -422,7 +425,8 @@
                         titles={true}
                         showHide={true}
                         {titleMap}
-                        showTotal={true} />
+                        showTotal={true}
+                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`} />
                 </div>
             {/if}
         {:catch error}
