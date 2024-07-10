@@ -1008,7 +1008,7 @@
 </script>
 
 <!-- EntityMap hidden due to data is available in a more accessible form in the csv download section. -->
-<div class="row panel-row" role="presentation">
+<div class="row panel-row">
     <!-- Only project has type pop because it has an entity map with population only. -->
     {#if type == 'pop'}
         <span class="view-name">{title}</span>
@@ -1024,7 +1024,10 @@
             {/if}
         </h4>
     {/if}
-    <div class="twelve columns">
+    <div
+        class="twelve columns"
+        role="group"
+        aria-label="Interactive map with buttons placed overlaying a map of texas that you can hit and a tooltip gives details.">
         <div id="entity_map" style="width:100%; top:0;">
             <div id="map-entity-hover-tooltip" />
         </div>

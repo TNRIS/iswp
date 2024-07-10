@@ -10,7 +10,6 @@
     <div
         class="show-medium"
         role="menubar"
-        aria-controls="dataview-group"
         aria-label="Choose from the following decades to change the data displayed by the planning decade and theme widget"
         title="Choose from the following to decades change the data displayed by the planning decade and theme widget."
         group="data by planning decade and theme menu">
@@ -32,7 +31,6 @@
         <select
             id="decade_nav"
             role="menubar"
-            aria-controls="dataview-group"
             aria-label="Choose from the following to decades change the data displayed by the planning decade and theme widget."
             title="Choose from the following to decades change the data displayed by the planning decade and theme widget."
             group="data by planning decade and theme menu">

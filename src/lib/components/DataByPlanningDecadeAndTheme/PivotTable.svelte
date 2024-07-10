@@ -155,7 +155,7 @@
 {#await onLoad()}
     <div class="loader"></div>
 {:then}
-    <table id="PivotTable" />
+    <table id="PivotTable" role="grid" />
 {:catch}
     <span>Error loading pivottable</span>
 {/await}

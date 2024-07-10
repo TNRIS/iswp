@@ -112,9 +112,8 @@
             <div
                 class="selector treemap-selector"
                 role="menubar"
-                aria-label="Choose from the following to change what the treemap displays."
-                title="Choose from the following to change what the treemap displays."
-                aria-controls="dataview-group">
+                aria-label="Choose from the following to choose a subdimension to display."
+                title="Choose from the following to choose a subdimension to display.">
                 <button class="button" class:active={selectedTreemap === 'region'} on:click={() => ru('region')} role="menuitem">
                     By Region
                 </button>

@@ -11,7 +11,6 @@
     <div
         class="show-medium"
         role="menubar"
-        aria-controls="dataview-group"
         aria-label="Choose from the following themes to change the data displayed by the planning decade and theme widget."
         group="data by planning decade and theme menu"
         title="Choose from the following themes to change the data displayed by the planning decade and theme widget.">
@@ -57,7 +56,6 @@
             id={`${id_pre}theme_nav`}
             on:change={(event) => show(event, true)}
             role="menubar"
-            aria-controls="dataview-group"
             group="data by planning decade and theme menu"
             aria-label="Choose from the following themes to change the data displayed by the planning decade and theme widget."
             title="Choose from the following themes to change the data displayed by the planning decade and theme widget.">
