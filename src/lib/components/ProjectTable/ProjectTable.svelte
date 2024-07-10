@@ -19,26 +19,18 @@
         if (swdata.projects && swdata.projects.length) projects = true;
         for (let project of swdata.projects) {
             let to_array = [
-                html(
-                    `<a href="/project/${project.WmsProjectId}">${project.ProjectName}`
-                ),
+                html(`<a href="/project/${project.WmsProjectId}">${project.ProjectName}`),
                 project.OnlineDecade,
                 project.ProjectSponsors,
-                project.CapitalCost % 1 != 0
-                    ? usd_format.format(project.CapitalCost)
-                    : usd_format_whole.format(project.CapitalCost)
+                project.CapitalCost % 1 != 0 ? usd_format.format(project.CapitalCost) : usd_format_whole.format(project.CapitalCost)
             ];
 
             // Need to stringify array to use includes function because [1] !== [1] since they don't have the same reference.
             if (
                 !(
                     (
-                        JSON.stringify(project_data).includes(
-                            JSON.stringify(to_array)
-                        ) &&
-                        (project.WmsProjectSponsorRegion ===
-                            project.WugRegion ||
-                            type !== 'region')
+                        JSON.stringify(project_data).includes(JSON.stringify(to_array)) &&
+                        (project.WmsProjectSponsorRegion === project.WugRegion || type !== 'region')
                     ) // Specific to region.
                 )
             ) {
@@ -66,14 +58,8 @@
                          */
                         compare: (a, b) => {
                             try {
-                                let acont = a?.props?.content.replace(
-                                    /<.*?>/g,
-                                    ''
-                                );
-                                let bcont = b?.props?.content.replace(
-                                    /<.*?>/g,
-                                    ''
-                                );
+                                let acont = a?.props?.content.replace(/<.*?>/g, '');
+                                let bcont = b?.props?.content.replace(/<.*?>/g, '');
                                 if (acont > bcont) return 1;
                                 else if (bcont > acont) return -1;
                                 else return 0;
@@ -144,21 +130,13 @@
 
         // No built in way to customize the placeholder for gridjs-input so I need to do this workaround.
         // @ts-ignore because document is defined since this is onMount();
-        let gridjs_input = document
-            .getElementById('rpc')
-            .getElementsByClassName('gridjs-input')[0];
-        if (gridjs_input)
-            gridjs_input.setAttribute(
-                'placeholder',
-                `Type to filter by project name`
-            );
+        let gridjs_input = document.getElementById('rpc').getElementsByClassName('gridjs-input')[0];
+        if (gridjs_input) gridjs_input.setAttribute('placeholder', `Type to filter by project name`);
     });
 
     // Abstract the process of formatting the sum. With some checking.
     const format_sum = () => {
-        return sum % 1 != 0
-            ? usd_format_whole.format(sum)
-            : usd_format_whole.format(sum);
+        return sum % 1 != 0 ? usd_format_whole.format(sum) : usd_format_whole.format(sum);
     };
 </script>
 

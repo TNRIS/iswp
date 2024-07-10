@@ -143,9 +143,9 @@
 
 <div class="header-nav sticky-div">
     <div class="wrapper" id="wrapper">
-        <form aria-label="Choose a page related to the category and sub category selector" role="navigation">
+        <form>
             <label for="navcat">View data for</label>
-            <div class="select-container" aria-label="Page Category" id="navcat_container" role="menu">
+            <nav class="select-container" id="navcat_container">
                 <Select
                     {items}
                     clearable={false}
@@ -153,14 +153,16 @@
                     value={chosen ? chosen : 'All of Texas'}
                     showChevron
                     inputAttributes={{
-                        title: 'Category'
+                        title: 'Category',
+                        'aria-label': 'Choose a page to navigate to related to the category then hit the go button.',
+                        'aria-owns': 'nav_submit'
                     }} />
-            </div>
+            </nav>
 
             {#await setupChoices() then}
                 {#if chosen && chosen !== '' && chosen !== 'statewide'}
                     {#if chosen == 'region' || chosen == 'county' || chosen == 'usagetype' || chosen == 'source' || chosen == 'wmstype'}
-                        <div class="select-container" style="width:300px;">
+                        <nav class="select-container" style="width:300px;">
                             <Select
                                 items={categories[chosen]}
                                 clearable={false}
@@ -168,16 +170,21 @@
                                 placeholder="Select {titles[chosen]}"
                                 showChevron
                                 inputAttributes={{
-                                    title: 'Sub Category'
+                                    title: 'Sub Category',
+                                    'aria-label':
+                                        'Choose a page to navigate to related to the sub category to navigate to then hit the go button.',
+                                    'aria-owns': 'nav_submit'
                                 }} />
-                        </div>
+                        </nav>
                     {:else}
-                        <div class="select-container">
+                        <nav class="select-container">
                             <input
                                 style="padding: 8px;"
                                 type="text"
                                 id="secondary-category-select"
                                 autocomplete="off"
+                                aria-label="Choose a page to navigate to related to the sub category to navigate to then hit the go button."
+                                aria-owns="nav_submit"
                                 on:keyup={filterSubCategory}
                                 placeholder="Start typing to find {titles[chosen]}" />
                             <ul id="secondList" class="nav-category-select">
@@ -187,20 +194,30 @@
                                     </li>
                                 {/each}
                             </ul>
-                        </div>
+                        </nav>
                     {/if}
                 {/if}
             {:catch error}
                 <span>Error loading nav {error}</span>
             {/await}
-            <input
-                type="submit"
-                class="button button-nav-submit"
-                disabled={chosen == ''
-                    ? false
-                    : !((chosen && chosen.length && chosen2 && chosen2 !== undefined) /* 0 is fine so check explicitly for undefined */)}
-                value="Go"
-                title="Continue here after you’ve filled out all form elements to navigate to selected page." />
+            <form action={region} id="submit-button">
+                <input
+                    type="submit"
+                    class="button button-nav-submit"
+                    disabled={chosen == ''
+                        ? false
+                        : !(
+                              (
+                                  chosen &&
+                                  chosen.length &&
+                                  chosen2 &&
+                                  chosen2 !== undefined
+                              ) /* 0 is fine so check explicitly for undefined */
+                          )}
+                    value="Go"
+                    id="nav_submit"
+                    title="Continue here after you’ve filled out all form elements to navigate to selected page." />
+            </form>
         </form>
     </div>
 </div>
