@@ -6,12 +6,7 @@
     export let data;
     let db = load_indexeddb();
     import { QuerySettings } from '$lib/QuerySettings.js';
-    import {
-        load_indexeddb,
-        getConstants,
-        cap,
-        is_idb_loaded
-    } from '$lib/helper.js';
+    import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
     import Statewide from '$lib/db/statewide.js';
     import Header from '$lib/components/Header.svelte';
 
@@ -28,14 +23,7 @@
     sourceSetting.setAll(Number(data.slug));
     let title = '';
     let tagline = `Surface Water Source in <a href="/">Texas</a>`;
-    let stratAd = [
-        'Region',
-        'County',
-        'Entity',
-        'Strategy',
-        'WMS Type',
-        'Source'
-    ];
+    let stratAd = ['Region', 'County', 'Entity', 'Strategy', 'WMS Type', 'Source'];
     let loadForSource = async () => {
         await is_idb_loaded();
         let start = Date.now();

@@ -20,9 +20,7 @@ export const delete_database27 = () => {
         };
 
         del.onblocked = () => {
-            console.log(
-                "Couldn't delete database due to the operation being blocked"
-            );
+            console.log("Couldn't delete database due to the operation being blocked");
         };
     } catch (err) {
         console.log(`error deleting database: ${err}`);
@@ -32,8 +30,7 @@ export const delete_database27 = () => {
 const storeChecksum = async () => {
     // Store checksum in localstorage
     const start = Date.now();
-    const checksum_url =
-        'https://tnris-droc.s3.amazonaws.com/iswp/2027/checksum.json';
+    const checksum_url = 'https://tnris-droc.s3.amazonaws.com/iswp/2027/checksum.json';
     const response = await fetch(checksum_url);
     const cs = await response.json();
     localStorage.setItem('checksum2027', JSON.stringify(cs));
@@ -63,9 +60,7 @@ export function startDb27() {
                 let object_stores = Array.from(db27.objectStoreNames);
                 for (let id in object_stores) {
                     let oname = object_stores[id];
-                    let store = db27
-                        .transaction(oname, 'readwrite')
-                        .objectStore(oname);
+                    let store = db27.transaction(oname, 'readwrite').objectStore(oname);
                     j27[oname].forEach((vwc) => {
                         store.add(vwc);
                     });
@@ -74,21 +69,15 @@ export function startDb27() {
             // Check we set entityCoordinates up and redownload if needed.
             if (localStorage.getItem('entitySuccess') !== 'true') {
                 const transaction = db27.transaction(['vwEntityCoordinates']);
-                const objectStore = transaction.objectStore(
-                    'vwEntityCoordinates'
-                );
+                const objectStore = transaction.objectStore('vwEntityCoordinates');
                 const entityCoordinates = objectStore.getAll();
 
                 entityCoordinates.onsuccess = (event) => {
                     // Do something with the request.result!
-                    localStorage.setItem(
-                        'entityCoordinates',
-                        JSON.stringify(event.target.result)
-                    );
+                    localStorage.setItem('entityCoordinates', JSON.stringify(event.target.result));
 
                     // Practical check to make sure this has at least 1000 entities.
-                    if (event.target.result.length > 1000)
-                        localStorage.setItem('entitySuccess', 'true');
+                    if (event.target.result.length > 1000) localStorage.setItem('entitySuccess', 'true');
                 };
                 entityCoordinates.onerror = (event) => {
                     localStorage.setItem('entitySuccess', 'false');
@@ -108,19 +97,12 @@ export function startDb27() {
                     checksum = JSON.parse(checksum);
                 }
                 //OK: So fast not even 1ms Load time here. It measures 0ms!
-                console.log(
-                    `get checksum from localstorage time: ${Date.now() - start}ms.`
-                );
+                console.log(`get checksum from localstorage time: ${Date.now() - start}ms.`);
 
-                if (
-                    db27.objectStoreNames.length !==
-                    Object.keys(checksum).length
-                ) {
+                if (db27.objectStoreNames.length !== Object.keys(checksum).length) {
                     request27.result.close();
                     delete_database27();
-                    reject(
-                        'There was a problem loading database. Reload please.'
-                    );
+                    reject('There was a problem loading database. Reload please.');
                     window.location.reload();
                 }
 
@@ -139,9 +121,7 @@ export function startDb27() {
                             request22.result.close();
                             delete_database27();
                             window.location.reload();
-                            reject(
-                                'There was a problem loading database. Reload please.'
-                            );
+                            reject('There was a problem loading database. Reload please.');
                         }
                         j++;
 
@@ -166,36 +146,15 @@ export function startDb27() {
 
             build_func(event, 'vwEntityCoordinates', ['id', 'EntityId']);
             build_func(event, 'vwEntityNeedsAsPctOfDemand', ['id', 'EntityId']);
-            build_func(event, 'vwExistingWugSupply', [
-                'EntityId',
-                'MapSourceId',
-                'WugCounty',
-                'WugRegion',
-                'WugType'
-            ]);
+            build_func(event, 'vwExistingWugSupply', ['EntityId', 'MapSourceId', 'WugCounty', 'WugRegion', 'WugType']);
             build_func(event, 'vwExistingWUGSupplyA1', []);
             build_func(event, 'vwSelectEntitiesInCounty', ['EntityId']);
             build_func(event, 'vwSelectEntitiesInRegion', ['EntityId']);
-            build_func(event, 'vwWugDemand', [
-                'EntityId',
-                'WugCounty',
-                'WugRegion',
-                'WugType'
-            ]);
+            build_func(event, 'vwWugDemand', ['EntityId', 'WugCounty', 'WugRegion', 'WugType']);
             build_func(event, 'vwWugDemandsA1', []);
-            build_func(event, 'vwWugNeeds', [
-                'EntityId',
-                'WugCounty',
-                'WugRegion',
-                'WugType'
-            ]);
+            build_func(event, 'vwWugNeeds', ['EntityId', 'WugCounty', 'WugRegion', 'WugType']);
             build_func(event, 'vwWugNeedsA1', []);
-            build_func(event, 'vwWugPopulation', [
-                'EntityId',
-                'WugCounty',
-                'WugRegion',
-                'WugType'
-            ]);
+            build_func(event, 'vwWugPopulation', ['EntityId', 'WugCounty', 'WugRegion', 'WugType']);
             build_func(event, 'vwWugPopulationA1', []);
             build_func(event, 'vwSelectRegionsInCounty', ['RegionLetter']);
             build_func(event, 'vwWMSWugSupply', [
@@ -209,41 +168,15 @@ export function startDb27() {
                 'WmsSponsorRegion'
             ]);
             build_func(event, 'vwWMSWugSupplyA1', []);
-            build_func(event, 'vwWMSProjects', [
-                'WmsProjectId',
-                'WugRegion',
-                'WmsProjectSponsorRegion'
-            ]);
-            build_func(event, 'vwWMSProjectByCounty', [
-                'WugCounty',
-                'WmsProjectId'
-            ]);
-            build_func(event, 'vwWMSProjectByEntity', [
-                'EntityId',
-                'WmsProjectId'
-            ]);
-            build_func(event, 'vwWMSProjectBySource', [
-                'MapSourceId',
-                'WmsProjectId'
-            ]);
+            build_func(event, 'vwWMSProjects', ['WmsProjectId', 'WugRegion', 'WmsProjectSponsorRegion']);
+            build_func(event, 'vwWMSProjectByCounty', ['WugCounty', 'WmsProjectId']);
+            build_func(event, 'vwWMSProjectByEntity', ['EntityId', 'WmsProjectId']);
+            build_func(event, 'vwWMSProjectBySource', ['MapSourceId', 'WmsProjectId']);
             build_func(event, 'vwWMSProjectByWMS', ['WmsId', 'WmsProjectId']);
-            build_func(event, 'vwWMSProjectsByWMSType', [
-                'WmsProjectId',
-                'WmsType'
-            ]);
-            build_func(event, 'vwWMSProjectByWUGType', [
-                'WmsProjectId',
-                'WmsProjectSponsorRegion'
-            ]);
-            build_func(event, 'vwWMSProjectByEntityWUGSplit', [
-                'WmsProjectId',
-                'WmsId'
-            ]);
-            build_func(event, 'vwWMSProjectEntityRelationships', [
-                'WmsProjectId',
-                'EntityId',
-                'MapSourceId'
-            ]);
+            build_func(event, 'vwWMSProjectsByWMSType', ['WmsProjectId', 'WmsType']);
+            build_func(event, 'vwWMSProjectByWUGType', ['WmsProjectId', 'WmsProjectSponsorRegion']);
+            build_func(event, 'vwWMSProjectByEntityWUGSplit', ['WmsProjectId', 'WmsId']);
+            build_func(event, 'vwWMSProjectEntityRelationships', ['WmsProjectId', 'EntityId', 'MapSourceId']);
         };
     });
 }

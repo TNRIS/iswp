@@ -1,11 +1,5 @@
 <script>
-    import {
-        load_indexeddb,
-        slugify,
-        getConstants,
-        cap,
-        is_idb_loaded
-    } from '$lib/helper.js';
+    import { load_indexeddb, slugify, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
     import Statewide from '$lib/db/statewide.js';
     import { QuerySettings } from '$lib/QuerySettings.js';
     import ThemeTotalsByDecadeChart from '$lib/components/ThemeTotalsByDecadeChart.svelte';
@@ -29,14 +23,7 @@
 
     let db = load_indexeddb();
 
-    let stratAd = [
-        'Region',
-        'Strategy',
-        'WMS Type',
-        'Source',
-        'County',
-        'Entity'
-    ];
+    let stratAd = ['Region', 'Strategy', 'WMS Type', 'Source', 'County', 'Entity'];
 
     let activeDem = ['Region', 'County', 'Entity'];
 
@@ -63,43 +50,28 @@
         <div class="summary-wrapper container">
             <div class="view-summary usage-type-summary">
                 {#if data.slug == 'IRRIGATION'}
-                    <h2
-                        ><Irrigation
-                            class="usage-type-icon icon-irrigation legend-marker" />{data.slug}</h2>
+                    <h2><Irrigation class="usage-type-icon icon-irrigation legend-marker" />{data.slug}</h2>
                 {/if}
                 {#if data.slug == 'MUNICIPAL'}
-                    <h2
-                        ><Municipal
-                            class="usage-type-icon icon-municipal legend-marker" />{data.slug}</h2>
+                    <h2><Municipal class="usage-type-icon icon-municipal legend-marker" />{data.slug}</h2>
                 {/if}
                 {#if data.slug == 'MANUFACTURING'}
-                    <h2
-                        ><Manufacturing
-                            class="usage-type-icon icon-manufacturing legend-marker" />{data.slug}</h2>
+                    <h2><Manufacturing class="usage-type-icon icon-manufacturing legend-marker" />{data.slug}</h2>
                 {/if}
                 {#if data.slug == 'STEAM ELECTRIC POWER'}
-                    <h2
-                        ><SteamElectricPower
-                            class="usage-type-icon icon-steam-electric-power legend-marker" />{data.slug}</h2>
+                    <h2><SteamElectricPower class="usage-type-icon icon-steam-electric-power legend-marker" />{data.slug}</h2>
                 {/if}
                 {#if data.slug == 'LIVESTOCK'}
-                    <h2
-                        ><Livestock
-                            class="usage-type-icon icon-livestock legend-marker" />{data.slug}</h2>
+                    <h2><Livestock class="usage-type-icon icon-livestock legend-marker" />{data.slug}</h2>
                 {/if}
                 {#if data.slug == 'MINING'}
-                    <h2
-                        ><Mining
-                            class="usage-type-icon icon-mining legend-marker" />{data.slug}</h2>
+                    <h2><Mining class="usage-type-icon icon-mining legend-marker" />{data.slug}</h2>
                 {/if}
                 <p>{constants.USAGE_TYPE_DESCRIPTIONS[data.slug]}</p>
             </div>
         </div>
     </div>
-    <ThemeTotalsByDecadeChart
-        {lrp}
-        {constants}
-        title={`Usage Type - ${slugify(data.slug)}`} />
+    <ThemeTotalsByDecadeChart {lrp} {constants} title={`Usage Type - ${slugify(data.slug)}`} />
     <DataViewChoiceWrapInd
         page="usagetype"
         slug={data.slug}

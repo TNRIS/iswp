@@ -36,8 +36,7 @@ export default class Statewide {
                 if (b[type]) {
                     let bt = b[type];
                     if (ident.includes(bt)) {
-                        a[totalIdent][bt][decade] =
-                            a[totalIdent][bt][decade] + b[id + decade];
+                        a[totalIdent][bt][decade] = a[totalIdent][bt][decade] + b[id + decade];
                     }
                 }
             } catch (err) {
@@ -105,53 +104,27 @@ export default class Statewide {
                 }
                 // First push b to a.rows[]
                 a.rows.push(b);
-                a = that.#pattern(
-                    that.usage_types,
-                    a,
-                    b,
-                    id,
-                    'typeTotals',
-                    'WugType'
-                );
+                a = that.#pattern(that.usage_types, a, b, id, 'typeTotals', 'WugType');
 
                 if (id == 'SS') {
                     a = that.#pattern(
-                        [
-                            'DEMAND REDUCTION',
-                            'GROUNDWATER',
-                            'REUSE',
-                            'SEAWATER',
-                            'SURFACE WATER'
-                        ],
+                        ['DEMAND REDUCTION', 'GROUNDWATER', 'REUSE', 'SEAWATER', 'SURFACE WATER'],
                         a,
                         b,
                         id,
                         'strategySourceTotals',
                         'SourceType'
                     );
-                    a = that.#pattern(
-                        that.constants.WMS_TYPES,
-                        a,
-                        b,
-                        id,
-                        'strategyTypeTotals',
-                        'WmsType'
-                    );
+                    a = that.#pattern(that.constants.WMS_TYPES, a, b, id, 'strategyTypeTotals', 'WmsType');
                 }
 
                 // Add records decade total to storage decade total for each decade.
-                a.decadeTotals[that.decades[0]] =
-                    a.decadeTotals[that.decades[0]] + b[id + that.decades[0]];
-                a.decadeTotals[that.decades[1]] =
-                    a.decadeTotals[that.decades[1]] + b[id + that.decades[1]];
-                a.decadeTotals[that.decades[2]] =
-                    a.decadeTotals[that.decades[2]] + b[id + that.decades[2]];
-                a.decadeTotals[that.decades[3]] =
-                    a.decadeTotals[that.decades[3]] + b[id + that.decades[3]];
-                a.decadeTotals[that.decades[4]] =
-                    a.decadeTotals[that.decades[4]] + b[id + that.decades[4]];
-                a.decadeTotals[that.decades[5]] =
-                    a.decadeTotals[that.decades[5]] + b[id + that.decades[5]];
+                a.decadeTotals[that.decades[0]] = a.decadeTotals[that.decades[0]] + b[id + that.decades[0]];
+                a.decadeTotals[that.decades[1]] = a.decadeTotals[that.decades[1]] + b[id + that.decades[1]];
+                a.decadeTotals[that.decades[2]] = a.decadeTotals[that.decades[2]] + b[id + that.decades[2]];
+                a.decadeTotals[that.decades[3]] = a.decadeTotals[that.decades[3]] + b[id + that.decades[3]];
+                a.decadeTotals[that.decades[4]] = a.decadeTotals[that.decades[4]] + b[id + that.decades[4]];
+                a.decadeTotals[that.decades[5]] = a.decadeTotals[that.decades[5]] + b[id + that.decades[5]];
 
                 return a;
             } catch (err) {
@@ -196,9 +169,7 @@ export default class Statewide {
                     reject(event);
                 };
             } catch (err) {
-                console.error(
-                    `error in getAllTransaction: key ${key}, where ${where}, project_filter ${project_filter}`
-                );
+                console.error(`error in getAllTransaction: key ${key}, where ${where}, project_filter ${project_filter}`);
                 reject(err);
             }
         });
@@ -243,11 +214,7 @@ export default class Statewide {
 
         let supplies_observable, strategies_observable;
 
-        if (
-            setting.type !== 'strategies' &&
-            setting.type !== 'wms' &&
-            setting.type !== 'wmstype'
-        ) {
+        if (setting.type !== 'strategies' && setting.type !== 'wms' && setting.type !== 'wmstype') {
             if (setting.type !== 'datastrategies') {
                 supplies_observable = this.#getAllTransaction(
                     this.constants.DATA_TABLES.supplies,
@@ -281,15 +248,14 @@ export default class Statewide {
             );
         }
 
-        let [demands, needs, supplies, population, strategies, projects] =
-            await Promise.all([
-                demands_observable,
-                needs_observable,
-                supplies_observable,
-                population_observable,
-                strategies_observable,
-                projects_observable
-            ]);
+        let [demands, needs, supplies, population, strategies, projects] = await Promise.all([
+            demands_observable,
+            needs_observable,
+            supplies_observable,
+            population_observable,
+            strategies_observable,
+            projects_observable
+        ]);
         console.log(`get time 3 in ms: ${Date.now() - start}`);
 
         //TODO: Make more efficient.
@@ -315,24 +281,16 @@ export default class Statewide {
 
         // Get wug data for the map!
         if (page !== '' && page !== 'statewide') {
-            let b = await this.#getAllTransaction(
-                `${this.constants.tappend}EntityCoordinates`
-            );
-            let ent5 = await this.#getAllTransaction(
-                `${this.constants.tappend}WMSProjects`
-            );
-            let ent6 = await this.#getAllTransaction(
-                `${this.constants.tappend}WMSProjectBySource`
-            );
+            let b = await this.#getAllTransaction(`${this.constants.tappend}EntityCoordinates`);
+            let ent5 = await this.#getAllTransaction(`${this.constants.tappend}WMSProjects`);
+            let ent6 = await this.#getAllTransaction(`${this.constants.tappend}WMSProjectBySource`);
             console.log(`get time 5 in ms: ${Date.now() - start}`);
 
-            if (c.strategies.rows)
-                objLeftjoin(c.strategies.rows, b, ['EntityId']);
+            if (c.strategies.rows) objLeftjoin(c.strategies.rows, b, ['EntityId']);
             if (c.needs.rows) objLeftjoin(c.needs.rows, b, ['EntityId']);
             if (c.supplies.rows) objLeftjoin(c.supplies.rows, b, ['EntityId']);
             if (c.demands.rows) objLeftjoin(c.demands.rows, b, ['EntityId']);
-            if (c.population.rows)
-                objLeftjoin(c.population.rows, b, ['EntityId']);
+            if (c.population.rows) objLeftjoin(c.population.rows, b, ['EntityId']);
             objLeftjoin(ent5, ent6, ['WmsProjectId']);
             c.wug_projects = ent5;
         }
@@ -349,12 +307,8 @@ export default class Statewide {
                 resolve(JSON.parse(stored));
             }
 
-            const transaction = this.db.transaction([
-                `${this.constants.tappend}EntityCoordinates`
-            ]);
-            const objectStore = transaction.objectStore(
-                `${this.constants.tappend}EntityCoordinates`
-            );
+            const transaction = this.db.transaction([`${this.constants.tappend}EntityCoordinates`]);
+            const objectStore = transaction.objectStore(`${this.constants.tappend}EntityCoordinates`);
 
             // We should store here.
 
@@ -381,14 +335,10 @@ export default class Statewide {
                 return resolve(JSON.parse(stored));
             }
             if (stored !== '[]' || stored !== undefined) {
-                const transaction = this.db.transaction([
-                    `${this.constants.tappend}WMSProjects`
-                ]);
+                const transaction = this.db.transaction([`${this.constants.tappend}WMSProjects`]);
 
                 // We should store here.
-                const objectStore = transaction.objectStore(
-                    `${this.constants.tappend}WMSProjects`
-                );
+                const objectStore = transaction.objectStore(`${this.constants.tappend}WMSProjects`);
 
                 let rdemands = objectStore.getAll();
                 rdemands.onsuccess = (event) => {
@@ -396,9 +346,7 @@ export default class Statewide {
                     let project = writable(JSON.stringify(event.target.result));
 
                     // Anytime the store changes, update the local storage value.
-                    project.subscribe(
-                        (value) => (localStorage.project = value)
-                    );
+                    project.subscribe((value) => (localStorage.project = value));
                     resolve(event.target.result);
                 };
                 rdemands.onerror = (event) => {
@@ -417,12 +365,8 @@ export default class Statewide {
                 return resolve(JSON.parse(stored));
             }
 
-            const transaction = this.db.transaction([
-                `${this.constants.tappend}WMSProjectByWMS`
-            ]);
-            const objectStore = transaction.objectStore(
-                `${this.constants.tappend}WMSProjectByWMS`
-            );
+            const transaction = this.db.transaction([`${this.constants.tappend}WMSProjectByWMS`]);
+            const objectStore = transaction.objectStore(`${this.constants.tappend}WMSProjectByWMS`);
 
             // We should store here.
 

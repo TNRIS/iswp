@@ -76,9 +76,7 @@
                         <div class="row" key={i} id="bar_chart_container_dut">
                             <div class="six columns wide type-chart-container">
                                 <UsageTypeIcon group_name={group_name[0]} />
-                                <h5
-                                    class={'cap heading-' +
-                                        slugify(group_name[0].toLowerCase())}>
+                                <h5 class={'cap heading-' + slugify(group_name[0].toLowerCase())}>
                                     {group_name[0].toLowerCase()}
                                 </h5>
                                 <BarChart
@@ -99,9 +97,7 @@
 
                             <div class="six columns wide type-chart-container">
                                 <UsageTypeIcon group_name={group_name[1]} />
-                                <h5
-                                    class={'cap heading-' +
-                                        slugify(group_name[1].toLowerCase())}>
+                                <h5 class={'cap heading-' + slugify(group_name[1].toLowerCase())}>
                                     {group_name[1].toLowerCase()}
                                 </h5>
                                 <BarChart

@@ -2,13 +2,7 @@
 // Based on zoom map at https://observablehq.com/@d3/zoomable-treemap
 import * as d3 from 'd3';
 
-export let buildZoomable = (
-    container,
-    data,
-    selectedTreemap,
-    total,
-    themeStore
-) => {
+export let buildZoomable = (container, data, selectedTreemap, total, themeStore) => {
     // Specify the chart’s dimensions.
     const width = container.offsetWidth;
     const height = 500;
@@ -84,14 +78,7 @@ export let buildZoomable = (
         if (selectedTreemap == 'region') {
             usage_colors = region_colors;
         } else if (selectedTreemap == 'usagetype') {
-            usage_colors = [
-                '#ed1b2f',
-                '#009b90',
-                '#ead604',
-                '#78b6e4',
-                '#fec34e',
-                '#6a8a22'
-            ];
+            usage_colors = ['#ed1b2f', '#009b90', '#ead604', '#78b6e4', '#fec34e', '#6a8a22'];
         }
 
         const color = d3.scaleOrdinal(
@@ -312,15 +299,9 @@ export let buildZoomable = (
             .data((d) => {
                 try {
                     if (d === root && !d.parent) {
-                        return [
-                            name(d)[0].toUpperCase() + name(d).substring(1)
-                        ];
+                        return [name(d)[0].toUpperCase() + name(d).substring(1)];
                     } else {
-                        return [
-                            d.data.name.concat(
-                                ` (${format((d.value / d.parent.value) * 100)}%)`
-                            )
-                        ];
+                        return [d.data.name.concat(` (${format((d.value / d.parent.value) * 100)}%)`)];
                     }
                 } catch (err) {
                     console.log(err);
@@ -329,11 +310,7 @@ export let buildZoomable = (
 
             .join('tspan')
             .attr('x', 3)
-            .attr(
-                'y',
-                (d, i, nodes) =>
-                    `${(i === nodes.length - 1) * 0.3 + 1.1 + i * 0.9}em`
-            )
+            .attr('y', (d, i, nodes) => `${(i === nodes.length - 1) * 0.3 + 1.1 + i * 0.9}em`)
             .attr('fill-opacity', 1)
             .attr('font-weight', 'bold')
             .attr('font-size', '12')
@@ -345,11 +322,7 @@ export let buildZoomable = (
     function position(group, root) {
         group
             .selectAll('g')
-            .attr('transform', (d) =>
-                d === root
-                    ? `translate(0,-30)`
-                    : `translate(${x(d.x0)},${y(d.y0)})`
-            )
+            .attr('transform', (d) => (d === root ? `translate(0,-30)` : `translate(${x(d.x0)},${y(d.y0)})`))
             .select('rect')
             .attr('width', (d) => (d === root ? width : x(d.x1) - x(d.x0)))
             .attr('height', (d) => (d === root ? 20 : y(d.y1) - y(d.y0)));
@@ -366,9 +339,7 @@ export let buildZoomable = (
 
             svg.transition()
                 .duration(750)
-                .call((t) =>
-                    group0.transition(t).remove().call(position, d.parent)
-                )
+                .call((t) => group0.transition(t).remove().call(position, d.parent))
                 .call((t) =>
                     group1
                         .transition(t)

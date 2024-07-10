@@ -17,12 +17,7 @@
                 await onMountSync();
             }
             pivotLoaded = true;
-            let rows,
-                dimensions,
-                reduce,
-                calculations,
-                sorter,
-                activeDimensions;
+            let rows, dimensions, reduce, calculations, sorter, activeDimensions;
             let getCalculations = (titleCalcField) => {
                 return [
                     {
@@ -50,31 +45,20 @@
             ];
 
             reduce = function (row, memo) {
-                memo.amountTotal =
-                    (memo.amountTotal || 0) +
-                    parseFloat(row['P' + $decadeStore]);
+                memo.amountTotal = (memo.amountTotal || 0) + parseFloat(row['P' + $decadeStore]);
                 return memo;
             };
 
-            calculations = getCalculations(
-                `${$decadeStore} Population Benefiting`
-            );
+            calculations = getCalculations(`${$decadeStore} Population Benefiting`);
 
-            if (document.getElementById('reactpivot').firstChild)
-                document.getElementById('reactpivot').firstChild.remove();
+            if (document.getElementById('reactpivot').firstChild) document.getElementById('reactpivot').firstChild.remove();
 
             let formattedRows = JSON.parse(JSON.stringify(rows));
 
             formattedRows.forEach((f) => {
-                f.WugRegion = f.WugRegion?.startsWith('<a')
-                    ? f.WugRegion
-                    : `<a href="/region/${f.WugRegion}">${f.WugRegion}</a>`;
-                f.EntityName = f.EntityName?.startsWith('<a')
-                    ? f.EntityName
-                    : `<a href="/entity/${f.EntityId}">${f.EntityName}</a>`;
-                f.WugCounty = f.WugCounty?.startsWith('<a')
-                    ? f.WugCounty
-                    : `<a href="/county/${f.WugCounty}">${f.WugCounty}</a>`;
+                f.WugRegion = f.WugRegion?.startsWith('<a') ? f.WugRegion : `<a href="/region/${f.WugRegion}">${f.WugRegion}</a>`;
+                f.EntityName = f.EntityName?.startsWith('<a') ? f.EntityName : `<a href="/entity/${f.EntityId}">${f.EntityName}</a>`;
+                f.WugCounty = f.WugCounty?.startsWith('<a') ? f.WugCounty : `<a href="/county/${f.WugCounty}">${f.WugCounty}</a>`;
             });
 
             ReactPivot(document.getElementById('reactpivot'), {

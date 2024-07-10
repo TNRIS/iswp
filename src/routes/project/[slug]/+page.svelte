@@ -5,12 +5,7 @@
     export let data;
     let db = load_indexeddb();
     import { QuerySettings } from '$lib/QuerySettings.js';
-    import {
-        load_indexeddb,
-        getConstants,
-        cap,
-        is_idb_loaded
-    } from '$lib/helper.js';
+    import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
     import Statewide from '$lib/db/statewide.js';
     import Header from '$lib/components/Header.svelte';
     import PopulationChart from '$lib/components/Charts/PopulationChart.svelte';
@@ -39,9 +34,7 @@
                     ...dat2.projects[0]
                 };
             } catch (err) {
-                console.log(
-                    'problem merging data in projects. Attempting to continue.'
-                );
+                console.log('problem merging data in projects. Attempting to continue.');
             }
         }
 
@@ -78,12 +71,7 @@
     {#await loadForSource()}
         <div class="loader"></div>
     {:then out}
-        <PopulationChart
-            {tagline}
-            title={projectName}
-            titleOnly={true}
-            {lrp}
-            {constants} />
+        <PopulationChart {tagline} title={projectName} titleOnly={true} {lrp} {constants} />
         <ProjectTable2
             project_title={`WMS PROJECT - ${projectName}`}
             project_title2={'Water Management Strategies related to Project'}

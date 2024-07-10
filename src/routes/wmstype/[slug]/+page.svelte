@@ -2,12 +2,7 @@
     //@ts-nocheck
     import ProjectTable from '$lib/components/ProjectTable/ProjectTable.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
-    import {
-        load_indexeddb,
-        getConstants,
-        cap,
-        is_idb_loaded
-    } from '$lib/helper.js';
+    import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
     import Statewide from '$lib/db/statewide.js';
     import { QuerySettings } from '$lib/QuerySettings.js';
     export let data;
@@ -17,14 +12,7 @@
     import { wms_info } from '$lib/WmsTypes.js';
 
     import { page } from '$app/stores';
-    let stratAd = [
-        'Region',
-        'WMS Type',
-        'Strategy',
-        'Source',
-        'County',
-        'Entity'
-    ];
+    let stratAd = ['Region', 'WMS Type', 'Strategy', 'Source', 'County', 'Entity'];
     let constants = getConstants($page.url.host);
     let wmsTypeSetting = new QuerySettings('datastrategies', 'WmsType');
     wmsTypeSetting.setAll(data.slug);
@@ -67,9 +55,7 @@
             <div class="summary-wrapper container">
                 <div class="view-summary usage-type-summary">
                     <h1>{data.slug}</h1>
-                    {wms_info.WMS_TYPE_DESCRIPTIONS[
-                        data.slug.replace('AND', '&')
-                    ]}
+                    {wms_info.WMS_TYPE_DESCRIPTIONS[data.slug.replace('AND', '&')]}
                 </div>
             </div>
         </div>

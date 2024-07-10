@@ -47,9 +47,7 @@ export default class RegionalSummaryInd {
                 this.db = await this.db;
                 const transaction = this.db.transaction([key]);
                 const objectStore = transaction.objectStore(key);
-                objectStore.index(this.where).getAll(this.wkey).onsuccess = (
-                    event
-                ) => {
+                objectStore.index(this.where).getAll(this.wkey).onsuccess = (event) => {
                     resolve(event.target.result);
                 };
             } catch (err) {
@@ -58,40 +56,26 @@ export default class RegionalSummaryInd {
         });
     };
     #decade_reducer = (result) => {
-        return result.reduce(function (
-            /** @type {any} */ r,
-            /** @type {A1} */ a
-        ) {
+        return result.reduce(function (/** @type {any} */ r, /** @type {A1} */ a) {
             r[a.DECADE] = r[a.DECADE] || [];
             r[a.DECADE].push(a);
             return r;
         }, Object.create(null));
     };
     get = async () => {
-        let demands_observable = this.#getAllTransaction(
-            this.#summaryTables.demands
-        );
-        let needs_observable = this.#getAllTransaction(
-            this.#summaryTables.needs
-        );
-        let supplies_observable = this.#getAllTransaction(
-            this.#summaryTables.supplies
-        );
-        let population_observable = this.#getAllTransaction(
-            this.#summaryTables.population
-        );
-        let strategies_observable = this.#getAllTransaction(
-            this.#summaryTables.strategies
-        );
+        let demands_observable = this.#getAllTransaction(this.#summaryTables.demands);
+        let needs_observable = this.#getAllTransaction(this.#summaryTables.needs);
+        let supplies_observable = this.#getAllTransaction(this.#summaryTables.supplies);
+        let population_observable = this.#getAllTransaction(this.#summaryTables.population);
+        let strategies_observable = this.#getAllTransaction(this.#summaryTables.strategies);
 
-        let [demands, needs, supplies, population, strategies] =
-            await Promise.all([
-                demands_observable,
-                needs_observable,
-                supplies_observable,
-                population_observable,
-                strategies_observable
-            ]);
+        let [demands, needs, supplies, population, strategies] = await Promise.all([
+            demands_observable,
+            needs_observable,
+            supplies_observable,
+            population_observable,
+            strategies_observable
+        ]);
 
         let item = {
             demands: this.#decade_reducer(demands),

@@ -47,20 +47,14 @@ export default class Counties {
                     reject(event);
                 };
             } catch (err) {
-                console.error(
-                    `error in getAllTransaction: key ${key}, where ${where}, project_filter ${project_filter}`
-                );
+                console.error(`error in getAllTransaction: key ${key}, where ${where}, project_filter ${project_filter}`);
                 reject(err);
             }
         });
     };
 
     get = async (setting) => {
-        let a = this.#getAllTransaction(
-            `${this.constants.tappend}SelectRegionsInCounty`,
-            'RegionLetter',
-            `${setting} `
-        );
+        let a = this.#getAllTransaction(`${this.constants.tappend}SelectRegionsInCounty`, 'RegionLetter', `${setting} `);
 
         return a;
     };

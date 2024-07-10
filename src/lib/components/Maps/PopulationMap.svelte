@@ -13,9 +13,7 @@
     }
 
     function navigateToCounty(item) {
-        window.location.replace(
-            `/county/${item?.layer?.feature?.properties?.name}`
-        );
+        window.location.replace(`/county/${item?.layer?.feature?.properties?.name}`);
     }
 
     onMount(async () => {
@@ -49,13 +47,10 @@
             [25.84, -93.51]
         ]);
 
-        const baseLayer = L.tileLayer(
-            'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png',
-            {
-                attribution:
-                    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
-            }
-        );
+        const baseLayer = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png', {
+            attribution:
+                '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+        });
         map.addLayer(baseLayer);
 
         // Remove default Prefix
@@ -86,8 +81,7 @@
                 try {
                     let countyUri = 'https://mapserver.tnris.org/';
                     countyUri += '?map=/tnris_mapfiles/county_extended.map';
-                    countyUri +=
-                        '&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature';
+                    countyUri += '&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature';
                     countyUri += '&TYPENAMES=CountyBoundaries';
                     countyUri += '&outputformat=geojson';
                     countyUri += '&SRSNAME=EPSG:4326';
@@ -97,10 +91,7 @@
                     const cachekeys = await countyCache.keys();
                     // Check if we need to clear the cached entry. (All localstorage including this flag is cleared when indexeddb is updated)
                     // Then check that the url is actually cached.
-                    if (
-                        localStorage.countyCacheFlag !== 'cached' ||
-                        !cachekeys.map((item) => item.url).includes(countyUri)
-                    ) {
+                    if (localStorage.countyCacheFlag !== 'cached' || !cachekeys.map((item) => item.url).includes(countyUri)) {
                         await countyCache.add(countyUri);
                         localStorage.countyCacheFlag = 'cached';
                     }
@@ -281,11 +272,8 @@
                     .then((res) => res.text())
                     .then((res) => {
                         let data = JSON.parse(res);
-                        const featureTyp =
-                            data.features[0].properties.featuretyp;
-                        const layerName =
-                            featureTyp.charAt(0).toUpperCase() +
-                            featureTyp.slice(1);
+                        const featureTyp = data.features[0].properties.featuretyp;
+                        const layerName = featureTyp.charAt(0).toUpperCase() + featureTyp.slice(1);
                         fetch(
                             `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=${layerName}Sources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${key}</Literal></PropertyIsEqualTo></Filter>`
                         )
@@ -317,10 +305,7 @@
                 L.marker([project.ProjectLatCoord, project.ProjectLongCoord], {
                     icon
                 }).addTo(map);
-                map.setView(
-                    [project.ProjectLatCoord, project.ProjectLongCoord - 0.5],
-                    9
-                );
+                map.setView([project.ProjectLatCoord, project.ProjectLongCoord - 0.5], 9);
                 countyHoverSetup();
             }
         }

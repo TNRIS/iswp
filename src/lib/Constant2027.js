@@ -54,14 +54,7 @@ export class Constant2027 {
     };
 
     #decades = ['2030', '2040', '2050', '2060', '2070', '2080'];
-    #usage_types = [
-        'IRRIGATION',
-        'MUNICIPAL',
-        'MANUFACTURING',
-        'STEAM ELECTRIC POWER',
-        'LIVESTOCK',
-        'MINING'
-    ];
+    #usage_types = ['IRRIGATION', 'MUNICIPAL', 'MANUFACTURING', 'STEAM ELECTRIC POWER', 'LIVESTOCK', 'MINING'];
     USAGE_TYPE_DESCRIPTIONS = {
         IRRIGATION:
             'Irrigation water demand includes water used in irrigated field crops, vineyards, orchards, and self-supplied golf courses.',
@@ -69,8 +62,7 @@ export class Constant2027 {
             'Municipal water demand consists of water to be used for residential (single family and multi-family), commercial (including some manufacturing firms that do not use water in their production process), and institutional purposes (establishments dedicated to public service).',
         MANUFACTURING:
             'Manufacturing water demand consists of the future water necessary for large facilities including those that process chemicals, oil and gas, food, paper, and other materials.',
-        'STEAM ELECTRIC POWER':
-            'Steam-electric water demand consists of water used for the purpose of generating power.',
+        'STEAM ELECTRIC POWER': 'Steam-electric water demand consists of water used for the purpose of generating power.',
         LIVESTOCK:
             'Livestock water demand includes water used in the production of various types of livestock including cattle (beef and dairy), hogs, poultry, horses, sheep, and goats.',
         MINING: 'Mining water demand consists of water used in the exploration, development, and extraction of oil, gas, coal, aggregates, and other materials.'
@@ -113,24 +105,7 @@ export class Constant2027 {
         county: 'County'
     };
     #year = 2026;
-    #regions = [
-        'A',
-        'B',
-        'C',
-        'D',
-        'E',
-        'F',
-        'G',
-        'H',
-        'I',
-        'J',
-        'K',
-        'L',
-        'M',
-        'N',
-        'O',
-        'P'
-    ];
+    #regions = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'];
     #countyNames = [
         'Anderson',
         'Andrews',

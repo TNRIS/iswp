@@ -1,6 +1,5 @@
 <script>
-    const { swdata, csvTitle, fileName, constants, downloadPopulation } =
-        $$props;
+    const { swdata, csvTitle, fileName, constants, downloadPopulation } = $$props;
     let decades = constants.getDecades();
     if (!fileName) console.log('We need a filename');
     import { json2csv } from 'json-2-csv';
@@ -175,8 +174,7 @@
                     href="#"
                     on:click={() => {
                         dlpop(population, 'population.csv');
-                    }}
-                    >Download {csvTitle} Population data (Comma-Separated Values)</a
+                    }}>Download {csvTitle} Population data (Comma-Separated Values)</a
                 ></li>
         {/if}
         {#if demands.length}
@@ -185,8 +183,7 @@
                     href="#"
                     on:click={() => {
                         dlpop(demands, 'demands.csv');
-                    }}
-                    >Download {csvTitle} Demands data (Comma-Separated Values)</a
+                    }}>Download {csvTitle} Demands data (Comma-Separated Values)</a
                 ></li>
         {/if}
         {#if existing.length}
@@ -195,9 +192,7 @@
                     href="#"
                     on:click={() => {
                         dlpop(existing, 'existing.csv');
-                    }}
-                    >Download {csvTitle} Existing Supplies data (Comma-Separated
-                    Values)</a
+                    }}>Download {csvTitle} Existing Supplies data (Comma-Separated Values)</a
                 ></li>
         {/if}
         {#if needs.length}
@@ -206,9 +201,7 @@
                     href="#"
                     on:click={() => {
                         dlpop(needs, 'needs.csv');
-                    }}
-                    >Download {csvTitle} Needs (Potential Shortages) data (Comma-Separated
-                    Values)</a
+                    }}>Download {csvTitle} Needs (Potential Shortages) data (Comma-Separated Values)</a
                 ></li>
         {/if}
         {#if strategy.length}
@@ -217,9 +210,7 @@
                     href="#"
                     on:click={() => {
                         dlpop(strategy, 'strategies.csv');
-                    }}
-                    >Download {csvTitle} Strategy Supplies data (Comma-Separated
-                    Values)</a
+                    }}>Download {csvTitle} Strategy Supplies data (Comma-Separated Values)</a
                 ></li>
         {/if}
 
@@ -229,8 +220,7 @@
                     href="#"
                     on:click={() => {
                         dlpop(projects, 'projects.csv');
-                    }}
-                    >Download {csvTitle} Project data (Comma-Separated Values)</a
+                    }}>Download {csvTitle} Project data (Comma-Separated Values)</a
                 ></li>
         {/if}
 

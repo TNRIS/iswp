@@ -59,10 +59,7 @@ export default class RegionalSummary {
     };
 
     #decade_reducer = (result) => {
-        return result.reduce(function (
-            /** @type {any} */ r,
-            /** @type {A1} */ a
-        ) {
+        return result.reduce(function (/** @type {any} */ r, /** @type {A1} */ a) {
             r[a.DECADE] = r[a.DECADE] || [];
             r[a.DECADE].push(a);
             return r;
@@ -78,35 +75,24 @@ export default class RegionalSummary {
         }
 
         try {
-            let demands_observable = this.#getAllTransaction(
-                this.summaryTables.demands
-            );
-            let needs_observable = this.#getAllTransaction(
-                this.summaryTables.needs
-            );
-            let supplies_observable = this.#getAllTransaction(
-                this.summaryTables.supplies
-            );
-            let population_observable = this.#getAllTransaction(
-                this.summaryTables.population
-            );
-            let strategies_observable = this.#getAllTransaction(
-                this.summaryTables.strategies
-            );
+            let demands_observable = this.#getAllTransaction(this.summaryTables.demands);
+            let needs_observable = this.#getAllTransaction(this.summaryTables.needs);
+            let supplies_observable = this.#getAllTransaction(this.summaryTables.supplies);
+            let population_observable = this.#getAllTransaction(this.summaryTables.population);
+            let strategies_observable = this.#getAllTransaction(this.summaryTables.strategies);
 
             /**
              * @param {any} result
              * @returns {A1} r - Result is now sorted into decades.
              */
 
-            let [demands, needs, supplies, population, strategies] =
-                await Promise.all([
-                    demands_observable,
-                    needs_observable,
-                    supplies_observable,
-                    population_observable,
-                    strategies_observable
-                ]);
+            let [demands, needs, supplies, population, strategies] = await Promise.all([
+                demands_observable,
+                needs_observable,
+                supplies_observable,
+                population_observable,
+                strategies_observable
+            ]);
 
             this.#regionalsummary = {
                 demands: this.#decade_reducer(demands),

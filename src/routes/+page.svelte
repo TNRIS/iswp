@@ -1,27 +1,14 @@
 <script>
-    const popChartPromise = import(
-        '$lib/components/Charts/PopulationChart.svelte'
-    );
+    const popChartPromise = import('$lib/components/Charts/PopulationChart.svelte');
     const TitleBlurbPromise = import('$lib/components/TitleBlurb.svelte');
-    const ThemeTotalsByDecadeChartPromise = import(
-        '$lib/components/ThemeTotalsByDecadeChart.svelte'
-    );
-    const ThemeTypesByDecadeChartPromise = import(
-        '$lib/components/ThemeTypesByDecadeChart.svelte'
-    );
+    const ThemeTotalsByDecadeChartPromise = import('$lib/components/ThemeTotalsByDecadeChart.svelte');
+    const ThemeTypesByDecadeChartPromise = import('$lib/components/ThemeTypesByDecadeChart.svelte');
     const DataUsageTypePromise = import('$lib/components/DataUsageType.svelte');
-    const DataViewChoiceWrapPromise = import(
-        '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrap.svelte'
-    );
+    const DataViewChoiceWrapPromise = import('$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrap.svelte');
     const HeaderPromise = import('$lib/components/Header.svelte');
 
     import { QuerySettings } from '$lib/QuerySettings.js';
-    import {
-        load_indexeddb,
-        onMountSync,
-        getConstants,
-        is_idb_loaded
-    } from '$lib/helper.js';
+    import { load_indexeddb, onMountSync, getConstants, is_idb_loaded } from '$lib/helper.js';
     import Statewide from '$lib/db/statewide.js';
     import { page } from '$app/stores';
 
@@ -87,12 +74,7 @@
         {#await DataViewChoiceWrapPromise}
             <div class="loader"></div>
         {:then { default: Component }}
-            <Component
-                {db}
-                {lrp}
-                csvTitle={'Statewide'}
-                {constants}
-                downloadPopulation={true} />
+            <Component {db} {lrp} csvTitle={'Statewide'} {constants} downloadPopulation={true} />
         {/await}
     </section>
 </div>

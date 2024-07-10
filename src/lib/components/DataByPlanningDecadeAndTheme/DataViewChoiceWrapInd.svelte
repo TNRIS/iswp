@@ -52,11 +52,7 @@
 <div class="view-choice-wrap">
     <div class="view-choice-container sticky-div-2">
         <h4>Data by Planning Decade and Theme</h4>
-        <DataViewChoiceSelectors
-            {hideTheme}
-            {showPopulation}
-            {constants}
-            {sourcePage} />
+        <DataViewChoiceSelectors {hideTheme} {showPopulation} {constants} {sourcePage} />
     </div>
     <!-- insert 3 sub-widgets here -->
     <div class="container">
@@ -64,35 +60,14 @@
         {#await lrp}
             <div class="loader"></div>
         {:then swdata}
-            <EntityMap
-                {slug}
-                {swdata}
-                {title}
-                {constants}
-                {type}
-                {entityMapBlurb} />
+            <EntityMap {slug} {swdata} {title} {constants} {type} {entityMapBlurb} />
             {#if type !== 'source' && type !== 'pop' && type !== 'wms' && type !== 'wmstype'}
                 <StrategiesBreakdown {swdata} {title} />
             {/if}
             {#if type !== 'pop'}
-                <PivotTable
-                    {page}
-                    {slug}
-                    {swdata}
-                    {csvTitle}
-                    {title}
-                    {fileName}
-                    {constants}
-                    {stratAd}
-                    {activeDem}
-                    {showPopulation} />
+                <PivotTable {page} {slug} {swdata} {csvTitle} {title} {fileName} {constants} {stratAd} {activeDem} {showPopulation} />
             {:else}
-                <PopPivotTable
-                    {swdata}
-                    {csvTitle}
-                    {title}
-                    {fileName}
-                    {constants} />
+                <PopPivotTable {swdata} {csvTitle} {title} {fileName} {constants} />
             {/if}
         {/await}
     </div>
