@@ -163,7 +163,7 @@
                     class="pie-chart-container"
                     title="Pie Chart describing Water Share usage percentages."
                     aria-label="Pie Chart describing Water Share usage percentages."
-                    role="presentation"
+                    role="figure"
                     id="share_by_water_resource_chart">
                     <div class="strat-chart" on:mousemove={onHover} on:mouseleave={onLeave} role="presentation" />
                 </div>

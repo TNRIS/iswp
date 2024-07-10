@@ -6,11 +6,7 @@
     import ThemeTypesByDecadeChart from '$lib/components/ThemeTypesByDecadeChart.svelte';
     import ThemeTotalsByDecadeChart from '$lib/components/ThemeTotalsByDecadeChart.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
-    import {
-        load_indexeddb,
-        getConstants,
-        is_idb_loaded
-    } from '$lib/helper.js';
+    import { load_indexeddb, getConstants, is_idb_loaded } from '$lib/helper.js';
     import Statewide from '$lib/db/statewide.js';
     import Counties from '$lib/db/counties.js';
 
@@ -38,10 +34,7 @@
         let start = Date.now();
         let sw = new Statewide(db);
         let cc = new Counties(db);
-        let [ccounties, dat] = await Promise.all([
-            cc.get(data.slug),
-            sw.get(regionSetting)
-        ]);
+        let [ccounties, dat] = await Promise.all([cc.get(data.slug), sw.get(regionSetting)]);
         //let ccounties = await cc.get(data.slug);
         //let dat =  await sw.get(regionSetting);
 
@@ -66,11 +59,7 @@
 </svelte:head>
 <div class="statewide-view">
     <section>
-        <PopulationChart
-            title={`Planning Region ${data.slug}`}
-            lrp={loadForRegionPromise}
-            {constants}
-            {tagline} />
+        <PopulationChart title={`Planning Region ${data.slug}`} lrp={loadForRegionPromise} {constants} {tagline} />
         <div class="container">
             <div class="row panel-row">
                 <div class="twelve columns">
@@ -79,8 +68,7 @@
                             <!-- 2016 description. -->
                             <p
                                 >{constants.regionalDescription[data.slug]}
-                                <a
-                                    href={`http://www.twdb.texas.gov/waterplanning/rwp/plans/2016/#region-${data.slug.toLowerCase()}`}>
+                                <a href={`http://www.twdb.texas.gov/waterplanning/rwp/plans/2016/#region-${data.slug.toLowerCase()}`}>
                                     http://www.twdb.texas.gov/waterplanning/rwp/plans/2016/#region-{data.slug.toLowerCase()}
                                 </a>. {constants.regionalLink[data.slug]}<a
                                     href={`http://www.twdb.texas.gov/waterplanning/swp/2017/doc/2016_RegionalSummary_${data.slug}.pdf`}>
@@ -97,19 +85,13 @@
                 </div>
             </div>
         </div>
-        <ThemeTotalsByDecadeChart
-            lrp={loadForRegionPromise}
-            {constants}
-            title={`Planning Region ${data.slug}`} />
+        <ThemeTotalsByDecadeChart lrp={loadForRegionPromise} {constants} title={`Planning Region ${data.slug}`} />
         <ThemeTypesByDecadeChart
             chartTitle={'ct-usage-chart'}
             lrp={loadForRegionPromise}
             {constants}
             title={`Planning Region ${data.slug}`} />
-        <DataUsageType
-            title={`Planning Region ${data.slug}`}
-            lrp={loadForRegionPromise}
-            {constants} />
+        <DataUsageType title={`Planning Region ${data.slug}`} lrp={loadForRegionPromise} {constants} />
         <ProjectTable
             project_title={`PLANNING REGION ${data.slug}`}
             project_title2={'Projects '}

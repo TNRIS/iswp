@@ -20,9 +20,7 @@ export const delete_database22 = () => {
         };
 
         del.onblocked = () => {
-            console.log(
-                "Couldn't delete database due to the operation being blocked"
-            );
+            console.log("Couldn't delete database due to the operation being blocked");
         };
     } catch (err) {
         console.log(`error deleting database: ${err}`);
@@ -32,8 +30,7 @@ export const delete_database22 = () => {
 const storeChecksum = async () => {
     // Store checksum in localstorage
     const start = Date.now();
-    const checksum_url =
-        'https://tnris-droc.s3.amazonaws.com/iswp/2022/checksum.json';
+    const checksum_url = 'https://tnris-droc.s3.amazonaws.com/iswp/2022/checksum.json';
     const response = await fetch(checksum_url);
     const cs = await response.json();
     localStorage.setItem('checksum2022', JSON.stringify(cs));
@@ -67,9 +64,7 @@ export function startDb22() {
 
                 for (let id in object_stores) {
                     let oname = object_stores[id];
-                    let store = db22
-                        .transaction(oname, 'readwrite')
-                        .objectStore(oname);
+                    let store = db22.transaction(oname, 'readwrite').objectStore(oname);
 
                     j22[oname].forEach((vwc) => {
                         store.add(vwc);
@@ -81,21 +76,15 @@ export function startDb22() {
             // Check we set entityCoordinates up and redownload if needed.
             if (localStorage.getItem('entitySuccess') !== 'true') {
                 const transaction = db22.transaction(['vwEntityCoordinates']);
-                const objectStore = transaction.objectStore(
-                    'vwEntityCoordinates'
-                );
+                const objectStore = transaction.objectStore('vwEntityCoordinates');
                 const entityCoordinates = objectStore.getAll();
 
                 entityCoordinates.onsuccess = (event) => {
                     // Do something with the request.result!
-                    localStorage.setItem(
-                        'entityCoordinates',
-                        JSON.stringify(event.target.result)
-                    );
+                    localStorage.setItem('entityCoordinates', JSON.stringify(event.target.result));
 
                     // Practical check to make sure this has at least 1000 entities.
-                    if (event.target.result.length > 1000)
-                        localStorage.setItem('entitySuccess', 'true');
+                    if (event.target.result.length > 1000) localStorage.setItem('entitySuccess', 'true');
                 };
                 entityCoordinates.onerror = (event) => {
                     localStorage.setItem('entitySuccess', 'false');
@@ -115,19 +104,12 @@ export function startDb22() {
                     checksum = JSON.parse(checksum);
                 }
                 //OK: So fast not even 1ms Load time here. It measures 0ms!
-                console.log(
-                    `get checksum from localstorage time: ${Date.now() - start}ms.`
-                );
+                console.log(`get checksum from localstorage time: ${Date.now() - start}ms.`);
 
-                if (
-                    db22.objectStoreNames.length !==
-                    Object.keys(checksum).length
-                ) {
+                if (db22.objectStoreNames.length !== Object.keys(checksum).length) {
                     request22.result.close();
                     delete_database22();
-                    reject(
-                        'There was a problem loading database. Reload please.'
-                    );
+                    reject('There was a problem loading database. Reload please.');
 
                     //TODO Limit this to 5 tries
                     window.location.reload();
@@ -147,9 +129,7 @@ export function startDb22() {
                             request22.result.close();
                             delete_database22();
                             window.location.reload();
-                            reject(
-                                'There was a problem loading database. Reload please.'
-                            );
+                            reject('There was a problem loading database. Reload please.');
                         }
                         j++;
 
@@ -173,45 +153,17 @@ export function startDb22() {
 
             build_func(event, 'vwEntityCoordinates', ['id', 'EntityId']);
             build_func(event, 'vwEntityNeedsAsPctOfDemand', ['id', 'EntityId']);
-            build_func(event, 'vwExistingWugSupply', [
-                'id',
-                'EntityId',
-                'MapSourceId',
-                'WugCounty',
-                'WugRegion',
-                'WugType'
-            ]);
+            build_func(event, 'vwExistingWugSupply', ['id', 'EntityId', 'MapSourceId', 'WugCounty', 'WugRegion', 'WugType']);
             build_func(event, 'vwExistingWUGSupplyA1', ['id']);
             build_func(event, 'vwSelectEntitiesInCounty', ['id', 'EntityId']);
             build_func(event, 'vwSelectEntitiesInRegion', ['id', 'EntityId']);
-            build_func(event, 'vwWugDemand', [
-                'id',
-                'EntityId',
-                'WugCounty',
-                'WugRegion',
-                'WugType'
-            ]);
+            build_func(event, 'vwWugDemand', ['id', 'EntityId', 'WugCounty', 'WugRegion', 'WugType']);
             build_func(event, 'vwWugDemandsA1', ['id']);
-            build_func(event, 'vwWugNeeds', [
-                'id',
-                'EntityId',
-                'WugCounty',
-                'WugRegion',
-                'WugType'
-            ]);
+            build_func(event, 'vwWugNeeds', ['id', 'EntityId', 'WugCounty', 'WugRegion', 'WugType']);
             build_func(event, 'vwWugNeedsA1', ['id']);
-            build_func(event, 'vwWugPopulation', [
-                'id',
-                'EntityId',
-                'WugCounty',
-                'WugRegion',
-                'WugType'
-            ]);
+            build_func(event, 'vwWugPopulation', ['id', 'EntityId', 'WugCounty', 'WugRegion', 'WugType']);
             build_func(event, 'vwWugPopulationA1', ['id']);
-            build_func(event, 'vwSelectRegionsInCounty', [
-                'id',
-                'RegionLetter'
-            ]);
+            build_func(event, 'vwSelectRegionsInCounty', ['id', 'RegionLetter']);
             build_func(event, 'vwWMSWugSupply', [
                 'id',
                 'EntityId',
@@ -224,53 +176,15 @@ export function startDb22() {
                 'WmsSponsorRegion'
             ]);
             build_func(event, 'vwWMSWugSupplyA1', ['id']);
-            build_func(event, 'vwWMSProjects', [
-                'id',
-                'WmsProjectId',
-                'WugRegion',
-                'WmsProjectSponsorRegion'
-            ]);
-            build_func(event, 'vwWMSProjectByCounty', [
-                'id',
-                'WugCounty',
-                'WmsProjectId'
-            ]);
-            build_func(event, 'vwWMSProjectByEntity', [
-                'id',
-                'EntityId',
-                'WmsProjectId'
-            ]);
-            build_func(event, 'vwWMSProjectBySource', [
-                'id',
-                'MapSourceId',
-                'WmsProjectId'
-            ]);
-            build_func(event, 'vwWMSProjectByWMS', [
-                'id',
-                'WmsId',
-                'WmsProjectId'
-            ]);
-            build_func(event, 'vwWMSProjectsByWMSType', [
-                'id',
-                'WmsProjectId',
-                'WmsType'
-            ]);
-            build_func(event, 'vwWMSProjectByWUGType', [
-                'id',
-                'WmsProjectId',
-                'WmsProjectSponsorRegion'
-            ]);
-            build_func(event, 'vwWMSProjectByEntityWUGSplit', [
-                'id',
-                'WmsProjectId',
-                'WmsId'
-            ]);
-            build_func(event, 'vwWMSProjectEntityRelationships', [
-                'id',
-                'WmsProjectId',
-                'EntityId',
-                'MapSourceId'
-            ]);
+            build_func(event, 'vwWMSProjects', ['id', 'WmsProjectId', 'WugRegion', 'WmsProjectSponsorRegion']);
+            build_func(event, 'vwWMSProjectByCounty', ['id', 'WugCounty', 'WmsProjectId']);
+            build_func(event, 'vwWMSProjectByEntity', ['id', 'EntityId', 'WmsProjectId']);
+            build_func(event, 'vwWMSProjectBySource', ['id', 'MapSourceId', 'WmsProjectId']);
+            build_func(event, 'vwWMSProjectByWMS', ['id', 'WmsId', 'WmsProjectId']);
+            build_func(event, 'vwWMSProjectsByWMSType', ['id', 'WmsProjectId', 'WmsType']);
+            build_func(event, 'vwWMSProjectByWUGType', ['id', 'WmsProjectId', 'WmsProjectSponsorRegion']);
+            build_func(event, 'vwWMSProjectByEntityWUGSplit', ['id', 'WmsProjectId', 'WmsId']);
+            build_func(event, 'vwWMSProjectEntityRelationships', ['id', 'WmsProjectId', 'EntityId', 'MapSourceId']);
         };
     });
 }

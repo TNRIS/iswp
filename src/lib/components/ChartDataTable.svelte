@@ -1,7 +1,6 @@
 <script>
     import ToggleDisplay from './ToggleDisplay.svelte';
-    const { header, body, titles, showHide, titleMap, showTotal, ariaHint } =
-        $$props;
+    const { header, body, titles, showHide, titleMap, showTotal, ariaHint } = $$props;
     let totals = [0, 0, 0, 0, 0, 0];
     if (showTotal) {
         body.forEach((b) => {
@@ -23,9 +22,7 @@
                     <table
                         class="u-full-width"
                         title={ariaHint ? ariaHint : 'Chart for Data table'}
-                        aria-label={ariaHint
-                            ? ariaHint
-                            : 'Chart for Data table'}>
+                        aria-label={ariaHint ? ariaHint : 'Chart for Data table'}>
                         <thead>
                             <tr>
                                 <th />
@@ -96,8 +93,7 @@
                         </tr>
                     {/each}
                     {#if showTotal}
-                        <tr class="totals-row"
-                            ><td class="row-label">Total: </td></tr>
+                        <tr class="totals-row"><td class="row-label">Total: </td></tr>
                     {/if}
                 </tbody>
             </table>

@@ -43,8 +43,7 @@
 
     let clicker = async (event) => {
         chosen2 = event.target.id;
-        document.getElementById('secondary-category-select').value =
-            event.target.text;
+        document.getElementById('secondary-category-select').value = event.target.text;
         var input, filter, ul, li, a, i, txtValue;
         input = document.getElementById('secondary-category-select');
         filter = input.value.toUpperCase();
@@ -59,32 +58,18 @@
         }
     };
 
-    let regions = constants
-        .getRegions()
-        .reduce((a, o) => (a.push({ value: o, label: 'Region ' + o }), a), []);
+    let regions = constants.getRegions().reduce((a, o) => (a.push({ value: o, label: 'Region ' + o }), a), []);
     let chosen = selected.id;
     let label = '';
     if (chosen == 'statewide') {
         chosen = '';
     }
     let chosen2;
-    let counties = constants
-        .getCountyNames()
-        .reduce((a, o) => (a.push({ value: o, label: o }), a), []);
-    let usageTypes = constants
-        .getUsageTypes()
-        .reduce((a, o) => (a.push({ value: o, label: o }), a), []);
-    let wmstype = constants.WMS_TYPES.reduce(
-        (a, o) => (a.push({ value: o, label: o }), a),
-        []
-    );
+    let counties = constants.getCountyNames().reduce((a, o) => (a.push({ value: o, label: o }), a), []);
+    let usageTypes = constants.getUsageTypes().reduce((a, o) => (a.push({ value: o, label: o }), a), []);
+    let wmstype = constants.WMS_TYPES.reduce((a, o) => (a.push({ value: o, label: o }), a), []);
 
-    $: region =
-        chosen && chosen2
-            ? `/${chosen}/${chosen2}/`
-            : !(chosen && chosen2)
-              ? '/'
-              : `/${chosen}/`;
+    $: region = chosen && chosen2 ? `/${chosen}/${chosen2}/` : !(chosen && chosen2) ? '/' : `/${chosen}/`;
 
     const titles = constants.chosenTitles;
 
@@ -104,22 +89,9 @@
             let a = await sw.getEntities();
             let zz = await sw.getProjects();
 
-            let dd = qq.reduce(
-                (a, o) => (a.push({ value: o.WmsName, label: o.WmsId }), a),
-                []
-            );
-            let cc = zz.reduce(
-                (a, o) => (
-                    a.push({ value: o.ProjectName, label: o.WmsProjectId }), a
-                ),
-                []
-            );
-            let b = a.reduce(
-                (a, o) => (
-                    a.push({ value: o.EntityName, label: o.EntityId }), a
-                ),
-                []
-            );
+            let dd = qq.reduce((a, o) => (a.push({ value: o.WmsName, label: o.WmsId }), a), []);
+            let cc = zz.reduce((a, o) => (a.push({ value: o.ProjectName, label: o.WmsProjectId }), a), []);
+            let b = a.reduce((a, o) => (a.push({ value: o.EntityName, label: o.EntityId }), a), []);
 
             categories.entity = b;
             categories.project = cc;
@@ -142,9 +114,7 @@
     */
     let reset = (value) => {
         chosen = value.detail.value;
-        label = value.detail.placeholder_override
-            ? value.detail.placeholder_override
-            : value.detail.label;
+        label = value.detail.placeholder_override ? value.detail.placeholder_override : value.detail.label;
         chosen2 = '';
         console.log(`chosen: ${chosen} chosen2: ${chosen2}`);
     };
@@ -173,13 +143,9 @@
 
 <div class="header-nav sticky-div">
     <div class="wrapper" id="wrapper">
-        <form aria-label="Choose a page related to the category and sub category selector" role="navigation">
+        <form>
             <label for="navcat">View data for</label>
-            <div
-                class="select-container"
-                aria-label="Page Category"
-                id="navcat_container"
-                role="menu">
+            <nav class="select-container" id="navcat_container">
                 <Select
                     {items}
                     clearable={false}
@@ -187,15 +153,16 @@
                     value={chosen ? chosen : 'All of Texas'}
                     showChevron
                     inputAttributes={{
-                        title: "Category"
-                    }}
-                    />
-            </div>
+                        title: 'Category',
+                        'aria-label': 'Choose a page to navigate to related to the category then hit the go button.',
+                        'aria-owns': 'nav_submit'
+                    }} />
+            </nav>
 
             {#await setupChoices() then}
                 {#if chosen && chosen !== '' && chosen !== 'statewide'}
                     {#if chosen == 'region' || chosen == 'county' || chosen == 'usagetype' || chosen == 'source' || chosen == 'wmstype'}
-                        <div class="select-container" style="width:300px;">
+                        <nav class="select-container" style="width:300px;">
                             <Select
                                 items={categories[chosen]}
                                 clearable={false}
@@ -203,37 +170,37 @@
                                 placeholder="Select {titles[chosen]}"
                                 showChevron
                                 inputAttributes={{
-                                    title: "Sub Category"
-                                }}
-                                />
-                        </div>
+                                    title: 'Sub Category',
+                                    'aria-label':
+                                        'Choose a page to navigate to related to the sub category to navigate to then hit the go button.',
+                                    'aria-owns': 'nav_submit'
+                                }} />
+                        </nav>
                     {:else}
-                        <div class="select-container">
+                        <nav class="select-container">
                             <input
                                 style="padding: 8px;"
                                 type="text"
                                 id="secondary-category-select"
                                 autocomplete="off"
+                                aria-label="Choose a page to navigate to related to the sub category to navigate to then hit the go button."
+                                aria-owns="nav_submit"
                                 on:keyup={filterSubCategory}
-                                placeholder="Start typing to find {titles[
-                                    chosen
-                                ]}" />
+                                placeholder="Start typing to find {titles[chosen]}" />
                             <ul id="secondList" class="nav-category-select">
                                 {#each categories?.[chosen] as r}
                                     <li style="display:none;">
-                                        <a
-                                            on:click={clicker}
-                                            id={r.label}
-                                            class="listItem">{cap(r.value)}</a>
+                                        <a on:click={clicker} id={r.label} class="listItem">{cap(r.value)}</a>
                                     </li>
                                 {/each}
                             </ul>
-                        </div>
+                        </nav>
                     {/if}
                 {/if}
             {:catch error}
                 <span>Error loading nav {error}</span>
             {/await}
+            <form action={region} id="submit-button">
                 <input
                     type="submit"
                     class="button button-nav-submit"
@@ -247,9 +214,10 @@
                                   chosen2 !== undefined
                               ) /* 0 is fine so check explicitly for undefined */
                           )}
-                    value="Go" 
-                    title="Continue here after you’ve filled out all form elements to navigate to selected page."
-                    />
+                    value="Go"
+                    id="nav_submit"
+                    title="Continue here after you’ve filled out all form elements to navigate to selected page." />
+            </form>
         </form>
     </div>
 </div>

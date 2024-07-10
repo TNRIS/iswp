@@ -15,21 +15,15 @@
         for (let project of swdata.projects) {
             let to_array = [
                 html(`<a href="/wms/${project.WmsId}">${project.ProjectName}`),
-                html(
-                    `<a href="/region/${project.WugRegion}">${project.WugRegion}`
-                )
+                html(`<a href="/region/${project.WugRegion}">${project.WugRegion}`)
             ];
 
             // Need to stringify array to use includes function because [1] !== [1] since they don't have the same reference.
             if (
                 !(
                     (
-                        JSON.stringify(project_data).includes(
-                            JSON.stringify(to_array)
-                        ) &&
-                        (project.WmsProjectSponsorRegion ===
-                            project.WugRegion ||
-                            type !== 'region')
+                        JSON.stringify(project_data).includes(JSON.stringify(to_array)) &&
+                        (project.WmsProjectSponsorRegion === project.WugRegion || type !== 'region')
                     ) // Specific to region.
                 )
             ) {
@@ -76,9 +70,8 @@
             <div class="recommended-projects-container">
                 <div id="table-container" style="display:{display_table}" />
                 <p class="note"
-                    >Only strategy names that have strategy supplies assigned to
-                    a Water User Group are linked to a water management strategy
-                    page.</p>
+                    >Only strategy names that have strategy supplies assigned to a Water User Group are linked to a water management
+                    strategy page.</p>
             </div>
         </div>
     </div>

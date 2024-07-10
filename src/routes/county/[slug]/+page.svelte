@@ -10,11 +10,7 @@
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
     import ThemeTypesByDecadeChart from '$lib/components/ThemeTypesByDecadeChart.svelte';
     import Header from '$lib/components/Header.svelte';
-    import {
-        load_indexeddb,
-        getConstants,
-        is_idb_loaded
-    } from '$lib/helper.js';
+    import { load_indexeddb, getConstants, is_idb_loaded } from '$lib/helper.js';
     import { page } from '$app/stores';
     let entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`;
     if ($page.url.host.includes('2022'))
@@ -84,29 +80,13 @@
                 </div>
             </div>
         {:then}
-            <PopulationChart
-                title={`${data.slug} County`}
-                {lrp}
-                {tagline}
-                {constants}
-                dont_capitalize_title={true} />
+            <PopulationChart title={`${data.slug} County`} {lrp} {tagline} {constants} dont_capitalize_title={true} />
         {/await}
-        <ThemeTotalsByDecadeChart
-            title={`${data.slug} County`}
-            {lrp}
-            {constants} />
-        <ThemeTypesByDecadeChart
-            chartTitle={'ct-usage-chart'}
-            {lrp}
-            title={`${data.slug} County`}
-            {constants} />
+        <ThemeTotalsByDecadeChart title={`${data.slug} County`} {lrp} {constants} />
+        <ThemeTypesByDecadeChart chartTitle={'ct-usage-chart'} {lrp} title={`${data.slug} County`} {constants} />
 
         <DataUsageType {lrp} {constants} title={`${data.slug} County`} />
-        <ProjectTable
-            project_title={`${data.slug} COUNTY`}
-            project_title2={'Projects Serving Area Of Interest'}
-            {lrp}
-            type={'region'} />
+        <ProjectTable project_title={`${data.slug} COUNTY`} project_title2={'Projects Serving Area Of Interest'} {lrp} type={'region'} />
         <DataViewChoiceWrapInd
             title={`${data.slug} County`}
             {entityMapBlurb}

@@ -24,16 +24,8 @@ export class QuerySettings {
         this.s_demands = new QuerySetting(this.type, filter, this.whereClause);
         this.s_needs = new QuerySetting(this.type, filter, this.whereClause);
         this.s_supplies = new QuerySetting(this.type, filter, this.whereClause);
-        this.s_population = new QuerySetting(
-            this.type,
-            filter,
-            this.whereClause
-        );
-        this.s_strategies = new QuerySetting(
-            this.type,
-            filter,
-            this.whereClause
-        );
+        this.s_population = new QuerySetting(this.type, filter, this.whereClause);
+        this.s_strategies = new QuerySetting(this.type, filter, this.whereClause);
         this.s_projects = new QuerySetting(this.type, filter, this.whereClause);
     }
 

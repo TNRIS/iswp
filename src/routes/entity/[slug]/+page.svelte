@@ -11,12 +11,7 @@
 
     export let data;
 
-    import {
-        load_indexeddb,
-        getConstants,
-        cap,
-        is_idb_loaded
-    } from '$lib/helper.js';
+    import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
     import { page } from '$app/stores';
 
     let constants = getConstants($page.url.host);
@@ -27,18 +22,9 @@
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`;
 
     let db = load_indexeddb();
-    let entityName = JSON.parse(localStorage.entityCoordinates).find(
-        (element) => element.EntityId == data.slug
-    ).EntityName;
+    let entityName = JSON.parse(localStorage.entityCoordinates).find((element) => element.EntityId == data.slug).EntityName;
 
-    let stratAd = [
-        'Region',
-        'County',
-        'Entity',
-        'Strategy',
-        'WMS Type',
-        'Source'
-    ];
+    let stratAd = ['Region', 'County', 'Entity', 'Strategy', 'WMS Type', 'Source'];
 
     let activeDem = ['Region', 'County', 'Entity'];
     $: tagline = '';
@@ -81,14 +67,8 @@
 <div class="statewide-view">
     <section>
         <PopulationChart {tagline} bind:title={entityName} {lrp} {constants} />
-        <ThemeTotalsByDecadeChart
-            {lrp}
-            {constants}
-            title={`Water User Group - ${entityName}`} />
-        <EntityStrategiesTable
-            {lrp}
-            {constants}
-            title={`Water User Group - ${entityName}`} />
+        <ThemeTotalsByDecadeChart {lrp} {constants} title={`Water User Group - ${entityName}`} />
+        <EntityStrategiesTable {lrp} {constants} title={`Water User Group - ${entityName}`} />
         <ProjectTable
             project_title={`WATER USER GROUP - ${entityName}`}
             project_title2={'Projects Serving Area Of Interest'}

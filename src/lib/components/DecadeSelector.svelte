@@ -26,14 +26,14 @@
             </button>
         {/each}
     </div>
-    <div
-        class="hide-medium"
-        role="menubar"
-        aria-label="Choose from the following to decades change the data displayed by the planning decade and theme widget."
-        title="Choose from the following to decades change the data displayed by the planning decade and theme widget."
-        group="data by planning decade and theme menu">
+    <div class="hide-medium">
         <label for="decade_nav">Decade:</label>
-        <select id="decade_nav">
+        <select
+            id="decade_nav"
+            role="menubar"
+            aria-label="Choose from the following to decades change the data displayed by the planning decade and theme widget."
+            title="Choose from the following to decades change the data displayed by the planning decade and theme widget."
+            group="data by planning decade and theme menu">
             {#each DECADES as decade}
                 <option
                     key={`option-${decade}`}

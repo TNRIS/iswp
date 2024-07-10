@@ -12,11 +12,7 @@
     }
 </script>
 
-<button
-    on:click={toggleVisible}
-    class="button-small"
-    title={`Toggle ${ariaHint} data table`}
-    aria-label={`Toggle ${ariaHint} data table`}>
+<button on:click={toggleVisible} class="button-small" title={`Toggle ${ariaHint} data table`} aria-label={`Toggle ${ariaHint} data table`}>
     <small>{text}</small>
 </button>
 

@@ -6,24 +6,12 @@
     export let data;
     let db = load_indexeddb();
     import { QuerySettings } from '$lib/QuerySettings.js';
-    import {
-        load_indexeddb,
-        getConstants,
-        cap,
-        is_idb_loaded
-    } from '$lib/helper.js';
+    import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
     import Statewide from '$lib/db/statewide.js';
     import Header from '$lib/components/Header.svelte';
     import { page } from '$app/stores';
     $: tagline = '';
-    let stratAd = [
-        'Region',
-        'Strategy',
-        'WMS Type',
-        'Source',
-        'County',
-        'Entity'
-    ];
+    let stratAd = ['Region', 'Strategy', 'WMS Type', 'Source', 'County', 'Entity'];
 
     let constants = getConstants($page.url.host);
     let wmsSetting = new QuerySettings('datastrategies', 'WmsId');
@@ -52,9 +40,7 @@
         console.log(`loadForWms time in ms: ${Date.now() - start}`);
         const wr = cap(dat?.strategies?.rows[0].WugRegion).trim();
 
-        tagline = wr
-            ? `Water Management Strategy Sponsor <a href="/region/${wr}">Region ${wr}</a>`
-            : undefined;
+        tagline = wr ? `Water Management Strategy Sponsor <a href="/region/${wr}">Region ${wr}</a>` : undefined;
 
         return r;
     };
@@ -69,13 +55,7 @@
 <div class="statewide-view">
     <!-- Need to load in all entities at once due to calculating title in loadForWms(). Might be worth storing that info statically in the future. -->
     {#await loadForWms() then}
-        <PopulationChart
-            {tagline}
-            title={csvTitle}
-            titleOnly={true}
-            {lrp}
-            {constants}
-            noMap={true} />
+        <PopulationChart {tagline} title={csvTitle} titleOnly={true} {lrp} {constants} noMap={true} />
         <ProjectTable
             project_title={`WATER MANAGEMENT STRATEGY - ${csvTitle}`}
             project_title2={'Projects related to Water Management Strategy'}

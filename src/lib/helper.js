@@ -1,10 +1,5 @@
 import { onMount, beforeUpdate, afterUpdate } from 'svelte';
-import {
-    start_all_db,
-    start_db_2017,
-    start_db_2022,
-    start_db_2027
-} from './db/db.js';
+import { start_all_db, start_db_2017, start_db_2022, start_db_2027 } from './db/db.js';
 import { Constant2027 } from './Constant2027.js';
 import { Constant2022 } from './Constant2022.js';
 import { Constant2017 } from './Constant2017.js';
@@ -52,16 +47,12 @@ export let is_idb_loaded = () => {
                 if (localStorage.getItem('checkedDB') == 'true') {
                     //console.log("resolving.")
                     clearInterval(interval);
-                    document.getElementById('main-content').style.display =
-                        'block';
-                    document.getElementById('main-loader').style.display =
-                        'none';
+                    document.getElementById('main-content').style.display = 'block';
+                    document.getElementById('main-loader').style.display = 'none';
                     resolve('Done');
                 } else {
-                    document.getElementById('main-content').style.display =
-                        'none';
-                    document.getElementById('main-loader').style.display =
-                        'block';
+                    document.getElementById('main-content').style.display = 'none';
+                    document.getElementById('main-loader').style.display = 'block';
                 }
             };
             let interval = setInterval(checkDBDone, 50);
@@ -127,9 +118,7 @@ export let cap = (s) => {
     let split_space = s.split(' ');
     let format_string = '';
     for (let i = 0; i < split_space.length; i++) {
-        format_string +=
-            split_space[i].toLowerCase().charAt(0).toUpperCase() +
-            split_space[i].toLowerCase().slice(1);
+        format_string += split_space[i].toLowerCase().charAt(0).toUpperCase() + split_space[i].toLowerCase().slice(1);
         format_string += ' ';
     }
     return format_string;

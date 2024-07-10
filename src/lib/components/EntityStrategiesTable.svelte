@@ -12,8 +12,7 @@
     $: strats = true;
     onMount(async () => {
         const swdata = await lrp;
-        if (swdata?.strategies?.rows && swdata.strategies.rows.length)
-            strategies = true;
+        if (swdata?.strategies?.rows && swdata.strategies.rows.length) strategies = true;
         let strategy_data = [];
 
         if (!swdata.strategies.rows) {
@@ -22,9 +21,7 @@
         }
         // Deep Copy object.
         let strat_raw = JSON.parse(JSON.stringify(swdata.strategies.rows));
-        strat_raw = strat_raw.sort((a, b) =>
-            a.WmsName.localeCompare(b.WmsName)
-        );
+        strat_raw = strat_raw.sort((a, b) => a.WmsName.localeCompare(b.WmsName));
 
         let strat_condensed = strat_raw.reduce((acc, d) => {
             const found = acc.find((a) => a.WmsName === d.WmsName);
@@ -40,9 +37,7 @@
         }, []);
 
         for (let strat of strat_condensed) {
-            let to_array = [
-                html(`<a href="/wms/${strat?.WmsId}">${strat?.WmsName}</a>`)
-            ];
+            let to_array = [html(`<a href="/wms/${strat?.WmsId}">${strat?.WmsName}</a>`)];
             // Add decades to array
             for (let decade of decades) {
                 to_array.push(strat?.[`SS${decade}`]);
@@ -66,14 +61,8 @@
                          */
                         compare: (a, b) => {
                             try {
-                                let acont = a?.props?.content.replace(
-                                    /<.*?>/g,
-                                    ''
-                                );
-                                let bcont = b?.props?.content.replace(
-                                    /<.*?>/g,
-                                    ''
-                                );
+                                let acont = a?.props?.content.replace(/<.*?>/g, '');
+                                let bcont = b?.props?.content.replace(/<.*?>/g, '');
                                 if (acont > bcont) return 1;
                                 else if (bcont > acont) return -1;
                                 else return 0;
