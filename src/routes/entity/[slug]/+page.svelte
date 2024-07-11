@@ -22,7 +22,7 @@
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`;
 
     let db = load_indexeddb();
-    let entityName = JSON.parse(localStorage.entityCoordinates).find((element) => element.EntityId == data.slug).EntityName;
+    $: entityName = JSON.parse(localStorage.entityCoordinates).find((element) => element.EntityId == data.slug).EntityName;
 
     let stratAd = ['Region', 'County', 'Entity', 'Strategy', 'WMS Type', 'Source'];
 
@@ -62,7 +62,7 @@
 
 <Header {constants} {db} />
 <svelte:head>
-    <title>Water User Group</title>
+    <title>Water User Group{entityName ? ` for ${entityName}` : ''}</title>
 </svelte:head>
 <div class="statewide-view">
     <section>

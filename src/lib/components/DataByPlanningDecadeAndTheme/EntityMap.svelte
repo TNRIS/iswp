@@ -91,11 +91,43 @@
 
     const makeEntityPopup = (item, ID) => {
         return (
-            `<h3>${item.EntityName}</h3>` +
-            `<p>Total Value: ${commafy(item[`${ID}${$decadeStore}`] + '')}</p>` +
-            `<p><a href="/entity/${item.EntityId}">View Entity Page</a></p>`
+            `<h3 aria-live="polite">${item.EntityName}</h3>` +
+            `<p aria-live="polite">Total Value: ${commafy(item[`${ID}${$decadeStore}`] + '')}</p>` +
+            `<p aria-live="polite"><a href="/entity/${item.EntityId}">View Entity Page</a></p>`
         );
     };
+
+    /**
+     * No property to set for classname to add accessibility hints. So I must do it this way.
+     * At this point the classname has been added with the classname class. So I should be able to select it by grabbing the last item in the html collection.
+     * @param {object} item
+     * @param {string} classname
+     */
+    const makeClassnameAccessible = (item, classname) => {
+        if (!item || !classname) throw new TypeError('item and classname parameters are required.');
+
+        try {
+            let those = document.getElementsByClassName(classname);
+            let that = those[those.length - 1];
+            that.ariaDescription = `${item.EntityName}`;
+            that.role = 'button';
+            if (Number.isInteger(that.tabIndex)) that.tabIndex = 0;
+        } catch (err) {
+            console.log(
+                `Error making ${classname} have aria descriptions and accessible. Please report this to TWDB. Alternatively you can access the data in the raw data section.`
+            );
+        }
+    };
+
+    // Close on escape for accessibility
+    const closeOnEscape = (marker) => {
+        marker.on('keydown', (event) => {
+            if (event?.originalEvent?.key == 'Escape') {
+                marker.closePopup();
+            }
+        });
+    };
+
     /**
      *
      * @param {EntityItem} item
@@ -109,7 +141,7 @@
         let radius = scaleTonew(item[`${ID}${$decadeStore}`], maxValue, constants.MAX_RADIUS);
         const markerOpts = {
             radius,
-            className: class_name,
+            className: `${class_name} circle_marker`,
             pane: 'labels'
         };
         return L.circleMarker([item.Latitude, item.Longitude], markerOpts);
@@ -159,7 +191,7 @@
         // Please be sure to check that this continues to work with screenreaders (gnu orca is what I tested with) if their is need to change it in the future.
         let triangle_popup = L.popup().setContent(`
             <h3 aria-live="polite">${item.ProjectName}</h3>
-            <div id="triangle_popup_${item.id}" class="unstyled" aria-busy="true"  aria-hidden="true" aria-live="polite">
+            <div id="triangle_popup_${item.id}" class="unstyled" aria-busy="true" aria-hidden="true" aria-live="polite" role="dialog">
                 Decade Online: ${item.OnlineDecade}<br />
                 Sponsor: ${item.ProjectSponsors}<br />
                 Capital Cost: ${usd_format.format(item.CapitalCost)}<br />
@@ -175,6 +207,7 @@
         // End of source concerning the workaround for screen readers.
 
         marker.bindPopup(triangle_popup).openPopup();
+        closeOnEscape(marker);
         return marker;
     };
 
@@ -410,7 +443,9 @@
                         pane: 'geom'
                     });
                     let popup;
-                    gj.bindPopup(`<h3>${item.SourceName}</h3><p><a href="/source/${item.MapSourceId}">View Source Page</a></p>`);
+                    gj.bindPopup(
+                        `<h3 aria-live="polite">${item.SourceName}</h3><p aria-live="polite"><a href="/source/${item.MapSourceId}">View Source Page</a></p>`
+                    );
                     gj.on('mousemove', function (e) {
                         //open popup;
                         if (!popup) {
@@ -479,7 +514,6 @@
                                         weight: 2,
                                         fillOpacity: 0.3
                                     });
-
                                     gj.addTo(map);
                                     layers.push(gj);
                                     jj.addTo(map);
@@ -527,8 +561,11 @@
                             const marker = makeMarker(item, 'SS', maxValue, 'entity-marker-strategies');
                             marker.bindPopup(makeEntityPopup(item, 'SS')).openPopup();
                             spiderfier.addMarker(marker);
+                            closeOnEscape(marker);
                             marker.addTo(map);
                             layers.push(marker);
+
+                            makeClassnameAccessible(item, 'circle_marker');
                         }
                     });
                 }
@@ -635,9 +672,10 @@
                             weight: 1,
                             color: 'black'
                         });
-
+                        closeOnEscape(marker);
                         layers.push(marker);
                         marker.addTo(map);
+                        makeClassnameAccessible(item, 'circle_marker');
                     }
 
                     counter++;
@@ -720,7 +758,6 @@
                                         cb(feat_coll);
                                     }
                                 }
-
                                 // After Trying Lines and Polygons push whatever we got.
                                 let gj = L.geoJson(j, {
                                     style: {
@@ -828,10 +865,11 @@
                                     marker.bindPopup(makeEntityPopup(item, 'WS')).openPopup();
 
                                     spiderfier.addMarker(marker);
+                                    closeOnEscape(marker);
                                     marker.addTo(map);
                                     marker.setStyle({ fillColor: 'grey' });
-
                                     layers.push(marker);
+                                    makeClassnameAccessible(item, 'circle_marker');
                                 }
                                 counter++;
                                 if (switch_unlocked && counter >= ar.length) {
@@ -885,8 +923,10 @@
 
                         marker.bindPopup(makeEntityPopup(item, 'D')).openPopup();
                         spiderfier.addMarker(marker);
+                        closeOnEscape(marker);
                         marker.addTo(map);
                         layers.push(marker);
+                        makeClassnameAccessible(item, 'circle_marker');
                     }
                 });
                 zoom(map, lats, lngs);
@@ -923,8 +963,10 @@
                         });
                         marker.bindPopup(makeEntityPopup(item, 'P')).openPopup();
                         spiderfier.addMarker(marker);
+                        closeOnEscape(marker);
                         marker.addTo(map);
                         layers.push(marker);
+                        makeClassnameAccessible(item, 'circle_marker');
                     }
                 });
                 zoom(map, lats, lngs);
@@ -1024,7 +1066,7 @@
         class="twelve columns"
         role="presentation"
         aria-label="Interactive map with buttons placed overlaying a map of texas that you can hit and a tooltip gives details.">
-        <div id="entity_map" style="width:100%; top:0;" role="group">
+        <div id="entity_map" style="width:100%; top:0;" role="presentation">
             <div id="map-entity-hover-tooltip" />
         </div>
 

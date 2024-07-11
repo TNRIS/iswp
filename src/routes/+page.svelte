@@ -37,7 +37,7 @@
 {/await}
 
 <svelte:head>
-    <title>Home</title>
+    <title>Homepage of Interactive State Water Plan</title>
 </svelte:head>
 <div class="statewide-view">
     <section>

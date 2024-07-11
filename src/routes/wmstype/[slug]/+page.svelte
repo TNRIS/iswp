@@ -47,7 +47,7 @@
 
 <Header {constants} {db} />
 <svelte:head>
-    <title>Water Management Strategy Type</title>
+    <title>Water Management Strategy Type{data.slug ? ` for ${data.slug}` : ''}</title>
 </svelte:head>
 <div class="statewide-view">
     <section>
