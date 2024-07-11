@@ -54,7 +54,7 @@
             {/if}
             {#if titleOnly !== true}
                 <div class="chart-header">
-                    <h5>Population</h5>
+                    <h3 class="as_h5">Population</h3>
                 </div>
                 {#await getData()}
                     <div class="loader"></div>
