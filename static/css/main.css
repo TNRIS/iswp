@@ -1670,7 +1670,9 @@ p.note {
 .view-top .view-summary .spinner {
   margin: 2rem auto;
 }
-.view-top .view-summary .chart-header h5 {
+.view-top .view-summary .chart-header h5,
+.view-top .view-summary .chart-header h3.as_h5 {
+  all: unset;
   font-size: 1.9rem;
   line-height: 1.9rem;
   margin-top: 1.5rem;
