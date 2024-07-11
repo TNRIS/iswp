@@ -38,7 +38,8 @@ p {
   margin-bottom: 1rem;
 }
 
-ul, ol {
+ul,
+ol {
   margin-bottom: 1rem;
 }
 
@@ -81,7 +82,12 @@ button[disabled]:hover, button[disabled]:focus {
   }
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: GillSansMT, sans-serif;
   font-weight: bold;
   color: #2c3c4d;
@@ -105,11 +111,11 @@ h5 {
 }
 
 a {
-  color: #3F556D;
+  color: #3f556d;
   text-decoration: underline;
 }
 a:hover {
-  color: #0FA0CE;
+  color: #0fa0ce;
   text-decoration: underline;
 }
 
@@ -157,7 +163,7 @@ select {
 .header {
   margin-top: 0;
   padding: 8px 0 0 0;
-  background: #3F556D;
+  background: #3f556d;
   position: relative;
 }
 @media (min-width: 550px) {
@@ -197,7 +203,7 @@ select {
   color: #fff;
 }
 .header h1 .first-line {
-  color: #BAD4E6;
+  color: #bad4e6;
   font-size: 1.8rem;
   font-weight: normal;
 }
@@ -211,7 +217,9 @@ select {
     font-size: 2.3rem;
   }
 }
-.header h1 a, .header h1 a:hover, .header h1 a:visited {
+.header h1 a,
+.header h1 a:hover,
+.header h1 a:visited {
   text-decoration: none;
   color: inherit;
 }
@@ -232,7 +240,7 @@ select {
   position: absolute;
   left: 0;
   bottom: 0;
-  background-color: #3F556D;
+  background-color: #3f556d;
   color: white;
 }
 #footer p {
@@ -242,7 +250,7 @@ select {
   color: white;
 }
 #footer a:hover {
-  color: #0FA0CE;
+  color: #0fa0ce;
 }
 #footer .tnris-logo {
   width: 80px;
@@ -253,7 +261,8 @@ select {
   .six.columns.wide {
     width: 100%;
   }
-  .columns.wide, .column.wide {
+  .columns.wide,
+  .column.wide {
     margin-left: 0;
   }
 }
@@ -357,37 +366,59 @@ select {
   color: #3e3e3e;
   font-size: 1.2rem;
 }
-.ct-chart .series-demands .ct-point, .ct-chart .series-demands .ct-line, .ct-chart .series-demands .ct-bar {
+.ct-chart .series-demands .ct-point,
+.ct-chart .series-demands .ct-line,
+.ct-chart .series-demands .ct-bar {
   stroke: rgb(172, 40, 133);
 }
-.ct-chart .series-supplies .ct-point, .ct-chart .series-supplies .ct-line, .ct-chart .series-supplies .ct-bar {
+.ct-chart .series-supplies .ct-point,
+.ct-chart .series-supplies .ct-line,
+.ct-chart .series-supplies .ct-bar {
   stroke: rgb(0, 151, 214);
 }
-.ct-chart .series-needs .ct-point, .ct-chart .series-needs .ct-line, .ct-chart .series-needs .ct-bar {
+.ct-chart .series-needs .ct-point,
+.ct-chart .series-needs .ct-line,
+.ct-chart .series-needs .ct-bar {
   stroke: rgb(237, 27, 47);
 }
-.ct-chart .series-strategies .ct-point, .ct-chart .series-strategies .ct-line, .ct-chart .series-strategies .ct-bar {
+.ct-chart .series-strategies .ct-point,
+.ct-chart .series-strategies .ct-line,
+.ct-chart .series-strategies .ct-bar {
   stroke: rgb(10, 162, 69);
 }
-.ct-chart .series-population .ct-point, .ct-chart .series-population .ct-line, .ct-chart .series-population .ct-bar {
+.ct-chart .series-population .ct-point,
+.ct-chart .series-population .ct-line,
+.ct-chart .series-population .ct-bar {
   stroke: rgb(252, 175, 23);
 }
-.ct-chart .series-irrigation .ct-point, .ct-chart .series-irrigation .ct-line, .ct-chart .series-irrigation .ct-bar {
+.ct-chart .series-irrigation .ct-point,
+.ct-chart .series-irrigation .ct-line,
+.ct-chart .series-irrigation .ct-bar {
   stroke: rgb(0, 155, 144);
 }
-.ct-chart .series-livestock .ct-point, .ct-chart .series-livestock .ct-line, .ct-chart .series-livestock .ct-bar {
+.ct-chart .series-livestock .ct-point,
+.ct-chart .series-livestock .ct-line,
+.ct-chart .series-livestock .ct-bar {
   stroke: rgb(106, 138, 34);
 }
-.ct-chart .series-manufacturing .ct-point, .ct-chart .series-manufacturing .ct-line, .ct-chart .series-manufacturing .ct-bar {
+.ct-chart .series-manufacturing .ct-point,
+.ct-chart .series-manufacturing .ct-line,
+.ct-chart .series-manufacturing .ct-bar {
   stroke: rgb(234, 214, 4);
 }
-.ct-chart .series-mining .ct-point, .ct-chart .series-mining .ct-line, .ct-chart .series-mining .ct-bar {
+.ct-chart .series-mining .ct-point,
+.ct-chart .series-mining .ct-line,
+.ct-chart .series-mining .ct-bar {
   stroke: rgb(120, 182, 228);
 }
-.ct-chart .series-municipal .ct-point, .ct-chart .series-municipal .ct-line, .ct-chart .series-municipal .ct-bar {
+.ct-chart .series-municipal .ct-point,
+.ct-chart .series-municipal .ct-line,
+.ct-chart .series-municipal .ct-bar {
   stroke: rgb(237, 27, 47);
 }
-.ct-chart .series-steam-electric-power .ct-point, .ct-chart .series-steam-electric-power .ct-line, .ct-chart .series-steam-electric-power .ct-bar {
+.ct-chart .series-steam-electric-power .ct-point,
+.ct-chart .series-steam-electric-power .ct-line,
+.ct-chart .series-steam-electric-power .ct-bar {
   stroke: rgb(254, 195, 78);
 }
 
@@ -412,7 +443,9 @@ select {
   }
 }
 
-.ct-series .ct-point, .ct-series .ct-line, .ct-series .ct-bar {
+.ct-series .ct-point,
+.ct-series .ct-line,
+.ct-series .ct-bar {
   stroke: #000;
 }
 
@@ -543,7 +576,8 @@ select {
   line-height: 1.4rem;
   margin-bottom: 0;
 }
-.chart-table-container table th, .chart-table-container table td {
+.chart-table-container table th,
+.chart-table-container table td {
   text-align: right;
   padding: 3px 20px 1px 0;
 }
@@ -553,7 +587,7 @@ select {
   text-align: left;
 }
 .chart-table-container table tr.highlight {
-  background: #FFFFB3;
+  background: #ffffb3;
 }
 .chart-table-container table tr.series-demands .row-label > span {
   padding: 0 1px;
@@ -953,7 +987,8 @@ button.easy-button-button .icon-texas {
   http://leafletjs.com
   https://github.com/jacobtoye
 */
-.leaflet-label, .leaflet-tooltip {
+.leaflet-label,
+.leaflet-tooltip {
   background: rgb(235, 235, 235);
   background: rgba(235, 235, 235, 0.81);
   background-clip: padding-box;
@@ -976,7 +1011,8 @@ button.easy-button-button .icon-texas {
   z-index: 6;
 }
 
-.leaflet-label.leaflet-clickable, .leaflet-tooltip.leaflet-clickable {
+.leaflet-label.leaflet-clickable,
+.leaflet-tooltip.leaflet-clickable {
   cursor: pointer;
 }
 
@@ -1010,7 +1046,8 @@ button.easy-button-button .icon-texas {
   left: -5px;
 }
 
-.leaflet-label:after, .leaflet-tooltip:after {
+.leaflet-label:after,
+.leaflet-tooltip:after {
   border-left: 6px solid black;
   border-left-color: inherit;
   right: -10px;
@@ -1058,28 +1095,35 @@ button.easy-button-button .icon-texas {
     text-align: right;
   }
 }
-.nav-container button, .nav-container .button {
+.nav-container button,
+.nav-container .button {
   color: white;
   margin: 0 0 -1px -1px;
   border-radius: 0;
   border-color: white;
   display: inline-block;
 }
-.nav-container button.active, .nav-container .button.active {
+.nav-container button.active,
+.nav-container .button.active {
   background-color: #526e8d;
 }
-.nav-container button:focus, .nav-container button:hover, .nav-container .button:focus, .nav-container .button:hover {
+.nav-container button:focus, .nav-container button:hover,
+.nav-container .button:focus,
+.nav-container .button:hover {
   border-bottom: 1px solid white;
   background-color: #526e8d;
   text-decoration: none;
 }
-.nav-container button:first-child, .nav-container .button:first-child {
+.nav-container button:first-child,
+.nav-container .button:first-child {
   margin-left: 0;
 }
-.nav-container button.button-home, .nav-container .button.button-home {
+.nav-container button.button-home,
+.nav-container .button.button-home {
   padding: 0 12px;
 }
-.nav-container button.button-home > svg, .nav-container .button.button-home > svg {
+.nav-container button.button-home > svg,
+.nav-container .button.button-home > svg {
   fill: white;
   height: 18px;
   width: 20px;
@@ -1147,10 +1191,11 @@ button.easy-button-button .icon-texas {
   background: #fff;
 }
 .button-nav-submit:focus {
-  border: 1px solid #33C3F0;
+  border: 1px solid #33c3f0;
 }
 
-#nav-category-select, #secondary-category-select {
+#nav-category-select,
+#secondary-category-select {
   display: inline-block;
   margin-bottom: 0;
 }
@@ -1177,13 +1222,16 @@ button.easy-button-button .icon-texas {
 .reactPivot-results {
   font-size: smaller;
 }
-.reactPivot-results td, .reactPivot-results th {
+.reactPivot-results td,
+.reactPivot-results th {
   padding: 2px;
 }
-.reactPivot-results td:last-child, .reactPivot-results th:last-child {
+.reactPivot-results td:last-child,
+.reactPivot-results th:last-child {
   text-align: right;
 }
-.reactPivot-results td .reactPivot-solo, .reactPivot-results th .reactPivot-solo {
+.reactPivot-results td .reactPivot-solo,
+.reactPivot-results th .reactPivot-solo {
   font-weight: bold;
 }
 
@@ -1230,27 +1278,33 @@ button.easy-button-button .icon-texas {
 .table-condensed tr.totals-row td {
   border-top: 2px solid gray;
 }
-.table-condensed th, .table-condensed td {
+.table-condensed th,
+.table-condensed td {
   text-align: right;
   padding: 2px 20px 0 0;
 }
-.table-condensed th.row-label, .table-condensed td.row-label {
+.table-condensed th.row-label,
+.table-condensed td.row-label {
   font-weight: bold;
 }
-.table-condensed th.reactable-th-total, .table-condensed td.reactable-th-total {
+.table-condensed th.reactable-th-total,
+.table-condensed td.reactable-th-total {
   font-style: italic;
 }
-.table-condensed th.totals-col, .table-condensed td.totals-col {
+.table-condensed th.totals-col,
+.table-condensed td.totals-col {
   font-style: italic;
   border-left: 2px solid gray;
   width: 80px;
 }
-.table-condensed th.grand-total, .table-condensed td.grand-total {
+.table-condensed th.grand-total,
+.table-condensed td.grand-total {
   font-weight: bold;
   border-left: 2px solid gray;
 }
 
-.regional-summary-table th, td {
+.regional-summary-table th,
+td {
   max-width: 100px;
 }
 
@@ -1318,7 +1372,7 @@ button.easy-button-button .icon-texas {
 }
 
 .route-method {
-  color: #2A6330;
+  color: #2a6330;
 }
 
 .route-method-path {
@@ -1374,7 +1428,8 @@ button.easy-button-button .icon-texas {
     margin-top: 2rem;
   }
 }
-section.content ul, section.content ol {
+section.content ul,
+section.content ol {
   margin-left: 1rem;
 }
 
@@ -1386,9 +1441,13 @@ section.content ul, section.content ol {
   background-color: rgba(65, 85, 100, 0.25);
 }
 
+.unstyled_label {
+  all: none;
+}
+
 .view-choice-container {
   text-align: center;
-  background-color: #3F556D;
+  background-color: #3f556d;
   padding: 1rem 0;
   margin-bottom: 10px;
   margin-top: 58.1px;
@@ -1443,7 +1502,7 @@ section.content ul, section.content ol {
 }
 .view-choice-container .selector button.active {
   color: #fff;
-  background: #3F556D;
+  background: #3f556d;
   margin-left: -1px;
   border-right: none;
   border-left: none;
@@ -1481,9 +1540,9 @@ h4 > .units {
   margin: 0 0 1rem 1rem;
 }
 .selector button.active {
-  background: #3F556D;
-  color: #FFF;
-  border: 1px solid #FFF;
+  background: #3f556d;
+  color: #fff;
+  border: 1px solid #fff;
 }
 .selector button.active:focus {
   background: #526e8d;
@@ -1502,7 +1561,8 @@ h4 > .units {
   margin-bottom: 0.5rem;
 }
 
-.button, button {
+.button,
+button {
   font-weight: normal;
   font-size: 12px;
 }
@@ -1516,15 +1576,15 @@ h4 > .units {
 
 .button.button-primary,
 button.button-primary {
-  background-color: #3F556D;
-  border-color: #3F556D;
+  background-color: #3f556d;
+  border-color: #3f556d;
 }
 .button.button-primary:hover, .button.button-primary:active, .button.button-primary:focus,
 button.button-primary:hover,
 button.button-primary:active,
 button.button-primary:focus {
-  background-color: #3F556D;
-  border-color: #3F556D;
+  background-color: #3f556d;
+  border-color: #3f556d;
 }
 
 p.note {
@@ -1722,7 +1782,8 @@ p.note {
   cursor: pointer;
 }
 
-.desc::after, .asc::after {
+.desc::after,
+.asc::after {
   content: "";
   margin-left: 2px;
   width: 0;

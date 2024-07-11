@@ -67,6 +67,10 @@ section.content {
 .view-choice-wrap {
     background-color: rgba(65, 85, 100, 0.25);
 }
+.unstyled,
+.unstyled li {
+    all: unset;
+}
 
 .view-choice-container {
     text-align: center;

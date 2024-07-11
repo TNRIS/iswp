@@ -144,23 +144,37 @@
 
         const triangle_icon = L.divIcon({
             className: 'triangle-marker',
-            html: `<div class="triangle-marker-inner" role="button" aria-label="${item.ProjectName} popup"></div>`
+            html: `<div class="triangle-marker-inner" 
+            role="button" aria-label="${item.ProjectName} icon opens popup when clicked." aria-haspopup="true"></div>`
         });
 
         const marker = L.marker([lat, lng], {
             icon: triangle_icon,
-            pane: 'project_labels'
+            pane: 'project_labels',
+            alt: `${item.ProjectName} icon opens popup when clicked.`
         });
 
-        marker
-            .bindPopup(
-                `<h3>${item.ProjectName}</h3>
-                <p>Decade Online: ${item.OnlineDecade}</p>
-                <p>Sponsor: ${item.ProjectSponsors}</p>
-                <p>Capital Cost: ${usd_format.format(item.CapitalCost)}</p>
-                <p><a href="/project/${item.WmsProjectId}">View Project Page</a></p>`
-            )
-            .openPopup();
+        // This is written this way as a workaround for a problem only noticeable when using aria-live attribute.
+        // It causes screenreaders to read the html that pops up in the wrong order for popups.
+        // Please be sure to check that this continues to work with screenreaders (gnu orca is what I tested with) if their is need to change it in the future.
+        let triangle_popup = L.popup().setContent(`
+            <h3 aria-live="polite">${item.ProjectName}</h3>
+            <div id="triangle_popup_${item.id}" class="unstyled" aria-busy="true"  aria-hidden="true" aria-live="polite">
+                Decade Online: ${item.OnlineDecade}<br />
+                Sponsor: ${item.ProjectSponsors}<br />
+                Capital Cost: ${usd_format.format(item.CapitalCost)}<br />
+                <a href="/project/${item.WmsProjectId}">View Project Page</a>
+            </div>`);
+        triangle_popup.on('contentupdate', () => {
+            setTimeout(() => {
+                let ti = document.getElementById(`triangle_popup_${item.id}`);
+                ti.ariaBusy = 'false';
+                ti.ariaHidden = 'false';
+            }, 500);
+        });
+        // End of source concerning the workaround for screen readers.
+
+        marker.bindPopup(triangle_popup).openPopup();
         return marker;
     };
 
@@ -196,6 +210,7 @@
             }
         };
 
+        // Check if there are multiple properties.
         spiderfier = new OverlappingMarkerSpiderfier(map, {
             keepSpiderfied: true,
             nearbyDistance: 5
@@ -205,25 +220,6 @@
             map.closePopup();
         });
 
-        spiderfier.addListener('click', (marker) => {
-            const props = marker.feature.properties;
-            const entityContent = `
-                <h3>${props.EntityName}</h3>
-                <p>Total Value: ${commafy(props.ValueSum + '')}</p>
-                <a id="entity_${props.EntityId}">View Entity Page</a>
-            `;
-            const projectContent = `
-                <h3>${props.ProjectName}</h3>
-                <p>Decade Online: ${props.OnlineDecade}</p>
-                <p>Sponsor: ${props.ProjectSponsors}</p>
-                <p>Capital Cost: ${props.CapitalCost}</p>
-                <a id="project_${props.WmsProjectId}">View Project Page</a>
-            `;
-            const content = props.EntityId ? entityContent : projectContent;
-            popup.setContent(content);
-            popup.setLatLng(marker.getLatLng());
-            map.openPopup(popup);
-        });
         map.createPane('geom');
         map.createPane('labels');
         map.createPane('project_labels');
@@ -1026,9 +1022,9 @@
     {/if}
     <div
         class="twelve columns"
-        role="group"
+        role="presentation"
         aria-label="Interactive map with buttons placed overlaying a map of texas that you can hit and a tooltip gives details.">
-        <div id="entity_map" style="width:100%; top:0;">
+        <div id="entity_map" style="width:100%; top:0;" role="group">
             <div id="map-entity-hover-tooltip" />
         </div>
 

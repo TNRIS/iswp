@@ -120,13 +120,22 @@
             }
             // @ts-ignore because document is defined since this is onMount();
         }).render(document.getElementById('table-container'));
-        setTimeout(() => {
-            try {
-                document.getElementsByClassName('rec-proj')[0].click();
-            } catch (err) {
-                console.log('Problem sorting by project, proceeding.');
+
+        // No event emitter for page load so workaround is to check like this every 10th of a second.
+        let tries = 0;
+        let waitTableLoad = setInterval(() => {
+            let firstColumn = document.getElementsByClassName('rec-proj')[0];
+            if (firstColumn) {
+                // Click on success.
+                firstColumn.click();
+                clearInterval(waitTableLoad);
             }
-        }, 100);
+            if (tries >= 10) {
+                // Only wait 10 times.
+                clearInterval(waitTableLoad);
+            }
+            tries++;
+        }, 500);
 
         // No built in way to customize the placeholder for gridjs-input so I need to do this workaround.
         // @ts-ignore because document is defined since this is onMount();
