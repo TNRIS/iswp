@@ -333,7 +333,9 @@ $top-height: 34rem;
         }
 
         .chart-header {
-            h5 {
+            h5,
+            h3.as_h5 {
+                all: unset;
                 font-size: 1.9rem;
                 line-height: 1.9rem;
                 margin-top: 1.5rem;
