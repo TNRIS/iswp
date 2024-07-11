@@ -59,7 +59,12 @@
 </svelte:head>
 <div class="statewide-view">
     <section>
-        <PopulationChart title={`Planning Region ${data.slug}`} lrp={loadForRegionPromise} {constants} {tagline} />
+        <PopulationChart
+            title={`Planning Region ${data.slug}`}
+            lrp={loadForRegionPromise}
+            {constants}
+            {tagline}
+            dont_capitalize_title={true} />
         <div class="container">
             <div class="row panel-row">
                 <div class="twelve columns">
