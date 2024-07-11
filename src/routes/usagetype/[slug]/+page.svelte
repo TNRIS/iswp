@@ -43,7 +43,7 @@
 
 <Header {constants} {db} />
 <svelte:head>
-    <title>Usage Type</title>
+    <title>Usage Type{data.slug ? ` for ${data.slug}` : ''}</title>
 </svelte:head>
 <div class="statewide-view">
     <div class="view-top usage-type-view-top">

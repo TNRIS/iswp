@@ -50,7 +50,7 @@
 
 <Header {constants} {db} />
 <svelte:head>
-    <title>Water Management Strategy</title>
+    <title>Water Management Strategy{csvTitle ? ` for ${csvTitle}` : ''}</title>
 </svelte:head>
 <div class="statewide-view">
     <!-- Need to load in all entities at once due to calculating title in loadForWms(). Might be worth storing that info statically in the future. -->

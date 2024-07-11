@@ -35,8 +35,9 @@
 {#await HeaderPromise then { default: Component }}
     <Component {db} {constants} />
 {/await}
+
 <svelte:head>
-    <title>Home</title>
+    <title>Homepage of Interactive State Water Plan</title>
 </svelte:head>
 <div class="statewide-view">
     <section>
@@ -73,7 +74,7 @@
         {#await DataViewChoiceWrapPromise}
             <div class="loader"></div>
         {:then { default: Component }}
-            <Component {db} {lrp} csvTitle={'Statewide'} {constants} />
+            <Component {db} {lrp} csvTitle={'Statewide'} {constants} downloadPopulation={true} />
         {/await}
     </section>
 </div>

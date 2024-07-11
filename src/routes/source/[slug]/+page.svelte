@@ -52,7 +52,7 @@
 
 <Header {constants} {db} />
 <svelte:head>
-    <title>Source</title>
+    <title>Source{title ? ` for ${title}` : ''}</title>
 </svelte:head>
 <div class="statewide-view">
     {#await lrp then}

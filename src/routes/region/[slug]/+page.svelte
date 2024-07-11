@@ -55,7 +55,7 @@
 
 <Header {constants} {db} />
 <svelte:head>
-    <title>Region</title>
+    <title>Planning Region {data.slug ? ` ${data.slug}` : ''}</title>
 </svelte:head>
 <div class="statewide-view">
     <section>
