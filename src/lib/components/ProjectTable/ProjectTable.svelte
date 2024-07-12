@@ -154,7 +154,7 @@
         <div class="twelve columns">
             <span class="view-name">{project_title}</span>
             <div class="recommended-projects-container" id="rpc">
-                <h4>Recommended {project_title2}</h4>
+                <h4 aria-level="3">Recommended {project_title2}</h4>
                 {#if project_data.length}
                     <p>
                         Total capital cost of recommended projects:

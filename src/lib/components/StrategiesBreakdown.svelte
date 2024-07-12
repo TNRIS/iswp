@@ -153,7 +153,7 @@
         <span class="view-name">{title}</span>
     {/if}
     <div class="row">
-        <h4>Strategy Supplies Breakdown - {$decadeStore}<span class="units">(acre-feet/year)</span></h4>
+        <h4 aria-level="3">Strategy Supplies Breakdown - {$decadeStore}<span class="units">(acre-feet/year)</span></h4>
     </div>
     {#if !strats_empty && !stt_entries_empty}
         <div class="row">

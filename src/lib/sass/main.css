@@ -1441,8 +1441,9 @@ section.content ol {
   background-color: rgba(65, 85, 100, 0.25);
 }
 
-.unstyled_label {
-  all: none;
+.unstyled,
+.unstyled li {
+  all: unset;
 }
 
 .view-choice-container {
@@ -1670,6 +1671,7 @@ p.note {
   margin: 2rem auto;
 }
 .view-top .view-summary .chart-header h5 {
+  all: unset;
   font-size: 1.9rem;
   line-height: 1.9rem;
   margin-top: 1.5rem;

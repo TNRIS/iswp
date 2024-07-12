@@ -109,7 +109,7 @@
                 <span class="view-name">{title}</span>
             {/if}
             <div class="recommended-projects-container">
-                <h4>Water Management Strategies</h4>
+                <h4 aria-level="3">Water Management Strategies</h4>
                 {#if strats}
                     <div id="tab-con" />
                 {:else}

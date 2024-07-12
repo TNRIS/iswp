@@ -100,7 +100,7 @@
     /**
      * No property to set for classname to add accessibility hints. So I must do it this way.
      * At this point the classname has been added with the classname class. So I should be able to select it by grabbing the last item in the html collection.
-     * @param {object} label
+     * @param {string} label
      * @param {string} classname
      */
     const makeLastOfClassnameAccessible = (label, classname) => {
@@ -1061,7 +1061,7 @@
     <!-- Only project has type pop because it has an entity map with population only. -->
     {#if type == 'pop'}
         <span class="view-name">{title}</span>
-        <h4>Water User Groups - {$decadeStore} - {theme_titles['population']} Benefiting</h4>
+        <h4 aria-level="3">Water User Groups - {$decadeStore} - {theme_titles['population']} Benefiting</h4>
     {:else}
         <span class="view-name">{title}</span>
         <h4

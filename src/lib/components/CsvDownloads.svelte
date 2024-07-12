@@ -166,7 +166,7 @@
 </script>
 
 {#if constants.allow_dl}
-    <h5 id="dl_header">Download Data</h5>
+    <h5 id="dl_header" aria-level="4">Download Data</h5>
     <ul>
         {#if population.length && downloadPopulation}
             <li
@@ -225,9 +225,7 @@
         {/if}
 
         {#if !((population.length && downloadPopulation) || demands.length || existing.length || needs.length || strategy.length || (projects.length && window.location.pathname.includes('/project/')))}
-            <ul>
-                <li>No csv available for download.</li>
-            </ul>
+            <li>No csv available for download.</li>
         {/if}
     </ul>
 {/if}

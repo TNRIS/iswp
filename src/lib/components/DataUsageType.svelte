@@ -62,7 +62,7 @@
                     {#if title}
                         <span class="view-name">{title}</span>
                     {/if}
-                    <h4>
+                    <h4 aria-level="3">
                         Data by Usage Type
                         <span class="units">(acre-feet/year)</span>
                     </h4>
