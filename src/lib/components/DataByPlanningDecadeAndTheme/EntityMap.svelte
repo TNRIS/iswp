@@ -109,7 +109,7 @@
         try {
             let those = document.getElementsByClassName(classname);
             let that = those[those.length - 1];
-            that.ariaDescription = `${item.EntityName}`;
+            that.ariaLabel = `${item.EntityName}`;
             that.role = 'button';
             if (Number.isInteger(that.tabIndex)) that.tabIndex = 0;
         } catch (err) {
