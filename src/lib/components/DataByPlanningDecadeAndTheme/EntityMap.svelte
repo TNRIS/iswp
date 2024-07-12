@@ -103,13 +103,13 @@
      * @param {object} item
      * @param {string} classname
      */
-    const makeClassnameAccessible = (item, classname) => {
+    const makeLastOfClassnameAccessible = (label, classname) => {
         if (!item || !classname) throw new TypeError('item and classname parameters are required.');
 
         try {
             let those = document.getElementsByClassName(classname);
             let that = those[those.length - 1];
-            that.ariaLabel = `${item.EntityName}`;
+            that.ariaLabel = label;
             that.role = 'button';
             if (Number.isInteger(that.tabIndex)) that.tabIndex = 0;
         } catch (err) {
@@ -505,19 +505,25 @@
                                         color: '#3F556D',
                                         opacity: 1,
                                         weight: 4,
-                                        fillOpacity: 0.3
+                                        fillOpacity: 0.3,
+                                        className: 'gj'
                                     });
 
                                     let jj = displayGeom(linej, item, {
                                         color: '#33B0FF',
                                         opacity: 1,
                                         weight: 2,
-                                        fillOpacity: 0.3
+                                        fillOpacity: 0.3,
+                                        className: 'jj'
                                     });
                                     gj.addTo(map);
                                     layers.push(gj);
+                                    closeOnEscape(gj);
+                                    makeLastOfClassnameAccessible(`${item.EntityName} line`, 'gj');
                                     jj.addTo(map);
                                     layers.push(jj);
+                                    closeOnEscape(jj);
+                                    makeLastOfClassnameAccessible(`${item.EntityName} line`, 'jj');
                                     counter++;
 
                                     // Add boundaries to list of latitudes and longitudes to calculate the bounding box below.
@@ -565,7 +571,7 @@
                             marker.addTo(map);
                             layers.push(marker);
 
-                            makeClassnameAccessible(item, 'circle_marker');
+                            makeLastOfClassnameAccessible(item.EntityName, 'circle_marker');
                         }
                     });
                 }
@@ -675,7 +681,7 @@
                         closeOnEscape(marker);
                         layers.push(marker);
                         marker.addTo(map);
-                        makeClassnameAccessible(item, 'circle_marker');
+                        makeLastOfClassnameAccessible(item.EntityName, 'circle_marker');
                     }
 
                     counter++;
@@ -764,7 +770,8 @@
                                         color,
                                         opacity: 1,
                                         weight: 2,
-                                        fillOpacity: 0.4
+                                        fillOpacity: 0.4,
+                                        className: 'gjsupplies'
                                     },
                                     pane: 'geom'
                                 });
@@ -797,6 +804,10 @@
                                     popup.close();
                                     popup = null;
                                 });
+
+                                closeOnEscape(gj);
+                                makeLastOfClassnameAccessible(`${item.EntityName} line`, 'gjsupplies');
+
                                 gj.addTo(map);
                                 layers.push(gj);
                             };
@@ -869,7 +880,7 @@
                                     marker.addTo(map);
                                     marker.setStyle({ fillColor: 'grey' });
                                     layers.push(marker);
-                                    makeClassnameAccessible(item, 'circle_marker');
+                                    makeLastOfClassnameAccessible(item.EntityName, 'circle_marker');
                                 }
                                 counter++;
                                 if (switch_unlocked && counter >= ar.length) {
@@ -926,7 +937,7 @@
                         closeOnEscape(marker);
                         marker.addTo(map);
                         layers.push(marker);
-                        makeClassnameAccessible(item, 'circle_marker');
+                        makeLastOfClassnameAccessible(item.EntityName, 'circle_marker');
                     }
                 });
                 zoom(map, lats, lngs);
@@ -966,7 +977,7 @@
                         closeOnEscape(marker);
                         marker.addTo(map);
                         layers.push(marker);
-                        makeClassnameAccessible(item, 'circle_marker');
+                        makeLastOfClassnameAccessible(item.EntityName, 'circle_marker');
                     }
                 });
                 zoom(map, lats, lngs);
