@@ -59,3 +59,17 @@ How to create cache.
 
 Prettier config is located in package.json.
 prettier-plugin-svelte Svelte for vs code extension has this installed.
+
+## LICENSING
+
+This program is licenced under GPLV2 Please see LICENSE file for details.
+This program is distributed with the following programs under separate free licenses. View them for details.
+
+leaflet, leaflet Easybutton, skeleton.css, react-pivot standalone, leaflet oms
+https://leafletjs.com/
+https://github.com/CliffCloud/Leaflet.EasyButton
+https://github.com/jawj/OverlappingMarkerSpiderfier-Leaflet
+https://github.com/dhg/Skeleton
+https://github.com/L-Har/react-pivot
+https://github.com/davidguttman/react-pivot
+https://github.com/jawj/OverlappingMarkerSpiderfier-Leaflet
