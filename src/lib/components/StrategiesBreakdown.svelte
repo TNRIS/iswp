@@ -153,12 +153,12 @@
         <span class="view-name">{title}</span>
     {/if}
     <div class="row">
-        <h4>Strategy Supplies Breakdown - {$decadeStore}<span class="units">(acre-feet/year)</span></h4>
+        <h4 aria-level="3">Strategy Supplies Breakdown - {$decadeStore}<span class="units">(acre-feet/year)</span></h4>
     </div>
     {#if !strats_empty && !stt_entries_empty}
         <div class="row">
             <div class="six columns strategies-by-source-type-container">
-                <h5 for="share_by_water_resource_chart">Share by Water Resource</h5>
+                <h5 aria-level="4" for="share_by_water_resource_chart">Share by Water Resource</h5>
                 <div
                     class="pie-chart-container"
                     title="Pie Chart describing Water Share usage percentages."

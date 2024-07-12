@@ -73,6 +73,23 @@
         } catch (err) {
             console.log(err);
         }
+
+        try {
+            let dimenContainer = document.getElementsByClassName('reactPivot-dimensions');
+            dimenContainer.ariaDescription = 'Pivot Table for narrowing down data the raw data available in csv form below.';
+            dimenContainer.ariaLabel = 'Pivot Table for narrowing down data.';
+            if (dimenContainer && dimenContainer.length) {
+                for (let i = 0; i < dimenContainer.length; i++) {
+                    let dim = dimenContainer[i].children;
+                    for (let i = 0; i < dim.length; i++) {
+                        dim[i].ariaDescription = 'Change values here to change what is displayed in the Pivot Table below.';
+                        dim[i].ariaLabel = 'Pivot Table Selector';
+                    }
+                }
+            }
+        } catch (err) {
+            console.log('problem making dimension table more accessible. Proceeding. Please report this to twdb.');
+        }
     };
 
     dataviewContext.getData.set(getData);
@@ -91,7 +108,7 @@
 
 <div class="row panel-row">
     <span class="view-name">{title}</span>
-    <h4>Raw Data - {$decadeStore} - Population Benefiting</h4>
+    <h4 aria-level="3">Raw Data - {$decadeStore} - Population Benefiting</h4>
     {#if !swdata?.population?.rows?.length}
         Sorry, there is no Population data.
     {/if}

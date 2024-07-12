@@ -15,6 +15,27 @@
     function navigateToCounty(item) {
         window.location.replace(`/county/${item?.layer?.feature?.properties?.name}`);
     }
+    /**
+     * No property to set for classname to add accessibility hints. So I must do it this way.
+     * At this point the classname has been added with the classname class. So I should be able to select it by grabbing the last item in the html collection.
+     * @param {string} label
+     * @param {string} classname
+     */
+    const makeLastOfClassnameAccessible = (label, classname) => {
+        if (!label || !classname) throw new TypeError('label and classname parameters are required.');
+
+        try {
+            let those = document.getElementsByClassName(classname);
+            let that = those[those.length - 1];
+            that.ariaLabel = label;
+            that.role = 'button';
+            if (Number.isInteger(that.tabIndex)) that.tabIndex = -1;
+        } catch (err) {
+            console.log(
+                `Error making ${classname} have aria descriptions and accessible. Please report this to TWDB. Alternatively you can access the data in the raw data section.`
+            );
+        }
+    };
 
     onMount(async () => {
         // Leaflet must be loaded after mount.
@@ -305,6 +326,8 @@
                 L.marker([project.ProjectLatCoord, project.ProjectLongCoord], {
                     icon
                 }).addTo(map);
+
+                makeLastOfClassnameAccessible(project.EntityName, 'triangle-marker');
                 map.setView([project.ProjectLatCoord, project.ProjectLongCoord - 0.5], 9);
                 countyHoverSetup();
             }

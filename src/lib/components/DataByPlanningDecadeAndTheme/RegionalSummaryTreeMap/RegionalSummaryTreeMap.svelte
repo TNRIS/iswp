@@ -101,7 +101,7 @@
 <div class="row panel-row">
     <div class="twelve columns">
         <div>
-            <h4>
+            <h4 aria-level="3">
                 Regional Summary Treemap - {$decadeStore} - {themetitles[$themeStore]}
                 {#if $themeStore === 'population'}
                     <span class="units">(people)</span>

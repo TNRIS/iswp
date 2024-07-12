@@ -54,7 +54,7 @@
         <div class="view-top usage-type-view-top">
             <div class="summary-wrapper container">
                 <div class="view-summary usage-type-summary">
-                    <h1>{data.slug}</h1>
+                    <h1 aria-level="2">{data.slug}</h1>
                     {wms_info.WMS_TYPE_DESCRIPTIONS[data.slug.replace('AND', '&')]}
                 </div>
             </div>

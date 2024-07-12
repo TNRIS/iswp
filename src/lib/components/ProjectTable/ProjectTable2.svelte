@@ -66,7 +66,7 @@
     <div class="row panel-row">
         <div class="twelve columns">
             <span class="view-name">{project_title}</span>
-            <h4>Recommended {project_title2}</h4>
+            <h4 aria-level="3">Recommended {project_title2}</h4>
             <div class="recommended-projects-container">
                 <div id="table-container" style="display:{display_table}" />
                 <p class="note"

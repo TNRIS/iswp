@@ -100,16 +100,16 @@
     /**
      * No property to set for classname to add accessibility hints. So I must do it this way.
      * At this point the classname has been added with the classname class. So I should be able to select it by grabbing the last item in the html collection.
-     * @param {object} item
+     * @param {string} label
      * @param {string} classname
      */
-    const makeClassnameAccessible = (item, classname) => {
-        if (!item || !classname) throw new TypeError('item and classname parameters are required.');
+    const makeLastOfClassnameAccessible = (label, classname) => {
+        if (!label || !classname) throw new TypeError('label and classname parameters are required.');
 
         try {
             let those = document.getElementsByClassName(classname);
             let that = those[those.length - 1];
-            that.ariaDescription = `${item.EntityName}`;
+            that.ariaLabel = label;
             that.role = 'button';
             if (Number.isInteger(that.tabIndex)) that.tabIndex = 0;
         } catch (err) {
@@ -505,19 +505,25 @@
                                         color: '#3F556D',
                                         opacity: 1,
                                         weight: 4,
-                                        fillOpacity: 0.3
+                                        fillOpacity: 0.3,
+                                        className: 'gj'
                                     });
 
                                     let jj = displayGeom(linej, item, {
                                         color: '#33B0FF',
                                         opacity: 1,
                                         weight: 2,
-                                        fillOpacity: 0.3
+                                        fillOpacity: 0.3,
+                                        className: 'jj'
                                     });
                                     gj.addTo(map);
                                     layers.push(gj);
+                                    closeOnEscape(gj);
+                                    makeLastOfClassnameAccessible(`${item.EntityName} line`, 'gj');
                                     jj.addTo(map);
                                     layers.push(jj);
+                                    closeOnEscape(jj);
+                                    makeLastOfClassnameAccessible(`${item.EntityName} line`, 'jj');
                                     counter++;
 
                                     // Add boundaries to list of latitudes and longitudes to calculate the bounding box below.
@@ -565,7 +571,7 @@
                             marker.addTo(map);
                             layers.push(marker);
 
-                            makeClassnameAccessible(item, 'circle_marker');
+                            makeLastOfClassnameAccessible(item.EntityName, 'circle_marker');
                         }
                     });
                 }
@@ -675,7 +681,7 @@
                         closeOnEscape(marker);
                         layers.push(marker);
                         marker.addTo(map);
-                        makeClassnameAccessible(item, 'circle_marker');
+                        makeLastOfClassnameAccessible(item.EntityName, 'circle_marker');
                     }
 
                     counter++;
@@ -764,7 +770,8 @@
                                         color,
                                         opacity: 1,
                                         weight: 2,
-                                        fillOpacity: 0.4
+                                        fillOpacity: 0.4,
+                                        className: 'gjsupplies'
                                     },
                                     pane: 'geom'
                                 });
@@ -779,7 +786,7 @@
 
                                 let popup;
                                 gj.bindPopup(
-                                    `<h3>${item.SourceName}</h3><p><a href="/source/${item.MapSourceId}">View Source Page</a></p>`
+                                    `<h3 aria-live="polite">${item.SourceName}</h3><p aria-live="true"><a href="/source/${item.MapSourceId}">View Source Page</a></p>`
                                 );
                                 gj.on('mousemove', function (e) {
                                     //open popup;
@@ -797,6 +804,10 @@
                                     popup.close();
                                     popup = null;
                                 });
+
+                                closeOnEscape(gj);
+                                makeLastOfClassnameAccessible(`${item.EntityName} line`, 'gjsupplies');
+
                                 gj.addTo(map);
                                 layers.push(gj);
                             };
@@ -869,7 +880,7 @@
                                     marker.addTo(map);
                                     marker.setStyle({ fillColor: 'grey' });
                                     layers.push(marker);
-                                    makeClassnameAccessible(item, 'circle_marker');
+                                    makeLastOfClassnameAccessible(item.EntityName, 'circle_marker');
                                 }
                                 counter++;
                                 if (switch_unlocked && counter >= ar.length) {
@@ -926,7 +937,7 @@
                         closeOnEscape(marker);
                         marker.addTo(map);
                         layers.push(marker);
-                        makeClassnameAccessible(item, 'circle_marker');
+                        makeLastOfClassnameAccessible(item.EntityName, 'circle_marker');
                     }
                 });
                 zoom(map, lats, lngs);
@@ -966,7 +977,7 @@
                         closeOnEscape(marker);
                         marker.addTo(map);
                         layers.push(marker);
-                        makeClassnameAccessible(item, 'circle_marker');
+                        makeLastOfClassnameAccessible(item.EntityName, 'circle_marker');
                     }
                 });
                 zoom(map, lats, lngs);
@@ -1050,7 +1061,7 @@
     <!-- Only project has type pop because it has an entity map with population only. -->
     {#if type == 'pop'}
         <span class="view-name">{title}</span>
-        <h4>Water User Groups - {$decadeStore} - {theme_titles['population']} Benefiting</h4>
+        <h4 aria-level="3">Water User Groups - {$decadeStore} - {theme_titles['population']} Benefiting</h4>
     {:else}
         <span class="view-name">{title}</span>
         <h4
@@ -1074,10 +1085,14 @@
         {#if $themeStore === 'strategies'}
             <p class="note"
                 >Red triangles indicate capital projects associated with strategy supplies that have been assigned to a Water User Group.<a
-                    aria-hidden="true"
                     id="hp_link"
                     on:click={() => hideshowmarkers()}
-                    class="pointerHover">Hide Projects</a
+                    on:keydown={(key) => {
+                        if (key.code == 'Enter') hideshowmarkers();
+                    }}
+                    class="pointerHover"
+                    role="button"
+                    tabindex="0">Hide Projects</a
                 ></p>
         {/if}
     </div>

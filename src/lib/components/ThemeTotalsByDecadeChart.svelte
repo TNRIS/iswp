@@ -108,7 +108,7 @@
             {/if}
             <div>
                 <div class="chart-header">
-                    <h4>
+                    <h4 aria-level="3">
                         Totals by Decade
                         <span class="units">(acre-feet/year)</span>
                     </h4>
