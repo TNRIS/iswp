@@ -70,7 +70,11 @@
                 nPaginateRows: 50,
                 sortBy: sorter
             });
+        } catch (err) {
+            console.log(err);
+        }
 
+        try {
             let dimenContainer = document.getElementsByClassName('reactPivot-dimensions');
             dimenContainer.ariaDescription = 'Pivot Table for narrowing down data the raw data available in csv form below.';
             dimenContainer.ariaLabel = 'Pivot Table for narrowing down data.';
@@ -84,7 +88,7 @@
                 }
             }
         } catch (err) {
-            console.log(err);
+            console.log('problem making dimension table more accessible. Proceeding. Please report this to twdb.');
         }
     };
 
