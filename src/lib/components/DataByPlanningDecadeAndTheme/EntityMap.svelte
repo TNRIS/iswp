@@ -1085,10 +1085,14 @@
         {#if $themeStore === 'strategies'}
             <p class="note"
                 >Red triangles indicate capital projects associated with strategy supplies that have been assigned to a Water User Group.<a
-                    aria-hidden="true"
                     id="hp_link"
                     on:click={() => hideshowmarkers()}
-                    class="pointerHover">Hide Projects</a
+                    on:keydown={(key) => {
+                        if (key.code == 'Enter') hideshowmarkers();
+                    }}
+                    class="pointerHover"
+                    role="button"
+                    tabindex="0">Hide Projects</a
                 ></p>
         {/if}
     </div>
