@@ -100,11 +100,11 @@
     /**
      * No property to set for classname to add accessibility hints. So I must do it this way.
      * At this point the classname has been added with the classname class. So I should be able to select it by grabbing the last item in the html collection.
-     * @param {object} item
+     * @param {object} label
      * @param {string} classname
      */
     const makeLastOfClassnameAccessible = (label, classname) => {
-        if (!item || !classname) throw new TypeError('item and classname parameters are required.');
+        if (!label || !classname) throw new TypeError('label and classname parameters are required.');
 
         try {
             let those = document.getElementsByClassName(classname);
@@ -786,7 +786,7 @@
 
                                 let popup;
                                 gj.bindPopup(
-                                    `<h3>${item.SourceName}</h3><p><a href="/source/${item.MapSourceId}">View Source Page</a></p>`
+                                    `<h3 aria-live="polite">${item.SourceName}</h3><p aria-live="true"><a href="/source/${item.MapSourceId}">View Source Page</a></p>`
                                 );
                                 gj.on('mousemove', function (e) {
                                     //open popup;
