@@ -61,15 +61,19 @@
                     <h3>How do I find the information I'm looking for?</h3>
                     <p><a href="#Top"><small>Back to Top</small></a></p>
 
-                    <p>
+                    <p id="HowDoIFindDataDescription">
                         A good place to start is the <strong>‘View data for’</strong> drop down menu found in the upper left of the home page.
                         From this drop down you can navigate to pages with state water plan data organized by a specific area of interest or
                         data type.
                     </p>
 
-                    <img src="/img/HowDoIFindData.png" width="80%" style="padding:10px;" />
+                    <img
+                        src="/img/HowDoIFindData.png"
+                        alt="Shows a user using the main navigation form being described in the surrounding paragraphs."
+                        width="80%"
+                        style="padding:10px;" />
 
-                    <p>
+                    <p id="pivotTableDescriptor">
                         Once you’ve navigated to a specific page you can start exploring the data related to that topic/area. Each page will
                         contain demand, existing supply, need (potential shortage), and strategy supply data related to that page topic. The
                         data are presented in a variety of formats such as graphs, figures, tables, and maps. Many of the page elements are
@@ -87,9 +91,13 @@
                         <li>To add a new column, select it from the <strong>‘Sub Dimension…’</strong> drop down list</li>
                     </ul>
 
-                    <img src="/img/HowDoIFindData2.png" width="90%" style="padding:10px;" />
+                    <img
+                        alt="Shows how to use the pivot table associated with raw data on certain pages. Alternatively described in the surrounding paragraphs."
+                        src="/img/HowDoIFindData2.png"
+                        width="90%"
+                        style="padding:10px;" />
 
-                    <p>
+                    <p id="soloDescriptor">
                         Additionally, you can filter by specific data within the table using the 'solo' feature. To do this, hover the mouse
                         over the data element you wish to filter by until a 'solo' button appears. Selecting this feature will filter all
                         the data in the table based on your selection. Multiple filters may be added using the same method, and all applied
@@ -97,7 +105,11 @@
                         the left of the item listed in the area above the column headers.
                     </p>
 
-                    <img src="/img/HowDoIFindData3.png" width="90%" style="padding:10px;" />
+                    <img
+                        alt="Shows the use of pivot tables solo feature. Described in the surrounding paragraphs."
+                        src="/img/HowDoIFindData3.png"
+                        width="90%"
+                        style="padding:10px;" />
 
                     <p>
                         Wholesale water provider (WWP) contract and sales data is collected, but not displayed in the 2022 Interactive State
@@ -151,7 +163,11 @@
                             you to select each one individually.</li>
                     </ul>
 
-                    <img src="/img/HowDoIUseTheMap.png" width="90%" style="padding:10px;" />
+                    <img
+                        alt="Shows use of the Entity Map found on most pages."
+                        src="/img/HowDoIUseTheMap.png"
+                        width="90%"
+                        style="padding:10px;" />
 
                     <p>
                         Due to the nature of the state water plan data, not everything is relevant to display on the map. Please keep the
@@ -325,7 +341,7 @@
                     <h3>Glossary</h3>
                     <p><a href="#Top"><small>Back to Top</small></a></p>
 
-                    <h5 id="acre-foot">ACRE-FOOT</h5>
+                    <h5 aria-level="4" id="acre-foot">ACRE-FOOT</h5>
                     <p> Volume of water needed to cover 1 acre to a depth of 1 foot. It equals 325,851 gallons. </p>
 
                     <h5 id="county-other">COUNTY-OTHER</h5>
@@ -335,44 +351,44 @@
                         given county.
                     </p>
 
-                    <h5 id="drought">DROUGHT</h5>
+                    <h5 aria-level="4" id="drought">DROUGHT</h5>
                     <p>
                         Term is generally applied to periods of less than average precipitation over a certain period of time. Associated
                         definitions include meteorological drought (abnormally dry weather), agricultural drought (adverse impact on crop or
                         range production), and hydrologic drought (below average water content in aquifers and/or reservoirs).
                     </p>
 
-                    <h5 id="drought-of-record">DROUGHT OF RECORD</h5>
+                    <h5 aria-level="4" id="drought-of-record">DROUGHT OF RECORD</h5>
                     <p>
                         Period of time during recorded history when natural hydrological conditions provided the least amount of water
                         supply. For Texas as a whole, the drought of record is generally considered to be from about 1950 to 1957.
                     </p>
 
-                    <h5 id="existing-water-supply">EXISTING WATER SUPPLY</h5>
+                    <h5 aria-level="4" id="existing-water-supply">EXISTING WATER SUPPLY</h5>
                     <p>
                         Maximum amount of water available from existing sources for use during drought of record conditions that is
                         physically and legally available for use.
                     </p>
 
-                    <h5 id="needs">NEEDS</h5>
+                    <h5 aria-level="4" id="needs">NEEDS</h5>
                     <p>
                         Projected water demands in excess of existing water supplies for a water user group or a wholesale water provider.
                         (i.e., potential shortage if no water management strategy is recommended).
                     </p>
 
-                    <h5 id="water-management-strategy">RECOMMENDED WATER MANAGEMENT STRATEGY</h5>
+                    <h5 aria-level="4" id="water-management-strategy">RECOMMENDED WATER MANAGEMENT STRATEGY</h5>
                     <p> Specific project or action to increase water supply or maximize existing supply to meet a specific need. </p>
 
-                    <h5 id="unmet-needs">UNMET NEEDS</h5>
+                    <h5 aria-level="4" id="unmet-needs">UNMET NEEDS</h5>
                     <p>
                         Portion of the demand for water that exceeds water supply after inclusion of all recommended water management
                         strategies in a regional water plan.
                     </p>
 
-                    <h5 id="water-demand">WATER DEMAND</h5>
+                    <h5 aria-level="4" id="water-demand">WATER DEMAND</h5>
                     <p> Quantity of water projected to meet the overall necessities of a water user group in a specific future year. </p>
 
-                    <h5 id="water-user-group">WATER USER GROUP</h5>
+                    <h5 aria-level="4" id="water-user-group">WATER USER GROUP</h5>
                     Municipal WUGs in the 2021 Regional Water Plans (RWPGs) are defined as:<br />
                     <div class="tab">
                         a) Privately-owned utilities that provide an average of more than 100 acre-feet per year for municipal use for all
