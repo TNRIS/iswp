@@ -139,8 +139,22 @@
                 activeDimensions: activeDimensions,
                 reduce: reduce,
                 nPaginateRows: 50,
-                sortBy: sorter
+                sortBy: sorter,
+                tableClassName: 'PivotTable'
             });
+
+            let dimenContainer = document.getElementsByClassName('reactPivot-dimensions');
+            dimenContainer.ariaDescription = 'Pivot Table for narrowing down data the raw data available in csv form below.';
+            dimenContainer.ariaLabel = 'Pivot Table for narrowing down data.';
+            if (dimenContainer && dimenContainer.length) {
+                for (let i = 0; i < dimenContainer.length; i++) {
+                    let dim = dimenContainer[i].children;
+                    for (let i = 0; i < dim.length; i++) {
+                        dim[i].ariaDescription = 'Change values here to change what is displayed in the Pivot Table below.';
+                        dim[i].ariaLabel = 'Pivot Table Selector';
+                    }
+                }
+            }
         } catch (err) {
             console.log(err);
         }
