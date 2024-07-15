@@ -139,13 +139,14 @@
                 }, []);
             });
 
-            if (DEBUG_LOADING) console.log(`Time to run navigation func ${Date.now() - start}`);
+            if (DEBUG_LOADING) console.log(`Time to run navigation constructor ${Date.now() - start}`);
         }
     };
 
     /**
      * Hides all of the subcategories in a secondary-category-select if the function is called on:keyup.
-     */ function filterSubCategory() {
+     */
+    function filterSubCategory() {
         const error_object = new Error('Cannot filter by sub category HTMLElements not setup correctly at this time.');
 
         let input = /** @type { HTMLInputElement | null} */ (document?.getElementById('secondary-category-select'));
@@ -238,15 +239,14 @@
         chosen = value.detail.value;
         label = value.detail.placeholder_override ? value.detail.placeholder_override : value.detail.label;
         chosen2 = '';
-        console.log(`chosen: ${chosen} chosen2: ${chosen2}`);
     };
 
     /**
      * When box 2 is changed call this. And change the chosen value;
      * @param {CustomEvent | KeyboardEvent} value
      */
-    let box2Change = (value) => {
-        chosen2 = value.detail.value;
+    let box2Change = (event) => {
+        chosen2 = event.detail.value;
     };
 </script>
 
@@ -272,18 +272,20 @@
                 {#if chosen && chosen !== '' && chosen !== 'statewide'}
                     {#if chosen == 'region' || chosen == 'county' || chosen == 'usagetype' || chosen == 'source' || chosen == 'wmstype'}
                         <nav class="select-container" style="width:300px;">
-                            <Select
-                                items={categories[chosen]}
-                                clearable={false}
-                                on:change={box2Change}
-                                placeholder="Select {titles[chosen]}"
-                                showChevron
-                                inputAttributes={{
-                                    title: 'Sub Category',
-                                    'aria-label':
-                                        'Choose a page to navigate to related to the sub category to navigate to then hit the go button.',
-                                    'aria-owns': 'nav_submit'
-                                }} />
+                            {#key chosen}
+                                <Select
+                                    items={categories[chosen]}
+                                    clearable={false}
+                                    on:change={box2Change}
+                                    placeholder="Select {titles[chosen]}"
+                                    showChevron
+                                    inputAttributes={{
+                                        title: 'Sub Category',
+                                        'aria-label':
+                                            'Choose a page to navigate to related to the sub category to navigate to then hit the go button.',
+                                        'aria-owns': 'nav_submit'
+                                    }} />
+                            {/key}
                         </nav>
                     {:else}
                         <nav class="select-container">
