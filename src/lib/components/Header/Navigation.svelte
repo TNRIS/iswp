@@ -14,21 +14,21 @@
      * @property {string} label
      */
 
-    /** 
+    /**
      * @typedef EntityLabel
      * @type {object}
      * @property {string} EntityName,
      * @property {string} EntityId
-    */
+     */
 
-    /** 
+    /**
      * @typedef ProjectLabel
      * @type {object}
      * @property {string} ProjectName,
      * @property {string} WmsProjectId
      */
-     
-    /** 
+
+    /**
      * @typedef WmsLabel
      * @type {object}
      * @property {string} WmsName,
@@ -55,19 +55,18 @@
      * @param {string[]} labels
      * @param {string} label_prefix - Optional Paramater to prefix labels with.
      */
-     let labelReducer = (labels, label_prefix = '') => {
+    let labelReducer = (labels, label_prefix = '') => {
         return labels.reduce((/** @type {NavLabel[]} */ accumulator, /** @type {string} */ currentValue) => {
-            let navlabel =  /** @type {NavLabel}*/ ({
+            let navlabel = /** @type {NavLabel}*/ ({
                 value: currentValue,
                 label: `${label_prefix}${currentValue}`
-            })
+            });
             accumulator.push(navlabel);
             return accumulator;
         }, []);
     };
 
-
-    let regions = /** @type NavLabel[] */ labelReducer(constants.getRegions(), "Region ");
+    let regions = /** @type NavLabel[] */ labelReducer(constants.getRegions(), 'Region ');
     let counties = /** @type NavLabel[] */ labelReducer(constants.getCountyNames());
     let usageTypes = /** @type NavLabel[] */ labelReducer(constants.getUsageTypes());
     let wmstype = /** @type NavLabel[] */ labelReducer(constants.WMS_TYPES);
@@ -97,14 +96,14 @@
 
     const CategoryClass = class {
         /**
-         *  @param {any} sw 
+         *  @param {any} sw
          * */
         constructor(sw) {
             let start = 0;
             if (DEBUG_LOADING) start = Date.now();
 
-            this[''] =  [];
-            this.region =  regions;
+            this[''] = [];
+            this.region = regions;
             this.county = counties;
             this.source = sourceNames;
             this.usagetype = usageTypes;
@@ -128,7 +127,7 @@
                     });
                     return accumulator;
                 }, []);
-            })
+            });
 
             sw.getWms().then((/** @type {WmsLabel[]}*/ x) => {
                 this.wms = x.reduce((/** @type {object[]} */ accumulator, /** @type {any} */ currentValue) => {
@@ -142,13 +141,11 @@
 
             if (DEBUG_LOADING) console.log(`Time to run navigation func ${Date.now() - start}`);
         }
-    }
-
-
+    };
 
     /**
      * Hides all of the subcategories in a secondary-category-select if the function is called on:keyup.
-     */    function filterSubCategory() {
+     */ function filterSubCategory() {
         const error_object = new Error('Cannot filter by sub category HTMLElements not setup correctly at this time.');
 
         let input = /** @type { HTMLInputElement | null} */ (document?.getElementById('secondary-category-select'));
@@ -221,18 +218,17 @@
         }
     };
 
-
     /**
      * Action fired when secondary filter select is keydowned.
      * @param {KeyboardEvent &{target: HTMLAnchorElement} | null} event
      */
     let keypresser = async (event) => {
         // Check key is enter or space.
-        if(!event?.key) throw new Error("No key found. In keypresser function.");
+        if (!event?.key) throw new Error('No key found. In keypresser function.');
 
-        if(event.key == 'Escape') box2Change(event);
-        if(event.key == 'Enter') clicker(event);
-    }
+        if (event.key == 'Escape') box2Change(event);
+        if (event.key == 'Enter') clicker(event);
+    };
 
     /**
      * Reset the second select box.
@@ -303,7 +299,13 @@
                             <ul id="secondList" class="nav-category-select">
                                 {#each categories?.[chosen] as r}
                                     <li style="display:none;">
-                                        <a role="button" tabindex="0" on:keydown={keypresser} on:click={clicker} id={r.label} class="listItem">{cap(r.value)}</a>
+                                        <a
+                                            role="button"
+                                            tabindex="0"
+                                            on:keydown={keypresser}
+                                            on:click={clicker}
+                                            id={r.label}
+                                            class="listItem">{cap(r.value)}</a>
                                     </li>
                                 {/each}
                             </ul>
