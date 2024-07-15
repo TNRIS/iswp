@@ -14,12 +14,25 @@
      * @property {string} label
      */
 
-
-    /**
-     * @typedef Categories
+    /** 
+     * @typedef EntityLabel
      * @type {object}
-     * @property {string} value
-     * @property {string} label
+     * @property {string} EntityName,
+     * @property {string} EntityId
+    */
+
+    /** 
+     * @typedef ProjectLabel
+     * @type {object}
+     * @property {string} ProjectName,
+     * @property {string} WmsProjectId
+     */
+     
+    /** 
+     * @typedef WmsLabel
+     * @type {object}
+     * @property {string} WmsName,
+     * @property {string} WmsId
      */
 
     // Set to true to log some timings.
@@ -79,6 +92,9 @@
         { value: 'wmstype', label: 'WMS Type' }
     ];
 
+    /** @type {CategoryClass} */
+    let categories;
+
     const CategoryClass = class {
         /**
          *  @param {any} sw 
@@ -94,7 +110,7 @@
             this.usagetype = usageTypes;
             this.wmstype = wmstype;
 
-            sw.getEntities().then((x) => {
+            sw.getEntities().then((/** @type {EntityLabel[]}*/ x) => {
                 this.entity = x.reduce((/** @type {object[]} */ accumulator, /** @type {any} */ currentValue) => {
                     accumulator.push({
                         value: currentValue.EntityName,
@@ -104,7 +120,7 @@
                 }, []);
             });
 
-            sw.getProjects().then((x) => {
+            sw.getProjects().then((/** @type {ProjectLabel[]}*/ x) => {
                 this.project = x.reduce((/** @type {object[]} */ accumulator, /** @type {any} */ currentValue) => {
                     accumulator.push({
                         value: currentValue.ProjectName,
@@ -114,7 +130,7 @@
                 }, []);
             })
 
-            sw.getWms().then((x) => {
+            sw.getWms().then((/** @type {WmsLabel[]}*/ x) => {
                 this.wms = x.reduce((/** @type {object[]} */ accumulator, /** @type {any} */ currentValue) => {
                     accumulator.push({
                         value: currentValue.WmsName,
@@ -128,7 +144,6 @@
         }
     }
 
-    let categories;
 
 
     /**
@@ -175,8 +190,8 @@
     };
 
     /**
-     *
-     * @param {MouseEvent &{target: HTMLAnchorElement} | null} event
+     * Action fired when secondary filter select is clicked. Can handle keyboard or mouse events.
+     * @param {KeyboardEvent &{target: HTMLAnchorElement} | MouseEvent &{target: HTMLAnchorElement} | null} event
      */
     let clicker = async (event) => {
         const error_message = 'Navigation error please report to TWDB. Contact info is found at the bottom of the website.';
@@ -202,49 +217,26 @@
         // Loop through all list items, and hide those who don't match the search query
         for (let i = 0; i < li.length; i++) {
             a = li[i].getElementsByTagName('a')[0];
-            //let txtValue = /** @type {string} */ (a.textContent || a.innerText);
             li[i].style.display = 'none';
         }
     };
 
-    //  let setup_categories_from_db = async () => {
-    //     try {
-    //         let start = 0;
-    //         if (DEBUG_LOADING) start = Date.now();
 
-    //         categories.entity = (await sw.getEntities()).reduce((/** @type {object[]} */ accumulator, /** @type {any} */ currentValue) => {
-    //             accumulator.push({
-    //                 value: currentValue.EntityName,
-    //                 label: currentValue.EntityId
-    //             });
-    //             return accumulator;
-    //         }, []);
+    /**
+     * Action fired when secondary filter select is keydowned.
+     * @param {KeyboardEvent &{target: HTMLAnchorElement} | null} event
+     */
+    let keypresser = async (event) => {
+        // Check key is enter or space.
+        if(!event?.key) throw new Error("No key found. In keypresser function.");
 
-    //         categories.project = (await sw.getProjects()).reduce((/** @type {object[]} */ accumulator, /** @type {any} */ currentValue) => {
-    //             accumulator.push({
-    //                 value: currentValue.ProjectName,
-    //                 label: currentValue.WmsProjectId
-    //             });
-    //             return accumulator;
-    //         }, []);
+        if(event.key == 'Escape') box2Change(event);
+        if(event.key == 'Enter') clicker(event);
+    }
 
-    //         categories.wms = (await sw.getWms()).reduce((/** @type {object[]} */ accumulator, /** @type {any} */ currentValue) => {
-    //             accumulator.push({
-    //                 value: currentValue.WmsName,
-    //                 label: currentValue.WmsId
-    //             });
-    //             return accumulator;
-    //         }, []);
-
-    //         if (DEBUG_LOADING) console.log(`Time to run navigation func ${Date.now() - start}`);
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // };
- 
     /**
      * Reset the second select box.
-     * @param {CustomEvent} value
+     * @param {CustomEvent | KeyboardEvent} value
      */
     let reset = (value) => {
         chosen = value.detail.value;
@@ -255,7 +247,7 @@
 
     /**
      * When box 2 is changed call this. And change the chosen value;
-     * @param {CustomEvent} value
+     * @param {CustomEvent | KeyboardEvent} value
      */
     let box2Change = (value) => {
         chosen2 = value.detail.value;
@@ -311,7 +303,7 @@
                             <ul id="secondList" class="nav-category-select">
                                 {#each categories?.[chosen] as r}
                                     <li style="display:none;">
-                                        <a on:click={clicker} id={r.label} class="listItem">{cap(r.value)}</a>
+                                        <a role="button" tabindex="0" on:keydown={keypresser} on:click={clicker} id={r.label} class="listItem">{cap(r.value)}</a>
                                     </li>
                                 {/each}
                             </ul>
