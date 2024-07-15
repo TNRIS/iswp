@@ -40,6 +40,10 @@ npm run build
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
 
+
+## Deploying and building
+1. run `make deploy_prod`
+
 ## Creating cache
 
 How to create cache.

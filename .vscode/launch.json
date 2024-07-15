@@ -16,34 +16,6 @@
             "webRoot": "${workspaceFolder}"
         },
         {
-            "name": "Static Files Launch Chromium",
-            "request": "launch",
-            "type": "chrome",
-            "url": "http://localhost:5173/",
-            "webRoot": "${workspaceFolder}/static",
-            "runtimeExecutable": "/usr/bin/chromium-browser",
-            "runtimeArgs": [
-                "--new-window",
-                "-user-data-dir=\"/${workspaceFolder}/DevProfile\"",
-                "--remote-debugging-port=9222",
-                "--disable-background-networking"
-            ]
-        },
-        {
-            "name": "Svelte Files Launch Chromium",
-            "request": "launch",
-            "type": "chrome",
-            "url": "http://localhost:5173/",
-            "webRoot": "${workspaceFolder}",
-            "runtimeExecutable": "/usr/bin/chromium-browser",
-            "runtimeArgs": [
-                "--new-window",
-                "-user-data-dir=\"/${workspaceFolder}/DevProfile\"",
-                "--remote-debugging-port=9222",
-                "--disable-background-networking"
-            ]
-        },
-        {
             "name": "Node.js - Debug Current File",
             "type": "node",
             "request": "launch",
