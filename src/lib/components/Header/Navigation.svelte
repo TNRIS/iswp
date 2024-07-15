@@ -1,128 +1,81 @@
+<!-- This file handles the top navigation. -->
+
 <script>
-    function filterSubCategory() {
-        // Declare variables
-        var input, filter, ul, li, a, i, txtValue;
-        input = document.getElementById('secondary-category-select');
-        filter = input.value.toUpperCase();
-
-        ul = document.getElementById('secondList');
-        li = ul.getElementsByTagName('li');
-        if (!(filter.length > 0)) {
-            for (i = 0; i < li.length; i++) {
-                li[i].style.display = 'none';
-            }
-            return;
-        }
-        // Loop through all list items, and hide those who don't match the search query
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName('a')[0];
-            txtValue = a.textContent || a.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = '';
-            } else {
-                li[i].style.display = 'none';
-            }
-        }
-    }
-
-    import { page, navigating } from '$app/stores';
-    let selected = { id: $page.url.pathname.split(['/'])[1] };
-    let selected2 = $page.url.pathname.split(['/'])[2];
+    import { page } from '$app/stores';
     import { sourceNames } from '$lib/pages/SourceNames';
-    let { db, constants } = $$props;
     import Statewide from '$lib/db/statewide.js';
     import { cap, onMountSync } from '$lib/helper.js';
     import Select from 'svelte-select';
+
+    /**
+     * @typedef NavLabel
+     * @type {object}
+     * @property {string} value
+     * @property {string} label
+     */
+
+    /**
+     * @typedef EntityLabel
+     * @type {object}
+     * @property {string} EntityName,
+     * @property {string} EntityId
+     */
+
+    /**
+     * @typedef ProjectLabel
+     * @type {object}
+     * @property {string} ProjectName,
+     * @property {string} WmsProjectId
+     */
+
+    /**
+     * @typedef WmsLabel
+     * @type {object}
+     * @property {string} WmsName,
+     * @property {string} WmsId
+     */
+
+    // Set to true to log some timings.
+    const DEBUG_LOADING = false;
+
+    let selected = { id: $page.url.pathname.split('/')[1] };
+    let { db, constants } = $$props;
+    /** @type {Statewide} */
     let sw;
-    let setupChoices = async () => {
-        await onMountSync();
-        db = await db;
-        sw = new Statewide(db);
-        await funcs();
-    };
 
-    let clicker = async (event) => {
-        chosen2 = event.target.id;
-        document.getElementById('secondary-category-select').value = event.target.text;
-        var input, filter, ul, li, a, i, txtValue;
-        input = document.getElementById('secondary-category-select');
-        filter = input.value.toUpperCase();
-        ul = document.getElementById('secondList');
-        li = ul.getElementsByTagName('li');
-
-        // Loop through all list items, and hide those who don't match the search query
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName('a')[0];
-            txtValue = a.textContent || a.innerText;
-            li[i].style.display = 'none';
-        }
-    };
-
-    let regions = constants.getRegions().reduce((a, o) => (a.push({ value: o, label: 'Region ' + o }), a), []);
     let chosen = selected.id;
     let label = '';
     if (chosen == 'statewide') {
         chosen = '';
     }
-    let chosen2;
-    let counties = constants.getCountyNames().reduce((a, o) => (a.push({ value: o, label: o }), a), []);
-    let usageTypes = constants.getUsageTypes().reduce((a, o) => (a.push({ value: o, label: o }), a), []);
-    let wmstype = constants.WMS_TYPES.reduce((a, o) => (a.push({ value: o, label: o }), a), []);
+    let chosen2 = /** @type {string}*/ '';
+
+    /**
+     * labelReducer: Create usable labels out of an array of strings.
+     * @param {string[]} labels
+     * @param {string} label_prefix - Optional Paramater to prefix labels with.
+     */
+    let labelReducer = (labels, label_prefix = '') => {
+        return labels.reduce((/** @type {NavLabel[]} */ accumulator, /** @type {string} */ currentValue) => {
+            let navlabel = /** @type {NavLabel}*/ ({
+                value: currentValue,
+                label: `${label_prefix}${currentValue}`
+            });
+            accumulator.push(navlabel);
+            return accumulator;
+        }, []);
+    };
+
+    let regions = /** @type NavLabel[] */ labelReducer(constants.getRegions(), 'Region ');
+    let counties = /** @type NavLabel[] */ labelReducer(constants.getCountyNames());
+    let usageTypes = /** @type NavLabel[] */ labelReducer(constants.getUsageTypes());
+    let wmstype = /** @type NavLabel[] */ labelReducer(constants.WMS_TYPES);
 
     $: region = chosen && chosen2 ? `/${chosen}/${chosen2}/` : !(chosen && chosen2) ? '/' : `/${chosen}/`;
 
     const titles = constants.chosenTitles;
 
-    let categories = {
-        '': [],
-        region: regions,
-        county: counties,
-        source: sourceNames,
-        usagetype: usageTypes,
-        wmstype: wmstype
-    };
-
-    let funcs = async () => {
-        try {
-            let start = Date.now();
-            let qq = await sw.getWms();
-            let a = await sw.getEntities();
-            let zz = await sw.getProjects();
-
-            let dd = qq.reduce((a, o) => (a.push({ value: o.WmsName, label: o.WmsId }), a), []);
-            let cc = zz.reduce((a, o) => (a.push({ value: o.ProjectName, label: o.WmsProjectId }), a), []);
-            let b = a.reduce((a, o) => (a.push({ value: o.EntityName, label: o.EntityId }), a), []);
-
-            categories.entity = b;
-            categories.project = cc;
-            categories.wms = dd;
-
-            tmap = categories[chosen].reduce(function (map, obj) {
-                map[obj.value] = obj.label;
-                return map;
-            }, {});
-
-            console.log(`Time to run navigation func ${Date.now() - start}`);
-        } catch (err) {
-            console.log(err);
-        }
-    };
-    /*
-        {#each sets as set}
-            <option value={set.id}>{set.value}</option>
-        {/each}
-    */
-    let reset = (value) => {
-        chosen = value.detail.value;
-        label = value.detail.placeholder_override ? value.detail.placeholder_override : value.detail.label;
-        chosen2 = '';
-        console.log(`chosen: ${chosen} chosen2: ${chosen2}`);
-    };
-
-    let box2Change = (value) => {
-        chosen2 = value.detail.value;
-    };
-    let items = [
+    const items = [
         { value: '', label: 'All of Texas' },
         {
             value: 'region',
@@ -138,7 +91,163 @@
         { value: 'wmstype', label: 'WMS Type' }
     ];
 
-    let tmap;
+    /** @type {CategoryClass} */
+    let categories;
+
+    const CategoryClass = class {
+        /**
+         *  @param {any} sw
+         * */
+        constructor(sw) {
+            let start = 0;
+            if (DEBUG_LOADING) start = Date.now();
+
+            this[''] = [];
+            this.region = regions;
+            this.county = counties;
+            this.source = sourceNames;
+            this.usagetype = usageTypes;
+            this.wmstype = wmstype;
+
+            sw.getEntities().then((/** @type {EntityLabel[]}*/ x) => {
+                this.entity = x.reduce((/** @type {object[]} */ accumulator, /** @type {any} */ currentValue) => {
+                    accumulator.push({
+                        value: currentValue.EntityName,
+                        label: currentValue.EntityId
+                    });
+                    return accumulator;
+                }, []);
+            });
+
+            sw.getProjects().then((/** @type {ProjectLabel[]}*/ x) => {
+                this.project = x.reduce((/** @type {object[]} */ accumulator, /** @type {any} */ currentValue) => {
+                    accumulator.push({
+                        value: currentValue.ProjectName,
+                        label: currentValue.WmsProjectId
+                    });
+                    return accumulator;
+                }, []);
+            });
+
+            sw.getWms().then((/** @type {WmsLabel[]}*/ x) => {
+                this.wms = x.reduce((/** @type {object[]} */ accumulator, /** @type {any} */ currentValue) => {
+                    accumulator.push({
+                        value: currentValue.WmsName,
+                        label: currentValue.WmsId
+                    });
+                    return accumulator;
+                }, []);
+            });
+
+            if (DEBUG_LOADING) console.log(`Time to run navigation constructor ${Date.now() - start}`);
+        }
+    };
+
+    /**
+     * Hides all of the subcategories in a secondary-category-select if the function is called on:keyup.
+     */
+    function filterSubCategory() {
+        const error_object = new Error('Cannot filter by sub category HTMLElements not setup correctly at this time.');
+
+        let input = /** @type { HTMLInputElement | null} */ (document?.getElementById('secondary-category-select'));
+        if (!input) throw error_object;
+
+        let filter = /** @type {string} */ (input.value.toUpperCase());
+
+        let ul = /** @type {HTMLUListElement | null} */ (document.getElementById('secondList'));
+
+        let li = /** @type {HTMLCollectionOf<HTMLLIElement> | null} */ (ul?.getElementsByTagName('li'));
+        if (!li) throw error_object;
+
+        // First check if filter has any input. Then if it doesn't hide everything.
+        if (filter.length <= 0) {
+            for (let i = 0; i < li.length; i++) {
+                li[i].style.display = 'none';
+            }
+            return;
+        }
+
+        // Loop through all list items, and hide those who don't match the search query
+        for (let i = 0; i < li.length; i++) {
+            /** @type {HTMLAnchorElement | null} */
+            let a = li[i].getElementsByTagName('a')[0];
+            /** @type {string}*/
+            let txtValue = a.textContent || a.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = '';
+            } else {
+                li[i].style.display = 'none';
+            }
+        }
+    }
+
+    let setupChoices = async () => {
+        await onMountSync();
+        db = await db;
+        categories = new CategoryClass(new Statewide(db));
+    };
+
+    /**
+     * Action fired when secondary filter select is clicked. Can handle keyboard or mouse events.
+     * @param {KeyboardEvent &{target: HTMLAnchorElement} | MouseEvent &{target: HTMLAnchorElement} | null} event
+     */
+    let clicker = async (event) => {
+        const error_message = 'Navigation error please report to TWDB. Contact info is found at the bottom of the website.';
+        var filter, a;
+
+        const target_anchor = event?.target;
+        if (!target_anchor) throw error_message;
+
+        chosen2 = target_anchor.id;
+
+        const secondary_input = /** @type {HTMLInputElement | null}*/ (document?.getElementById('secondary-category-select'));
+        if (!secondary_input) throw error_message;
+
+        secondary_input.value = target_anchor.text;
+
+        filter = secondary_input.value.toUpperCase();
+        const ul = /** @type {HTMLUListElement | null} */ (document.getElementById('secondList'));
+
+        if (!ul) throw error_message;
+
+        const li = /** @type {HTMLCollectionOf<HTMLElementTagNameMap["li"]>}*/ (ul.getElementsByTagName('li'));
+
+        // Loop through all list items, and hide those who don't match the search query
+        for (let i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName('a')[0];
+            li[i].style.display = 'none';
+        }
+    };
+
+    /**
+     * Action fired when secondary filter select is keydowned.
+     * @param {KeyboardEvent &{target: HTMLAnchorElement} | null} event
+     */
+    let keypresser = async (event) => {
+        // Check key is enter or space.
+        if (!event?.key) throw new Error('No key found. In keypresser function.');
+
+        if (event.key == 'Escape') box2Change(event);
+        if (event.key == 'Enter') clicker(event);
+    };
+
+    /**
+     * Reset the second select box.
+     * @param {CustomEvent | KeyboardEvent} value
+     */
+    let reset = (value) => {
+        chosen = value.detail.value;
+        label = value.detail.placeholder_override ? value.detail.placeholder_override : value.detail.label;
+        chosen2 = '';
+    };
+
+    /**
+     * When box 2 is changed call this. And change the chosen value;
+     * @param {CustomEvent | KeyboardEvent} value
+     */
+    let box2Change = (event) => {
+        chosen2 = event.detail.value;
+    };
 </script>
 
 <div class="header-nav sticky-div">
@@ -163,18 +272,20 @@
                 {#if chosen && chosen !== '' && chosen !== 'statewide'}
                     {#if chosen == 'region' || chosen == 'county' || chosen == 'usagetype' || chosen == 'source' || chosen == 'wmstype'}
                         <nav class="select-container" style="width:300px;">
-                            <Select
-                                items={categories[chosen]}
-                                clearable={false}
-                                on:change={box2Change}
-                                placeholder="Select {titles[chosen]}"
-                                showChevron
-                                inputAttributes={{
-                                    title: 'Sub Category',
-                                    'aria-label':
-                                        'Choose a page to navigate to related to the sub category to navigate to then hit the go button.',
-                                    'aria-owns': 'nav_submit'
-                                }} />
+                            {#key chosen}
+                                <Select
+                                    items={categories[chosen]}
+                                    clearable={false}
+                                    on:change={box2Change}
+                                    placeholder="Select {titles[chosen]}"
+                                    showChevron
+                                    inputAttributes={{
+                                        title: 'Sub Category',
+                                        'aria-label':
+                                            'Choose a page to navigate to related to the sub category to navigate to then hit the go button.',
+                                        'aria-owns': 'nav_submit'
+                                    }} />
+                            {/key}
                         </nav>
                     {:else}
                         <nav class="select-container">
@@ -189,8 +300,15 @@
                                 placeholder="Start typing to find {titles[chosen]}" />
                             <ul id="secondList" class="nav-category-select">
                                 {#each categories?.[chosen] as r}
-                                    <li style="display:none;">
-                                        <a on:click={clicker} id={r.label} class="listItem">{cap(r.value)}</a>
+                                    <li style="display:none;" aria-live="polite" aria-label="Sub Category filters" aria-details="List filters depending on the sub category input.">
+                                        <a
+                                            role="button"
+                                            tabindex="0"
+                                            on:keydown={keypresser}
+                                            on:click={clicker}
+                                            id={r.label}
+                                            class="listItem"
+                                            aria-details="Submit this button to navigate to {cap(r.value)} subcategory when you hit the go button.">{cap(r.value)}</a>
                                     </li>
                                 {/each}
                             </ul>
