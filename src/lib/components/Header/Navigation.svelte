@@ -300,14 +300,15 @@
                                 placeholder="Start typing to find {titles[chosen]}" />
                             <ul id="secondList" class="nav-category-select">
                                 {#each categories?.[chosen] as r}
-                                    <li style="display:none;">
+                                    <li style="display:none;" aria-live="polite" aria-label="Sub Category filters" aria-details="List filters depending on the sub category input.">
                                         <a
                                             role="button"
                                             tabindex="0"
                                             on:keydown={keypresser}
                                             on:click={clicker}
                                             id={r.label}
-                                            class="listItem">{cap(r.value)}</a>
+                                            class="listItem"
+                                            aria-details="Submit this button to navigate to {cap(r.value)} subcategory when you hit the go button.">{cap(r.value)}</a>
                                     </li>
                                 {/each}
                             </ul>
