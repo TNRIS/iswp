@@ -25,38 +25,31 @@
         db = await db;
         const sw = new Statewide(db);
         let dat2 = await sw.get(sourceSetting);
-        let project = await sw.get(sourceSetting2);
+        let dat = await sw.get(sourceSetting2);
 
-        /*
-        for (let i = 0; i < project.projects.length; i++) {
+        for (let i = 0; i < dat2.projects.length; i++) {
             try {
-                dat2.projects[0] = {
-                    ...project.projects[0],
-                    ...dat2.projects[0]
-                };
+                dat.projects.push(dat2.projects[i])
             } catch (err) {
                 console.log('problem merging data in projects. Attempting to continue.');
             }
         }
-        */
-       
-        const decade_online = project?.projects[0].OnlineDecade;
+
+
+        const decade_online = dat?.projects[0].OnlineDecade;
 
         let formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',
             maximumFractionDigits: 0
         });
-        const capital_cost = formatter.format(project?.projects[0].CapitalCost);
+        const capital_cost = formatter.format(dat?.projects[0].CapitalCost);
 
         tagline = `<span>Decade Online: ${decade_online}</span><br /><span>Capital Cost: ${capital_cost}</span>`;
         console.log(`loadForRegion time in ms: ${Date.now() - start}`);
 
-        projectName = project.projects[0].ProjectName;
-
-        // problem wms region is missing wms sponsor region.
-
-        return project;
+        projectName = dat.projects[0].ProjectName;
+        return dat;
     };
 
     // Promise to load for source. Do not await here. Await later in individual entities.
