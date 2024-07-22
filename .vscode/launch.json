@@ -2,13 +2,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Static Files Launch Chrome",
-            "request": "launch",
-            "type": "chrome",
-            "url": "http://localhost:5173",
-            "webRoot": "${workspaceFolder}/static"
-        },
-        {
             "name": "Svelte Files Launch Chrome",
             "request": "launch",
             "type": "chrome",

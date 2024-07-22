@@ -154,6 +154,26 @@ export let commafy = (s) => {
     return s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
+
+// Some items use EntityLatCoord instead of LatCoord. So check for which is used. This is a workaround because the entities don't consistently use one or the other.
+export const  coordFitter = (item) => {
+    let lat, lng;
+
+    // 0 is valid so check for undefined.
+    if (item.LatCoord !== undefined && item.LongCoord !== undefined) {
+        lat = item.LatCoord;
+        lng = item.LongCoord;
+    } else if (item.EntityLatCoord !== undefined && item.EntityLongCoord !== undefined) {
+        lat = item.EntityLatCoord;
+        lng = item.EntityLongCoord;
+    } else if (item.Latitude !== undefined && item.Longitude !== undefined) {
+        lat = item.Latitude;
+        lng = item.Longitude;
+    }
+
+    return [lat, lng];
+};
+
 /** 
  * Generic function to sort a html table. Currently defaults to skip bottom row. But can be changed using SKIP_BOTTOM_ROW flag.
  * @param {object} table Object referencing a table element selected with svelte.

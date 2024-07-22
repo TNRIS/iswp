@@ -3,7 +3,7 @@
 
     import { ProjectItem, EntityItem } from '$lib/TypeDefinitions';
     import { getContext, onMount } from 'svelte';
-    import { scaleTonew, usd_format, objLeftjoin, commafy } from '$lib/helper';
+    import { scaleTonew, usd_format, objLeftjoin, commafy, coordFitter } from '$lib/helper';
     import { runOMS } from '$lib/leaflet.oms.js';
     import { map } from 'd3';
 
@@ -145,25 +145,6 @@
             pane: 'labels'
         };
         return L.circleMarker([item.Latitude, item.Longitude], markerOpts);
-    };
-
-    // Some items use EntityLatCoord instead of LatCoord. So check for which is used. This is a workaround because the entities don't consistently use one or the other.
-    const coordFitter = (item) => {
-        let lat, lng;
-
-        // 0 is valid so check for undefined.
-        if (item.LatCoord !== undefined && item.LongCoord !== undefined) {
-            lat = item.LatCoord;
-            lng = item.LongCoord;
-        } else if (item.EntityLatCoord !== undefined && item.EntityLongCoord !== undefined) {
-            lat = item.EntityLatCoord;
-            lng = item.EntityLongCoord;
-        } else if (item.Latitude !== undefined && item.Longitude !== undefined) {
-            lat = item.Latitude;
-            lng = item.Longitude;
-        }
-
-        return [lat, lng];
     };
 
     /**
@@ -986,35 +967,46 @@
             const buildProjects = () => {
                 let lats = [];
                 let lngs = [];
-
+                let triangle_list = [];
                 swdata.projects.forEach((item) => {
                     if (item.OnlineDecade <= $decadeStore) {
-                        let coords = coordFitter(item);
-                        lats.push(coords[0]);
-                        lngs.push(coords[1]);
-                        const marker = makeTriangleMarker(item);
-                        const markerOpts = {
-                            radius: 6,
-                            pane: 'labels'
-                        };
-                        let cmarker = L.circleMarker([item.EntityLatCoord, item.EntityLongCoord], markerOpts);
+                        const IS_PROJECT = item?.WmsProjectId;
+                        const IS_ENTITY = item?.EntityName && item?.EntityId;
 
-                        spiderfier.addMarker(marker);
-                        marker.addTo(map);
-                        layers.push(marker);
-                        cmarker.setStyle({
-                            fillColor: 'green',
-                            opacity: 1,
-                            fillOpacity: 1,
-                            weight: 1,
-                            color: 'black'
-                        });
-                        cmarker.bindPopup(makeEntityPopup(item, 'P')).openPopup();
-                        spiderfier.addMarker(cmarker);
-                        cmarker.addTo(map);
-                        layers.push(cmarker);
+                        let coords = coordFitter(item);
+                        if (IS_PROJECT || IS_ENTITY) {
+                            lats.push(coords[0]);
+                            lngs.push(coords[1]);
+                        }
+
+                        if (IS_PROJECT && !triangle_list.includes(item?.WmsProjectId)) {
+                            triangle_list.push(item?.WmsProjectId);
+                            const marker = makeTriangleMarker(item);
+                            marker.addTo(map);
+                            layers.push(marker);
+                            spiderfier.addMarker(marker);
+                        }
+
+                        if (IS_ENTITY) {
+                            let cmarker = L.circleMarker([coords[0], coords[1]], {
+                                radius: 6,
+                                pane: 'labels'
+                            });
+                            cmarker.setStyle({
+                                fillColor: 'green',
+                                opacity: 1,
+                                fillOpacity: 1,
+                                weight: 1,
+                                color: 'black'
+                            });
+                            cmarker.bindPopup(makeEntityPopup(item, 'P')).openPopup();
+                            spiderfier.addMarker(cmarker);
+                            cmarker.addTo(map);
+                            layers.push(cmarker);
+                        }
                     }
                 });
+
                 zoom(map, lats, lngs);
             };
 

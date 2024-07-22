@@ -27,21 +27,15 @@
         let dat2 = await sw.get(sourceSetting);
         let dat = await sw.get(sourceSetting2);
 
-        for (let i = 0; i < dat.projects.length; i++) {
+        for (let i = 0; i < dat2.projects.length; i++) {
             try {
-                dat2.projects[0] = {
-                    ...dat.projects[0],
-                    ...dat2.projects[0]
-                };
+                dat.projects.push(dat2.projects[i])
             } catch (err) {
                 console.log('problem merging data in projects. Attempting to continue.');
             }
         }
 
-        const r = {
-            ...dat,
-            ...dat2
-        };
+
         const decade_online = dat?.projects[0].OnlineDecade;
 
         let formatter = new Intl.NumberFormat('en-US', {
@@ -54,8 +48,8 @@
         tagline = `<span>Decade Online: ${decade_online}</span><br /><span>Capital Cost: ${capital_cost}</span>`;
         console.log(`loadForRegion time in ms: ${Date.now() - start}`);
 
-        projectName = r.projects[0].ProjectName;
-        return r;
+        projectName = dat.projects[0].ProjectName;
+        return dat;
     };
 
     // Promise to load for source. Do not await here. Await later in individual entities.

@@ -13,21 +13,23 @@
         const swdata = await lrp;
         if (swdata.projects && swdata.projects.length) projects = true;
         for (let project of swdata.projects) {
-            let to_array = [
-                html(`<a href="/wms/${project.WmsId}">${project.ProjectName}`),
-                html(`<a href="/region/${project.WugRegion}">${project.WugRegion}`)
-            ];
+            if (project.WmsSponsorRegion) {
+                let to_array = [
+                    html(`<a href="/wms/${project.WmsId}">${project.WmsName}`),
+                    html(`<a href="/region/${project.WmsSponsorRegion}">${project.WmsSponsorRegion}`)
+                ];
 
-            // Need to stringify array to use includes function because [1] !== [1] since they don't have the same reference.
-            if (
-                !(
-                    (
-                        JSON.stringify(project_data).includes(JSON.stringify(to_array)) &&
-                        (project.WmsProjectSponsorRegion === project.WugRegion || type !== 'region')
-                    ) // Specific to region.
-                )
-            ) {
-                project_data.push(to_array);
+                // Need to stringify array to use includes function because [1] !== [1] since they don't have the same reference.
+                if (
+                    !(
+                        (
+                            JSON.stringify(project_data).includes(JSON.stringify(to_array)) &&
+                            (project.WmsProjectSponsorRegion === project.WugRegion || type !== 'region')
+                        ) // Specific to region.
+                    )
+                ) {
+                    project_data.push(to_array);
+                }
             }
         }
         project_data = project_data;

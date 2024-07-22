@@ -5,7 +5,7 @@
     const countyTable = 'county_extended';
     const regionTable = 'rwpas';
     const { title, swdata, constants } = $$props;
-    import { cap } from '$lib/helper';
+    import { cap, coordFitter } from '$lib/helper';
     const sourceMap = constants.sourcemap;
 
     function navigateToRegion({ data }) {
@@ -323,12 +323,13 @@
                 });
 
                 let project = swdata?.projects[0];
-                L.marker([project.ProjectLatCoord, project.ProjectLongCoord], {
+                let coords = coordFitter(project);
+                L.marker(coords, {
                     icon
                 }).addTo(map);
 
-                makeLastOfClassnameAccessible(project.EntityName, 'triangle-marker');
-                map.setView([project.ProjectLatCoord, project.ProjectLongCoord - 0.5], 9);
+                makeLastOfClassnameAccessible(project.ProjectName, 'triangle-marker');
+                map.setView([coords[0], coords[1] - 0.5], 9);
                 countyHoverSetup();
             }
         }
