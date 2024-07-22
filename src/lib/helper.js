@@ -156,7 +156,7 @@ export let commafy = (s) => {
 
 
 // Some items use EntityLatCoord instead of LatCoord. So check for which is used. This is a workaround because the entities don't consistently use one or the other.
-const coordFitter = (item) => {
+export const  coordFitter = (item) => {
     let lat, lng;
 
     // 0 is valid so check for undefined.
