@@ -973,9 +973,8 @@
                         const IS_PROJECT = item?.WmsProjectId;
                         const IS_ENTITY = item?.EntityName && item?.EntityId;
 
-
                         let coords = coordFitter(item);
-                        if(IS_PROJECT || IS_ENTITY) {
+                        if (IS_PROJECT || IS_ENTITY) {
                             lats.push(coords[0]);
                             lngs.push(coords[1]);
                         }
@@ -988,12 +987,11 @@
                             spiderfier.addMarker(marker);
                         }
 
-                        let cmarker = L.circleMarker([coords[0], coords[1]], {
-                            radius: 6,
-                            pane: 'labels'
-                        });
-
                         if (IS_ENTITY) {
+                            let cmarker = L.circleMarker([coords[0], coords[1]], {
+                                radius: 6,
+                                pane: 'labels'
+                            });
                             cmarker.setStyle({
                                 fillColor: 'green',
                                 opacity: 1,
