@@ -36,7 +36,9 @@
             activeDimensions = ['Region', 'County', 'Entity'];
             sorter = 'Region';
 
-            rows = swdata.projects;
+            rows = swdata.projects.filter((result) => {
+                return result?.EntityId;
+            }, []);
 
             dimensions = [
                 { value: 'WugRegion', title: 'Region' },
@@ -109,7 +111,7 @@
 <div class="row panel-row">
     <span class="view-name">{title}</span>
     <h4 aria-level="3">Raw Data - {$decadeStore} - Population Benefiting</h4>
-    {#if !swdata?.population?.rows?.length}
+    {#if !swdata?.projects?.length}
         Sorry, there is no Population data.
     {/if}
     <div id="reactpivot" />
