@@ -15,7 +15,7 @@
         for (let project of swdata.projects) {
             let to_array = [
                 html(`<a href="/wms/${project.WmsId}">${project.ProjectName}`),
-                html(`<a href="/region/${project.WugRegion}">${project.WugRegion}`)
+                html(`<a href="/region/${project.WmsSponsorRegion}">${project.WmsSponsorRegion}`)
             ];
 
             // Need to stringify array to use includes function because [1] !== [1] since they don't have the same reference.
