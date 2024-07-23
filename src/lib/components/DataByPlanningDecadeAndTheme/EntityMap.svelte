@@ -1114,7 +1114,7 @@
         <span>{@html entityMapBlurb}</span>
         {#if $themeStore === 'strategies'}
             <p class="note"
-                >Red triangles indicate capital projects associated with strategy supplies that have been assigned to a Water User Group.<a
+                >Red triangles indicate capital projects associated with strategy supplies that have been assigned to a Water User Group. <a
                     id="hp_link"
                     on:click={() => hideshowmarkers()}
                     on:keydown={(key) => {
