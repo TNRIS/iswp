@@ -3,6 +3,7 @@ import { start_all_db, start_db_2017, start_db_2022, start_db_2027 } from './db/
 import { Constant2027 } from './Constant2027.js';
 import { Constant2022 } from './Constant2022.js';
 import { Constant2017 } from './Constant2017.js';
+export let TEST_FLAG = '2017';
 const c22 = new Constant2022();
 
 export let getConstants = (host) => {
@@ -13,7 +14,11 @@ export let getConstants = (host) => {
     } else if (host.includes('2017')) {
         return new Constant2017();
     } else {
-        return new Constant2022();
+        if (TEST_FLAG == '2017') {
+            return new Constant2017();
+        } else {
+            return new Constant2022();
+        }
     }
 };
 
@@ -104,7 +109,11 @@ export let load_indexeddb = async () => {
             return start_db_2027();
         } else {
             // SET TEST HERE
-            return start_db_2022();
+            if (TEST_FLAG == '2017') {
+                return start_db_2017();
+            } else {
+                return start_db_2022();
+            }
         }
     } catch (err) {
         console.log(err);
@@ -154,9 +163,8 @@ export let commafy = (s) => {
     return s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
-
 // Some items use EntityLatCoord instead of LatCoord. So check for which is used. This is a workaround because the entities don't consistently use one or the other.
-export const  coordFitter = (item) => {
+export const coordFitter = (item) => {
     let lat, lng;
 
     // 0 is valid so check for undefined.
