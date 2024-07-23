@@ -138,7 +138,7 @@
 
     const makeMarker = (item, ID, maxValue, class_name = '') => {
         // Add the blue circle entites
-        let radius = scaleTonew(item[`${ID}${$decadeStore}`], maxValue, constants.MAX_RADIUS);
+        let radius = scaleTonew(item[`${ID}${$decadeStore}`], maxValue, constants);
         const markerOpts = {
             radius,
             className: `${class_name} circle_marker`,

@@ -4,7 +4,6 @@ import { Constant2027 } from './Constant2027.js';
 import { Constant2022 } from './Constant2022.js';
 import { Constant2017 } from './Constant2017.js';
 export let TEST_FLAG = '2017';
-const c22 = new Constant2022();
 
 export let getConstants = (host) => {
     if (host.includes('2027')) {
@@ -322,9 +321,11 @@ export let objLeftjoin = (left, right, where) => {
  * @param {number} scale2
  * @param {number} newMax
  */
-export let scaleTonew = (scale1, scale2, newMax) => {
+export let scaleTonew = (scale1, scale2, constants) => {
     let portion = scale1 / scale2;
 
-    let r = portion * newMax;
-    return Math.floor(r) + c22.MIN_RADIUS;
+    let r = portion * constants.MIN_RADIUS;
+    let radius = Math.floor(r) + constants.MIN_RADIUS;
+    if(radius > constants.MAX_RADIUS) radius = constants.MAX_RADIUS;
+    return radius;
 };
