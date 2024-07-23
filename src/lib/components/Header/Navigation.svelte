@@ -120,12 +120,24 @@
             });
 
             sw.getProjects().then((/** @type {ProjectLabel[]}*/ x) => {
-                this.project = x.reduce((/** @type {object[]} */ accumulator, /** @type {any} */ currentValue) => {
-                    accumulator.push({
-                        value: currentValue.ProjectName,
-                        label: currentValue.WmsProjectId
-                    });
-                    return accumulator;
+                this.project = x.reduce((/** @type {NavLabel[]} */ accumulator, /** @type {any} */ currentValue) => {
+                    let exists /** @type {boolean} */ = false; // Default to false.
+
+                    if (accumulator.length) {
+                        exists = accumulator.some((/** @type {NavLabel} */ proj) => {
+                            return proj?.value == currentValue?.ProjectName && proj?.label == currentValue?.WmsProjectId;
+                        });
+                    }
+
+                    if (exists) {
+                        return accumulator;
+                    } else {
+                        accumulator.push({
+                            value: currentValue.ProjectName,
+                            label: currentValue.WmsProjectId
+                        });
+                        return accumulator;
+                    }
                 }, []);
             });
 
@@ -300,7 +312,11 @@
                                 placeholder="Start typing to find {titles[chosen]}" />
                             <ul id="secondList" class="nav-category-select">
                                 {#each categories?.[chosen] as r}
-                                    <li style="display:none;" aria-live="polite" aria-label="Sub Category filters" aria-details="List filters depending on the sub category input.">
+                                    <li
+                                        style="display:none;"
+                                        aria-live="polite"
+                                        aria-label="Sub Category filters"
+                                        aria-details="List filters depending on the sub category input.">
                                         <a
                                             role="button"
                                             tabindex="0"
@@ -308,7 +324,9 @@
                                             on:click={clicker}
                                             id={r.label}
                                             class="listItem"
-                                            aria-details="Submit this button to navigate to {cap(r.value)} subcategory when you hit the go button.">{cap(r.value)}</a>
+                                            aria-details="Submit this button to navigate to {cap(
+                                                r.value
+                                            )} subcategory when you hit the go button.">{cap(r.value)}</a>
                                     </li>
                                 {/each}
                             </ul>
