@@ -66,7 +66,9 @@
 </svelte:head>
 <div class="statewide-view">
     <section>
+        {#await lrp then}
         <PopulationChart {tagline} bind:title={entityName} {lrp} {constants} />
+        {/await}
         <ThemeTotalsByDecadeChart {lrp} {constants} title={`Water User Group - ${entityName}`} />
         <EntityStrategiesTable {lrp} {constants} title={`Water User Group - ${entityName}`} />
         <ProjectTable
