@@ -67,13 +67,11 @@
     };
 
     /**
-     * labelReducer: Create usable labels out of an array of strings.
+     * objectExistsInArray: Check if object exists in an array. Pass in keys to check so you can check if it partially matches..
      * @param {any[]} accumulator
      * @param {any}  label
      * @param {string[]} keys
      * @param {string[]} [secondkeys] Optional keys for the label object. Defaults to keys.
-     *
-     *
      */
     let objectExistsInArray = (accumulator, label, keys, secondkeys = keys) => {
         let exists /** @type {boolean} */ = false; // Default to false.
