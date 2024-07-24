@@ -138,7 +138,7 @@
 
     const makeMarker = (item, ID, maxValue, class_name = '') => {
         // Add the blue circle entites
-        let radius = scaleTonew(item[`${ID}${$decadeStore}`], maxValue, constants.MAX_RADIUS);
+        let radius = scaleTonew(item[`${ID}${$decadeStore}`], maxValue, constants);
         const markerOpts = {
             radius,
             className: `${class_name} circle_marker`,
@@ -968,18 +968,56 @@
                 let lats = [];
                 let lngs = [];
                 let triangle_list = [];
-                swdata.projects.forEach((item) => {
-                    if (item.OnlineDecade <= $decadeStore) {
-                        const IS_PROJECT = item?.WmsProjectId;
-                        const IS_ENTITY = item?.EntityName && item?.EntityId;
 
-                        let coords = coordFitter(item);
-                        if (IS_PROJECT || IS_ENTITY) {
-                            lats.push(coords[0]);
-                            lngs.push(coords[1]);
+                // Deep copy projects
+                let project_clone = JSON.parse(JSON.stringify(swdata.projects));
+
+                // Combine Entities if they are the same.
+                project_clone = project_clone.reduce((accumulator, currentValue) => {
+                    // Return projects without accumulation;
+
+                    if (!currentValue?.EntityId) {
+                        accumulator.push(currentValue);
+                        return accumulator;
+                    }
+
+                    let entity_match = accumulator.find((e) => {
+                        return (
+                            e?.EntityId === currentValue?.EntityId &&
+                            e?.EntityLatCoord === currentValue?.EntityLatCoord &&
+                            e?.EntityLongCoord === currentValue?.EntityLongCoord
+                        );
+                    });
+
+                    if (entity_match) {
+                        // Merge the Project Data.
+                        try {
+                            entity_match['P2020'] += currentValue['P2020'];
+                            entity_match['P2030'] += currentValue['P2030'];
+                            entity_match['P2040'] += currentValue['P2040'];
+                            entity_match['P2050'] += currentValue['P2050'];
+                            entity_match['P2060'] += currentValue['P2060'];
+                            entity_match['P2070'] += currentValue['P2070'];
+                        } catch (e) {
+                            console.log(`Problem merging Entity Data for ${entity_match?.EntityId}. Error: ${e}`);
                         }
 
-                        if (IS_PROJECT && !triangle_list.includes(item?.WmsProjectId)) {
+                        return accumulator;
+                    } else {
+                        accumulator.push(currentValue);
+                        return accumulator;
+                    }
+                }, []);
+
+                project_clone.forEach((item) => {
+                    if (item.OnlineDecade <= $decadeStore) {
+                        const IS_ENTITY = item?.EntityName && item?.EntityId;
+                        let coords = coordFitter(item);
+                        lats.push(coords[0]);
+                        lngs.push(coords[1]);
+
+                        // One triangle per project
+                        if (!triangle_list.includes(item?.WmsProjectId)) {
                             triangle_list.push(item?.WmsProjectId);
                             const marker = makeTriangleMarker(item);
                             marker.addTo(map);
@@ -1076,7 +1114,7 @@
         <span>{@html entityMapBlurb}</span>
         {#if $themeStore === 'strategies'}
             <p class="note"
-                >Red triangles indicate capital projects associated with strategy supplies that have been assigned to a Water User Group.<a
+                >Red triangles indicate capital projects associated with strategy supplies that have been assigned to a Water User Group. <a
                     id="hp_link"
                     on:click={() => hideshowmarkers()}
                     on:keydown={(key) => {

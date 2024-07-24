@@ -3,13 +3,17 @@
     overflow-x: auto;
 }
 
+#reactpivot {
+    overflow: auto;
+}
+
 .reactPivot {
     margin-top: 0;
     margin-bottom: 1rem;
     padding: 0;
     background: inherit;
     box-shadow: none !important;
-
+    
     select {
         height: auto !important;
     }

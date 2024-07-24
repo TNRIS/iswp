@@ -36,10 +36,12 @@
             activeDimensions = ['Region', 'County', 'Entity'];
             sorter = 'Region';
 
+            let filteredData = JSON.parse(JSON.stringify(swdata));
+
             rows = swdata.projects.filter((result) => {
                 return result?.EntityId;
             }, []);
-
+            filteredData.projects = rows;
             dimensions = [
                 { value: 'WugRegion', title: 'Region' },
                 { value: 'WugCounty', title: 'County' },
@@ -72,10 +74,16 @@
                 nPaginateRows: 50,
                 sortBy: sorter
             });
+            return filteredData;
+
         } catch (err) {
             console.log(err);
         }
+    };
+    let onLoad /** @type {promise} */ = getData();
 
+    (async () => {
+        await onLoad;
         try {
             let dimenContainer = document.getElementsByClassName('reactPivot-dimensions');
             dimenContainer.ariaDescription = 'Pivot Table for narrowing down data the raw data available in csv form below.';
@@ -92,15 +100,11 @@
         } catch (err) {
             console.log('problem making dimension table more accessible. Proceeding. Please report this to twdb.');
         }
-    };
-
+    })();
     dataviewContext.getData.set(getData);
-    let onLoad = async () => {
-        await getData();
-    };
 </script>
 
-{#await onLoad()}
+{#await onLoad}
     <div class="loader"></div>
 {:then}
     <table id="PivotTable" />
@@ -115,5 +119,7 @@
         Sorry, there is no Population data.
     {/if}
     <div id="reactpivot" />
-    <CsvDownloads {swdata} {csvTitle} {fileName} {constants} />
+    {#await onLoad then d}
+        <CsvDownloads swdata={d} {csvTitle} {fileName} {constants} />
+    {/await}
 </div>

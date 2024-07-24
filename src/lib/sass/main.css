@@ -1205,6 +1205,10 @@ button.easy-button-button .icon-texas {
   overflow-x: auto;
 }
 
+#reactpivot {
+  overflow: auto;
+}
+
 .reactPivot {
   margin-top: 0;
   margin-bottom: 1rem;

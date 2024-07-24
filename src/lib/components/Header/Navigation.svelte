@@ -53,7 +53,7 @@
     /**
      * labelReducer: Create usable labels out of an array of strings.
      * @param {string[]} labels
-     * @param {string} label_prefix - Optional Paramater to prefix labels with.
+     * @param {string} [label_prefix] - Optional Paramater to prefix labels with.
      */
     let labelReducer = (labels, label_prefix = '') => {
         return labels.reduce((/** @type {NavLabel[]} */ accumulator, /** @type {string} */ currentValue) => {
@@ -64,6 +64,33 @@
             accumulator.push(navlabel);
             return accumulator;
         }, []);
+    };
+
+    /**
+     * objectExistsInArray: Check if object exists in an array. Pass in keys to check so you can check if it partially matches..
+     * @param {any[]} accumulator
+     * @param {any}  label
+     * @param {string[]} keys
+     * @param {string[]} [secondkeys] Optional keys for the label object. Defaults to keys.
+     */
+    let objectExistsInArray = (accumulator, label, keys, secondkeys = keys) => {
+        let exists /** @type {boolean} */ = false; // Default to false.
+        try {
+            if (accumulator.length) {
+                exists = accumulator.some((/** @type {any} */ item) => {
+                    let match = true;
+                    keys.forEach((key, i) => {
+                        if (!(item[secondkeys[i]] === label[key])) match = false;
+                    });
+                    return match;
+                });
+
+                return exists;
+            }
+        } catch (e) {
+            return false;
+        }
+        return false;
     };
 
     let regions = /** @type NavLabel[] */ labelReducer(constants.getRegions(), 'Region ');
@@ -111,30 +138,60 @@
 
             sw.getEntities().then((/** @type {EntityLabel[]}*/ x) => {
                 this.entity = x.reduce((/** @type {object[]} */ accumulator, /** @type {any} */ currentValue) => {
-                    accumulator.push({
-                        value: currentValue.EntityName,
-                        label: currentValue.EntityId
-                    });
+                    let exists /** @type {boolean} */ = objectExistsInArray(
+                        accumulator,
+                        currentValue,
+                        ['EntityName', 'EntityId'],
+                        ['value', 'label']
+                    );
+
+                    if (!exists) {
+                        accumulator.push({
+                            value: currentValue.EntityName,
+                            label: currentValue.EntityId
+                        });
+                    }
+
                     return accumulator;
                 }, []);
             });
 
             sw.getProjects().then((/** @type {ProjectLabel[]}*/ x) => {
-                this.project = x.reduce((/** @type {object[]} */ accumulator, /** @type {any} */ currentValue) => {
-                    accumulator.push({
-                        value: currentValue.ProjectName,
-                        label: currentValue.WmsProjectId
-                    });
+                this.project = x.reduce((/** @type {NavLabel[]} */ accumulator, /** @type {any} */ currentValue) => {
+                    let exists /** @type {boolean} */ = objectExistsInArray(
+                        accumulator,
+                        currentValue,
+                        ['ProjectName', 'WmsProjectId'],
+                        ['value', 'label']
+                    );
+
+                    if (!exists) {
+                        accumulator.push({
+                            value: currentValue.ProjectName,
+                            label: currentValue.WmsProjectId
+                        });
+                    }
+
                     return accumulator;
                 }, []);
             });
 
             sw.getWms().then((/** @type {WmsLabel[]}*/ x) => {
                 this.wms = x.reduce((/** @type {object[]} */ accumulator, /** @type {any} */ currentValue) => {
-                    accumulator.push({
-                        value: currentValue.WmsName,
-                        label: currentValue.WmsId
-                    });
+                    let exists /** @type {boolean} */ = objectExistsInArray(
+                        accumulator,
+                        currentValue,
+                        ['WmsName', 'WmsId'],
+                        ['value', 'label']
+                    );
+
+                    if (!exists) {
+                        accumulator.push({
+                            value: currentValue.WmsName,
+                            label: currentValue.WmsId
+                        });
+                    }
+
                     return accumulator;
                 }, []);
             });
@@ -243,7 +300,7 @@
 
     /**
      * When box 2 is changed call this. And change the chosen value;
-     * @param {CustomEvent | KeyboardEvent} value
+     * @param {CustomEvent | KeyboardEvent} event
      */
     let box2Change = (event) => {
         chosen2 = event.detail.value;
@@ -300,7 +357,11 @@
                                 placeholder="Start typing to find {titles[chosen]}" />
                             <ul id="secondList" class="nav-category-select">
                                 {#each categories?.[chosen] as r}
-                                    <li style="display:none;" aria-live="polite" aria-label="Sub Category filters" aria-details="List filters depending on the sub category input.">
+                                    <li
+                                        style="display:none;"
+                                        aria-live="polite"
+                                        aria-label="Sub Category filters"
+                                        aria-details="List filters depending on the sub category input.">
                                         <a
                                             role="button"
                                             tabindex="0"
@@ -308,7 +369,9 @@
                                             on:click={clicker}
                                             id={r.label}
                                             class="listItem"
-                                            aria-details="Submit this button to navigate to {cap(r.value)} subcategory when you hit the go button.">{cap(r.value)}</a>
+                                            aria-details="Submit this button to navigate to {cap(
+                                                r.value
+                                            )} subcategory when you hit the go button.">{cap(r.value)}</a>
                                     </li>
                                 {/each}
                             </ul>
