@@ -26,6 +26,10 @@
     let regionSetting = new QuerySettings('region', 'WugRegion');
     regionSetting.setAll(data.slug);
     regionSetting.setProjects(data.slug, 'WmsProjectSponsorRegion');
+
+    let regionSetting2 = new QuerySettings('region', 'WugRegion');
+    regionSetting2.setAll(data.slug);
+    regionSetting2.setProjects(data.slug, 'WugRegion');
     let db = load_indexeddb();
     let loadForRegion = async () => {
         db = await db;
@@ -34,11 +38,14 @@
         let start = Date.now();
         let sw = new Statewide(db);
         let cc = new Counties(db);
-        let [ccounties, dat] = await Promise.all([cc.get(data.slug), sw.get(regionSetting)]);
+        let [ccounties, dat, dat2] = await Promise.all([cc.get(data.slug), sw.get(regionSetting), sw.get(regionSetting2)]);
         //let ccounties = await cc.get(data.slug);
         //let dat =  await sw.get(regionSetting);
 
         dat.counties = ccounties;
+        dat2.counties = ccounties;
+        dat.project_data = dat2;
+
         console.log(`loadForRegion time in ms: ${Date.now() - start}`);
         return dat;
     };
@@ -102,16 +109,18 @@
             project_title2={'Projects '}
             lrp={loadForRegionPromise}
             type={'region'} />
-        <DataViewChoiceWrapInd
-            title={`Planning Region ${data.slug}`}
-            showPopulation={true}
-            type={'region'}
-            {stratAd}
-            {activeDem}
-            {constants}
-            csvTitle={`Planning Region ${data.slug}`}
-            lrp={loadForRegionPromise}
-            fileName={`region_${data.slug.toLowerCase()}`}
-            {entityMapBlurb} />
+        {#await loadForRegionPromise then d}
+            <DataViewChoiceWrapInd
+                title={`Planning Region ${data.slug}`}
+                showPopulation={true}
+                type={'region'}
+                {stratAd}
+                {activeDem}
+                {constants}
+                csvTitle={`Planning Region ${data.slug}`}
+                lrp={d}
+                fileName={`region_${data.slug.toLowerCase()}`}
+                {entityMapBlurb} />
+        {/await}
     </section>
 </div>

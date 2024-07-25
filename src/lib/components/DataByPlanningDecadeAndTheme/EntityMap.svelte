@@ -9,7 +9,7 @@
 
     const countyTable = 'county_extended';
     const regionTable = 'rwpas';
-    const { slug, title, swdata, constants, type, entityMapBlurb } = $$props;
+    const { slug, title, constants, type, entityMapBlurb } = $$props;
     const DECADES = constants.getDecades();
     const sourceMap = constants.sourcemap;
     const sourceTable = constants.sourcetables;
@@ -24,6 +24,9 @@
         [25.84, -93.51]
     ];
     const theme_titles = constants.getThemeTitles();
+    export let swdata;
+    if(swdata.project_data) // Region page uses this
+        swdata = swdata.project_data
     let layers = [];
     let spiderfier;
     let switch_unlocked = true;
@@ -541,36 +544,66 @@
                 };
 
                 /* Add the circle markers */
-                if (totalEntityReduced) {
-                    totalEntityReduced.forEach((item) => {
-                        // Don't include items with 0.
-                        if (item[`SS${$decadeStore}`] > 0) {
-                            const marker = makeMarker(item, 'SS', maxValue, 'entity-marker-strategies');
-                            marker.bindPopup(makeEntityPopup(item, 'SS')).openPopup();
-                            spiderfier.addMarker(marker);
-                            closeOnEscape(marker);
-                            marker.addTo(map);
-                            layers.push(marker);
+                let addCircles = () => {
+                    return new Promise((res, rej) => {
+                        try {
+                            if (totalEntityReduced) {
+                                totalEntityReduced.forEach((item) => {
+                                    // Don't include items with 0.
+                                    if (item[`SS${$decadeStore}`] > 0) {
+                                        const marker = makeMarker(item, 'SS', maxValue, 'entity-marker-strategies');
+                                        marker.bindPopup(makeEntityPopup(item, 'SS')).openPopup();
+                                        spiderfier.addMarker(marker);
+                                        closeOnEscape(marker);
+                                        marker.addTo(map);
+                                        layers.push(marker);
 
-                            makeLastOfClassnameAccessible(item.EntityName, 'circle_marker');
+                                        makeLastOfClassnameAccessible(item.EntityName, 'circle_marker');
+
+                                        if(item.Latitude && item.Longitude) {
+                                            lats.push(item.Latitude);
+                                            lngs.push(item.Longitude);
+                                        }
+                                    }
+                                });
+                            }
+
+                            res('success');
+                        } catch (e) {
+                            rej('Problem adding the circlies in entity map');
                         }
                     });
-                }
+                };
 
-                /* Add the red triangle Projects. */
-                if (swdata.projects && swdata.projects.length) {
-                    swdata.projects.forEach((item) => {
-                        if (item.OnlineDecade <= $decadeStore) {
-                            const marker = makeTriangleMarker(item);
-                            spiderfier.addMarker(marker);
+                let addTriangles = () => {
+                    return new Promise((res, rej) => {
+                        try {
+                            /* Add the red triangle Projects. */
+                            if (swdata.projects && swdata.projects.length) {
+                                swdata.projects.forEach((item) => {
+                                    if (item.OnlineDecade <= $decadeStore) {
+                                        const marker = makeTriangleMarker(item);
+                                        spiderfier.addMarker(marker);
 
-                            marker.addTo(map);
-                            layers.push(marker);
-                            markers.push(marker);
+                                        marker.addTo(map);
+                                        layers.push(marker);
+                                        markers.push(marker);
+
+                                        if(item.LatCoord && item.LongCoord) {
+                                            lats?.push(item.LatCoord);
+                                            lngs?.push(item.LongCoord);
+                                        }
+                                    }
+                                });
+                            }
+                            res('success');
+                        } catch (e) {
+                            rej('Problem adding the red triangles in entity map');
                         }
                     });
-                }
-                await totalEntitySync();
+                };
+
+                await Promise.all([totalEntitySync(), addTriangles(), addCircles()]);
 
                 // calc the min and max lng and lat
                 if (region) {

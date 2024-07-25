@@ -60,7 +60,14 @@ export default class Counties {
     };
 
     get = async (setting) => {
-        let a = this.#getAllTransaction(`${this.constants.tappend}SelectRegionsInCounty`, 'RegionLetter', `${setting} `);
+        let a;
+        if (this.host.includes(2017) || TEST_FLAG == "2017") {
+            a = this.#getAllTransaction(`${this.constants.tappend}SelectRegionsInCounty`, 'RegionLetter', `${setting}`);
+        } else if (this.host.includes(2022) || TEST_FLAG == "2022") {
+            a = this.#getAllTransaction(`${this.constants.tappend}SelectRegionsInCounty`, 'RegionLetter', `${setting} `); // For some reason space is needed in 2022.
+        } else {
+            a = this.#getAllTransaction(`${this.constants.tappend}SelectRegionsInCounty`, 'RegionLetter', `${setting} `); // Default to 2022. 
+        }
 
         return a;
     };
