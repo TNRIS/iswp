@@ -9,7 +9,7 @@
 
     const countyTable = 'county_extended';
     const regionTable = 'rwpas';
-    const { slug, title, swdata, constants, type, entityMapBlurb } = $$props;
+    const { slug, title, constants, type, entityMapBlurb } = $$props;
     const DECADES = constants.getDecades();
     const sourceMap = constants.sourcemap;
     const sourceTable = constants.sourcetables;
@@ -24,6 +24,9 @@
         [25.84, -93.51]
     ];
     const theme_titles = constants.getThemeTitles();
+    export let swdata;
+    if(swdata.project_data) // Region page uses this
+        swdata = swdata.project_data
     let layers = [];
     let spiderfier;
     let switch_unlocked = true;

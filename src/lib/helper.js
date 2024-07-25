@@ -3,7 +3,7 @@ import { start_all_db, start_db_2017, start_db_2022, start_db_2027 } from './db/
 import { Constant2027 } from './Constant2027.js';
 import { Constant2022 } from './Constant2022.js';
 import { Constant2017 } from './Constant2017.js';
-export let TEST_FLAG = '2022';
+export let TEST_FLAG = '2017';
 
 export let getConstants = (host) => {
     if (host.includes('2027')) {
