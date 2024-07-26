@@ -233,7 +233,7 @@
                     }
                 });
 
-                gj.addTo(map);
+                await gj.addTo(map);
 
                 countyHoverSetup();
             }
