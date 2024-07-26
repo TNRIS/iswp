@@ -38,7 +38,10 @@
                 sorter = 'Strategy';
                 rows = swdata.strategies.rows;
                 dimensions = [
-                    { value: 'WmsName', title: 'Strategy' },
+                    { 
+                        value: 'WmsName',
+                        title: 'Strategy'
+                    },
                     { value: 'WmsType', title: 'WMS Type' },
                     { value: 'SourceName', title: 'Source' },
                     { value: 'WugCounty', title: 'County' },
@@ -124,12 +127,12 @@
 
             formattedRows.forEach((f) => {
                 if (f.MapSourceId)
-                    f.SourceName = f.SourceName?.startsWith('<a') ? f.SourceName : `<a href="/source/${f.MapSourceId}">${f.SourceName}</a>`;
-                f.WugRegion = f.WugRegion?.startsWith('<a') ? f.WugRegion : `<a href="/region/${f.WugRegion}">${f.WugRegion}</a>`;
-                f.EntityName = f.EntityName?.startsWith('<a') ? f.EntityName : `<a href="/entity/${f.EntityId}">${f.EntityName}</a>`;
-                f.WugCounty = f.WugCounty?.startsWith('<a') ? f.WugCounty : `<a href="/county/${f.WugCounty}">${f.WugCounty}</a>`;
-                f.WmsName = f.WmsName?.startsWith('<a') ? f.WmsName : `<a href="/wms/${f.WmsId}">${f.WmsName}</a>`;
-                f.WmsType = f.WmsType?.startsWith('<a') ? f.WmsType : `<a href="/wmstype/${f.WmsType}">${f.WmsType}</a>`;
+                    f.SourceName = f.SourceName?.startsWith('<a') ? f.SourceName : `<a id="${f.SourceName}" href="/source/${f.MapSourceId}">${f.SourceName}</a>`;
+                f.WugRegion = f.WugRegion?.startsWith('<a') ? f.WugRegion : `<a id="${f.WugRegion}" href="/region/${f.WugRegion}">${f.WugRegion}</a>`;
+                f.EntityName = f.EntityName?.startsWith('<a') ? f.EntityName : `<a id="${f.EntityName}" href="/entity/${f.EntityId}">${f.EntityName}</a>`;
+                f.WugCounty = f.WugCounty?.startsWith('<a') ? f.WugCounty : `<a id="${f.WugCounty}" href="/county/${f.WugCounty}">${f.WugCounty}</a>`;
+                f.WmsName = f.WmsName?.startsWith('<a') ? f.WmsName : `<a id="${f.WmsName}" href="/wms/${f.WmsId}">${f.WmsName}</a>`;
+                f.WmsType = f.WmsType?.startsWith('<a') ? f.WmsType : `<a id="${f.WmsType}" href="/wmstype/${f.WmsType}">${f.WmsType}</a>`;
             });
 
             ReactPivot(document.getElementById('reactpivot'), {
