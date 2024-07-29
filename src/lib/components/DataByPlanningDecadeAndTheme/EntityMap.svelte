@@ -25,8 +25,9 @@
     ];
     const theme_titles = constants.getThemeTitles();
     export let swdata;
-    if(swdata.project_data) // Region page uses this
-        swdata = swdata.project_data
+    if (swdata.project_data)
+        // Region page uses this
+        swdata = swdata.project_data;
     let layers = [];
     let spiderfier;
     let switch_unlocked = true;
@@ -421,6 +422,37 @@
                 let lats = [];
                 let lngs = [];
 
+                /* WIP
+                const displayGeom = (j, style) => {
+                    let gj = L.geoJson(j, {
+                        style,
+                        pane: 'geom'
+                    });
+                    let popup;
+                    gj.bindPopup(
+                        `<h3 aria-live="polite">${j[0].properties.name}</h3><p aria-live="polite"><a href="/source/${j[0].properties.sourceid}">View Source Page</a></p>`
+                    );
+                    gj.on('mousemove', function (e) {
+                        //open popup;
+                        if (!popup) {
+                            popup = L.tooltip(e.latlng, {
+                                content: `${j[0].properties.name}`,
+                                direction: 'right'
+                            }).openOn(map);
+                        } else {
+                            popup.setLatLng(e.latlng);
+                        }
+                    });
+
+                    gj.on('mouseout', function (e) {
+                        popup.close();
+                        popup = null;
+                    });
+
+                    return gj;
+                };
+                */
+
                 const displayGeom = (j, item, style) => {
                     let gj = L.geoJson(j, {
                         style,
@@ -454,13 +486,65 @@
                     return new Promise((resolve, reject) => {
                         try {
                             if (!totalEntity) resolve('Done');
+/* WIP 
+                            (async () => {
+                                let allSource = await fetch(
+                                    `https://mapserver.tnris.org/?map=/tnris_mapfiles/iswp_sourcefeatures2017.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=AllSources&outputformat=geojson&SRSNAME=EPSG:4326`
+                                );
+                                let obj_source = await allSource.json()
+
+                                totalEntity = totalEntity.filter((item) => {
+                                    return !(item.SourceName === 'DIRECT REUSE' ||
+                                        item.SourceName === 'LOCAL SURFACE WATER SUPPLY' ||
+                                        item.SourceName === 'ATMOSPHERE' ||
+                                        item.SourceName === 'RAINWATER HARVESTING' ||
+                                        (type === 'source' && slug == item.MapSourceId))
+                                });
+
+                                obj_source.features = obj_source.features.filter((item) => {
+                                    let type = item.properties.featuretyp;
+                                    if(!(type === "polygon" || type === "line" || type === "point")) {
+                                        return false;
+                                    }
+
+                                    let azb = false;
+                                    for(let i = 0; i < totalEntity.length; i++) {
+                                        azb = item.properties.sourceid == totalEntity[i].MapSourceId
+                                        if(azb)
+                                            i = totalEntity.length +1; // Break;
+                                    }
+                                    if(azb)
+                                        console.log(azb);
+                                    return azb;
+                                });
+
+                                let gj = displayGeom(obj_source.features, {}, {
+                                    color: '#3F556D',
+                                    opacity: 1,
+                                    weight: 4,
+                                    fillOpacity: 0.3,
+                                    className: 'gj'
+                                });
+
+
+                                gj.addTo(map);
+                                layers.push(gj);
+                                closeOnEscape(gj);
+                                makeLastOfClassnameAccessible(`${item.EntityName} line`, 'gj');
+
+                                if (switch_unlocked)
+                                    boundStorer(gj);
+
+                                console.log("Here");
+                            })();
+*/
+                            
                             totalEntity?.forEach(async (item, i, ar) => {
                                 if (
                                     item.SourceName === 'DIRECT REUSE' ||
                                     item.SourceName === 'LOCAL SURFACE WATER SUPPLY' ||
                                     item.SourceName === 'ATMOSPHERE' ||
                                     item.SourceName === 'RAINWATER HARVESTING' ||
-                                    item.SourceName === 'ATMOSPHERE' ||
                                     (type === 'source' && slug == item.MapSourceId)
                                 ) {
                                     counter++;
@@ -479,11 +563,15 @@
                                     let lineSource = fetch(
                                         `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=LineSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`
                                     );
+                                    let itemSource = fetch(
+                                        `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PointSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`
+                                    );
 
-                                    [mapSource, lineSource] = await Promise.all([mapSource, lineSource]);
-                                    let [text, linetext] = await Promise.all([mapSource.text(), lineSource.text()]);
+                                    [mapSource, lineSource, itemSource] = await Promise.all([mapSource, lineSource, itemSource]);
+                                    let [text, linetext, itemtext] = await Promise.all([mapSource.text(), lineSource.text(), (await itemSource).text()]);
                                     let j = JSON.parse(text);
                                     let linej = JSON.parse(linetext);
+                                    let itemj = JSON.parse(itemtext);
 
                                     let gj = displayGeom(j, item, {
                                         color: '#3F556D',
@@ -500,14 +588,38 @@
                                         fillOpacity: 0.3,
                                         className: 'jj'
                                     });
+
                                     gj.addTo(map);
                                     layers.push(gj);
                                     closeOnEscape(gj);
                                     makeLastOfClassnameAccessible(`${item.EntityName} line`, 'gj');
+
                                     jj.addTo(map);
                                     layers.push(jj);
                                     closeOnEscape(jj);
                                     makeLastOfClassnameAccessible(`${item.EntityName} line`, 'jj');
+
+                                    itemj?.features?.forEach((zz) => {
+                                        
+                                        let ij = L.circleMarker([zz?.geometry?.coordinates[1], zz?.geometry?.coordinates[0]], {
+                                            radius: 6,
+                                            pane: 'labels'
+                                        });
+                                        ij.setStyle({
+                                            fillColor: 'green',
+                                            opacity: 1,
+                                            fillOpacity: 1,
+                                            weight: 1,
+                                            color: 'black'
+                                        });
+                                        ij.bindPopup(`<h3 aria-live="polite">${zz?.properties?.name}</h3><p aria-live="polite"><a href="/source/${zz?.properties?.sourceid}">View Source Page</a></p>`).openPopup();
+
+                                        spiderfier.addMarker(ij);
+                                        ij.addTo(map);
+                                        layers.push(ij);                                        
+                                        
+                                        closeOnEscape(ij);
+                                    });
                                     counter++;
 
                                     // Add boundaries to list of latitudes and longitudes to calculate the bounding box below.
@@ -560,7 +672,7 @@
 
                                         makeLastOfClassnameAccessible(item.EntityName, 'circle_marker');
 
-                                        if(item.Latitude && item.Longitude) {
+                                        if (item.Latitude && item.Longitude) {
                                             lats.push(item.Latitude);
                                             lngs.push(item.Longitude);
                                         }
@@ -589,7 +701,7 @@
                                         layers.push(marker);
                                         markers.push(marker);
 
-                                        if(item.LatCoord && item.LongCoord) {
+                                        if (item.LatCoord && item.LongCoord) {
                                             lats?.push(item.LatCoord);
                                             lngs?.push(item.LongCoord);
                                         }
