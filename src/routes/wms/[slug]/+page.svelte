@@ -64,6 +64,7 @@
         <DataViewChoiceWrapInd
             title={`WATER MANAGEMENT STRATEGY - ${csvTitle}`}
             fileName={`wms_${data.slug}`}
+            slug={data.slug}
             {entityMapBlurb}
             {stratAd}
             {lrp}
