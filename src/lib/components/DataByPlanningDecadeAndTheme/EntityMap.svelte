@@ -563,11 +563,15 @@
                                     let lineSource = fetch(
                                         `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=LineSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`
                                     );
+                                    let itemSource = fetch(
+                                        `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PointSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`
+                                    );
 
-                                    [mapSource, lineSource] = await Promise.all([mapSource, lineSource]);
-                                    let [text, linetext] = await Promise.all([mapSource.text(), lineSource.text()]);
+                                    [mapSource, lineSource, itemSource] = await Promise.all([mapSource, lineSource, itemSource]);
+                                    let [text, linetext, itemtext] = await Promise.all([mapSource.text(), lineSource.text(), (await itemSource).text()]);
                                     let j = JSON.parse(text);
                                     let linej = JSON.parse(linetext);
+                                    let itemj = JSON.parse(itemtext);
 
                                     let gj = displayGeom(j, item, {
                                         color: '#3F556D',
@@ -584,14 +588,38 @@
                                         fillOpacity: 0.3,
                                         className: 'jj'
                                     });
+
                                     gj.addTo(map);
                                     layers.push(gj);
                                     closeOnEscape(gj);
                                     makeLastOfClassnameAccessible(`${item.EntityName} line`, 'gj');
+
                                     jj.addTo(map);
                                     layers.push(jj);
                                     closeOnEscape(jj);
                                     makeLastOfClassnameAccessible(`${item.EntityName} line`, 'jj');
+
+                                    itemj?.features?.forEach((zz) => {
+                                        
+                                        let ij = L.circleMarker([zz?.geometry?.coordinates[1], zz?.geometry?.coordinates[0]], {
+                                            radius: 6,
+                                            pane: 'labels'
+                                        });
+                                        ij.setStyle({
+                                            fillColor: 'green',
+                                            opacity: 1,
+                                            fillOpacity: 1,
+                                            weight: 1,
+                                            color: 'black'
+                                        });
+                                        ij.bindPopup(`<h3 aria-live="polite">${zz?.properties?.name}</h3><p aria-live="polite"><a href="/source/${zz?.properties?.sourceid}">View Source Page</a></p>`).openPopup();
+
+                                        spiderfier.addMarker(ij);
+                                        ij.addTo(map);
+                                        layers.push(ij);                                        
+                                        
+                                        closeOnEscape(ij);
+                                    });
                                     counter++;
 
                                     // Add boundaries to list of latitudes and longitudes to calculate the bounding box below.
