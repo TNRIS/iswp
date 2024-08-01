@@ -8,6 +8,7 @@
     import { setContext } from 'svelte';
     import { writable } from 'svelte/store';
     import EntityMap from './EntityMap.svelte';
+    import ComponentLoader from '$lib/components/ComponentLoader.svelte';
 
     const {
         page,
@@ -58,7 +59,7 @@
     <div class="container">
         <!-- <StrategiesBreakdown {swdata} /> -->
         {#await lrp}
-            <div class="loader"></div>
+            <ComponentLoader />
         {:then swdata}
             <EntityMap {slug} {swdata} {title} {constants} {type} {entityMapBlurb} />
             {#if type !== 'source' && type !== 'pop' && type !== 'wms' && type !== 'wmstype'}
