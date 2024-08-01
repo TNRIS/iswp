@@ -6,7 +6,7 @@ import sveltePreprocess from 'svelte-preprocess';
 export default defineConfig({
     plugins: [sveltePreprocess(), sveltekit(), svg()],
     build: {
-        sourcemap: true,
-        minify: false
+        sourcemap: false,
+        minify: true
     }
 });

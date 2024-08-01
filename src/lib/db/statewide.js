@@ -141,10 +141,9 @@ export default class Statewide {
     };
 
     #getAllTransaction = (key, where, project_filter) => {
-        return new Promise(async (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             try {
                 let start = Date.now();
-                console.log('Transaction timer');
                 //vwWMSProjectsByWmsType
                 if (key == `${this.constants.tappend}WMSProjectsByWmsType`) {
                     // Temporary workaround until I find out why these are cased differently.
