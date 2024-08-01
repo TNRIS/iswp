@@ -140,7 +140,7 @@
         // No built in way to customize the placeholder for gridjs-input so I need to do this workaround.
         // @ts-ignore because document is defined since this is onMount();
         let gridjs_input = document.getElementById('rpc').getElementsByClassName('gridjs-input')[0];
-        if (gridjs_input) gridjs_input.setAttribute('placeholder', `Type to filter by project name`);
+        if (gridjs_input) gridjs_input.setAttribute('placeholder', `Type to filter project list`);
     });
 
     // Abstract the process of formatting the sum. With some checking.
