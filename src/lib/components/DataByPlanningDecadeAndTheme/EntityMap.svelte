@@ -7,6 +7,23 @@
     import { runOMS } from '$lib/leaflet.oms.js';
     import { map } from 'd3';
 
+    /* Work in progress
+    import WFS from 'ol/format/WFS.js';
+    import GeoJSON from 'ol/format/GeoJSON.js';
+    import ImageTile from 'ol/source/ImageTile.js';
+    import Map from 'ol/Map.js';
+    import VectorSource from 'ol/source/Vector.js';
+    import View from 'ol/View.js';
+    import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js';
+    import { bbox as bboxStrategy } from 'ol/loadingstrategy.js';
+    import {
+        and as andFilter,
+        equalTo as equalToFilter,
+        like as likeFilter,
+        notEqualTo as notEqualToFilter,
+        or as orFilter
+    } from 'ol/format/filter.js';
+*/
     const countyTable = 'county_extended';
     const regionTable = 'rwpas';
     const { slug, title, constants, type, entityMapBlurb } = $$props;
@@ -422,37 +439,6 @@
                 let lats = [];
                 let lngs = [];
 
-                /* WIP
-                const displayGeom = (j, style) => {
-                    let gj = L.geoJson(j, {
-                        style,
-                        pane: 'geom'
-                    });
-                    let popup;
-                    gj.bindPopup(
-                        `<h3 aria-live="polite">${j[0].properties.name}</h3><p aria-live="polite"><a href="/source/${j[0].properties.sourceid}">View Source Page</a></p>`
-                    );
-                    gj.on('mousemove', function (e) {
-                        //open popup;
-                        if (!popup) {
-                            popup = L.tooltip(e.latlng, {
-                                content: `${j[0].properties.name}`,
-                                direction: 'right'
-                            }).openOn(map);
-                        } else {
-                            popup.setLatLng(e.latlng);
-                        }
-                    });
-
-                    gj.on('mouseout', function (e) {
-                        popup.close();
-                        popup = null;
-                    });
-
-                    return gj;
-                };
-                */
-
                 const displayGeom = (j, item, style) => {
                     let gj = L.geoJson(j, {
                         style,
@@ -486,59 +472,56 @@
                     return new Promise((resolve, reject) => {
                         try {
                             if (!totalEntity) resolve('Done');
-/* WIP 
+
+                            /* Work in progress combining geojson.
                             (async () => {
-                                let allSource = await fetch(
-                                    `https://mapserver.tnris.org/?map=/tnris_mapfiles/iswp_sourcefeatures2017.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=AllSources&outputformat=geojson&SRSNAME=EPSG:4326`
-                                );
-                                let obj_source = await allSource.json()
+                                let start = Date.now();
 
-                                totalEntity = totalEntity.filter((item) => {
-                                    return !(item.SourceName === 'DIRECT REUSE' ||
-                                        item.SourceName === 'LOCAL SURFACE WATER SUPPLY' ||
-                                        item.SourceName === 'ATMOSPHERE' ||
-                                        item.SourceName === 'RAINWATER HARVESTING' ||
-                                        (type === 'source' && slug == item.MapSourceId))
+                                let entityFilters = [];
+                                totalEntity.forEach((item) => {
+                                    if (
+                                        (item.SourceType !== 'DIRECT REUSE' ||
+                                            item.SourceType !== 'LOCAL SURFACE WATER SUPPLY' ||
+                                            item.SourceType !== 'ATMOSPHERE' ||
+                                            item.SourceType !== 'RAINWATER HARVESTING') &&
+                                        !entityFilters.includes(item.EntityId)
+                                    )
+                                        entityFilters.push(equalToFilter('sourceid', item.EntityId + ''));
                                 });
 
-                                obj_source.features = obj_source.features.filter((item) => {
-                                    let type = item.properties.featuretyp;
-                                    if(!(type === "polygon" || type === "line" || type === "point")) {
-                                        return false;
-                                    }
-
-                                    let azb = false;
-                                    for(let i = 0; i < totalEntity.length; i++) {
-                                        azb = item.properties.sourceid == totalEntity[i].MapSourceId
-                                        if(azb)
-                                            i = totalEntity.length +1; // Break;
-                                    }
-                                    if(azb)
-                                        console.log(azb);
-                                    return azb;
+                                var featureRequest = new WFS({ version: '2.0.0' }).writeGetFeature({
+                                    srsName: 'EPSG:4326',
+                                    featureNS: 'http://openstreemap.org',
+                                    featurePrefix: 'osm',
+                                    featureTypes: ['AllSources'],
+                                    outputFormat: 'geojson',
+                                    filter: orFilter(...entityFilters)
                                 });
+                                console.log('here');
+                                let z = new XMLSerializer().serializeToString(featureRequest);
+                                // then post the request and add the received features to a layer
+                                fetch('https://mapserver.tnris.org/?map=/tnris_mapfiles/iswp_sourcefeatures2017.map', {
+                                    method: 'POST',
+                                    body: z
+                                })
+                                    .then(function (response) {
+                                        return response.json();
+                                    })
+                                    .then(function (json) {
+                                        json.features.forEach((feature, i) => {
+                                            let fj = displayGeom(feature, totalEntityReduced[i], {
+                                                color: '#33B0FF',
+                                                opacity: 1,
+                                                weight: 2,
+                                                fillOpacity: 0.3,
+                                                className: 'jj'
+                                            });
+                                            fj.addTo(map);
+                                            console.log('Here');
+                                        });
+                                    });
+                            })(); */
 
-                                let gj = displayGeom(obj_source.features, {}, {
-                                    color: '#3F556D',
-                                    opacity: 1,
-                                    weight: 4,
-                                    fillOpacity: 0.3,
-                                    className: 'gj'
-                                });
-
-
-                                gj.addTo(map);
-                                layers.push(gj);
-                                closeOnEscape(gj);
-                                makeLastOfClassnameAccessible(`${item.EntityName} line`, 'gj');
-
-                                if (switch_unlocked)
-                                    boundStorer(gj);
-
-                                console.log("Here");
-                            })();
-*/
-                            
                             totalEntity?.forEach(async (item, i, ar) => {
                                 if (
                                     item.SourceName === 'DIRECT REUSE' ||
