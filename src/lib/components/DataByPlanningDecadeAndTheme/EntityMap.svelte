@@ -7,7 +7,8 @@
     import { runOMS } from '$lib/leaflet.oms.js';
     import { map } from 'd3';
 
-    /* Work in progress
+    /* Work in progress *
+    import * as olExtent from 'ol/extent';
     import WFS from 'ol/format/WFS.js';
     import GeoJSON from 'ol/format/GeoJSON.js';
     import ImageTile from 'ol/source/ImageTile.js';
@@ -16,6 +17,8 @@
     import View from 'ol/View.js';
     import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js';
     import { bbox as bboxStrategy } from 'ol/loadingstrategy.js';
+    import { XMLParser, XMLBuilder, XMLValidator} from "fast-xml-parser";
+
     import {
         and as andFilter,
         equalTo as equalToFilter,
@@ -467,61 +470,94 @@
 
                     return gj;
                 };
+/*
+                let getFeaturesJson = ( type, entityFilters ) => {
+                    return new Promise((resolve, reject)  => {
+                        try {
+                            let featureRequest = new WFS({ 
+                                version: '2.0.0'
+                            }).writeGetFeature({
+                                srsName: 'EPSG:4326',
+                                featureNS: 'http://openstreemap.org',
+                                featurePrefix: 'osm',
+                                featureTypes: [type],
+                                filter: orFilter(...entityFilters),
+                                resultType: 'numberOfFeatures',
+                                outputFormat: 'geojson'
+                            });
+                            let z = new XMLSerializer().serializeToString(featureRequest);
+
+                            fetch(`https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}`, {
+                                method: 'POST',
+                                body: z
+                            }).then((body) => {
+                                body.json().then((json) => {
+                                    resolve(json);
+                                });
+                            });
+                        } catch (err) {
+                            reject(err);
+                        }
+                    });
+                }
 
                 let totalEntitySync = () => {
                     return new Promise((resolve, reject) => {
                         try {
                             if (!totalEntity) resolve('Done');
 
-                            /* Work in progress combining geojson.
+                            //Work in progress combining geojson.
                             (async () => {
                                 let start = Date.now();
-
                                 let entityFilters = [];
+
                                 totalEntity.forEach((item) => {
                                     if (
-                                        (item.SourceType !== 'DIRECT REUSE' ||
-                                            item.SourceType !== 'LOCAL SURFACE WATER SUPPLY' ||
-                                            item.SourceType !== 'ATMOSPHERE' ||
-                                            item.SourceType !== 'RAINWATER HARVESTING') &&
-                                        !entityFilters.includes(item.EntityId)
+                                        item.SourceName === 'DIRECT REUSE' ||
+                                        item.SourceName === 'LOCAL SURFACE WATER SUPPLY' ||
+                                        item.SourceName === 'ATMOSPHERE' ||
+                                        item.SourceName === 'RAINWATER HARVESTING' ||
+                                        (type === 'source' && slug == item.MapSourceId)
                                     )
-                                        entityFilters.push(equalToFilter('sourceid', item.EntityId + ''));
+                                        entityFilters.push(equalToFilter('sourceid', item.EntityId));
                                 });
 
-                                var featureRequest = new WFS({ version: '2.0.0' }).writeGetFeature({
-                                    srsName: 'EPSG:4326',
-                                    featureNS: 'http://openstreemap.org',
-                                    featurePrefix: 'osm',
-                                    featureTypes: ['AllSources'],
-                                    outputFormat: 'geojson',
-                                    filter: orFilter(...entityFilters)
-                                });
-                                console.log('here');
-                                let z = new XMLSerializer().serializeToString(featureRequest);
-                                // then post the request and add the received features to a layer
-                                fetch('https://mapserver.tnris.org/?map=/tnris_mapfiles/iswp_sourcefeatures2017.map', {
-                                    method: 'POST',
-                                    body: z
-                                })
-                                    .then(function (response) {
-                                        return response.json();
-                                    })
-                                    .then(function (json) {
-                                        json.features.forEach((feature, i) => {
-                                            let fj = displayGeom(feature, totalEntityReduced[i], {
-                                                color: '#33B0FF',
-                                                opacity: 1,
-                                                weight: 2,
-                                                fillOpacity: 0.3,
-                                                className: 'jj'
-                                            });
-                                            fj.addTo(map);
-                                            console.log('Here');
-                                        });
-                                    });
-                            })(); */
+                                let [polygon_sources, point_sources, lines_sources] = await Promise.all([
+                                        getFeaturesJson("PolygonSources", entityFilters),
+                                        getFeaturesJson("PointSources", entityFilters),
+                                        getFeaturesJson("LineSources", entityFilters)]);
 
+                                lines_sources.features.forEach((feature, i) => {
+                                    displayGeom(feature, totalEntityReduced[i], {
+                                        color: '#33B0FF',
+                                        opacity: 1,
+                                        weight: 2,
+                                        fillOpacity: 0.3,
+                                        className: 'jj'
+                                    }).addTo(map);
+                                });
+
+                                polygon_sources.features.forEach((feature, i) => {
+                                    displayGeom(feature, totalEntityReduced[i], {
+                                        color: '#33B0FF',
+                                        opacity: 1,
+                                        weight: 2,
+                                        fillOpacity: 0.3,
+                                        className: 'jj'
+                                    }).addTo(map);;
+                                });
+
+                                point_sources.features.forEach((feature, i) => {
+                                    displayGeom(feature, totalEntityReduced[i], {
+                                        color: '#33B0FF',
+                                        opacity: 1,
+                                        weight: 2,
+                                        fillOpacity: 0.3,
+                                        className: 'jj'
+                                    }).addTo(map);
+                                });
+                            })();
+*/
                             totalEntity?.forEach(async (item, i, ar) => {
                                 if (
                                     item.SourceName === 'DIRECT REUSE' ||
