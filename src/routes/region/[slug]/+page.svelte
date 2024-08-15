@@ -114,6 +114,7 @@
                 title={`Planning Region ${data.slug}`}
                 showPopulation={true}
                 type={'region'}
+                slug={data.slug}
                 {stratAd}
                 {activeDem}
                 {constants}
