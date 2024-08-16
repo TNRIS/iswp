@@ -7,7 +7,7 @@
     import { runOMS } from '$lib/leaflet.oms.js';
     import { map } from 'd3';
 
-    /* Work in progress *
+    /* Work in progress */
     import * as olExtent from 'ol/extent';
     import WFS from 'ol/format/WFS.js';
     import GeoJSON from 'ol/format/GeoJSON.js';
@@ -26,7 +26,7 @@
         notEqualTo as notEqualToFilter,
         or as orFilter
     } from 'ol/format/filter.js';
-*/
+
     const countyTable = 'county_extended';
     const regionTable = 'rwpas';
     const { slug, title, constants, type, entityMapBlurb } = $$props;
@@ -442,20 +442,20 @@
                 let lats = [];
                 let lngs = [];
 
-                const displayGeom = (j, item, style) => {
+                const displayGeom = (j, style) => {
                     let gj = L.geoJson(j, {
                         style,
                         pane: 'geom'
                     });
                     let popup;
                     gj.bindPopup(
-                        `<h3 aria-live="polite">${item.SourceName}</h3><p aria-live="polite"><a href="/source/${item.MapSourceId}">View Source Page</a></p>`
+                        `<h3 aria-live="polite">${j.properties.name}</h3><p aria-live="polite"><a href="/source/${j.properties.sourceid}">View Source Page</a></p>`
                     );
                     gj.on('mousemove', function (e) {
                         //open popup;
                         if (!popup) {
                             popup = L.tooltip(e.latlng, {
-                                content: `${item.SourceName}`,
+                                content: j.properties.name,
                                 direction: 'right'
                             }).openOn(map);
                         } else {
@@ -470,10 +470,12 @@
 
                     return gj;
                 };
-/*
+
                 let getFeaturesJson = ( type, entityFilters ) => {
                     return new Promise((resolve, reject)  => {
                         try {
+                            let filter = orFilter(... entityFilters);
+
                             let featureRequest = new WFS({ 
                                 version: '2.0.0'
                             }).writeGetFeature({
@@ -481,7 +483,7 @@
                                 featureNS: 'http://openstreemap.org',
                                 featurePrefix: 'osm',
                                 featureTypes: [type],
-                                filter: orFilter(...entityFilters),
+                                filter,
                                 resultType: 'numberOfFeatures',
                                 outputFormat: 'geojson'
                             });
@@ -505,30 +507,45 @@
                     return new Promise((resolve, reject) => {
                         try {
                             if (!totalEntity) resolve('Done');
-
-                            //Work in progress combining geojson.
                             (async () => {
                                 let start = Date.now();
                                 let entityFilters = [];
+                                let ids = [];
 
-                                totalEntity.forEach((item) => {
-                                    if (
-                                        item.SourceName === 'DIRECT REUSE' ||
-                                        item.SourceName === 'LOCAL SURFACE WATER SUPPLY' ||
-                                        item.SourceName === 'ATMOSPHERE' ||
-                                        item.SourceName === 'RAINWATER HARVESTING' ||
-                                        (type === 'source' && slug == item.MapSourceId)
-                                    )
-                                        entityFilters.push(equalToFilter('sourceid', item.EntityId));
+                                totalEntity?.forEach((item) => {
+                                    if (item[`SS${$decadeStore}`] > 0 && item.SourceName !== title && item.MapSourceId) {
+
+                                        let IS_AN_EXCLUSION /** @type {boolean} */ = item.SourceName === 'DIRECT REUSE' ||
+                                            item.SourceName === 'LOCAL SURFACE WATER SUPPLY' ||
+                                            item.SourceName === 'ATMOSPHERE' ||
+                                            item.SourceName === 'RAINWATER HARVESTING';
+                                            (type === 'source' && slug == item.MapSourceId)
+                                        
+                                            let zzcc = (type === 'source' && slug == item.MapSourceId)
+
+
+                                        if ((!IS_AN_EXCLUSION && item.MapSourceId )) 
+                                        {
+                                            if(!ids.includes(item.MapSourceId)) {
+                                                ids.push(item.MapSourceId);
+                                                entityFilters.push(equalToFilter('sourceid', item.MapSourceId, false));
+                                            }
+
+                                            lats.push(item.Latitude);
+                                            lngs.push(item.Longitude);
+                                        } else {
+                                            console.log(`type: ${type} item.MapSourceId: ${item.MapSourceId} item.SourceName: ${item.SourceName}`);
+                                        }
+                                    }
                                 });
 
                                 let [polygon_sources, point_sources, lines_sources] = await Promise.all([
-                                        getFeaturesJson("PolygonSources", entityFilters),
-                                        getFeaturesJson("PointSources", entityFilters),
-                                        getFeaturesJson("LineSources", entityFilters)]);
+                                    getFeaturesJson("PolygonSources", entityFilters),
+                                    getFeaturesJson("PointSources", entityFilters),
+                                    getFeaturesJson("LineSources", entityFilters)]);
 
-                                lines_sources.features.forEach((feature, i) => {
-                                    displayGeom(feature, totalEntityReduced[i], {
+                                lines_sources.features.forEach((feature) => {
+                                    let gj = displayGeom(feature, {
                                         color: '#33B0FF',
                                         opacity: 1,
                                         weight: 2,
@@ -537,18 +554,21 @@
                                     }).addTo(map);
                                 });
 
-                                polygon_sources.features.forEach((feature, i) => {
-                                    displayGeom(feature, totalEntityReduced[i], {
-                                        color: '#33B0FF',
+                                polygon_sources.features.forEach((feature) => {
+                                    let gj = displayGeom(feature, {
+                                        color: '#3F556D',
                                         opacity: 1,
-                                        weight: 2,
+                                        weight: 4,
                                         fillOpacity: 0.3,
-                                        className: 'jj'
-                                    }).addTo(map);;
+                                        className: 'gj'
+                                    }).addTo(map);
+                                    layers.push(gj);
+                                    closeOnEscape(gj);
+                                    makeLastOfClassnameAccessible(`${feature.properties.name} line`, 'gj');
                                 });
 
                                 point_sources.features.forEach((feature, i) => {
-                                    displayGeom(feature, totalEntityReduced[i], {
+                                    let gj = displayGeom(feature, {
                                         color: '#33B0FF',
                                         opacity: 1,
                                         weight: 2,
@@ -557,117 +577,6 @@
                                     }).addTo(map);
                                 });
                             })();
-*/
-                            totalEntity?.forEach(async (item, i, ar) => {
-                                if (
-                                    item.SourceName === 'DIRECT REUSE' ||
-                                    item.SourceName === 'LOCAL SURFACE WATER SUPPLY' ||
-                                    item.SourceName === 'ATMOSPHERE' ||
-                                    item.SourceName === 'RAINWATER HARVESTING' ||
-                                    (type === 'source' && slug == item.MapSourceId)
-                                ) {
-                                    counter++;
-                                    if (counter >= ar.length) {
-                                        resolve('Done');
-                                    }
-                                    return;
-                                }
-                                lats.push(item.Latitude);
-                                lngs.push(item.Longitude);
-
-                                if (item[`SS${$decadeStore}`] > 0 && item.SourceName !== title && item.MapSourceId) {
-                                    let mapSource = fetch(
-                                        `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PolygonSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`
-                                    );
-                                    let lineSource = fetch(
-                                        `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=LineSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`
-                                    );
-                                    let itemSource = fetch(
-                                        `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PointSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`
-                                    );
-
-                                    [mapSource, lineSource, itemSource] = await Promise.all([mapSource, lineSource, itemSource]);
-                                    let [text, linetext, itemtext] = await Promise.all([mapSource.text(), lineSource.text(), (await itemSource).text()]);
-                                    let j = JSON.parse(text);
-                                    let linej = JSON.parse(linetext);
-                                    let itemj = JSON.parse(itemtext);
-
-                                    let gj = displayGeom(j, item, {
-                                        color: '#3F556D',
-                                        opacity: 1,
-                                        weight: 4,
-                                        fillOpacity: 0.3,
-                                        className: 'gj'
-                                    });
-
-                                    let jj = displayGeom(linej, item, {
-                                        color: '#33B0FF',
-                                        opacity: 1,
-                                        weight: 2,
-                                        fillOpacity: 0.3,
-                                        className: 'jj'
-                                    });
-
-                                    gj.addTo(map);
-                                    layers.push(gj);
-                                    closeOnEscape(gj);
-                                    makeLastOfClassnameAccessible(`${item.EntityName} line`, 'gj');
-
-                                    jj.addTo(map);
-                                    layers.push(jj);
-                                    closeOnEscape(jj);
-                                    makeLastOfClassnameAccessible(`${item.EntityName} line`, 'jj');
-
-                                    itemj?.features?.forEach((zz) => {
-                                        
-                                        let ij = L.circleMarker([zz?.geometry?.coordinates[1], zz?.geometry?.coordinates[0]], {
-                                            radius: 6,
-                                            pane: 'labels'
-                                        });
-                                        ij.setStyle({
-                                            fillColor: 'green',
-                                            opacity: 1,
-                                            fillOpacity: 1,
-                                            weight: 1,
-                                            color: 'black'
-                                        });
-                                        ij.bindPopup(`<h3 aria-live="polite">${zz?.properties?.name}</h3><p aria-live="polite"><a href="/source/${zz?.properties?.sourceid}">View Source Page</a></p>`).openPopup();
-
-                                        spiderfier.addMarker(ij);
-                                        ij.addTo(map);
-                                        layers.push(ij);                                        
-                                        
-                                        closeOnEscape(ij);
-                                    });
-                                    counter++;
-
-                                    // Add boundaries to list of latitudes and longitudes to calculate the bounding box below.
-                                    let boundStorer = (geojson) => {
-                                        let bounds = geojson.getBounds();
-                                        let sw = bounds._southWest;
-                                        let ne = bounds._northEast;
-                                        if (sw) {
-                                            lats.push(sw.lat);
-                                            lngs.push(sw.lng);
-                                        }
-                                        if (ne) {
-                                            lats.push(ne.lat);
-                                            lngs.push(ne.lng);
-                                        }
-                                    };
-
-                                    if (switch_unlocked) {
-                                        boundStorer(jj);
-                                        boundStorer(gj);
-                                    }
-                                    counter++;
-                                } else {
-                                    counter++;
-                                }
-                                if (counter >= ar.length) {
-                                    resolve('Done');
-                                }
-                            });
                         } catch (err) {
                             reject(err);
                         }
