@@ -17,7 +17,7 @@
     import View from 'ol/View.js';
     import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js';
     import { bbox as bboxStrategy } from 'ol/loadingstrategy.js';
-    import { XMLParser, XMLBuilder, XMLValidator} from "fast-xml-parser";
+    import { XMLParser, XMLBuilder, XMLValidator } from 'fast-xml-parser';
 
     import {
         and as andFilter,
@@ -442,6 +442,21 @@
                 let lats = [];
                 let lngs = [];
 
+                // Add boundaries to list of latitudes and longitudes to calculate the bounding box below.
+                let boundStorer = (geojson) => {
+                    let bounds = geojson.getBounds();
+                    let sw = bounds._southWest;
+                    let ne = bounds._northEast;
+                    if (sw) {
+                        lats.push(sw.lat);
+                        lngs.push(sw.lng);
+                    }
+                    if (ne) {
+                        lats.push(ne.lat);
+                        lngs.push(ne.lng);
+                    }
+                };
+
                 const displayGeom = (j, style) => {
                     let gj = L.geoJson(j, {
                         style,
@@ -471,12 +486,12 @@
                     return gj;
                 };
 
-                let getFeaturesJson = ( type, entityFilters ) => {
-                    return new Promise((resolve, reject)  => {
+                let getFeaturesJson = (type, entityFilters) => {
+                    return new Promise((resolve, reject) => {
                         try {
-                            let filter = orFilter(... entityFilters);
+                            let filter = orFilter(...entityFilters);
 
-                            let featureRequest = new WFS({ 
+                            let featureRequest = new WFS({
                                 version: '2.0.0'
                             }).writeGetFeature({
                                 srsName: 'EPSG:4326',
@@ -501,12 +516,14 @@
                             reject(err);
                         }
                     });
-                }
+                };
 
                 let totalEntitySync = () => {
                     return new Promise((resolve, reject) => {
                         try {
                             if (!totalEntity) resolve('Done');
+
+                            //Work in progress combining geojson.
                             (async () => {
                                 let start = Date.now();
                                 let entityFilters = [];
@@ -514,19 +531,15 @@
 
                                 totalEntity?.forEach((item) => {
                                     if (item[`SS${$decadeStore}`] > 0 && item.SourceName !== title && item.MapSourceId) {
-
-                                        let IS_AN_EXCLUSION /** @type {boolean} */ = item.SourceName === 'DIRECT REUSE' ||
+                                        let IS_AN_EXCLUSION /** @type {boolean} */ =
+                                            item.SourceName === 'DIRECT REUSE' ||
                                             item.SourceName === 'LOCAL SURFACE WATER SUPPLY' ||
                                             item.SourceName === 'ATMOSPHERE' ||
                                             item.SourceName === 'RAINWATER HARVESTING';
-                                            (type === 'source' && slug == item.MapSourceId)
-                                        
-                                            let zzcc = (type === 'source' && slug == item.MapSourceId)
+                                        type === 'source' && slug == item.MapSourceId;
 
-
-                                        if ((!IS_AN_EXCLUSION && item.MapSourceId )) 
-                                        {
-                                            if(!ids.includes(item.MapSourceId)) {
+                                        if (!IS_AN_EXCLUSION && item.MapSourceId) {
+                                            if (!ids.includes(item.MapSourceId)) {
                                                 ids.push(item.MapSourceId);
                                                 entityFilters.push(equalToFilter('sourceid', item.MapSourceId, false));
                                             }
@@ -534,15 +547,18 @@
                                             lats.push(item.Latitude);
                                             lngs.push(item.Longitude);
                                         } else {
-                                            console.log(`type: ${type} item.MapSourceId: ${item.MapSourceId} item.SourceName: ${item.SourceName}`);
+                                            console.log(
+                                                `type: ${type} item.MapSourceId: ${item.MapSourceId} item.SourceName: ${item.SourceName}`
+                                            );
                                         }
                                     }
                                 });
 
                                 let [polygon_sources, point_sources, lines_sources] = await Promise.all([
-                                    getFeaturesJson("PolygonSources", entityFilters),
-                                    getFeaturesJson("PointSources", entityFilters),
-                                    getFeaturesJson("LineSources", entityFilters)]);
+                                    getFeaturesJson('PolygonSources', entityFilters),
+                                    getFeaturesJson('PointSources', entityFilters),
+                                    getFeaturesJson('LineSources', entityFilters)
+                                ]);
 
                                 lines_sources.features.forEach((feature) => {
                                     let gj = displayGeom(feature, {
@@ -552,6 +568,8 @@
                                         fillOpacity: 0.3,
                                         className: 'jj'
                                     }).addTo(map);
+
+                                    if (switch_unlocked) boundStorer(gj);
                                 });
 
                                 polygon_sources.features.forEach((feature) => {
@@ -562,6 +580,8 @@
                                         fillOpacity: 0.3,
                                         className: 'gj'
                                     }).addTo(map);
+                                    if (switch_unlocked) boundStorer(gj);
+
                                     layers.push(gj);
                                     closeOnEscape(gj);
                                     makeLastOfClassnameAccessible(`${feature.properties.name} line`, 'gj');
@@ -575,7 +595,10 @@
                                         fillOpacity: 0.3,
                                         className: 'jj'
                                     }).addTo(map);
+                                    if (switch_unlocked) boundStorer(gj);
                                 });
+
+                                resolve('success');
                             })();
                         } catch (err) {
                             reject(err);
@@ -807,99 +830,203 @@
 
                 let lats = [];
                 let lngs = [];
-                const buildPolygons = () => {
-                    let counter = 0;
+
+                let totalEntitySync = () => {
                     return new Promise((resolve, reject) => {
-                        swdata.supplies.rows.forEach(async (item, index, ar) => {
-                            const placeItems = (color, j) => {
-                                if (switch_unlocked) {
-                                    feat_coll.features.push(...j.features);
-                                    if (counter > ar.length) {
-                                        cb(feat_coll);
-                                    }
+                        let getFeaturesJson = (type, entityFilters) => {
+                            return new Promise((resolve, reject) => {
+                                try {
+                                    let filter = orFilter(...entityFilters);
+
+                                    let featureRequest = new WFS({
+                                        version: '2.0.0'
+                                    }).writeGetFeature({
+                                        srsName: 'EPSG:4326',
+                                        featureNS: 'http://openstreemap.org',
+                                        featurePrefix: 'osm',
+                                        featureTypes: [type],
+                                        filter,
+                                        resultType: 'numberOfFeatures',
+                                        outputFormat: 'geojson'
+                                    });
+                                    let z = new XMLSerializer().serializeToString(featureRequest);
+
+                                    fetch(`https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}`, {
+                                        method: 'POST',
+                                        body: z
+                                    }).then((body) => {
+                                        body.json().then((json) => {
+                                            resolve(json);
+                                        });
+                                    });
+                                } catch (err) {
+                                    reject(err);
                                 }
-                                // After Trying Lines and Polygons push whatever we got.
-                                let gj = L.geoJson(j, {
-                                    style: {
-                                        color,
+                            });
+                        };
+
+                        // Add boundaries to list of latitudes and longitudes to calculate the bounding box below.
+                        let boundStorer = (geojson) => {
+                            let bounds = geojson.getBounds();
+                            let sw = bounds._southWest;
+                            let ne = bounds._northEast;
+                            if (sw) {
+                                lats.push(sw.lat);
+                                lngs.push(sw.lng);
+                            }
+                            if (ne) {
+                                lats.push(ne.lat);
+                                lngs.push(ne.lng);
+                            }
+                        };
+
+                        const displayGeom = (j, style) => {
+                            let gj = L.geoJson(j, {
+                                style,
+                                pane: 'geom'
+                            });
+                            let popup;
+                            gj.bindPopup(
+                                `<h3 aria-live="polite">${j.properties.name}</h3><p aria-live="polite"><a href="/source/${j.properties.sourceid}">View Source Page</a></p>`
+                            );
+                            gj.on('mousemove', function (e) {
+                                //open popup;
+                                if (!popup) {
+                                    popup = L.tooltip(e.latlng, {
+                                        content: j.properties.name,
+                                        direction: 'right'
+                                    }).openOn(map);
+                                } else {
+                                    popup.setLatLng(e.latlng);
+                                }
+                            });
+
+                            gj.on('mouseout', function (e) {
+                                popup.close();
+                                popup = null;
+                            });
+
+                            return gj;
+                        };
+
+                        const placeItems = (color, j) => {
+                            if (switch_unlocked) {
+                                feat_coll.features.push(...j.features);
+                                if (counter > ar.length) {
+                                    cb(feat_coll);
+                                }
+                            }
+                            // After Trying Lines and Polygons push whatever we got.
+                            let gj = L.geoJson(j, {
+                                style: {
+                                    color,
+                                    opacity: 1,
+                                    weight: 2,
+                                    fillOpacity: 0.4,
+                                    className: 'gjsupplies'
+                                },
+                                pane: 'geom'
+                            });
+
+                            let gBounds = gj.getBounds();
+                            try {
+                                lats.push(gBounds._northEast.lat);
+                                lats.push(gBounds._southWest.lat);
+                                lngs.push(gBounds._northEast.lng);
+                                lngs.push(gBounds._southWest.lng);
+                            } catch (err) {}
+
+                            let popup;
+                            gj.bindPopup(
+                                `<h3 aria-live="polite">${item.SourceName}</h3><p aria-live="true"><a href="/source/${item.MapSourceId}">View Source Page</a></p>`
+                            );
+                            gj.on('mousemove', function (e) {
+                                //open popup;
+                                if (!popup) {
+                                    popup = L.tooltip(e.latlng, {
+                                        content: `${item.SourceName}`,
+                                        direction: 'right'
+                                    }).openOn(map);
+                                } else {
+                                    popup.setLatLng(e.latlng);
+                                }
+                            });
+
+                            gj.on('mouseout', function (e) {
+                                popup.close();
+                                popup = null;
+                            });
+
+                            closeOnEscape(gj);
+                            makeLastOfClassnameAccessible(`${item.EntityName} line`, 'gjsupplies');
+
+                            gj.addTo(map);
+                            layers.push(gj);
+                        };
+
+                        try {
+                            if (!totalEntity) resolve('Done');
+
+                            //Work in progress combining geojson.
+                            (async () => {
+                                let start = Date.now();
+                                let entityFilters = [];
+                                let ids = [];
+
+                                totalEntity.forEach(async (item, index, ar) => {
+                                    let IS_AN_EXCLUSION /** @type {boolean} */ =
+                                        item.SourceName === 'DIRECT REUSE' ||
+                                        item.SourceName === 'LOCAL SURFACE WATER SUPPLY' ||
+                                        item.SourceName === 'ATMOSPHERE' ||
+                                        item.SourceName === 'RAINWATER HARVESTING';
+                                    type === 'source' && slug == item.MapSourceId;
+
+                                    if (!IS_AN_EXCLUSION) {
+                                        lats.push(item.Latitude);
+                                        lngs.push(item.Longitude);
+
+                                        ids.push(item.MapSourceId);
+                                        entityFilters.push(equalToFilter('sourceid', item.MapSourceId, false));
+                                    }
+                                });
+
+                                let [polygon_sources, lines_sources] = await Promise.all([
+                                    getFeaturesJson('PolygonSources', entityFilters),
+                                    getFeaturesJson('LineSources', entityFilters)
+                                ]);
+
+                                lines_sources.features.forEach((feature) => {
+                                    let gj = displayGeom(feature, {
+                                        color: '#0097d6',
                                         opacity: 1,
                                         weight: 2,
                                         fillOpacity: 0.4,
                                         className: 'gjsupplies'
-                                    },
-                                    pane: 'geom'
+                                    }).addTo(map);
+
+                                    if (switch_unlocked) boundStorer(gj);
                                 });
 
-                                let gBounds = gj.getBounds();
-                                try {
-                                    lats.push(gBounds._northEast.lat);
-                                    lats.push(gBounds._southWest.lat);
-                                    lngs.push(gBounds._northEast.lng);
-                                    lngs.push(gBounds._southWest.lng);
-                                } catch (err) {}
+                                polygon_sources.features.forEach((feature) => {
+                                    let gj = displayGeom(feature, {
+                                        color: '#0097d6',
+                                        opacity: 1,
+                                        weight: 2,
+                                        fillOpacity: 0.4,
+                                        className: 'gjsupplies'
+                                    }).addTo(map);
+                                    if (switch_unlocked) boundStorer(gj);
 
-                                let popup;
-                                gj.bindPopup(
-                                    `<h3 aria-live="polite">${item.SourceName}</h3><p aria-live="true"><a href="/source/${item.MapSourceId}">View Source Page</a></p>`
-                                );
-                                gj.on('mousemove', function (e) {
-                                    //open popup;
-                                    if (!popup) {
-                                        popup = L.tooltip(e.latlng, {
-                                            content: `${item.SourceName}`,
-                                            direction: 'right'
-                                        }).openOn(map);
-                                    } else {
-                                        popup.setLatLng(e.latlng);
-                                    }
+                                    layers.push(gj);
+                                    closeOnEscape(gj);
+                                    makeLastOfClassnameAccessible(`${feature.properties.name} line`, 'gj');
                                 });
 
-                                gj.on('mouseout', function (e) {
-                                    popup.close();
-                                    popup = null;
-                                });
-
-                                closeOnEscape(gj);
-                                makeLastOfClassnameAccessible(`${item.EntityName} line`, 'gjsupplies');
-
-                                gj.addTo(map);
-                                layers.push(gj);
-                            };
-
-                            lats.push(item.Latitude);
-                            lngs.push(item.Longitude);
-
-                            if (
-                                item.SourceName !== 'DIRECT REUSE' &&
-                                item.SourceName !== 'LOCAL SURFACE WATER SUPPLY' &&
-                                item.SourceName !== 'ATMOSPHERE' &&
-                                item.SourceName !== 'Rainwater Harvesting' &&
-                                !(type === 'source' && slug == item.MapSourceId)
-                            ) {
-                                let mapSource = await fetch(
-                                    `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=PolygonSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`
-                                );
-
-                                let text = await mapSource.text();
-                                let j = JSON.parse(text);
-                                placeItems('#0097d6', j);
-
-                                mapSource = await fetch(
-                                    `https://mapserver.tnris.org/?map=/tnris_mapfiles/${sourceMap}&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=LineSources&outputformat=geojson&SRSNAME=EPSG:4326&Filter=<Filter><PropertyIsEqualTo><PropertyName>sourceid</PropertyName><Literal>${item.MapSourceId}</Literal></PropertyIsEqualTo></Filter>`
-                                );
-
-                                text = await mapSource.text();
-                                j = JSON.parse(text);
-                                placeItems('#526e8d', j);
-                                counter++;
-                            } else {
-                                counter++;
-                                console.log(item.SourceName);
-                            }
-                            if (counter >= ar.length) {
                                 resolve('Done');
-                            }
-                        });
+                            })();
+                        } catch (err) {
+                            reject(err);
+                        }
                     });
                 };
 
@@ -950,7 +1077,7 @@
                 // calc the min and max lng and lat
 
                 // Expand bounding box to encompass region if needed.
-                await Promise.all([buildPolygons(), buildMarkers()]);
+                await Promise.all([totalEntitySync(), buildMarkers()]);
 
                 zoom(map, lats, lngs, region);
             };
