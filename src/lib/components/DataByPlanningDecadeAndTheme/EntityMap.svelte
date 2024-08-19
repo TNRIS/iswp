@@ -489,7 +489,13 @@
                 let getFeaturesJson = (type, entityFilters) => {
                     return new Promise((resolve, reject) => {
                         try {
-                            let filter = orFilter(...entityFilters);
+                            let filter;
+                            if(entityFilters.length > 1)
+                                filter = orFilter(...entityFilters);
+                            else if(entityFilters.length == 1)
+                                filter = entityFilters[0];
+                            else
+                                reject("No filter for feature getFeaturesJson.");
 
                             let featureRequest = new WFS({
                                 version: '2.0.0'
