@@ -72,9 +72,9 @@
         // Compress
         rows.forEach((item) => {
             const last = total[total.length - 1];
-            const ENT_EXISTS = !(last?.EntityId !== item.EntityId);
-
-            if (!ENT_EXISTS) {
+            const ENT_EXISTS = last?.EntityId == item?.EntityId;
+            const NAME_EXISTS = last?.SourceName == item?.SourceName;
+            if (!ENT_EXISTS || !NAME_EXISTS) {
                 total.push({ ...item });
             } else {
                 last[`${ID}${$decadeStore}`] += item[`${ID}${$decadeStore}`];
@@ -489,7 +489,13 @@
                 let getFeaturesJson = (type, entityFilters) => {
                     return new Promise((resolve, reject) => {
                         try {
-                            let filter = orFilter(...entityFilters);
+                            let filter;
+                            if(entityFilters.length > 1)
+                                filter = orFilter(...entityFilters);
+                            else if(entityFilters.length == 1)
+                                filter = entityFilters[0];
+                            else
+                                reject("No filter for feature getFeaturesJson.");
 
                             let featureRequest = new WFS({
                                 version: '2.0.0'
@@ -546,10 +552,6 @@
 
                                             lats.push(item.Latitude);
                                             lngs.push(item.Longitude);
-                                        } else {
-                                            console.log(
-                                                `type: ${type} item.MapSourceId: ${item.MapSourceId} item.SourceName: ${item.SourceName}`
-                                            );
                                         }
                                     }
                                 });
@@ -561,7 +563,7 @@
                                 ]);
 
                                 lines_sources.features.forEach((feature) => {
-                                    let gj = displayGeom(feature, {
+                                    let jj = displayGeom(feature, {
                                         color: '#33B0FF',
                                         opacity: 1,
                                         weight: 2,
@@ -569,7 +571,10 @@
                                         className: 'jj'
                                     }).addTo(map);
 
-                                    if (switch_unlocked) boundStorer(gj);
+                                    if (switch_unlocked) boundStorer(jj);
+                                    layers.push(jj);
+                                    closeOnEscape(jj);
+                                    makeLastOfClassnameAccessible(`${feature.properties.name} line`, 'jj');
                                 });
 
                                 polygon_sources.features.forEach((feature) => {
@@ -1005,11 +1010,14 @@
                                     }).addTo(map);
 
                                     if (switch_unlocked) boundStorer(gj);
+                                    layers.push(gj);
+                                    closeOnEscape(gj);
+                                    makeLastOfClassnameAccessible(`${feature.properties.name} line`, 'gjsupplies');
                                 });
 
                                 polygon_sources.features.forEach((feature) => {
                                     let gj = displayGeom(feature, {
-                                        color: '#0097d6',
+                                        color: '#3F556D',
                                         opacity: 1,
                                         weight: 2,
                                         fillOpacity: 0.4,
@@ -1019,7 +1027,7 @@
 
                                     layers.push(gj);
                                     closeOnEscape(gj);
-                                    makeLastOfClassnameAccessible(`${feature.properties.name} line`, 'gj');
+                                    makeLastOfClassnameAccessible(`${feature.properties.name} line`, 'gjsupplies');
                                 });
 
                                 resolve('Done');

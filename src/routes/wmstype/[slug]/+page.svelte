@@ -9,9 +9,8 @@
     import { setContext } from 'svelte';
     import { writable } from 'svelte/store';
     import Header from '$lib/components/Header.svelte';
-    import { wms_info } from '$lib/WmsTypes.js';
-
     import { page } from '$app/stores';
+
     let stratAd = ['Region', 'WMS Type', 'Strategy', 'Source', 'County', 'Entity'];
     let constants = getConstants($page.url.host);
     let wmsTypeSetting = new QuerySettings('datastrategies', 'WmsType');
@@ -55,7 +54,7 @@
             <div class="summary-wrapper container">
                 <div class="view-summary usage-type-summary">
                     <h1 aria-level="2">{data.slug}</h1>
-                    {wms_info.WMS_TYPE_DESCRIPTIONS[data.slug.replace('AND', '&')]}
+                    {constants.wms_info.WMS_TYPE_DESCRIPTIONS[data.slug.replace('AND', '&')]}
                 </div>
             </div>
         </div>

@@ -47,6 +47,7 @@
         dat.project_data = dat2;
 
         console.log(`loadForRegion time in ms: ${Date.now() - start}`);
+        dat.supplies.rows
         return dat;
     };
 
