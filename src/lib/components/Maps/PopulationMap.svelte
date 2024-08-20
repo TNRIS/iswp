@@ -268,8 +268,12 @@
                 )
                     .then((res) => res.text())
                     .then((body) => {
-                        let gj = L.geoJson(JSON.parse(body));
-                        gj.addTo(map);
+                        try {
+                            let gj = L.geoJson(JSON.parse(body));
+                            gj.addTo(map);
+                        } catch {
+                            //No entity item found proceeding
+                        }
                     });
                 const entityurl = `https://mapserver.tnris.org?map=/tnris_mapfiles/vwEntityCoordinates.map&mode=tile&tilemode=gmap&tile={x}+{y}+{z}&layers=vwEntity&map.imagetype=png&EntityName=${title}`;
 

@@ -64,20 +64,23 @@
      * @param {object[]} rows TODO
      * @param {string} ID  A ID appended to the decade to indicate which group it belongs to. (Inspect rows to find more info.)
      */
+
     const compress = (rows, ID) => {
         /**
          * @type {any[]} TODO
          */
+
         let total = [];
+
         // Compress
         rows.forEach((item) => {
-            const last = total[total.length - 1];
-            const ENT_EXISTS = last?.EntityId == item?.EntityId;
-            const NAME_EXISTS = last?.SourceName == item?.SourceName;
-            if (!ENT_EXISTS || !NAME_EXISTS) {
+            let inside = total.find((e) => {
+                return e.EntityName === item.EntityName && e.EntityId === item.EntityId;
+            });
+            if (!inside) {
                 total.push({ ...item });
             } else {
-                last[`${ID}${$decadeStore}`] += item[`${ID}${$decadeStore}`];
+                inside[`${ID}${$decadeStore}`] += item[`${ID}${$decadeStore}`];
             }
         });
 
@@ -204,10 +207,14 @@
             </div>`);
         triangle_popup.on('contentupdate', () => {
             setTimeout(() => {
-                let ti = document.getElementById(`triangle_popup_${item.id}`);
-                ti.ariaBusy = 'false';
-                ti.ariaHidden = 'false';
-            }, 500);
+                try {
+                    let ti = document.getElementById(`triangle_popup_${item.id}`);
+                    ti.ariaBusy = 'false';
+                    ti.ariaHidden = 'false';
+                } catch {
+                    //Proceed.
+                }
+            }, 700);
         });
         // End of source concerning the workaround for screen readers.
 
@@ -402,7 +409,7 @@
             let maxValue = 1;
             const buildStrategies = async () => {
                 let counter = 0;
-
+                let markerstash = [];
                 // Get the max value of SSDecadeStore!
                 for (let i = 0; i < swdata.strategies.rows?.length; i++) {
                     if (swdata.strategies.rows[i][`SS${$decadeStore}`] > maxValue) {
@@ -457,11 +464,30 @@
                     }
                 };
 
+                let boundStorerPoint = (c_marker) => {
+                    const lat_lng = c_marker.getLatLng();
+                    lats.push(lat_lng.lat);
+                    lngs.push(lat_lng.lng);
+                };
+
                 const displayGeom = (j, style) => {
-                    let gj = L.geoJson(j, {
-                        style,
-                        pane: 'geom'
-                    });
+                    let gj;
+
+                    if (j?.geometry?.type === 'Point') {
+                        const markerOpts = {
+                            radius: 5,
+                            className: `circle_marker`,
+                            pane: 'labels',
+                            fillOpacity: 1
+                        };
+                        gj = L.circleMarker([j?.geometry?.coordinates[1], j?.geometry?.coordinates[0]], markerOpts);
+                    } else {
+                        gj = L.geoJson(j, {
+                            style,
+                            pane: 'geom'
+                        });
+                    }
+
                     let popup;
                     gj.bindPopup(
                         `<h3 aria-live="polite">${j.properties.name}</h3><p aria-live="polite"><a href="/source/${j.properties.sourceid}">View Source Page</a></p>`
@@ -490,12 +516,11 @@
                     return new Promise((resolve, reject) => {
                         try {
                             let filter;
-                            if(entityFilters.length > 1)
+                            if (entityFilters.length > 1) {
                                 filter = orFilter(...entityFilters);
-                            else if(entityFilters.length == 1)
+                            } else if (entityFilters.length == 1) {
                                 filter = entityFilters[0];
-                            else
-                                reject("No filter for feature getFeaturesJson.");
+                            }
 
                             let featureRequest = new WFS({
                                 version: '2.0.0'
@@ -556,52 +581,64 @@
                                     }
                                 });
 
-                                let [polygon_sources, point_sources, lines_sources] = await Promise.all([
-                                    getFeaturesJson('PolygonSources', entityFilters),
-                                    getFeaturesJson('PointSources', entityFilters),
-                                    getFeaturesJson('LineSources', entityFilters)
-                                ]);
+                                if (entityFilters && entityFilters.length) {
+                                    let [polygon_sources, point_sources, lines_sources] = await Promise.all([
+                                        getFeaturesJson('PolygonSources', entityFilters),
+                                        getFeaturesJson('PointSources', entityFilters),
+                                        getFeaturesJson('LineSources', entityFilters)
+                                    ]);
 
-                                lines_sources.features.forEach((feature) => {
-                                    let jj = displayGeom(feature, {
-                                        color: '#33B0FF',
-                                        opacity: 1,
-                                        weight: 2,
-                                        fillOpacity: 0.3,
-                                        className: 'jj'
-                                    }).addTo(map);
+                                    lines_sources.features.forEach((feature) => {
+                                        let jj = displayGeom(feature, {
+                                            color: '#33B0FF',
+                                            opacity: 1,
+                                            weight: 2,
+                                            fillOpacity: 0.3,
+                                            className: 'jj'
+                                        }).addTo(map);
 
-                                    if (switch_unlocked) boundStorer(jj);
-                                    layers.push(jj);
-                                    closeOnEscape(jj);
-                                    makeLastOfClassnameAccessible(`${feature.properties.name} line`, 'jj');
-                                });
+                                        if (switch_unlocked) boundStorer(jj);
+                                        layers.push(jj);
+                                        closeOnEscape(jj);
+                                        makeLastOfClassnameAccessible(`${feature.properties.name} line`, 'jj');
+                                    });
 
-                                polygon_sources.features.forEach((feature) => {
-                                    let gj = displayGeom(feature, {
-                                        color: '#3F556D',
-                                        opacity: 1,
-                                        weight: 4,
-                                        fillOpacity: 0.3,
-                                        className: 'gj'
-                                    }).addTo(map);
-                                    if (switch_unlocked) boundStorer(gj);
+                                    polygon_sources.features.forEach((feature) => {
+                                        let gj = displayGeom(feature, {
+                                            color: '#3F556D',
+                                            opacity: 1,
+                                            weight: 4,
+                                            fillOpacity: 0.3,
+                                            className: 'gj'
+                                        }).addTo(map);
+                                        if (switch_unlocked) boundStorer(gj);
 
-                                    layers.push(gj);
-                                    closeOnEscape(gj);
-                                    makeLastOfClassnameAccessible(`${feature.properties.name} line`, 'gj');
-                                });
+                                        layers.push(gj);
+                                        closeOnEscape(gj);
+                                        makeLastOfClassnameAccessible(`${feature.properties.name} line`, 'gj');
+                                    });
 
-                                point_sources.features.forEach((feature, i) => {
-                                    let gj = displayGeom(feature, {
-                                        color: '#33B0FF',
-                                        opacity: 1,
-                                        weight: 2,
-                                        fillOpacity: 0.3,
-                                        className: 'jj'
-                                    }).addTo(map);
-                                    if (switch_unlocked) boundStorer(gj);
-                                });
+                                    point_sources.features.forEach((feature, i) => {
+                                        let gj = displayGeom(feature, {
+                                            color: '#33B0FF',
+                                            opacity: 1,
+                                            weight: 2,
+                                            fillOpacity: 0.3,
+                                            className: 'jj'
+                                        }).addTo(map);
+                                        if (switch_unlocked) boundStorerPoint(gj);
+                                        layers.push(gj);
+                                        closeOnEscape(gj);
+                                        makeLastOfClassnameAccessible(`${feature.properties.name} line`, 'jj');
+                                    });
+
+                                    if (markerstash?.length) {
+                                        markerstash.forEach((markeri) => {
+                                            map.removeLayer(markeri);
+                                            markeri.addTo(map);
+                                        });
+                                    }
+                                }
 
                                 resolve('success');
                             })();
@@ -625,7 +662,7 @@
                                         closeOnEscape(marker);
                                         marker.addTo(map);
                                         layers.push(marker);
-
+                                        markerstash.push(marker);
                                         makeLastOfClassnameAccessible(item.EntityName, 'circle_marker');
 
                                         if (item.Latitude && item.Longitude) {
@@ -655,6 +692,7 @@
 
                                         marker.addTo(map);
                                         layers.push(marker);
+                                        markerstash.push(marker);
                                         markers.push(marker);
 
                                         if (item.LatCoord && item.LongCoord) {
@@ -819,8 +857,8 @@
             };
 
             const buildSupplies = async () => {
+                let markerstash = [];
                 if (!swdata.supplies.rows) return;
-                let totalEntity = compress(swdata.supplies.rows, 'WS');
 
                 /**
                  * Step4 for supplies
@@ -835,14 +873,23 @@
 
                 let lats = [];
                 let lngs = [];
-
+                let boundStorerPoint = (c_marker) => {
+                    const lat_lng = c_marker.getLatLng();
+                    lats.push(lat_lng.lat);
+                    lngs.push(lat_lng.lng);
+                };
                 let totalEntitySync = () => {
                     return new Promise((resolve, reject) => {
                         let getFeaturesJson = (type, entityFilters) => {
                             return new Promise((resolve, reject) => {
                                 try {
-                                    let filter = orFilter(...entityFilters);
+                                    let filter;
 
+                                    if (entityFilters.length > 1) {
+                                        filter = orFilter(...entityFilters);
+                                    } else if (entityFilters.length == 1) {
+                                        filter = entityFilters[0];
+                                    }
                                     let featureRequest = new WFS({
                                         version: '2.0.0'
                                     }).writeGetFeature({
@@ -886,10 +933,21 @@
                         };
 
                         const displayGeom = (j, style) => {
-                            let gj = L.geoJson(j, {
-                                style,
-                                pane: 'geom'
-                            });
+                            let gj;
+                            if (j?.geometry?.type === 'Point') {
+                                const markerOpts = {
+                                    radius: 5,
+                                    className: `circle_marker`,
+                                    pane: 'labels',
+                                    opacity: 0.3
+                                };
+                                gj = L.circleMarker([j?.geometry?.coordinates[1], j?.geometry?.coordinates[0]], markerOpts);
+                            } else {
+                                gj = L.geoJson(j, {
+                                    style,
+                                    pane: 'geom'
+                                });
+                            }
                             let popup;
                             gj.bindPopup(
                                 `<h3 aria-live="polite">${j.properties.name}</h3><p aria-live="polite"><a href="/source/${j.properties.sourceid}">View Source Page</a></p>`
@@ -970,6 +1028,8 @@
                         };
 
                         try {
+                            let totalEntity = swdata.supplies.rows;
+
                             if (!totalEntity) resolve('Done');
 
                             //Work in progress combining geojson.
@@ -991,14 +1051,31 @@
                                         lngs.push(item.Longitude);
 
                                         ids.push(item.MapSourceId);
-                                        entityFilters.push(equalToFilter('sourceid', item.MapSourceId, false));
+                                        if (!ids.includes(item.MapSourceId))
+                                            entityFilters.push(equalToFilter('sourceid', item.MapSourceId, false));
                                     }
                                 });
 
-                                let [polygon_sources, lines_sources] = await Promise.all([
+                                let [polygon_sources, lines_sources, point_sources] = await Promise.all([
                                     getFeaturesJson('PolygonSources', entityFilters),
-                                    getFeaturesJson('LineSources', entityFilters)
+                                    getFeaturesJson('LineSources', entityFilters),
+                                    getFeaturesJson('PointSources', entityFilters)
                                 ]);
+
+                                point_sources.features.forEach((feature, i) => {
+                                    let gj = displayGeom(feature, {
+                                        color: '#33B0FF',
+                                        opacity: 1,
+                                        weight: 2,
+                                        fillOpacity: 0.3,
+                                        className: 'jj'
+                                    }).addTo(map);
+
+                                    if (switch_unlocked) boundStorerPoint(gj);
+                                    layers.push(gj);
+                                    closeOnEscape(gj);
+                                    makeLastOfClassnameAccessible(`${feature.properties.name} line`, 'jj');
+                                });
 
                                 lines_sources.features.forEach((feature) => {
                                     let gj = displayGeom(feature, {
@@ -1023,13 +1100,19 @@
                                         fillOpacity: 0.4,
                                         className: 'gjsupplies'
                                     }).addTo(map);
-                                    if (switch_unlocked) boundStorer(gj);
 
+                                    if (switch_unlocked) boundStorer(gj);
                                     layers.push(gj);
                                     closeOnEscape(gj);
                                     makeLastOfClassnameAccessible(`${feature.properties.name} line`, 'gjsupplies');
                                 });
 
+                                if (markerstash?.length) {
+                                    markerstash.forEach((markeri) => {
+                                        map.removeLayer(markeri);
+                                        markeri.addTo(map);
+                                    });
+                                }
                                 resolve('Done');
                             })();
                         } catch (err) {
@@ -1040,13 +1123,15 @@
 
                 const buildMarkers = () => {
                     let counter = 0;
+                    let copy = JSON.parse(JSON.stringify(swdata.supplies.rows));
+                    let totalEntity = compress(copy, 'WS');
 
                     return new Promise((resolve, reject) => {
                         try {
                             totalEntity.forEach((item, i, ar) => {
-                                for (let i = 0; i < swdata.supplies.rows.length; i++) {
-                                    if (swdata.supplies.rows[i][`WS${$decadeStore}`] > maxValue) {
-                                        maxValue = swdata.supplies.rows[i][`WS${$decadeStore}`];
+                                for (let i = 0; i < copy.length; i++) {
+                                    if (copy[i][`WS${$decadeStore}`] > maxValue) {
+                                        maxValue = copy[i][`WS${$decadeStore}`];
                                     }
                                 }
 
@@ -1069,6 +1154,7 @@
                                     marker.addTo(map);
                                     marker.setStyle({ fillColor: 'grey' });
                                     layers.push(marker);
+                                    markerstash.push(marker);
                                     makeLastOfClassnameAccessible(item.EntityName, 'circle_marker');
                                 }
                                 counter++;
