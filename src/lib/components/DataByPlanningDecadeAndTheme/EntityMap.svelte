@@ -639,6 +639,8 @@
                                     });
 
                                     if (markerstash?.length) {
+                                        if($themeStore !== "strategies")
+                                            return;
                                         markerstash.forEach((markeri) => {
                                             map.removeLayer(markeri);
                                             markeri.addTo(map);
