@@ -10,7 +10,6 @@
     import Statewide from '$lib/db/statewide.js';
     import Header from '$lib/components/Header.svelte';
 
-    import { sourceNames } from '$lib/SourceNames.js';
     import { page } from '$app/stores';
     import Banner from '$lib/components/Header/Banner.svelte';
 
@@ -28,7 +27,7 @@
         await is_idb_loaded();
         let start = Date.now();
 
-        title = sourceNames.find((x) => x.label == parseInt(data.slug))?.value;
+        title = constants.sourceNames.find((x) => x.label == parseInt(data.slug))?.value;
 
         if (title.includes('|')) {
             const county = title.split('|')[1].trim();
