@@ -589,6 +589,8 @@
                                     ]);
 
                                     lines_sources.features.forEach((feature) => {
+                                        if($themeStore !== "strategies")
+                                            return;
                                         let jj = displayGeom(feature, {
                                             color: '#33B0FF',
                                             opacity: 1,
@@ -604,6 +606,8 @@
                                     });
 
                                     polygon_sources.features.forEach((feature) => {
+                                        if($themeStore !== "strategies")
+                                            return;
                                         let gj = displayGeom(feature, {
                                             color: '#3F556D',
                                             opacity: 1,
@@ -619,6 +623,8 @@
                                     });
 
                                     point_sources.features.forEach((feature, i) => {
+                                        if($themeStore !== "strategies")
+                                            return;
                                         let gj = displayGeom(feature, {
                                             color: '#33B0FF',
                                             opacity: 1,
@@ -1050,9 +1056,10 @@
                                         lats.push(item.Latitude);
                                         lngs.push(item.Longitude);
 
-                                        ids.push(item.MapSourceId);
-                                        if (!ids.includes(item.MapSourceId))
+                                        if (!ids.includes(item.MapSourceId)) {
+                                            ids.push(item.MapSourceId);
                                             entityFilters.push(equalToFilter('sourceid', item.MapSourceId, false));
+                                        }
                                     }
                                 });
 
@@ -1063,6 +1070,8 @@
                                 ]);
 
                                 point_sources.features.forEach((feature, i) => {
+                                    if($themeStore !== "supplies")
+                                        return;
                                     let gj = displayGeom(feature, {
                                         color: '#33B0FF',
                                         opacity: 1,
@@ -1078,6 +1087,8 @@
                                 });
 
                                 lines_sources.features.forEach((feature) => {
+                                    if($themeStore !== "supplies")
+                                        return;
                                     let gj = displayGeom(feature, {
                                         color: '#0097d6',
                                         opacity: 1,
@@ -1093,6 +1104,8 @@
                                 });
 
                                 polygon_sources.features.forEach((feature) => {
+                                    if($themeStore !== "supplies")
+                                        return;
                                     let gj = displayGeom(feature, {
                                         color: '#3F556D',
                                         opacity: 1,
@@ -1108,6 +1121,8 @@
                                 });
 
                                 if (markerstash?.length) {
+                                    if($themeStore !== "supplies")
+                                        return;
                                     markerstash.forEach((markeri) => {
                                         map.removeLayer(markeri);
                                         markeri.addTo(map);
