@@ -57,8 +57,6 @@
     let c22 = new Constant2022();
     let c27 = new Constant2027();
 
-    let /** @type {string} */ sourceKey;
-
     /**
      * labelReducer: Create usable labels out of an array of strings.
      * @param {string[]} labels
@@ -142,29 +140,20 @@
             // Only use test flag if there is no host with a date in it.
             if($page.url.host.includes('2017')) {
                 sourceName = c17.sourceNames;
-                sourceKey = 'sourceid';
             } else if($page.url.host.includes('2022')) {
                 sourceName = c22.sourceNames;
-                sourceKey = 'value'; 
             } else if($page.url.host.includes('2027')) {
                 sourceName = c27.sourceNames;
-                sourceKey = 'value'; 
             } else if(TEST_FLAG === '2017') {
                 sourceName = c17.sourceNames;
-                sourceKey = 'sourceid'; 
-            }
-            else if(TEST_FLAG === '2022') {
+            } else if(TEST_FLAG === '2022') {
                 sourceName = c22.sourceNames;
-                sourceKey = 'value';
-            }
-            else if(TEST_FLAG === '2027') {
+            } else if(TEST_FLAG === '2027') {
                 sourceName = c27.sourceNames;
-                sourceKey = 'value';
-            }
-            else {
+            } else {
                 sourceName = c22.sourceNames;
-                sourceKey = 'value';
             }
+
             this[''] = [];
             this.region = regions;
             this.county = counties;
