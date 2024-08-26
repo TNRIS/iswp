@@ -27,9 +27,9 @@
         await is_idb_loaded();
         let start = Date.now();
 
-        title = constants.sourceNames.find((x) => x.label == parseInt(data.slug))?.value;
+        title = constants.sourceNames.find((x) => x.value == parseInt(data.slug))?.label;
 
-        if (title.includes('|')) {
+        if (title?.includes('|')) {
             const county = title.split('|')[1].trim();
             const countyName = cap(county);
 
