@@ -211,7 +211,7 @@
             <div class="loader"></div>
         {:then data}
             {#if demands_visible}
-                <LineChart data={data.demands} chartTitle={`${chartTitle}-demands`} options={chartOptions} />
+                <LineChart data={data.demands} chartTitle={`${chartTitle}-demands`} altClass={"ct-line-chart-size"} options={chartOptions} />
                 <div class="toggle-container">
                     <ChartDataTable
                         bind:visible={visible}
@@ -225,7 +225,7 @@
                 </div>
             {/if}
             {#if supplies_visible}
-                <LineChart data={data.supplies} chartTitle={`${chartTitle}-supplies`} options={chartOptions} />
+                <LineChart data={data.supplies} chartTitle={`${chartTitle}-supplies`} altClass={"ct-line-chart-size"} options={chartOptions} />
 
                 <div class="toggle-container">
                     <ChartDataTable
@@ -240,7 +240,7 @@
                 </div>
             {/if}
             {#if needs_visible}
-                <LineChart data={data.needs} chartTitle={`${chartTitle}-needs`} options={chartOptions} />
+                <LineChart data={data.needs} chartTitle={`${chartTitle}-needs`} altClass={"ct-line-chart-size"} options={chartOptions} />
 
                 <div class="toggle-container">
                     <ChartDataTable
@@ -255,7 +255,7 @@
                 </div>
             {/if}
             {#if strategies_visible}
-                <LineChart data={data.strategies} chartTitle={`${chartTitle}-strategies`} options={chartOptions} />
+                <LineChart data={data.strategies} chartTitle={`${chartTitle}-strategies`} altClass={"ct-line-chart-size"} options={chartOptions} />
 
                 <div class="toggle-container">
                     <ChartDataTable
