@@ -1,14 +1,10 @@
 <script>
-    let visible = false;
+    export /** @type {boolean} */let visible;
     let text = 'Show Data Table';
     const { ariaHint } = $$props;
     function toggleVisible() {
         visible = !visible;
-        if (visible) {
-            text = 'Hide Data Table';
-        } else {
-            text = 'Show Data Table';
-        }
+        text = visible ? 'Hide Data Table' : 'Show Data Table';
     }
 </script>
 

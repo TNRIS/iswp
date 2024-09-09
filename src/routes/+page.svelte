@@ -45,7 +45,7 @@
         {#await popChartPromise}
             <ComponentLoader />
         {:then { default: Component }}
-            <Component title={`TEXAS`} {lrp} {constants} />
+            <Component tagline="" title={`TEXAS`} {lrp} {constants} />
         {/await}
 
         {#await TitleBlurbPromise}

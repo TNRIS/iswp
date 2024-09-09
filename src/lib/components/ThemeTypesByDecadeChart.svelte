@@ -9,6 +9,7 @@
 
     import { commafy } from '$lib/helper.js';
     const { chartTitle, lrp, constants, title } = $$props;
+    let visible;
     let decades = constants.getDecades();
     let titleMap = {
         irrigation: 'Irrigation',
@@ -213,6 +214,7 @@
                 <LineChart data={data.demands} chartTitle={`${chartTitle}-demands`} options={chartOptions} />
                 <div class="toggle-container">
                     <ChartDataTable
+                        bind:visible={visible}
                         header={decades}
                         body={data.demands.series}
                         titles={true}
@@ -227,6 +229,7 @@
 
                 <div class="toggle-container">
                     <ChartDataTable
+                        bind:visible={visible}
                         header={decades}
                         body={data.supplies.series}
                         titles={true}
@@ -241,6 +244,7 @@
 
                 <div class="toggle-container">
                     <ChartDataTable
+                        bind:visible={visible}
                         header={decades}
                         body={data.needs.series}
                         titles={true}
@@ -255,6 +259,7 @@
 
                 <div class="toggle-container">
                     <ChartDataTable
+                        bind:visible={visible}
                         header={decades}
                         body={data.strategies.series}
                         titles={true}
