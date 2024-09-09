@@ -1,6 +1,7 @@
 <script>
     import ToggleDisplay from './ToggleDisplay.svelte';
     const { header, body, titles, showHide, titleMap, showTotal, ariaHint } = $$props;
+    export /** @type {boolean} */ let visible;
     let totals = [0, 0, 0, 0, 0, 0];
     if (showTotal) {
         body.forEach((b) => {
@@ -16,7 +17,7 @@
 <div class="chart-table-container">
     {#if showHide}
         <div class="toggle-container">
-            <ToggleDisplay {ariaHint}>
+            <ToggleDisplay {ariaHint} bind:visible={visible}>
                 <div aria-live="polite" class="table-scroll-container">
                     <!-- Try to add a good ariaHint. -->
                     <table
