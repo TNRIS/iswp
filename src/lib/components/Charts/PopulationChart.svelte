@@ -9,6 +9,7 @@
     import { commafy } from '$lib/helper.js';
     export let tagline; // Tagline won't refresh unless I define the svelte property here instead of using $$Props for some reason.
 
+    let /** @type {visible} */ visible;
     let decades = constants.getDecades();
     var getData = async () => {
         let swdata = await lrp;
@@ -79,6 +80,7 @@
                             }
                         }} />
                     <ChartDataTable
+                        bind:visible={visible}
                         header={decades}
                         body={data.series}
                         titles={false}

@@ -88,6 +88,7 @@
                                     title={'Data By Usage Type Bar Chart'}
                                     aria-label={'Data By Usage Type Bar Chart'} />
                                 <ChartDataTable
+                                    visible={false}
                                     header={constants.getDecades()}
                                     body={data[group_name[0]]}
                                     titles={true}
@@ -109,6 +110,7 @@
                                     title={'Data By Usage Type Bar Chart'}
                                     aria-label={'Data By Usage Type Bar Chart'} />
                                 <ChartDataTable
+                                    visible={false}
                                     header={constants.getDecades()}
                                     body={data[group_name[1]]}
                                     titles={true}

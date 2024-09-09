@@ -9,7 +9,7 @@
 
     import { commafy } from '$lib/helper.js';
     const { chartTitle, lrp, constants, title } = $$props;
-    let visible;
+    let /** @type {visible} */ visible;
     let decades = constants.getDecades();
     let titleMap = {
         irrigation: 'Irrigation',
