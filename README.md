@@ -1,4 +1,4 @@
-Software for the [Interactive Texas State Water Plan][https://texasstatewaterplan.org]
+Software for the [Interactive Texas State Water Plan](https://texasstatewaterplan.org)
 
 #start
 npm run dev
@@ -24,7 +24,7 @@ npm run dev -- --open
 To create a production version of your app:
 
 1. download gill-sans font insteuctions in gill-sans/README.md
-2. Download a copy of [react-pivot-standalone-4.1.1.min.js][https://github.com/TNRIS/iswp/blob/main/static/react-pivot-standalone-4.1.1.min.js] and place in static folder root.
+2. Download a copy of [react-pivot-standalone-4.1.1.min.js](https://github.com/TNRIS/iswp/blob/main/static/react-pivot-standalone-4.1.1.min.js) and place in static folder root.
 
 ```bash
 npm run build
