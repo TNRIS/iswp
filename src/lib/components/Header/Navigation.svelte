@@ -134,21 +134,21 @@
          * */
         constructor(sw) {
             let start = 0;
-            let  /** @type {object} */ sourceName;
+            let /** @type {object} */ sourceName;
 
             if (DEBUG_LOADING) start = Date.now();
             // Only use test flag if there is no host with a date in it.
-            if($page.url.host.includes('2017')) {
+            if ($page.url.host.includes('2017')) {
                 sourceName = c17.sourceNames;
-            } else if($page.url.host.includes('2022')) {
+            } else if ($page.url.host.includes('2022')) {
                 sourceName = c22.sourceNames;
-            } else if($page.url.host.includes('2027')) {
+            } else if ($page.url.host.includes('2027')) {
                 sourceName = c27.sourceNames;
-            } else if(TEST_FLAG === '2017') {
+            } else if (TEST_FLAG === '2017') {
                 sourceName = c17.sourceNames;
-            } else if(TEST_FLAG === '2022') {
+            } else if (TEST_FLAG === '2022') {
                 sourceName = c22.sourceNames;
-            } else if(TEST_FLAG === '2027') {
+            } else if (TEST_FLAG === '2027') {
                 sourceName = c27.sourceNames;
             } else {
                 sourceName = c22.sourceNames;

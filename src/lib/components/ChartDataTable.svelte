@@ -17,7 +17,7 @@
 <div class="chart-table-container">
     {#if showHide}
         <div class="toggle-container">
-            <ToggleDisplay {ariaHint} bind:visible={visible}>
+            <ToggleDisplay {ariaHint} bind:visible>
                 <div aria-live="polite" class="table-scroll-container">
                     <!-- Try to add a good ariaHint. -->
                     <table
