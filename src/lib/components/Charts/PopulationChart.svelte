@@ -50,7 +50,7 @@
                 <h2 class={title.length > 18 ? 'long-name' : ''}>{title.toUpperCase()}</h2>
             {/if}
 
-            {#if tagline}
+            {#if tagline && tagline.length}
                 <span id="tagline">{@html tagline}</span>
             {/if}
             {#if titleOnly !== true}
