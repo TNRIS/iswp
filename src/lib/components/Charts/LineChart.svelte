@@ -29,6 +29,12 @@
 
 <!-- Line Chart is hidden for aria due to the same data being presented in table form in an easier format in the table. -->
 <div style="position:relative" aria-hidden="true" role="presentation">
-    <div class={`${chartTitle} ct-chart`} on:mouseover={onHover} on:focus on:mouseleave={onLeave} on:mouseout={onLeave} on:blur />
+    <div class={`${chartTitle} ct-chart ct-line-chart-size`} on:mouseover={onHover} on:focus on:mouseleave={onLeave} on:mouseout={onLeave} on:blur />
     <div id={`${chartTitle}-tooltip`} />
 </div>
+
+<style>
+    .ct-line-chart-size {
+        min-height: 250px;
+    }
+</style>

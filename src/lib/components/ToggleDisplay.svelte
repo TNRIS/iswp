@@ -4,7 +4,14 @@
     const { ariaHint } = $$props;
     function toggleVisible() {
         visible = !visible;
-        text = visible ? 'Hide Data Table' : 'Show Data Table';
+
+        if(visible) {
+            document.getElementById("point-chart-usage-type").style.minHeight = '567px';
+            text = 'Hide Data Table';
+        } else {
+            document.getElementById("point-chart-usage-type").style.minHeight = '390px';
+            text = 'Show Data Table';
+        }
     }
 </script>
 
