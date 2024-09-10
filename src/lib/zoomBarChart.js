@@ -50,16 +50,27 @@ export class TreeDataOuterStruct extends BaseData {
         this.children = children;
     }
 }
+
 /**
- *  calculate percentage of a data node.
+ * Calculate percentage of a data node.
  * @param {d3.HierarchyNode<TreeDataNode>} d
- * @returns {number | string}
+ * @returns {string}
  *
  */
 const calculate_percent = (d) => {
-    const percent = (d.value / d.parent.value) * 100;
-    if (percent >= 1) {
-        return format(percent);
+    return format((d.value / d.parent.value) * 100);
+};
+
+/**
+ * Calculate percentage node and show a < sign.
+ * @param {d3.HierarchyNode<TreeDataNode>} d
+ * @returns {string}
+ *
+ */
+const calculate_percent_with_sign = (d) => {
+    const percent = calculate_percent(d);
+    if (parseInt(percent) >= 1) {
+        return percent;
     } else {
         return '<1';
     }
@@ -269,7 +280,7 @@ export const buildZoomable = (container, data, selectedTreemap, total, themeStor
                 let outerRect = outerHoverEffect(rect);
 
                 outerRect.append('title').text((d) => {
-                    return `${d.data.name} (${calculate_percent(d)}%): ${format(d.value)}`;
+                    return `${d.data.name} (${calculate_percent_with_sign(d)}%): ${format(d.value)}`;
                 });
 
                 rect.filter((d) => {
@@ -291,7 +302,7 @@ export const buildZoomable = (container, data, selectedTreemap, total, themeStor
                 const rect = innerHoverEffect(node, color);
 
                 rect.append('title').text((d) => {
-                    return `${d.data.name} (${calculate_percent(d)}%): ${format(d.value)}`;
+                    return `${d.data.name} (${calculate_percent_with_sign(d)}%): ${format(d.value)}`;
                 });
 
                 rect.filter((d) => {
@@ -324,7 +335,7 @@ export const buildZoomable = (container, data, selectedTreemap, total, themeStor
                 let outerRect = outerHoverEffect(rect);
 
                 outerRect.append('title').text((d) => {
-                    return `${d.data.name} (${calculate_percent(d)}%): ${format(d.value)}`;
+                    return `${d.data.name} (${calculate_percent_with_sign(d)}%): ${format(d.value)}`;
                 });
 
                 rect.filter((d) => {
@@ -361,7 +372,7 @@ export const buildZoomable = (container, data, selectedTreemap, total, themeStor
                     .style('transform', 'translateY(8px)');
 
                 rect.append('title').text((d) => {
-                    return `${d.data.name} (${calculate_percent(d)}%): ${format(d.value)}`;
+                    return `${d.data.name} (${calculate_percent_with_sign(d)}%): ${format(d.value)}`;
                 });
             }
         }
@@ -407,7 +418,7 @@ export const buildZoomable = (container, data, selectedTreemap, total, themeStor
                     if (d === root && !d.parent) {
                         return [name(d)[0].toUpperCase() + name(d).substring(1)];
                     } else {
-                        return [d.data.name.concat(` (${calculate_percent(d)}%)`)];
+                        return [d.data.name.concat(` (${calculate_percent_with_sign(d)}%)`)];
                     }
                 } catch (err) {
                     console.log(err);

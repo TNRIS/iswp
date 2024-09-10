@@ -225,7 +225,8 @@
                         showHide={true}
                         {titleMap}
                         showTotal={true}
-                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`} />
+                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`}
+                        byDecade={true} />
                 </div>
             {/if}
             {#if supplies_visible}
@@ -244,7 +245,8 @@
                         showHide={true}
                         {titleMap}
                         showTotal={true}
-                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`} />
+                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`}
+                        byDecade={true} />
                 </div>
             {/if}
             {#if needs_visible}
@@ -259,7 +261,8 @@
                         showHide={true}
                         {titleMap}
                         showTotal={true}
-                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`} />
+                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`}
+                        byDecade={true} />
                 </div>
             {/if}
             {#if strategies_visible}
@@ -278,7 +281,8 @@
                         showHide={true}
                         {titleMap}
                         showTotal={true}
-                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`} />
+                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`}
+                        byDecade={true} />
                 </div>
             {/if}
         {:catch error}
