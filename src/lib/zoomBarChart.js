@@ -1,6 +1,7 @@
 // Very loosely based on zoom map at https://observablehq.com/@d3/zoomable-treemap
 import * as d3 from 'd3';
-
+// Formatting utilities.
+const format = d3.format(',d');
 export class BaseData {
     /** @type {string}  */ name;
     /**
@@ -49,13 +50,20 @@ export class TreeDataOuterStruct extends BaseData {
         this.children = children;
     }
 }
-
 /**
+ *  calculate percentage of a data node.
+ * @param {d3.HierarchyNode<TreeDataNode>} d
+ * @returns {number | string}
  *
-
-export class TreeDataOuterHierarchy {}
  */
-
+const calculate_percent = (d) => {
+    const percent = (d.value / d.parent.value) * 100;
+    if (percent >= 1) {
+        return format(percent);
+    } else {
+        return '<1';
+    }
+};
 /**
  * Build a zoomable chart that expands to show more information about a rectangular point.
  * It also shows hoverable information.
@@ -96,8 +104,6 @@ export const buildZoomable = (container, data, selectedTreemap, total, themeStor
     const x = d3.scaleLinear().rangeRound([0, width]);
     const y = d3.scaleLinear().rangeRound([0, height]);
 
-    // Formatting utilities.
-    const format = d3.format(',d');
     // @ts-ignore
     const name = (d) =>
         d
@@ -170,12 +176,10 @@ export const buildZoomable = (container, data, selectedTreemap, total, themeStor
             return node
                 .append('rect')
                 .attr('id', (d) => (d.leafUid = `leaf${count++}`).id)
-
                 .attr('fill', (d) => {
                     while (d.depth > 1) d = d.parent;
                     return color(d.data.name);
                 })
-
                 .attr('width', (d) => d.x1 - d.x0)
 
                 .attr('height', (d) => d.y1 - d.y0)
@@ -265,7 +269,7 @@ export const buildZoomable = (container, data, selectedTreemap, total, themeStor
                 let outerRect = outerHoverEffect(rect);
 
                 outerRect.append('title').text((d) => {
-                    return `${d.data.name} (${format((d.value / d.parent.value) * 100)}%): ${format(d.value)}`;
+                    return `${d.data.name} (${calculate_percent(d)}%): ${format(d.value)}`;
                 });
 
                 rect.filter((d) => {
@@ -287,7 +291,7 @@ export const buildZoomable = (container, data, selectedTreemap, total, themeStor
                 const rect = innerHoverEffect(node, color);
 
                 rect.append('title').text((d) => {
-                    return `${d.data.name} (${format((d.value / d.parent.value) * 100)}%): ${format(d.value)}`;
+                    return `${d.data.name} (${calculate_percent(d)}%): ${format(d.value)}`;
                 });
 
                 rect.filter((d) => {
@@ -320,7 +324,7 @@ export const buildZoomable = (container, data, selectedTreemap, total, themeStor
                 let outerRect = outerHoverEffect(rect);
 
                 outerRect.append('title').text((d) => {
-                    return `${d.data.name} (${format((d.value / d.parent.value) * 100)}%): ${format(d.value)}`;
+                    return `${d.data.name} (${calculate_percent(d)}%): ${format(d.value)}`;
                 });
 
                 rect.filter((d) => {
@@ -357,7 +361,7 @@ export const buildZoomable = (container, data, selectedTreemap, total, themeStor
                     .style('transform', 'translateY(8px)');
 
                 rect.append('title').text((d) => {
-                    return `${d.data.name} (${format((d.value / d.parent.value) * 100)}%): ${format(d.value)}`;
+                    return `${d.data.name} (${calculate_percent(d)}%): ${format(d.value)}`;
                 });
             }
         }
@@ -403,7 +407,7 @@ export const buildZoomable = (container, data, selectedTreemap, total, themeStor
                     if (d === root && !d.parent) {
                         return [name(d)[0].toUpperCase() + name(d).substring(1)];
                     } else {
-                        return [d.data.name.concat(` (${format((d.value / d.parent.value) * 100)}%)`)];
+                        return [d.data.name.concat(` (${calculate_percent(d)}%)`)];
                     }
                 } catch (err) {
                     console.log(err);

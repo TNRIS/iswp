@@ -50,14 +50,13 @@
                 let /** @type {TreeDataNode[]} */ array = [];
 
                 for (let [name, value] of Object.entries(selected_data[item])) {
-                    if (name !== 'TOTAL') {
+                    if (name !== 'TOTAL' && name.trim().toLowerCase() !== 'id') {
                         name = cap(name);
                         array.push(new TreeDataNode(name, value));
                     }
                 }
                 regionStructure.children.push(new TreeDataStruct(`Region ${selected_data[item].REGION}`, array));
             }
-            console.log(regionStructure);
             return regionStructure;
         } else {
             /**
@@ -69,7 +68,14 @@
             for (let item in keyids) {
                 let array = /** @type {TreeDataNode[]} */ [];
 
-                if (!(keyids[item] == 'id' || keyids[item] == 'TOTAL' || keyids[item] == 'REGION' || keyids[item] == 'DECADE')) {
+                if (
+                    !(
+                        keyids[item].trim().toLowerCase() == 'id' ||
+                        keyids[item] == 'TOTAL' ||
+                        keyids[item] == 'REGION' ||
+                        keyids[item] == 'DECADE'
+                    )
+                ) {
                     for (let i = 0; i < selected_data.length; i++) {
                         array.push(new TreeDataNode(`Region ${selected_data[i]['REGION']}`, selected_data[i][keyids[item]]));
                     }
