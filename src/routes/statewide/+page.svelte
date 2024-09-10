@@ -1,4 +1,6 @@
 <script>
+    window.location.href = '/'; // Try to redirect to root. This page is only here to prevent dead links.
+
     const popChartPromise = import('$lib/components/Charts/PopulationChart.svelte');
     const TitleBlurbPromise = import('$lib/components/TitleBlurb.svelte');
     const ThemeTotalsByDecadeChartPromise = import('$lib/components/ThemeTotalsByDecadeChart.svelte');
