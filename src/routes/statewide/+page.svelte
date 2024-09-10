@@ -1,4 +1,6 @@
 <script>
+    window.location.href = '/'; // Try to redirect to root. This page is only here to prevent dead links.
+
     const popChartPromise = import('$lib/components/Charts/PopulationChart.svelte');
     const TitleBlurbPromise = import('$lib/components/TitleBlurb.svelte');
     const ThemeTotalsByDecadeChartPromise = import('$lib/components/ThemeTotalsByDecadeChart.svelte');
@@ -11,6 +13,7 @@
     import { load_indexeddb, onMountSync, getConstants, is_idb_loaded } from '$lib/helper.js';
     import Statewide from '$lib/db/statewide.js';
     import { page } from '$app/stores';
+    import ComponentLoader from '$lib/components/ComponentLoader.svelte';
 
     let constants = getConstants($page.url.host);
     let stateSettings = new QuerySettings();
@@ -42,37 +45,37 @@
 <div class="statewide-view">
     <section>
         {#await popChartPromise}
-            <div class="loader"></div>
+            <ComponentLoader />
         {:then { default: Component }}
-            <Component title={`TEXAS`} {lrp} {constants} />
+            <Component tagline="" title={`TEXAS`} {lrp} {constants} />
         {/await}
 
         {#await TitleBlurbPromise}
-            <div class="loader"></div>
+            <ComponentLoader />
         {:then { default: Component }}
             <Component {constants} />
         {/await}
 
         {#await ThemeTotalsByDecadeChartPromise}
-            <div class="loader"></div>
+            <ComponentLoader />
         {:then { default: Component }}
             <Component {lrp} {constants} />
         {/await}
 
         {#await ThemeTypesByDecadeChartPromise}
-            <div class="loader"></div>
+            <ComponentLoader />
         {:then { default: Component }}
             <Component chartTitle={'ct-usage-chart'} {lrp} {constants} />
         {/await}
 
         {#await DataUsageTypePromise}
-            <div class="loader"></div>
+            <ComponentLoader />
         {:then { default: Component }}
             <Component {lrp} {constants} />
         {/await}
 
         {#await DataViewChoiceWrapPromise}
-            <div class="loader"></div>
+            <ComponentLoader />
         {:then { default: Component }}
             <Component {db} {lrp} csvTitle={'Statewide'} {constants} downloadPopulation={true} />
         {/await}
