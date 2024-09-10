@@ -1,8 +1,79 @@
-//@ts-nocheck
-// Based on zoom map at https://observablehq.com/@d3/zoomable-treemap
+// Very loosely based on zoom map at https://observablehq.com/@d3/zoomable-treemap
 import * as d3 from 'd3';
 
-export let buildZoomable = (container, data, selectedTreemap, total, themeStore) => {
+export class BaseData {
+    /** @type {string}  */ name;
+    /**
+     * @param {string} name
+     */
+    constructor(name) {
+        this.name = name;
+    }
+}
+
+export class TreeDataNode extends BaseData {
+    /** @type {number} */ value = 0;
+
+    /**
+     * @param {string} name
+     * @param {number} value
+     */
+    constructor(name, value) {
+        super(name);
+        this.value = value;
+    }
+}
+
+export class TreeDataStruct extends BaseData {
+    /** @type {TreeDataNode[]} */ children;
+
+    /**
+     * @param {string} name
+     * @param {TreeDataNode[]} children;
+     */
+    constructor(name, children = []) {
+        super(name);
+        this.children = children;
+    }
+}
+
+export class TreeDataOuterStruct extends BaseData {
+    /** @type {TreeDataStruct[]} */ children;
+
+    /**
+     * @param {string} name
+     * @param {TreeDataStruct[]} children;
+     */
+    constructor(name, children = []) {
+        super(name);
+        this.children = children;
+    }
+}
+
+/**
+ * @typedef data_node
+ * @property {string} name
+ * @property {string} value
+ */
+
+/**
+ * @typedef inner_data_node
+ * @property {data_node[]} children The decade this record is for.
+ * @property {string} name User group irrigation (Context determined by parent)
+ */
+
+/**
+ * Build a zoomable chart that expands to show more information about a rectangular point.
+ * It also shows hoverable information.
+ *
+ * @param {HTMLDivElement} container
+ * @param {TreeDataStruct} data
+ * @param {string} selectedTreemap
+ * @param {number} total
+ * @param {string} themeStore
+ * @returns {d3.Selection<SVGSVGElement, undefined, null, undefined>}
+ */
+export const buildZoomable = (container, data, selectedTreemap, total, themeStore) => {
     // Specify the chart’s dimensions.
     const width = container.offsetWidth;
     const height = 500;
@@ -177,7 +248,6 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
                 let outerRect = outerHoverEffect(rect);
                 outerRect.append('title').text((d) => {
                     return `${d.data.name} (${format((d.value / d.parent.value) * 100)}%): ${format(d.value)}`;
-                    // break;
                 });
                 rect.filter((d) => {
                     if (!d?.data?.name.includes('Region')) {
