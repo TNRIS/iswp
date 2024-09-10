@@ -1,35 +1,126 @@
-//@ts-nocheck
-// Based on zoom map at https://observablehq.com/@d3/zoomable-treemap
+// Very loosely based on zoom map at https://observablehq.com/@d3/zoomable-treemap
 import * as d3 from 'd3';
+// Formatting utilities.
+const format = d3.format(',d');
+export class BaseData {
+    /** @type {string}  */ name;
+    /**
+     * @param {string} name
+     */
+    constructor(name) {
+        this.name = name;
+    }
+}
 
-export let buildZoomable = (container, data, selectedTreemap, total, themeStore) => {
+export class TreeDataNode extends BaseData {
+    /** @type {number | string} */ value = 0;
+
+    /**
+     * @param {string} name
+     * @param {number | string} value
+     */
+    constructor(name, value) {
+        super(name);
+        this.value = value;
+    }
+}
+
+export class TreeDataStruct extends BaseData {
+    /** @type {TreeDataNode[]} */ children;
+
+    /**
+     * @param {string} name
+     * @param {TreeDataNode[]} children;
+     */
+    constructor(name, children = []) {
+        super(name);
+        this.children = children;
+    }
+}
+
+export class TreeDataOuterStruct extends BaseData {
+    /** @type {TreeDataStruct[]} */ children;
+
+    /**
+     * @param {string} name
+     * @param {TreeDataStruct[]} children;
+     */
+    constructor(name, children = []) {
+        super(name);
+        this.children = children;
+    }
+}
+
+/**
+ * Calculate percentage of a data node.
+ * @param {d3.HierarchyNode<TreeDataNode>} d
+ * @returns {string}
+ *
+ */
+const calculate_percent = (d) => {
+    return format((d.value / d.parent.value) * 100);
+};
+
+/**
+ * Calculate percentage node and show a < sign.
+ * @param {d3.HierarchyNode<TreeDataNode>} d
+ * @returns {string}
+ *
+ */
+const calculate_percent_with_sign = (d) => {
+    const percent = calculate_percent(d);
+    if (parseInt(percent) >= 1) {
+        return percent;
+    } else {
+        return '<1';
+    }
+};
+/**
+ * Build a zoomable chart that expands to show more information about a rectangular point.
+ * It also shows hoverable information.
+ *
+ * Stle Note:: I prefer to expand out arrow functions here to help maintain this program for easier debugging.
+ *
+ * @param {HTMLDivElement} container
+ * @param {TreeDataOuterStruct} data
+ * @param {string} selectedTreemap
+ * @param {number} total
+ * @param {string} themeStore
+ * @returns {d3.Selection<SVGSVGElement, undefined, null, undefined>}
+ */
+// @ts-ignore
+export const buildZoomable = (container, data, selectedTreemap, total, themeStore) => {
     // Specify the chart’s dimensions.
     const width = container.offsetWidth;
     const height = 500;
     var count = 0;
 
     // Compute the layout.
-    const hierarchy = d3
-        .hierarchy(data)
-        .sum(function (d) {
+    const /** @type {d3.HierarchyNode<TreeDataOuterStruct>} */ hierarchy = d3.hierarchy(data).sum((/** @type { TreeDataNode }*/ d) => {
             if (typeof d.value == 'number') {
                 return d.value;
             }
-        })
-        .sort((a, b) => b.value - a.value);
+        });
 
-    const root = d3.treemap().round(false).tile(d3.treemapSquarify)(hierarchy);
+    const total_data_sorted = hierarchy.sort(
+        // @ts-ignore
+        (/** @type {d3.HierarchyNode<TreeDataStruct>} */ a, /** @type {d3.HierarchyNode<TreeDataStruct>} */ b) => {
+            return b.value - a.value;
+        }
+    );
+
+    const root = d3.treemap().round(false).tile(d3.treemapSquarify)(total_data_sorted);
 
     // Create the scales.
     const x = d3.scaleLinear().rangeRound([0, width]);
     const y = d3.scaleLinear().rangeRound([0, height]);
 
-    // Formatting utilities.
-    const format = d3.format(',d');
+    // @ts-ignore
     const name = (d) =>
         d
             .ancestors()
             .reverse()
+
             .map((d) => d.data.name)
             .join('/');
 
@@ -48,6 +139,7 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
     let toggle = true;
 
     //inz is short for inner zoom.
+
     function render(group, root, inz = false) {
         const node = group
             .selectAll('g')
@@ -100,9 +192,11 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
                     return color(d.data.name);
                 })
                 .attr('width', (d) => d.x1 - d.x0)
+
                 .attr('height', (d) => d.y1 - d.y0)
                 .attr('fill-opacity', 1)
                 .attr('pointer-events', 'all')
+
                 .on('click', function (event, d) {
                     if (toggle) {
                         toggle = !toggle;
@@ -120,6 +214,7 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
                         target.attr('fill-opacity', 0.08);
                     }
                 })
+
                 .on('mouseout', function (d, i) {
                     if (i !== root) {
                         let target = d3.select(this);
@@ -131,24 +226,28 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
 
         let outerHoverEffect = (rect) => {
             return rect
+
                 .filter((d) => {
                     if (d !== root && d.parent == root) {
                         return d;
                     }
                 })
                 .attr('pointer-events', 'all')
+
                 .on('mouseover', function (d, i) {
                     if (i !== root) {
                         let target = d3.select(this);
                         target.attr('fill-opacity', 1);
                     }
                 })
+
                 .on('mouseout', function (d, i) {
                     if (i !== root) {
                         let target = d3.select(this);
                         target.attr('fill-opacity', 0.8);
                     }
                 })
+
                 .on('click', function (event, d) {
                     if (toggle) {
                         toggle = !toggle;
@@ -164,21 +263,26 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
             if (!inz) {
                 const rect = node
                     .append('rect')
+
                     .attr('id', (d) => (d.leafUid = `leaf${count++}`).id)
+
                     .attr('fill', (d) => {
                         while (d.depth > 1) d = d.parent;
                         return color(d.data.name);
                     })
+
                     .attr('width', (d) => d.x1 - d.x0)
+
                     .attr('height', (d) => d.y1 - d.y0)
                     .attr('fill-opacity', 0.8)
                     .attr('pointer-events', 'none');
 
                 let outerRect = outerHoverEffect(rect);
+
                 outerRect.append('title').text((d) => {
-                    return `${d.data.name} (${format((d.value / d.parent.value) * 100)}%): ${format(d.value)}`;
-                    // break;
+                    return `${d.data.name} (${calculate_percent_with_sign(d)}%): ${format(d.value)}`;
                 });
+
                 rect.filter((d) => {
                     if (!d?.data?.name.includes('Region')) {
                         return d;
@@ -198,7 +302,7 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
                 const rect = innerHoverEffect(node, color);
 
                 rect.append('title').text((d) => {
-                    return `${d.data.name} (${format((d.value / d.parent.value) * 100)}%): ${format(d.value)}`;
+                    return `${d.data.name} (${calculate_percent_with_sign(d)}%): ${format(d.value)}`;
                 });
 
                 rect.filter((d) => {
@@ -214,19 +318,24 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
             if (!inz) {
                 const rect = node
                     .append('rect')
+
                     .attr('id', (d) => (d.leafUid = `leaf${count++}`).id)
+
                     .attr('fill', (d) => {
                         while (d.depth > 1) d = d.parent;
                         return color(d.data.name);
                     })
+
                     .attr('width', (d) => d.x1 - d.x0)
+
                     .attr('height', (d) => d.y1 - d.y0)
                     .attr('fill-opacity', 0.8)
                     .attr('pointer-events', 'none');
 
                 let outerRect = outerHoverEffect(rect);
+
                 outerRect.append('title').text((d) => {
-                    return `${d.data.name} (${format((d.value / d.parent.value) * 100)}%): ${format(d.value)}`;
+                    return `${d.data.name} (${calculate_percent_with_sign(d)}%): ${format(d.value)}`;
                 });
 
                 rect.filter((d) => {
@@ -236,6 +345,7 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
                 })
                     .attr('fill-opacity', 0)
                     .append('title')
+
                     .text((d) => {
                         let par = d.parent;
                         return `${par.data.name} (${format((par.value / par.parent.value) * 100)}%): ${format(par.value)}`;
@@ -251,6 +361,7 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
                     .style('transform', 'translateY(8px)');
             } else {
                 const rect = innerHoverEffect(node, color);
+
                 rect.filter((d) => {
                     if (d === root) {
                         return d;
@@ -261,17 +372,20 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
                     .style('transform', 'translateY(8px)');
 
                 rect.append('title').text((d) => {
-                    return `${d.data.name} (${format((d.value / d.parent.value) * 100)}%): ${format(d.value)}`;
+                    return `${d.data.name} (${calculate_percent_with_sign(d)}%): ${format(d.value)}`;
                 });
             }
         }
 
         node.append('clipPath')
+
             .attr('id', (d) => (d.clipUid = `clip${count++}`).id)
             .append('use')
+
             .attr('xlink:href', (d) => d.leafUid.href);
 
         let texter = node
+
             .filter((d) => {
                 if (inz) {
                     return d;
@@ -283,6 +397,7 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
 
         // Don't assign here so the filter won't stick. However the translation will stick for titles.
         texter
+
             .filter((d) => {
                 if (d === root || !d.parent) {
                     return d;
@@ -291,17 +406,19 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
             .style('transform', 'translateY(6px)');
 
         texter = texter
+
             .attr('clip-path', (d) => {
                 return d.clipUid;
             })
             .attr('font-weight', 'bold')
             .selectAll('tspan')
+
             .data((d) => {
                 try {
                     if (d === root && !d.parent) {
                         return [name(d)[0].toUpperCase() + name(d).substring(1)];
                     } else {
-                        return [d.data.name.concat(` (${format((d.value / d.parent.value) * 100)}%)`)];
+                        return [d.data.name.concat(` (${calculate_percent_with_sign(d)}%)`)];
                     }
                 } catch (err) {
                     console.log(err);
@@ -310,10 +427,12 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
 
             .join('tspan')
             .attr('x', 3)
+
             .attr('y', (d, i, nodes) => `${(i === nodes.length - 1) * 0.3 + 1.1 + i * 0.9}em`)
             .attr('fill-opacity', 1)
             .attr('font-weight', 'bold')
             .attr('font-size', '12')
+
             .text((d) => d);
 
         group.call(position, root);
@@ -322,13 +441,17 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
     function position(group, root) {
         group
             .selectAll('g')
+
             .attr('transform', (d) => (d === root ? `translate(0,-30)` : `translate(${x(d.x0)},${y(d.y0)})`))
             .select('rect')
+
             .attr('width', (d) => (d === root ? width : x(d.x1) - x(d.x0)))
+
             .attr('height', (d) => (d === root ? 20 : y(d.y1) - y(d.y0)));
     }
 
     // When zooming in, draw the new nodes on top, and fade them in.
+
     function zoomin(d) {
         if (themeStore !== 'population') {
             const group0 = group.attr('pointer-events', 'none');
@@ -339,10 +462,13 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
 
             svg.transition()
                 .duration(750)
+
                 .call((t) => group0.transition(t).remove().call(position, d.parent))
                 .call((t) =>
                     group1
+
                         .transition(t)
+
                         .attrTween('opacity', () => d3.interpolate(0, 1))
                         .call(position, d)
                 );
@@ -350,6 +476,7 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
     }
 
     // When zooming out, draw the old nodes on top, and fade them out.
+
     function zoomout(d) {
         const group0 = group.attr('pointer-events', 'none');
         const group1 = (group = svg.insert('g', '*').call(render, d.parent));
@@ -361,11 +488,14 @@ export let buildZoomable = (container, data, selectedTreemap, total, themeStore)
             .duration(750)
             .call((t) =>
                 group0
+
                     .transition(t)
                     .remove()
+
                     .attrTween('opacity', () => d3.interpolate(1, 0))
                     .call(position, d)
             )
+
             .call((t) => group1.transition(t).call(position, d.parent));
     }
 

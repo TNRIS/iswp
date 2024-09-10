@@ -211,62 +211,78 @@
             <div class="loader"></div>
         {:then data}
             {#if demands_visible}
-                <LineChart data={data.demands} chartTitle={`${chartTitle}-demands`} options={chartOptions} />
+                <LineChart
+                    data={data.demands}
+                    chartTitle={`${chartTitle}-demands`}
+                    altClass={'ct-line-chart-size'}
+                    options={chartOptions} />
                 <div class="toggle-container">
                     <ChartDataTable
-                        bind:visible={visible}
+                        bind:visible
                         header={decades}
                         body={data.demands.series}
                         titles={true}
                         showHide={true}
                         {titleMap}
                         showTotal={true}
-                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`} />
+                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`}
+                        byDecade={true} />
                 </div>
             {/if}
             {#if supplies_visible}
-                <LineChart data={data.supplies} chartTitle={`${chartTitle}-supplies`} options={chartOptions} />
+                <LineChart
+                    data={data.supplies}
+                    chartTitle={`${chartTitle}-supplies`}
+                    altClass={'ct-line-chart-size'}
+                    options={chartOptions} />
 
                 <div class="toggle-container">
                     <ChartDataTable
-                        bind:visible={visible}
+                        bind:visible
                         header={decades}
                         body={data.supplies.series}
                         titles={true}
                         showHide={true}
                         {titleMap}
                         showTotal={true}
-                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`} />
+                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`}
+                        byDecade={true} />
                 </div>
             {/if}
             {#if needs_visible}
-                <LineChart data={data.needs} chartTitle={`${chartTitle}-needs`} options={chartOptions} />
+                <LineChart data={data.needs} chartTitle={`${chartTitle}-needs`} altClass={'ct-line-chart-size'} options={chartOptions} />
 
                 <div class="toggle-container">
                     <ChartDataTable
-                        bind:visible={visible}
+                        bind:visible
                         header={decades}
                         body={data.needs.series}
                         titles={true}
                         showHide={true}
                         {titleMap}
                         showTotal={true}
-                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`} />
+                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`}
+                        byDecade={true} />
                 </div>
             {/if}
             {#if strategies_visible}
-                <LineChart data={data.strategies} chartTitle={`${chartTitle}-strategies`} options={chartOptions} />
+                <LineChart
+                    data={data.strategies}
+                    chartTitle={`${chartTitle}-strategies`}
+                    altClass={'ct-line-chart-size'}
+                    options={chartOptions} />
 
                 <div class="toggle-container">
                     <ChartDataTable
-                        bind:visible={visible}
+                        bind:visible
                         header={decades}
                         body={data.strategies.series}
                         titles={true}
                         showHide={true}
                         {titleMap}
                         showTotal={true}
-                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`} />
+                        ariaHint={`${titles[selectedTheme]} by usage type in acre feet per year`}
+                        byDecade={true} />
                 </div>
             {/if}
         {:catch error}

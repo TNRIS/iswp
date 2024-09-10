@@ -1,15 +1,15 @@
 <script>
-    export /** @type {boolean} */let visible;
+    export /** @type {boolean} */ let visible;
     let text = 'Show Data Table';
-    const { ariaHint } = $$props;
+    const { ariaHint, byDecade } = $$props;
     function toggleVisible() {
         visible = !visible;
 
-        if(visible) {
-            document.getElementById("point-chart-usage-type").style.minHeight = '567px';
+        if (visible) {
+            if (byDecade) document.getElementById('point-chart-usage-type').style.minHeight = '567px';
             text = 'Hide Data Table';
         } else {
-            document.getElementById("point-chart-usage-type").style.minHeight = '390px';
+            if (byDecade) document.getElementById('point-chart-usage-type').style.minHeight = '390px';
             text = 'Show Data Table';
         }
     }

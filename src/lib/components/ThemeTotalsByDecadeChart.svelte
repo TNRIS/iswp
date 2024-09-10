@@ -128,7 +128,7 @@
                         {constants}
                         title={'Theme Totals By Decade Bar Chart'} />
                     <ChartDataTable
-                        bind:visible={visible}
+                        bind:visible
                         header={constants.getDecades()}
                         body={data['TBD']}
                         titles={true}

@@ -6,7 +6,8 @@
             "request": "launch",
             "type": "chrome",
             "url": "http://localhost:5173",
-            "webRoot": "${workspaceFolder}"
+            "webRoot": "${workspaceFolder}",
+            "enableContentValidation": false
         },
         {
             "name": "Node.js - Debug Current File",
