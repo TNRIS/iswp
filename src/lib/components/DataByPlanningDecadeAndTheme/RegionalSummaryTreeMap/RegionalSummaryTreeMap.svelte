@@ -33,11 +33,6 @@
      * @returns { Promise<TreeDataStruct | TreeDataOuterStruct | undefined>}
      */
     let datafix = async (data) => {
-        if (!data) {
-            console.log('No data found building treemap graph.');
-            return; // We cannot work without any data.
-        }
-
         // The data selected by theme and decade.
         let selected_data = data[$themeStore][$decadeStore];
 

@@ -63,7 +63,7 @@ export class TreeDataOuterHierarchy {}
  * Stle Note:: I prefer to expand out arrow functions here to help maintain this program for easier debugging.
  *
  * @param {HTMLDivElement} container
- * @param {TreeDataStruct} data
+ * @param {TreeDataOuterStruct} data
  * @param {string} selectedTreemap
  * @param {number} total
  * @param {string} themeStore
@@ -77,21 +77,16 @@ export const buildZoomable = (container, data, selectedTreemap, total, themeStor
     var count = 0;
 
     // Compute the layout.
-    const hierarchy /** @type {d3.HierarchyNode<TreeDataStruct>} */ = d3.hierarchy(data);
-    const total_data = hierarchy
-        // @ts-ignore
-        .sum((/** @type { TreeDataNode }*/ d) => {
+    const /** @type {d3.HierarchyNode<TreeDataOuterStruct>} */ hierarchy = d3.hierarchy(data).sum((/** @type { TreeDataNode }*/ d) => {
             if (typeof d.value == 'number') {
                 return d.value;
             }
         });
 
-    const total_data_sorted = total_data.sort(
+    const total_data_sorted = hierarchy.sort(
         // @ts-ignore
         (/** @type {d3.HierarchyNode<TreeDataStruct>} */ a, /** @type {d3.HierarchyNode<TreeDataStruct>} */ b) => {
-            if (a && b && a.value && b.value) {
-                return b.value - a.value;
-            }
+            return b.value - a.value;
         }
     );
 
