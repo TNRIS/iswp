@@ -118,11 +118,16 @@ export let load_indexeddb = async () => {
         console.log(err);
     }
 };
-
-export let cap = (s) => {
-    if (!s) {
-        return s;
-    }
+/**
+ * Capitalizing function for the iswp.
+ * 
+ * @param { string } s String to be capitalized.
+ * @param { string= } chosen Optional string that defaults to "" if it is set to wms then don't capitalize.
+ * @returns 
+ */
+export let cap = (s,  chosen="") => {
+    if (!s) return s;
+    if(chosen && chosen.length && chosen == 'wms') return s;
     let split_space = s.split(' ');
     let format_string = '';
     for (let i = 0; i < split_space.length; i++) {

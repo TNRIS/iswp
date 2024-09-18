@@ -395,8 +395,9 @@
                                             id={r.label}
                                             class="listItem"
                                             aria-details="Submit this button to navigate to {cap(
-                                                r.value
-                                            )} subcategory when you hit the go button.">{cap(r.value)}</a>
+                                                r.value,
+                                                chosen
+                                            )} subcategory when you hit the go button.">{cap(r.value, chosen)}</a>
                                     </li>
                                 {/each}
                             </ul>
