@@ -122,10 +122,10 @@ export let load_indexeddb = async () => {
  * Capitalizing function for the iswp.
  * 
  * @param { string } s String to be capitalized.
- * @param { [string] } chosen Optional string that defaults to "" if it is set to wms then don't capitalize.
+ * @param { string= } chosen Optional string that defaults to "" if it is set to wms then don't capitalize.
  * @returns 
  */
-export let cap = (/** @type {string} */ s, /** @type {string} */ chosen="") => {
+export let cap = (s,  chosen="") => {
     if (!s) return s;
     if(chosen && chosen.length && chosen == 'wms') return s;
     let split_space = s.split(' ');
