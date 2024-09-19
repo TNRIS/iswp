@@ -127,7 +127,7 @@ export let load_indexeddb = async () => {
  */
 export let cap = (s,  chosen="") => {
     if (!s) return s;
-    if(chosen && chosen.length && chosen == 'wms') return s;
+    if(chosen && chosen.length && (chosen === 'wms' || chosen === 'project' || chosen === 'entity')) return s;
     let split_space = s.split(' ');
     let format_string = '';
     for (let i = 0; i < split_space.length; i++) {
