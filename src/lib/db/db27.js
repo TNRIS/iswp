@@ -95,6 +95,8 @@ export function startDb27() {
                 let checksum = localStorage.getItem('checksum2027');
                 if (checksum && checksum.length) {
                     checksum = JSON.parse(checksum);
+                } else {
+                    storeChecksum();
                 }
                 //OK: So fast not even 1ms Load time here. It measures 0ms!
                 console.log(`get checksum from localstorage time: ${Date.now() - start}ms.`);
