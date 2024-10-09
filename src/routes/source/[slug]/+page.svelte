@@ -23,6 +23,7 @@
     let title = '';
     let tagline = `Surface Water Source in <a href="/">Texas</a>`;
     let stratAd = ['Region', 'County', 'Entity', 'Strategy', 'WMS Type', 'Source'];
+    let activeDem = ['Region', 'County', 'Entity']; // Active pivot columns for everything other than strategy supplies.
     let loadForSource = async () => {
         await is_idb_loaded();
         let start = Date.now();
@@ -64,6 +65,7 @@
             project_title2={'Projects Associated with Source'}
             {title} />
         <DataViewChoiceWrapInd
+            {activeDem}    
             {stratAd}
             slug={data.slug}
             title={'WATER SOURCE - ' + title}

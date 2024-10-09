@@ -86,7 +86,7 @@
         <ThemeTypesByDecadeChart chartTitle={'ct-usage-chart'} {lrp} title={`${data.slug} County`} {constants} />
 
         <DataUsageType {lrp} {constants} title={`${data.slug} County`} />
-        <ProjectTable project_title={`${data.slug} COUNTY`} project_title2={'Projects Serving Area Of Interest'} {lrp} type={'region'} />
+        <ProjectTable project_title={`${data.slug} COUNTY`} project_title2={'Projects Serving Area of Interest'} {lrp} type={'region'} />
         <DataViewChoiceWrapInd
             title={`${data.slug} County`}
             {entityMapBlurb}

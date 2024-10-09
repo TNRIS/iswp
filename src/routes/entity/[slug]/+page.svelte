@@ -71,7 +71,7 @@
         <EntityStrategiesTable {lrp} {constants} title={`Water User Group - ${entityName}`} />
         <ProjectTable
             project_title={`WATER USER GROUP - ${entityName}`}
-            project_title2={'Projects Serving Area Of Interest'}
+            project_title2={'Projects Serving Area of Interest'}
             {lrp}
             type="county" />
         <DataViewChoiceWrapInd
