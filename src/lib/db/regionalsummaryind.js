@@ -15,7 +15,7 @@
 import { Constant2017 } from '$lib/Constant2017.js';
 import { Constant2022 } from '$lib/Constant2022.js';
 import { Constant2027 } from '$lib/Constant2027.js';
-import { TEST_FLAG } from '$lib/helper';
+import { DEFAULT_FLAG } from '$lib/helper';
 
 export default class RegionalSummaryInd {
     host = window.location.hostname;
@@ -32,7 +32,7 @@ export default class RegionalSummaryInd {
             this.constants = new Constant2017();
         } else {
             // Fallback block used for testing.
-            if (TEST_FLAG === '2017') {
+            if (DEFAULT_FLAG === '2017') {
                 this.constants = new Constant2017();
             } else {
                 this.constants = new Constant2022();
