@@ -8,7 +8,7 @@
     import { Constant2022 } from '$lib/Constant2022';
     import { Constant2027 } from '$lib/Constant2027';
     import Select from 'svelte-select';
-    import { TEST_FLAG } from '$lib/helper';
+    import { DEFAULT_FLAG } from '$lib/helper';
 
     /**
      * @typedef NavLabel
@@ -144,11 +144,11 @@
                 sourceName = c22.sourceNames;
             } else if ($page.url.host.includes('2027')) {
                 sourceName = c27.sourceNames;
-            } else if (TEST_FLAG === '2017') {
+            } else if (DEFAULT_FLAG === '2017') {
                 sourceName = c17.sourceNames;
-            } else if (TEST_FLAG === '2022') {
+            } else if (DEFAULT_FLAG === '2022') {
                 sourceName = c22.sourceNames;
-            } else if (TEST_FLAG === '2027') {
+            } else if (DEFAULT_FLAG === '2027') {
                 sourceName = c27.sourceNames;
             } else {
                 sourceName = c22.sourceNames;

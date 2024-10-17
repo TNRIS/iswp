@@ -4,7 +4,7 @@
 import { Constant2017 } from '$lib/Constant2017.js';
 import { Constant2022 } from '$lib/Constant2022.js';
 import { Constant2027 } from '$lib/Constant2027.js';
-import { TEST_FLAG } from '$lib/helper';
+import { DEFAULT_FLAG } from '$lib/helper';
 
 export default class Counties {
     host = window.location.hostname;
@@ -18,7 +18,7 @@ export default class Counties {
             this.constants = new Constant2017();
         } else {
             // Fallback block used for testing.
-            if (TEST_FLAG === '2017') {
+            if (DEFAULT_FLAG === '2017') {
                 this.constants = new Constant2017();
             } else {
                 this.constants = new Constant2022();
@@ -61,9 +61,9 @@ export default class Counties {
 
     get = async (setting) => {
         let a;
-        if (this.host.includes(2017) || TEST_FLAG == "2017") {
+        if (this.host.includes(2017) || DEFAULT_FLAG == "2017") {
             a = this.#getAllTransaction(`${this.constants.tappend}SelectRegionsInCounty`, 'RegionLetter', `${setting}`);
-        } else if (this.host.includes(2022) || TEST_FLAG == "2022") {
+        } else if (this.host.includes(2022) || DEFAULT_FLAG == "2022") {
             a = this.#getAllTransaction(`${this.constants.tappend}SelectRegionsInCounty`, 'RegionLetter', `${setting} `); // For some reason space is needed in 2022.
         } else {
             a = this.#getAllTransaction(`${this.constants.tappend}SelectRegionsInCounty`, 'RegionLetter', `${setting} `); // Default to 2022. 
