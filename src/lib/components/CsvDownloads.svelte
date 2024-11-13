@@ -1,6 +1,7 @@
 <script>
-    const { swdata, csvTitle, fileName, constants, downloadPopulation } = $$props;
+    const { swdata, fileName, constants, downloadPopulation } = $$props;
     let decades = constants.getDecades();
+    export let csvTitle;
     if (!fileName) console.log('We need a filename');
     import { json2csv } from 'json-2-csv';
 

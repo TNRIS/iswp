@@ -29,7 +29,7 @@
 
     const countyTable = 'county_extended';
     const regionTable = 'rwpas';
-    const { slug, title, constants, type, entityMapBlurb } = $$props;
+    const { slug, constants, type, entityMapBlurb } = $$props;
     const DECADES = constants.getDecades();
     const sourceMap = constants.sourcemap;
     const sourceTable = constants.sourcetables;
@@ -38,7 +38,7 @@
     const themeStore = getContext('myContext').themeStore;
 
     const titles = constants.chosenTitles;
-
+    export let title;
     const TEXAS = [
         [36.5, -106.65],
         [25.84, -93.51]
