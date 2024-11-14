@@ -258,7 +258,7 @@
                         const center = gj.getBounds().getCenter();
                         center.lng -= 0.5; // Move center a bit to get out of the way of the population line graph
                         map.setView(center, 9);
-
+                        map.zoomIn(9);
                         countyHoverSetup();
                     });
             } else if (page == 'entity') {
