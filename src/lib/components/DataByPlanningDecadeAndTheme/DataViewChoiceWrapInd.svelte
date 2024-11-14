@@ -16,8 +16,6 @@
         lrp,
         type,
         hideTheme,
-        csvTitle,
-        title,
         fileName,
         constants,
         stratAd,
@@ -26,7 +24,8 @@
         sourcePage,
         entityMapBlurb
     } = $$props;
-
+    export let title;
+    export let csvTitle;
     let decadeStore = writable(constants.getDecades()[0]);
     let themeStore = writable('strategies');
     if (type === 'pop') themeStore.set('population');

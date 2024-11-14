@@ -22,7 +22,9 @@
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`;
 
     let db = load_indexeddb();
-    $: entityName = JSON.parse(localStorage.entityCoordinates).find((element) => element.EntityId == data.slug).EntityName;
+    $: entityName = '';
+    $: camelCaseEntityName = `Water User Group - ${entityName}`;
+    $: capsEntityName = `WATER USER GROUP - ${entityName}`;
 
     let stratAd = ['Region', 'County', 'Entity', 'Strategy', 'WMS Type', 'Source'];
 
@@ -31,6 +33,7 @@
 
     let loadForEntity = async () => {
         await is_idb_loaded();
+        entityName = JSON.parse(localStorage.entityCoordinates).find((element) => element.EntityId == data.slug).EntityName;
         let start = Date.now();
         db = await db;
         let sw = new Statewide(db);
@@ -66,19 +69,19 @@
 </svelte:head>
 <div class="statewide-view">
     <section>
-        <PopulationChart {tagline} bind:title={entityName} {lrp} {constants} />
-        <ThemeTotalsByDecadeChart {lrp} {constants} title={`Water User Group - ${entityName}`} />
-        <EntityStrategiesTable {lrp} {constants} title={`Water User Group - ${entityName}`} />
+        <PopulationChart bind:tagline={tagline} bind:title={entityName} {lrp} {constants} />
+        <ThemeTotalsByDecadeChart {lrp} {constants} bind:title={camelCaseEntityName} />
+        <EntityStrategiesTable {lrp} {constants} bind:title={camelCaseEntityName} />
         <ProjectTable
-            project_title={`WATER USER GROUP - ${entityName}`}
+            bind:project_title={capsEntityName}
             project_title2={'Projects Serving Area of Interest'}
             {lrp}
             type="county" />
         <DataViewChoiceWrapInd
             showPopulation={true}
             {lrp}
-            title={`Water User Group - ${entityName}`}
-            csvTitle={entityName}
+            bind:title={camelCaseEntityName}
+            bind:csvTitle={entityName}
             fileName={`entity_${data.slug}`}
             {constants}
             {stratAd}

@@ -1,10 +1,10 @@
 <script>
     import BarChart from '$lib/components/Charts/BarChart.svelte';
-    const { lrp, wugRegionFilter, constants, title } = $$props;
+    const { lrp, wugRegionFilter, constants } = $$props;
     import ChartDataTable from '$lib/components/ChartDataTable.svelte';
     import { commafy } from '$lib/helper.js';
     import ColorCodeSpread from '$lib/components/ColorCodeIcons/ColorCodeSpread.svelte';
-
+    export let title;
     let /** @type {boolean} */ visible;
     const chartOptions = {
         height: '200px',

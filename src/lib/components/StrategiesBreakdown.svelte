@@ -1,13 +1,13 @@
 <script>
     //@ts-nocheck
-    const { swdata, title } = $$props;
+    const { swdata } = $$props;
     import { calcPercentage, commafy, sortAlphabetic, sortNumeric } from '$lib/helper.js';
     import { getContext, onMount } from 'svelte';
     import { hoverHelper, clearInteraction } from '$lib/actions/HoverAction';
     const decadeStore = getContext('myContext').decadeStore;
     const themeStore = getContext('myContext').themeStore;
     const dataviewContext = getContext('dataviewContext');
-
+    export let title;
     let srttable;
     import 'chartist/dist/index.css';
 

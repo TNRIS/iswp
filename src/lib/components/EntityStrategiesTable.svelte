@@ -4,11 +4,12 @@
     import 'gridjs/dist/theme/mermaid.css';
     import { onMount } from 'svelte';
     import { usd_format, commafy } from '$lib/helper.js';
-    const { lrp, type, constants, title } = $$props;
+    const { lrp, type, constants } = $$props;
     let sum = 0;
 
     let decades = constants.getDecades();
     let strategies = false;
+    export let title;
     $: strats = true;
     onMount(async () => {
         const swdata = await lrp;

@@ -1,6 +1,6 @@
 <script>
     //@ts-nocheck
-    const { page, slug, swdata, csvTitle, title, fileName, constants, stratAd, activeDem, showPopulation } = $$props;
+    const { page, slug, swdata, fileName, constants, stratAd, activeDem, showPopulation } = $$props;
     import { commafy, onMountSync, usd_format } from '$lib/helper.js';
     let pivotLoaded = false;
     import CsvDownloads from '$lib/components/CsvDownloads.svelte';
@@ -10,7 +10,8 @@
     const themeStore = getContext('myContext').themeStore;
     const dataviewContext = getContext('dataviewContext');
     const themeTitles = constants.getThemeTitles();
-
+    export let title;
+    export let csvTitle;
     let getData = async () => {
         try {
             if (!pivotLoaded) {
