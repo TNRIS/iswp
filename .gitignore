@@ -21,6 +21,8 @@ example.json
 /iswpcdk
 iswpbak.zip
 package-lock.json
+dbcreds.js
+
 
 # Do not remove these. Run npm package instead if this is missing. It shouldn't be in the git repo. 
 static/tom-select.default.min.css
