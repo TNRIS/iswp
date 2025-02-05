@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { startDb17 } from './db17?v1';
-import { startDb22 } from './db22?v2';
+import { startDb22 } from './db22?v3';
 import { startDb27 } from './db27?v1';
 
 export async function start_all_db() {
