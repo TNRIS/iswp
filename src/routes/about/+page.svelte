@@ -111,6 +111,7 @@
                         width="90%"
                         style="padding:10px;" />
 
+                    {#if constants.id !== 27}
                     <p>
                         Wholesale water provider (WWP) contract and sales data is collected, but not displayed in the 2022 Interactive State
                         Water Plan since this application is designed to be a summary of water user group (WUG) data. Water management
@@ -122,6 +123,19 @@
                         >. You can also contact
                         <a href="mailto:wrpdatarequests@twdb.texas.gov">wrpdatarequests@twdb.texas.gov</a> to request these types of datasets.
                     </p>
+                    {:else if constants.id == 27}
+                    <p>
+                        Wholesale water provider (WWP) contract and sales data is collected, but not displayed in the 2027 Interactive State
+                        Water Plan since this application is designed to be a summary of water user group (WUG) data. Water management
+                        strategy supply being developed, but not assigned to a specific WUG is also collected and not displayed in the
+                        2027 Interactive State Water Plan because that data is not included in recommended strategy supply totals in the
+                        state water plan. To find information related to WWPs and unassigned water volumes, you can visit the
+                        Texas Water Development Board Secure Agency Reporting Application at <a href="https://www3.twdb.texas.gov/apps/SARA/reports/list">https://www3.twdb.texas.gov/apps/SARA/reports/list</a>
+                        to view 2026 Draft Regional Water Plan data. Use the global filter option located at the top of the reporting
+                        application and filter the reports by the text '2026' to see all reports associated with the 2026 RWPs. You can also
+                        contact wrpdatarequests@twdb.texas.gov to request these types of datasets.
+                    </p>
+                    {/if}
                 </section>
 
                 <section id="HowDoIUseTheMap">
@@ -311,6 +325,8 @@
                 <section id="PreviousPlans">
                     <h3>Where can I access current and previous state water plans?</h3>
                     <p><a href="#Top"><small>Back to Top</small></a></p>
+
+                    {#if constants.id == 17 || constants.id == 22}
                     <p>
                         Looking for the most current 2022 Interactive State Water Plan website? View it at <a
                             title="2022 Interactive State Water Plan"
@@ -335,6 +351,25 @@
                             href="http://www.twdb.texas.gov/waterplanning/index.asp">http://www.twdb.texas.gov/waterplanning/index.asp</a
                         >.
                     </p>
+                    {:else if constants.id == 27}
+
+                    2027 State Water Plan
+                    <ul>
+                        <li>2027 Interactive State Water Plan website <a href="https://2027.texasstatewaterplan.org/statewide">https://2027.texasstatewaterplan.org/statewide</a></li>
+                    </ul>
+                    2022 State Water Plan
+                    <ul>
+                        <li>2022 Interactive State Water Plan website <a href="https://2022.texasstatewaterplan.org/statewide">https://2022.texasstatewaterplan.org/statewide</a></li>
+                        <li>2022 Data summary Excel workbook <a href="https://www.twdb.texas.gov/waterplanning/data/rwp-database/index.asp">https://www.twdb.texas.gov/waterplanning/data/rwp-database/index.asp</a></li>
+                        <li>2022 State Water Plan <a href="https://www.twdb.texas.gov/waterplanning/swp/2022/index.asp">https://www.twdb.texas.gov/waterplanning/swp/2022/index.asp</a></li>
+                    </ul>
+                    2017 State Water Plan
+                    <ul>
+                        <li>2017 Interactive State Water Plan website <a href="https://2017.texasstatewaterplan.org/">https://2017.texasstatewaterplan.org/</a></li>
+                        <li>2017 State Water Plan <a href="https://www.twdb.texas.gov/waterplanning/swp/2017/index.asp">https://www.twdb.texas.gov/waterplanning/swp/2017/index.asp</a></li>
+                    </ul>
+                    1961 through 2012 State Water Plans can be found here <a href="https://www.twdb.texas.gov/waterplanning/swp/index.asp">https://www.twdb.texas.gov/waterplanning/swp/index.asp</a> in the menu on the right side of the screen.
+                    {/if}
                 </section>
 
                 <section id="Glossary" class="glossary">
