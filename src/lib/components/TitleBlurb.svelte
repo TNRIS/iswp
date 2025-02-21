@@ -27,7 +27,7 @@
                     <li> the water management strategies recommended to address potential shortages, and </li>
                     <li>recommended capital projects and their sponsors.</li>
                 </ul>
-                {#if constants.getYear() == 2027}
+                {#if constants.id == 27}
                     <p>
                         The final regional water plan data will be used in the development of the 2027 State Water Plan which is central to
                         the mission of the Texas Water Development Board. Based on 16 regional water plans, the state water plan addresses

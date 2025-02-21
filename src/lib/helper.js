@@ -15,7 +15,13 @@ export let getConstants = (host) => {
     } else {
         if (DEFAULT_FLAG == '2017') {
             return new Constant2017();
-        } else {
+        } else if (DEFAULT_FLAG == '2027'){
+            return new Constant2027();
+        }
+        else if (DEFAULT_FLAG == '2022'){
+            return new Constant2022();
+        }
+        else {
             return new Constant2022();
         }
     }
