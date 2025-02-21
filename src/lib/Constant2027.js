@@ -2,7 +2,7 @@ export class Constant2027 {
     id = 27;
     header = 'Draft Regional Water Plan Data';
     region_footer =
-        `The 2026 Draft Regional Water Plans can be found on the TWDB website at: <a href='https://www.twdb.texas.gov/waterplanning/rwp/plans/2026/index.asp'>https://www.twdb.texas.gov/waterplanning/rwp/plans/2026/index.asp</a>.`;
+        `The 2026 Draft Regional Water Plans can be found on the TWDB website at: <a href='https://www.twdb.texas.gov/waterplanning/rwp/plans/2026/index.asp'>https://www.twdb.texas.gov/waterplanning/rwp/plans/2026/index.asp</a> to view 2026 Regional Water Plan data. Use the global filter option located at the top of the reporting application and filter the reports by the text '2026' to see all reports associated with the 2026 RWPs.`;
     allow_dl = false;
     MIN_RADIUS = 4;
     MAX_RADIUS = 9;
