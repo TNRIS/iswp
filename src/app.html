@@ -87,7 +87,9 @@ This is only needed in the live version of the site due to prerender=true not wo
           </div>
         </div>
       </div>
-      <div style="display: contents">%sveltekit.body%</div>
+      <div id="loadable-content">
+        <div style="display: contents">%sveltekit.body%</div>
+      </div>
     </div>
     <footer id="footer">
       <p>This website is brought to you by the <a href="http://www.twdb.texas.gov"

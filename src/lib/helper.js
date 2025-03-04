@@ -57,11 +57,11 @@ export let is_idb_loaded = () => {
                 if (localStorage.getItem('checkedDB') == 'true') {
                     //console.log("resolving.")
                     clearInterval(interval);
-                    document.getElementById('main-content').style.display = 'block';
+                    document.getElementById('loadable-content').style.display = 'block';
                     document.getElementById('main-loader').style.display = 'none';
                     resolve('Done');
                 } else {
-                    document.getElementById('main-content').style.display = 'none';
+                    document.getElementById('loadable-content').style.display = 'none';
                     document.getElementById('main-loader').style.display = 'block';
                 }
             };
