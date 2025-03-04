@@ -90,8 +90,7 @@
                             </p>
                         {:else}
                             <!-- 2022 description. -->
-                            <p
-                                >{constants.regionalDescription[data.slug]}
+                            <p style="word-break: break-word;">{constants.regionalDescription[data.slug]}
                                 {@html constants.region_footer}</p>
                         {/if}
                     </div>
