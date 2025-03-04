@@ -40,7 +40,7 @@ const storeChecksum = async () => {
 
 export function startDb27() {
     return new Promise(async (resolve, reject) => {
-        const request27 = window.indexedDB.open('iswpdb27', 6);
+        const request27 = window.indexedDB.open('iswpdb27', 7);
 
         request27.onerror = (event) => {
             reject(event);
@@ -87,8 +87,7 @@ export function startDb27() {
 
             // Check databases before resolving
             // Not very efficient so only do once per database refresh
-            //May change to check localStorage.getItem("checkedDB") !== "true" but need to test
-
+          //Change to this eventually. But later localStorage.getItem("checkedDB") !== "true"
             if (true) {
                 await checksumPromise;
                 const start = Date.now();
@@ -105,6 +104,8 @@ export function startDb27() {
                     request27.result.close();
                     delete_database27();
                     reject('There was a problem loading database. Reload please.');
+
+                    //TODO Limit this to 5 tries
                     window.location.reload();
                 }
 
@@ -120,7 +121,7 @@ export function startDb27() {
                         let record = event.currentTarget.source.name;
 
                         if (recordcount !== checksum[record]) {
-                            request22.result.close();
+                            request27.result.close();
                             delete_database27();
                             window.location.reload();
                             reject('There was a problem loading database. Reload please.');

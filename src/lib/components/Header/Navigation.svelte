@@ -335,7 +335,7 @@
 <div class="header-nav sticky-div">
     <div class="wrapper" id="wrapper">
         <form>
-            <label for="navcat">View data for</label>
+            <label for="navcat" id="navlabel">View data for</label>
             <nav class="select-container" id="navcat_container">
                 <Select
                     {items}
@@ -353,7 +353,7 @@
             {#await setupChoices() then}
                 {#if chosen && chosen !== '' && chosen !== 'statewide'}
                     {#if chosen == 'region' || chosen == 'county' || chosen == 'usagetype' || chosen == 'source' || chosen == 'wmstype'}
-                        <nav class="select-container" style="width:300px;">
+                        <nav class="select-container main_select">
                             {#key chosen}
                                 <Select
                                     items={categories[chosen]}
@@ -370,7 +370,7 @@
                             {/key}
                         </nav>
                     {:else}
-                        <nav class="select-container">
+                        <nav class="select-container main_select">
                             <input
                                 style="padding: 8px;"
                                 type="text"
@@ -438,12 +438,10 @@
         height: default !important;
     }
 
-    #navcat_container {
-        width: 200px;
-    }
 
     #submit-button {
-        display: inline;
+        display: table-cell;
+        margin-bottom: none;
     }
 
     .button-nav-submit {
@@ -453,10 +451,10 @@
     }
 
     #secondary-category-select {
-        width: 200px;
+        width: 100%;
         border-radius: 8px;
-        width: 400px;
         height: 42px;
+        padding: 1em;
     }
 
     .header-nav {
