@@ -1844,8 +1844,8 @@ p.note {
   position: absolute;
   top: 0;
   right: 0;
-  width: 1px;
-  height: 1px;
+  width: 0px;
+  height: 0px;
   clip: rect(1px, 1px, 1px, 1px);
   margin: 0;
   z-index: 1;
