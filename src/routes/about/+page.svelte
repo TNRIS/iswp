@@ -11,7 +11,7 @@
 
 <title>About | 2022 Texas State Water Plan</title>
 
-<section class="content">
+<section class="content" id="main-content" role="main">
     <div class="container">
         <div class="row panel-row">
             <div class="twelve columns">

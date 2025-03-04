@@ -67,7 +67,7 @@
 <svelte:head>
     <title>{data.slug ? `${data.slug} County` : 'County'}</title>
 </svelte:head>
-<div class="statewide-view">
+<div class="statewide-view" id="main-content" role="main">
     <section>
         <!-- We need to await lrp for the tagline here.-->
         {#await lrp}

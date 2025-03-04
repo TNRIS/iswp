@@ -67,7 +67,7 @@
 <svelte:head>
     <title>Water User Group{entityName ? ` for ${entityName}` : ''}</title>
 </svelte:head>
-<div class="statewide-view">
+<div class="statewide-view" id="main-content" role="main">
     <section>
         <PopulationChart bind:tagline={tagline} bind:title={entityName} {lrp} {constants} />
         <ThemeTotalsByDecadeChart {lrp} {constants} bind:title={camelCaseEntityName} />
