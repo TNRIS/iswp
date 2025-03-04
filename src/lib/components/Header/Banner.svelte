@@ -15,9 +15,9 @@
     </div>
 {/if}
 <header class="header" id="Top">
-
     <div class="header-title-container">
         <div class="header-title wrapper">
+            <a class="skip-link" id="skip-link" href="#main-content" tabIndex="0" title="Skip to main content"> Skip to Main Content </a>
             <h1>
                 <a href="/" title="Home">
                     <span class="first-line">{constants.getYear()}</span>
@@ -28,7 +28,7 @@
             <!-- <span class="by-the show-medium">by the</span> -->
             <a href="http://www.twdb.texas.gov" title="Texas Water Development Board">
                 <img src="/img/twdb-logo-dark-bkgd-w200px-3c.png" class="logo" alt="Texas Water Development Board Logo" />
-            </a><a class="skip-link" id="skip-link" href="#main-content" tabIndex="0" title="Skip to main content"> Skip to Main Content </a>
+            </a>
 
             <div class="nav-container" style="font-size:0px">
                 <a class="button button-home" aria-label="Home" href="/" title="Home">

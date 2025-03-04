@@ -334,11 +334,13 @@
 
 <div class="header-nav sticky-div">
     <div class="wrapper" id="wrapper">
-        <form>
+        <form id="top_nav_flex">
             <label for="navcat" id="navlabel">View data for</label>
             <nav class="select-container" id="navcat_container">
                 <Select
                     {items}
+                    containerStyles="width: revert-layer;"
+                    inputStyles="width: revert-layer;"
                     clearable={false}
                     on:change={reset}
                     value={chosen ? chosen : 'All of Texas'}
@@ -436,12 +438,6 @@
 
     #navcat {
         height: default !important;
-    }
-
-
-    #submit-button {
-        display: table-cell;
-        margin-bottom: none;
     }
 
     .button-nav-submit {

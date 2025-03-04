@@ -441,10 +441,11 @@ $top-height: 34rem;
     z-index: 1;
     left: -999px; 
     background: #fff;
-    color:#000; 
+    color:#000;
+    overflow:hidden;
     &:focus {
-        height: auto;
-        width: auto;
+        height: 1px;
+        width: 1px;
         clip: auto;
         padding: 0 1rem;
         color: white;
