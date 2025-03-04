@@ -60,7 +60,7 @@
 <svelte:head>
     <title>Project {projectName ? ` for ${projectName}` : ''}</title>
 </svelte:head>
-<div class="statewide-view">
+<div class="statewide-view" id="main-content" role="main">
     <!--TODO weigh whether it's a good idea to cache project information in the future here. In order to load each entity one at a time.-->
     {#await loadForSource()}
         <div class="loader"></div>

@@ -55,7 +55,7 @@ ol {
 }
 
 .sticky-div-2 {
-  top: 58px;
+  top: 0px;
 }
 
 button[disabled] {
@@ -1092,11 +1092,6 @@ button.easy-button-button .icon-texas {
     margin-left: 1em;
   }
 }
-@media (max-width: 750px) {
-  #nav_submit {
-    margin-top: 0.5em;
-  }
-}
 
 .main_select {
   width: 100%;
@@ -1107,18 +1102,32 @@ button.easy-button-button .icon-texas {
   }
 }
 
-@media (min-width: 750px) {
-  #navcat_container {
-    width: 260px;
+#navcat_container .svelte-select {
+  width: 260px;
+}
+@media (max-width: 750px) {
+  #navcat_container .svelte-select {
+    width: 100%;
   }
 }
 
 @media (min-width: 750px) {
   #navlabel {
-    display: table-cell;
+    display: inline-block;
+    margin-left: 1rem;
+    margin-top: auto;
+    margin-bottom: auto;
+    min-width: 125px;
+  }
+}
+
+@media (max-width: 750px) {
+  #navlabel {
+    display: inline-block;
     margin-left: 1rem;
     margin-top: 0;
-    min-width: 125px;
+    width: 25%;
+    font-size: 14px;
   }
 }
 
@@ -1169,10 +1178,22 @@ button.easy-button-button .icon-texas {
   vertical-align: middle;
 }
 
+@media (min-width: 750px) {
+  #top_nav_flex {
+    display: flex;
+  }
+}
+
 .header-nav {
   background-color: #526e8d;
   padding: 4px 0;
+  padding: 4px 0px 10px;
   border-bottom: 1px solid white;
+}
+@media (min-width: 750px) {
+  .header-nav {
+    padding: 4px 0px 10px;
+  }
 }
 .header-nav form {
   margin: 0;
@@ -1202,9 +1223,15 @@ button.easy-button-button .icon-texas {
   vertical-align: middle;
   margin-top: 0.5rem;
 }
+@media (max-width: 750px) {
+  .header-nav .select-container {
+    display: inline-block;
+    width: 70%;
+  }
+}
 @media (min-width: 750px) {
   .header-nav .select-container {
-    display: table-cell;
+    display: inline-block;
     margin-left: 1rem;
     margin-top: 0;
   }
@@ -1230,6 +1257,20 @@ button.easy-button-button .icon-texas {
 }
 .button-nav-submit:focus {
   border: 1px solid #33c3f0;
+}
+
+#submit-button {
+  display: inline-block;
+  margin-bottom: none;
+}
+@media (max-width: 750px) {
+  #submit-button {
+    display: inline-block;
+    margin-top: 0.5rem;
+    margin-bottom: none;
+    margin-right: 0.3rem;
+    vertical-align: middle;
+  }
 }
 
 #nav-category-select,
@@ -1803,18 +1844,19 @@ p.note {
   position: absolute;
   top: 0;
   right: 0;
-  width: 1px;
-  height: 1px;
+  width: 0px;
+  height: 0px;
   clip: rect(1px, 1px, 1px, 1px);
   margin: 0;
   z-index: 1;
   left: -999px;
   background: #fff;
   color: #000;
+  overflow: hidden;
 }
 .skip-link:focus {
-  height: auto;
-  width: auto;
+  height: 1px;
+  width: 1px;
   clip: auto;
   padding: 0 1rem;
   color: white;

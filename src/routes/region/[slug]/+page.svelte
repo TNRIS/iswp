@@ -65,7 +65,7 @@
 <svelte:head>
     <title>Planning Region {data.slug ? ` ${data.slug}` : ''}</title>
 </svelte:head>
-<div class="statewide-view">
+<div class="statewide-view" id="main-content" role="main">
     <section>
         <PopulationChart
             title={`Planning Region ${data.slug}`}

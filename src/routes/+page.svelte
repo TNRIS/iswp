@@ -40,7 +40,7 @@
 <svelte:head>
     <title>Homepage of Interactive State Water Plan</title>
 </svelte:head>
-<div class="statewide-view">
+<div class="statewide-view" id="main-content" role="main">
     <section>
         {#await popChartPromise}
             <ComponentLoader />

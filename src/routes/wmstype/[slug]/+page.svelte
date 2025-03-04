@@ -48,7 +48,7 @@
 <svelte:head>
     <title>Water Management Strategy Type{data.slug ? ` for ${data.slug}` : ''}</title>
 </svelte:head>
-<div class="statewide-view">
+<div class="statewide-view" id="main-content" role="main">
     <section>
         <div class="view-top usage-type-view-top">
             <div class="summary-wrapper container">

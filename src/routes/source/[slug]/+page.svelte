@@ -54,7 +54,7 @@
 <svelte:head>
     <title>Source{title ? ` for ${title}` : ''}</title>
 </svelte:head>
-<div class="statewide-view">
+<div class="statewide-view" id="main-content" role="main">
     {#await lrp then}
         <!-- TODO remove this await and await in individual entities. For now await because of title generation. -->
         <PopulationChart {tagline} titleOnly={true} {title} {constants} />
