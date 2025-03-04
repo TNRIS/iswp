@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { startDb17 } from './db17?v1';
 import { startDb22 } from './db22?v3';
-import { startDb27 } from './db27?v2';
+import { startDb27 } from './db27?v3';
 
 export async function start_all_db() {
     return await Promise.all([startDb17(), startDb22(), startDb27()]);

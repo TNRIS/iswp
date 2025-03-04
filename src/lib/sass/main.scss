@@ -439,13 +439,16 @@ $top-height: 34rem;
     clip: rect(1px, 1px, 1px, 1px);
     margin: 0;
     z-index: 1;
-
+    left: -999px; 
+    background: #fff;
+    color:#000; 
     &:focus {
         height: auto;
         width: auto;
         clip: auto;
         padding: 0 1rem;
         color: white;
+        left: 0;
     }
 }
 

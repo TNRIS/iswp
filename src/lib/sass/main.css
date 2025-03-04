@@ -1084,6 +1084,44 @@ button.easy-button-button .icon-texas {
   fill: rgb(254, 195, 78);
 }
 
+#nav_submit {
+  margin-bottom: 0px;
+}
+@media (min-width: 750px) {
+  #nav_submit {
+    margin-left: 1em;
+  }
+}
+@media (max-width: 750px) {
+  #nav_submit {
+    margin-top: 0.5em;
+  }
+}
+
+.main_select {
+  width: 100%;
+}
+@media (min-width: 750px) {
+  .main_select {
+    padding-left: 1em;
+  }
+}
+
+@media (min-width: 750px) {
+  #navcat_container {
+    width: 260px;
+  }
+}
+
+@media (min-width: 750px) {
+  #navlabel {
+    display: table-cell;
+    margin-left: 1rem;
+    margin-top: 0;
+    min-width: 125px;
+  }
+}
+
 .nav-container {
   position: absolute;
   right: 0;
@@ -1164,9 +1202,9 @@ button.easy-button-button .icon-texas {
   vertical-align: middle;
   margin-top: 0.5rem;
 }
-@media (min-width: 550px) {
+@media (min-width: 750px) {
   .header-nav .select-container {
-    display: inline-block;
+    display: table-cell;
     margin-left: 1rem;
     margin-top: 0;
   }
@@ -1770,6 +1808,9 @@ p.note {
   clip: rect(1px, 1px, 1px, 1px);
   margin: 0;
   z-index: 1;
+  left: -999px;
+  background: #fff;
+  color: #000;
 }
 .skip-link:focus {
   height: auto;
@@ -1777,6 +1818,7 @@ p.note {
   clip: auto;
   padding: 0 1rem;
   color: white;
+  left: 0;
 }
 
 .glossary h5 {
