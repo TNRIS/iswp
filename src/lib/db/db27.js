@@ -2,7 +2,7 @@
 let db27;
 let UPGRADE_NEEDED = false;
 
-import { build_func } from './db_helper.js';
+import { build_func } from './db_helper.js?v1';
 let checksumPromise = async () => {
     /*placeholder*/
 };
@@ -40,7 +40,7 @@ const storeChecksum = async () => {
 
 export function startDb27() {
     return new Promise(async (resolve, reject) => {
-        const request27 = window.indexedDB.open('iswpdb27', 7);
+        const request27 = window.indexedDB.open('iswpdb27', 8);
 
         request27.onerror = (event) => {
             reject(event);

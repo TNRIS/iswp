@@ -2,7 +2,7 @@
     //@ts-nocheck
     import ProjectTable from '$lib/components/ProjectTable/ProjectTable.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
-    import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
+    import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js?v1';
     import Statewide from '$lib/db/statewide.js';
     import { QuerySettings } from '$lib/QuerySettings.js';
     export let data;

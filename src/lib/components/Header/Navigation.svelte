@@ -3,7 +3,7 @@
 <script>
     import { page } from '$app/stores';
     import Statewide from '$lib/db/statewide.js';
-    import { cap, onMountSync } from '$lib/helper.js';
+    import { cap, onMountSync } from '$lib/helper.js?v1';
     import { Constant2017 } from '$lib/Constant2017';
     import { Constant2022 } from '$lib/Constant2022';
     import { Constant2027 } from '$lib/Constant2027';

@@ -1,7 +1,7 @@
 <script>
     //@ts-nocheck
     const { page, slug, swdata, fileName, constants, stratAd, activeDem, showPopulation } = $$props;
-    import { commafy, onMountSync, usd_format } from '$lib/helper.js';
+    import { commafy, onMountSync, usd_format } from '$lib/helper.js?v1';
     let pivotLoaded = false;
     import CsvDownloads from '$lib/components/CsvDownloads.svelte';
 

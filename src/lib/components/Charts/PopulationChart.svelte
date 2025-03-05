@@ -6,7 +6,7 @@
     import ChartDataTable from '$lib/components/ChartDataTable.svelte';
     let { lrp, titleOnly, constants, noMap, dont_capitalize_title } = $$props;
     import PopulationMap from '$lib/components/Maps/PopulationMap.svelte';
-    import { commafy } from '$lib/helper.js';
+    import { commafy } from '$lib/helper.js?v1';
     export let title; 
     export let tagline; // Tagline won't refresh unless I define the svelte property here instead of using $$Props for some reason.
 

@@ -2,7 +2,7 @@
 let db17;
 let UPGRADE_NEEDED = false;
 
-import { build_func } from './db_helper.js';
+import { build_func } from './db_helper.js?v1';
 let checksumPromise = async () => {
     /*placeholder*/
 };

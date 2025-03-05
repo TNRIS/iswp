@@ -6,7 +6,7 @@
     import ThemeTypesByDecadeChart from '$lib/components/ThemeTypesByDecadeChart.svelte';
     import ThemeTotalsByDecadeChart from '$lib/components/ThemeTotalsByDecadeChart.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
-    import { load_indexeddb, getConstants, is_idb_loaded } from '$lib/helper.js';
+    import { load_indexeddb, getConstants, is_idb_loaded } from '$lib/helper.js?v1';
     import Statewide from '$lib/db/statewide.js';
     import Counties from '$lib/db/counties.js';
 

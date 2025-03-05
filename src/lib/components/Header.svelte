@@ -4,7 +4,7 @@
     document.getElementById('temp-content')?.remove();
 
     import Navigation from '$lib/components/Header/Navigation.svelte';
-    import { onMountSync } from '$lib/helper.js';
+    import { onMountSync } from '$lib/helper.js?v1';
     const { db, constants, hideNav } = $$props;
 
     import { page } from '$app/stores';
