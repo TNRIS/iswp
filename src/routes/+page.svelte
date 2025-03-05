@@ -8,7 +8,7 @@
     const HeaderPromise = import('$lib/components/Header.svelte');
 
     import { QuerySettings } from '$lib/QuerySettings.js';
-    import { load_indexeddb, onMountSync, getConstants, is_idb_loaded } from '$lib/helper.js';
+    import { load_indexeddb, onMountSync, getConstants, is_idb_loaded } from '$lib/helper.js?v1';
     import Statewide from '$lib/db/statewide.js';
     import { page } from '$app/stores';
     import ComponentLoader from '$lib/components/ComponentLoader.svelte';

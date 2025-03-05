@@ -5,7 +5,7 @@
     export let data;
     let db = load_indexeddb();
     import { QuerySettings } from '$lib/QuerySettings.js';
-    import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
+    import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js?v1';
     import Statewide from '$lib/db/statewide.js';
     import Header from '$lib/components/Header.svelte';
     import PopulationChart from '$lib/components/Charts/PopulationChart.svelte';

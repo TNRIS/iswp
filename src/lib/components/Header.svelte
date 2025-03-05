@@ -4,7 +4,7 @@
     document.getElementById('temp-content')?.remove();
 
     import Navigation from '$lib/components/Header/Navigation.svelte';
-    import { onMountSync } from '$lib/helper.js';
+    import { onMountSync } from '$lib/helper.js?v1';
     const { db, constants, hideNav } = $$props;
 
     import { page } from '$app/stores';
@@ -13,7 +13,7 @@
 
 {#if constants.id == 27}
     <div class="draft-note">
-        <div class="wrapper">
+        <div class="wrapper" style="word-break: break-word;">
             This web application displays draft data to assist with the review of the draft regional water plans (RWPs) and is
             current as of 03/05/2025. Although the data is subject to change as the draft plans are edited, the data displayed will
             not be refreshed until the final regional water plans are approved (early 2026). Please visit the 2026 Draft RWP

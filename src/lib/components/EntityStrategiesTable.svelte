@@ -3,7 +3,7 @@
     import { Grid, html } from 'gridjs';
     import 'gridjs/dist/theme/mermaid.css';
     import { onMount } from 'svelte';
-    import { usd_format, commafy } from '$lib/helper.js';
+    import { usd_format, commafy } from '$lib/helper.js?v1';
     const { lrp, type, constants } = $$props;
     let sum = 0;
 

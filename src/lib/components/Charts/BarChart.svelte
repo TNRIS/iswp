@@ -2,7 +2,7 @@
     // @ts-nocheck
     import { onMount } from 'svelte';
     //import TitlePlugin from './ChartistAxisTitlePlugin';
-    import { commafy } from '$lib/helper.js';
+    import { commafy } from '$lib/helper.js?v1';
     import { hoverHelper, clearInteraction } from '$lib/actions/HoverAction';
     import ctAxisTitle from 'chartist-plugin-axistitle';
     import 'chartist/dist/index.css';

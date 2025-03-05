@@ -116,6 +116,10 @@ export let load_indexeddb = async () => {
             // SET TEST HERE
             if (DEFAULT_FLAG == '2017') {
                 return start_db_2017();
+            } if (DEFAULT_FLAG == '2022') {
+                return start_db_2022();
+            } if (DEFAULT_FLAG == '2027') {
+                return start_db_2027();
             } else {
                 return start_db_2022();
             }

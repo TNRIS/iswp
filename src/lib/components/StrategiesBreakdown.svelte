@@ -1,7 +1,7 @@
 <script>
     //@ts-nocheck
     const { swdata } = $$props;
-    import { calcPercentage, commafy, sortAlphabetic, sortNumeric } from '$lib/helper.js';
+    import { calcPercentage, commafy, sortAlphabetic, sortNumeric } from '$lib/helper.js?v1';
     import { getContext, onMount } from 'svelte';
     import { hoverHelper, clearInteraction } from '$lib/actions/HoverAction';
     const decadeStore = getContext('myContext').decadeStore;

@@ -11,7 +11,7 @@
 
     export let data;
 
-    import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
+    import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js?v1';
     import { page } from '$app/stores';
 
     let constants = getConstants($page.url.host);

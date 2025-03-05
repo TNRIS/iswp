@@ -31,9 +31,13 @@ export default class RegionalSummaryInd {
         } else if (this.host.includes(year == 2017)) {
             this.constants = new Constant2017();
         } else {
-            // Fallback block used for testing.
+            // If not specified in url then use default flag.
             if (DEFAULT_FLAG === '2017') {
                 this.constants = new Constant2017();
+            } else if (DEFAULT_FLAG === '2022') {
+                this.constants = new Constant2022();
+            } else if (DEFAULT_FLAG === '2027') {
+                this.constants = new Constant2027();
             } else {
                 this.constants = new Constant2022();
             }

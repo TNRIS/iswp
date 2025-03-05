@@ -11,7 +11,7 @@
         });
     }
 
-    import { slugify, commafy } from '$lib/helper.js';
+    import { slugify, commafy } from '$lib/helper.js?v1';
 </script>
 
 <div class="chart-table-container">
