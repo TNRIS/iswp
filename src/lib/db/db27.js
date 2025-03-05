@@ -9,7 +9,7 @@ let checksumPromise = async () => {
 
 export const delete_database27 = () => {
     try {
-        var del = window.indexedDB.deleteDatabase('iswpDB27');
+        var del = window.indexedDB.deleteDatabase('iswpdb27');
 
         del.onsuccess = () => {
             console.log('Database has been deleted.');
@@ -101,12 +101,47 @@ export function startDb27() {
                 console.log(`get checksum from localstorage time: ${Date.now() - start}ms.`);
 
                 if (db27.objectStoreNames.length !== Object.keys(checksum).length) {
+                //if(true) {
                     request27.result.close();
                     delete_database27();
                     reject('There was a problem loading database. Reload please.');
 
                     //TODO Limit this to 5 tries
                     window.location.reload();
+
+                    // let now = new Date();
+
+                    // let ra = localStorage.getItem('timestart');
+
+                    // if(ra && ra.length) {
+                    //     console.log("timestart exists");
+
+                    //     //Restart timer if a reload is performed 1 minute after the last to prevent infinite reloads.
+                    //     if ((Number(JSON.parse(ra).expiry) + 60000) < now.getTime()) {
+                    //         localStorage.setItem('timestart',
+                    //             JSON.stringify({ 
+                    //                 value: now.getTime(),
+                    //                 expiry: now.getTime() + 60000
+                    //             }));
+                    //     }
+
+                    //     // Attempt to rebuild idb for 8 seconds then stop attempts until another reload is performed manually.
+                    //     if((Number(JSON.parse(ra).expiry) + 8000) > now.getTime()) {
+                    //         console.log("Attempting to reload idb")
+                    //         reload_attempts++;
+                    //         localStorage.clear(); // Clear all cached queries.
+                    //         localStorage.setItem('checkedDB', false);
+                    //         window.location.reload();
+                    //     } else {
+                    //         console.err("Problem creating indexed database please reload.")
+                    //     }
+                    // } else {
+                    //     localStorage.setItem('timestart',
+                    //         JSON.stringify({ 
+                    //             value: now.getTime(),
+                    //             expiry: now.getTime() + 60000
+                    //         }));
+                    // }
                 }
 
                 let j = 0;
