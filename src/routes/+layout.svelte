@@ -45,3 +45,12 @@
     {/await}
 {/if}
 <slot />
+<style lang="css" global>
+    @import "$lib/leaflet/leaflet.css";
+    @import "$lib/leaflet/leaflet.legend.css";
+    @import "$lib/leaflet.EasyButton/src/easy-button.css";
+    @import "$lib/webfonts/gill-sans.css";
+    @import "$lib/css/normalize.css";
+    @import "$lib/css/skeleton.css";
+    @import "$lib/sass/main.css";
+</style>

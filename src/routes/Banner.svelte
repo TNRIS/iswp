@@ -1,7 +1,16 @@
+
+
 <script>
     const { constants } = $$props;
     import { page } from '$app/stores';
+    import "$lib/react-pivot-standalone-4.4.1.min.js";
+    import "$lib/leaflet/leaflet.js";
+    import "$lib/leaflet/utf-grid.js";
+    import "$lib/leaflet/leaflet.legend.js";
+    import "$lib/leaflet.EasyButton/src/easy-button.js";
 </script>
+
+<!-- <link rel="icon" type="image/x-icon" href="/img/favicon.ico" /> -->
 
 {#if $page.url.host.includes('2017')}
     <div class="draft-note">

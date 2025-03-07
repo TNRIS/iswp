@@ -9,8 +9,8 @@ node_modules
 !.env.example
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-/static/old_static/webfonts/gill-sans/
-/static/old_static/webfonts/gill-sans.css
+src/lib/webfonts/gill-sans
+src/lib/webfonts/gill-sans.css
 "/home
 static/"
 /examples

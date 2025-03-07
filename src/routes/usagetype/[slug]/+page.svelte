@@ -5,12 +5,12 @@
     import ThemeTotalsByDecadeChart from '$lib/components/ThemeTotalsByDecadeChart.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
     export let data;
-    import Irrigation from '/static/img/icon-irrigation.svg';
-    import Municipal from '/static/img/icon-municipal.svg';
-    import Manufacturing from '/static/img/icon-manufacturing.svg';
-    import SteamElectricPower from '/static/img/icon-steam-electric-power.svg';
-    import Livestock from '/static/img/icon-livestock.svg';
-    import Mining from '/static/img/icon-mining.svg';
+    import Irrigation from '/src/lib/img/icon-irrigation.svg';
+    import Municipal from '/src/lib/img/icon-municipal.svg';
+    import Manufacturing from '/src/lib/img/icon-manufacturing.svg';
+    import SteamElectricPower from '/src/lib/img/icon-steam-electric-power.svg';
+    import Livestock from '/src/lib/img/icon-livestock.svg';
+    import Mining from '/src/lib/img/icon-mining.svg';
     import { page } from '$app/stores';
     let entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`;
     if (!$page.url.host.includes('2017'))
