@@ -14,7 +14,6 @@
     export let data;
     import { setContext } from 'svelte';
     import { writable } from 'svelte/store';
-    import Header from '$lib/components/Header.svelte';
     import { page } from '$app/stores';
 
     const tagline = 'Regional Water Planning Area in <a href="/">Texas</a>';
@@ -61,7 +60,6 @@
     let loadForRegionPromise = loadForRegion();
 </script>
 
-<Header {constants} {db} />
 <svelte:head>
     <title>Planning Region {data.slug ? ` ${data.slug}` : ''}</title>
 </svelte:head>

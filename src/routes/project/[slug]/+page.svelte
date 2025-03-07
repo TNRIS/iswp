@@ -7,7 +7,6 @@
     import { QuerySettings } from '$lib/QuerySettings.js';
     import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js?v1';
     import Statewide from '$lib/db/statewide.js';
-    import Header from '$lib/components/Header.svelte';
     import PopulationChart from '$lib/components/Charts/PopulationChart.svelte';
     import { page } from '$app/stores';
     const entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried. Red triangles indicate capital projects. If a water user group does not display with the selected project, the project is not currently assigned to a specific water user group.</p>`;
@@ -56,7 +55,6 @@
     const lrp = loadForSource();
 </script>
 
-<Header {constants} {db} />
 <svelte:head>
     <title>Project {projectName ? ` for ${projectName}` : ''}</title>
 </svelte:head>

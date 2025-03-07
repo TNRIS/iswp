@@ -4,11 +4,7 @@
     import { page } from '$app/stores';
     import Statewide from '$lib/db/statewide.js';
     import { cap, onMountSync } from '$lib/helper.js?v1';
-    import { Constant2017 } from '$lib/Constant2017';
-    import { Constant2022 } from '$lib/Constant2022';
-    import { Constant2027 } from '$lib/Constant2027';
     import Select from 'svelte-select';
-    import { DEFAULT_FLAG } from '$lib/helper';
 
     /**
      * @typedef NavLabel
@@ -52,10 +48,6 @@
         chosen = '';
     }
     let chosen2 = /** @type {string}*/ '';
-
-    let c17 = new Constant2017();
-    let c22 = new Constant2022();
-    let c27 = new Constant2027();
 
     /**
      * labelReducer: Create usable labels out of an array of strings.
@@ -137,22 +129,7 @@
             let /** @type {object} */ sourceName;
 
             if (DEBUG_LOADING) start = Date.now();
-            // Only use test flag if there is no host with a date in it.
-            if ($page.url.host.includes('2017')) {
-                sourceName = c17.sourceNames;
-            } else if ($page.url.host.includes('2022')) {
-                sourceName = c22.sourceNames;
-            } else if ($page.url.host.includes('2027')) {
-                sourceName = c27.sourceNames;
-            } else if (DEFAULT_FLAG === '2017') {
-                sourceName = c17.sourceNames;
-            } else if (DEFAULT_FLAG === '2022') {
-                sourceName = c22.sourceNames;
-            } else if (DEFAULT_FLAG === '2027') {
-                sourceName = c27.sourceNames;
-            } else {
-                sourceName = c22.sourceNames;
-            }
+            sourceName = constants.sourceNames;
 
             this[''] = [];
             this.region = regions;

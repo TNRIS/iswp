@@ -9,7 +9,6 @@
     import DataUsageType from '$lib/components/DataUsageType.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
     import ThemeTypesByDecadeChart from '$lib/components/ThemeTypesByDecadeChart.svelte';
-    import Header from '$lib/components/Header.svelte';
     import { load_indexeddb, getConstants, is_idb_loaded } from '$lib/helper.js?v1';
     import { page } from '$app/stores';
     let entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`;
@@ -63,7 +62,6 @@
     const lrp = loadForCounty();
 </script>
 
-<Header {constants} {db} />
 <svelte:head>
     <title>{data.slug ? `${data.slug} County` : 'County'}</title>
 </svelte:head>

@@ -8,7 +8,6 @@
     export let data;
     import { setContext } from 'svelte';
     import { writable } from 'svelte/store';
-    import Header from '$lib/components/Header.svelte';
     import { page } from '$app/stores';
 
     let stratAd = ['Region', 'WMS Type', 'Strategy', 'Source', 'County', 'Entity'];
@@ -44,7 +43,6 @@
     const lrp = loadForWmsType();
 </script>
 
-<Header {constants} {db} />
 <svelte:head>
     <title>Water Management Strategy Type{data.slug ? ` for ${data.slug}` : ''}</title>
 </svelte:head>

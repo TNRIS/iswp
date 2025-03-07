@@ -5,7 +5,6 @@
     import ThemeTotalsByDecadeChart from '$lib/components/ThemeTotalsByDecadeChart.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
     export let data;
-    import Header from '$lib/components/Header.svelte';
     import Irrigation from '/static/img/icon-irrigation.svg';
     import Municipal from '/static/img/icon-municipal.svg';
     import Manufacturing from '/static/img/icon-manufacturing.svg';
@@ -41,7 +40,6 @@
     const lrp = loadForRegion();
 </script>
 
-<Header {constants} {db} />
 <svelte:head>
     <title>Usage Type{data.slug ? ` for ${data.slug}` : ''}</title>
 </svelte:head>

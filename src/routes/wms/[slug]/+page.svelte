@@ -8,7 +8,6 @@
     import { QuerySettings } from '$lib/QuerySettings.js';
     import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js?v1';
     import Statewide from '$lib/db/statewide.js';
-    import Header from '$lib/components/Header.svelte';
     import { page } from '$app/stores';
     $: tagline = '';
     let stratAd = ['Region', 'Strategy', 'WMS Type', 'Source', 'County', 'Entity'];
@@ -48,7 +47,6 @@
     const lrp = loadForWms();
 </script>
 
-<Header {constants} {db} />
 <svelte:head>
     <title>Water Management Strategy{csvTitle ? ` for ${csvTitle}` : ''}</title>
 </svelte:head>

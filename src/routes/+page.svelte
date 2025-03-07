@@ -5,7 +5,6 @@
     const ThemeTypesByDecadeChartPromise = import('$lib/components/ThemeTypesByDecadeChart.svelte');
     const DataUsageTypePromise = import('$lib/components/DataUsageType.svelte');
     const DataViewChoiceWrapPromise = import('$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrap.svelte');
-    const HeaderPromise = import('$lib/components/Header.svelte');
 
     import { QuerySettings } from '$lib/QuerySettings.js';
     import { load_indexeddb, onMountSync, getConstants, is_idb_loaded } from '$lib/helper.js?v1';
@@ -33,10 +32,6 @@
     const lrp = loadForState();
 </script>
 
-{#await HeaderPromise then { default: Component }}
-    <Component {db} {constants} />
-{/await}
-
 <svelte:head>
     <title>Homepage of Interactive State Water Plan</title>
 </svelte:head>
@@ -57,7 +52,7 @@
         {#await ThemeTotalsByDecadeChartPromise}
             <ComponentLoader />
         {:then { default: Component }}
-            <Component {lrp} {constants} />
+            <Component title={undefined} {lrp} {constants} />
         {/await}
 
         {#await ThemeTypesByDecadeChartPromise}

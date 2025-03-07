@@ -1,14 +1,27 @@
 <script>
-    import Banner from '$lib/components/Header/Banner.svelte';
+    import Banner from './Banner.svelte';
+    import Navigation from './Navigation.svelte';
+    import { getConstants } from '$lib/helper';
+    import { onMount } from 'svelte';
+    import { page } from '$app/stores';
+
     //Remove temporary banner
     document.getElementById('temp-content')?.remove();
 
-    import Navigation from '$lib/components/Header/Navigation.svelte';
-    import { onMountSync } from '$lib/helper.js?v1';
-    const { db, constants, hideNav } = $$props;
-
-    import { page } from '$app/stores';
+    const { db, hideNav } = $$props;
     let selected = { id: $page.url.pathname.split(['/'])[1] };
+    let constants = getConstants($page.url.host);
+    let onMountSync = () => {
+    return new Promise((resolve, reject) => {
+        try {
+            onMount(async () => {
+                resolve('mounted');
+            });
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
 </script>
 
 {#if constants.id == 27}
@@ -31,3 +44,4 @@
         <Navigation {selected} {db} {constants} />
     {/await}
 {/if}
+<slot />

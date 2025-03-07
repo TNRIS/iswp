@@ -5,7 +5,6 @@
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
     import ThemeTotalsByDecadeChart from '$lib/components/ThemeTotalsByDecadeChart.svelte';
     import EntityStrategiesTable from '$lib/components/EntityStrategiesTable.svelte';
-    import Header from '$lib/components/Header.svelte';
     import { QuerySettings } from '$lib/QuerySettings.js';
     import Statewide from '$lib/db/statewide.js';
 
@@ -63,7 +62,6 @@
     const lrp = loadForEntity();
 </script>
 
-<Header {constants} {db} />
 <svelte:head>
     <title>Water User Group{entityName ? ` for ${entityName}` : ''}</title>
 </svelte:head>

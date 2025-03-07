@@ -8,10 +8,8 @@
     import { QuerySettings } from '$lib/QuerySettings.js';
     import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js?v1';
     import Statewide from '$lib/db/statewide.js';
-    import Header from '$lib/components/Header.svelte';
 
     import { page } from '$app/stores';
-    import Banner from '$lib/components/Header/Banner.svelte';
 
     let entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`;
     if (!$page.url.host.includes('2017'))
@@ -50,7 +48,6 @@
     const lrp = loadForSource();
 </script>
 
-<Header {constants} {db} />
 <svelte:head>
     <title>Source{title ? ` for ${title}` : ''}</title>
 </svelte:head>
