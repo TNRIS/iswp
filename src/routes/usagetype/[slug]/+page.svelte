@@ -1,5 +1,5 @@
 <script>
-    import { load_indexeddb, slugify, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
+    import { load_indexeddb, slugify, getConstants, cap, is_idb_loaded } from '$lib/helper.js?v1';
     import Statewide from '$lib/db/statewide.js';
     import { QuerySettings } from '$lib/QuerySettings.js';
     import ThemeTotalsByDecadeChart from '$lib/components/ThemeTotalsByDecadeChart.svelte';

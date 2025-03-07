@@ -1,7 +1,7 @@
 <script>
     //@ts-nocheck
     import Header from '$lib/components/Header.svelte';
-    import { getConstants } from '$lib/helper.js';
+    import { getConstants } from '$lib/helper.js?v1';
     import { page } from '$app/stores';
 
     let constants = getConstants($page.url.host);

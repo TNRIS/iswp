@@ -1,6 +1,6 @@
 // @ts-nocheck
 const heightAdjust = 14;
-import { slugify, commafy } from '$lib/helper.js';
+import { slugify, commafy } from '$lib/helper.js?v1';
 
 export function clearSeriesHighlight() {
     const dem_series = document.getElementsByClassName(`series-demands`);

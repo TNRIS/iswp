@@ -2,7 +2,7 @@
     import { Grid, html } from 'gridjs';
     import 'gridjs/dist/theme/mermaid.css';
     import { onMount } from 'svelte';
-    import { usd_format, usd_format_whole } from '$lib/helper.js';
+    import { usd_format, usd_format_whole } from '$lib/helper.js?v1';
     const { lrp, type,  project_title2 } = $$props;
     let sum = 0;
     let projects = false;
