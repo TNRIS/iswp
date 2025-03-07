@@ -52,10 +52,7 @@ export let is_idb_loaded = () => {
     return new Promise((resolve, reject) => {
         try {
             const checkDBDone = () => {
-                //console.log("Checking idb");
-                //console.log("checkedDB" + localStorage.getItem("checkedDB"));
                 if (localStorage.getItem('checkedDB') == 'true') {
-                    //console.log("resolving.")
                     clearInterval(interval);
                     document.getElementById('loadable-content').style.display = 'block';
                     document.getElementById('main-loader').style.display = 'none';
