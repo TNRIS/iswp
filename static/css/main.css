@@ -1863,6 +1863,11 @@ p.note {
   left: 0;
 }
 
+.reactPivot-pageNumber:hover {
+  text-shadow: 0px 0px 1px black;
+  font-weight: normal !important;
+}
+
 .glossary h5 {
   font-size: 1.8rem;
   margin-bottom: 0;
