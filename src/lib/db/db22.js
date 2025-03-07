@@ -2,6 +2,9 @@
 let db22;
 let UPGRADE_NEEDED = false;
 
+/** @type {number} Configure window in ms for how long to attempt to reload page before timing out and logging an error. */
+const RELOAD_WINDOW_MS = 10000;
+
 import { build_func } from './db_helper.js?v1';
 let checksumPromise = async () => {
     /*placeholder*/
@@ -95,58 +98,99 @@ export function startDb22() {
             // Check databases before resolving
             // Not very efficient so only do once per database refresh
 
-            //Change to this eventually. But later localStorage.getItem("checkedDB") !== "true"
-            if (true) {
+            if (localStorage.getItem("checkedDB") !== "true") {
                 await checksumPromise;
                 const start = Date.now();
                 let checksum = localStorage.getItem('checksum2022');
                 if (checksum && checksum.length) {
                     checksum = JSON.parse(checksum);
                 } else {
-                    storeChecksum();
+                    await storeChecksum();
+                    checksum = JSON.parse(localStorage.getItem('checksum2022'));
                 }
-                //OK: So fast not even 1ms Load time here. It measures 0ms!
-                console.log(`get checksum from localstorage time: ${Date.now() - start}ms.`);
 
-                if (db22.objectStoreNames.length !== Object.keys(checksum).length) {
-                    request22.result.close();
-                    delete_database22();
-                    reject('There was a problem loading database. Reload please.');
+                // 1. Do a quick check.
+                let IDB_IS_GOOD = db22.objectStoreNames.length == Object.keys(checksum).length
 
-                    //TODO Limit this to 5 tries
-                    window.location.reload();
+                // 2. Do a long check if quick check succeeds.
+                  if(IDB_IS_GOOD) {
+                    // idb queriesmust be awaited.
+                    IDB_IS_GOOD = await new Promise((res, rej) => {
+                        const db22_tables = Object.values(db22.objectStoreNames)
+                        let j = 0;
+                        for(let i = 0; i < db22_tables.length; i++) {
+                            try{
+                                const item = db22_tables[i];
+                                const transaction = db22.transaction([item], 'readonly');
+                                const objectStore = transaction.objectStore(item);
+                                const countRequest = objectStore.count();
+
+                                countRequest.onsuccess = (event) => {
+                                    j++;
+                                    const recordcount = event.currentTarget.result;
+                                    const record = event.currentTarget.source.name;
+            
+                                    if (recordcount !== checksum[record]) {
+                                        // Resolve to false if the records don't match.
+                                        res(false);
+                                    } else if(j >= Object.keys(checksum).length - 1) {
+                                        // Resolve to true if every record was checked.
+                                        UPGRADE_NEEDED = false;
+                                        localStorage.setItem('checkedDB', true);
+                                        res(true);
+                                    }
+                                };
+        
+                                countRequest.onerror = (event) => {
+                                    j++;
+                                    res(false);
+                                }
+                            } catch(err) {
+                                IDB_IS_GOOD = false;
+                                res(false);
+                            }
+                        };
+                    });   
                 }
-                let j = 0;
 
-                Object.values(db22.objectStoreNames).forEach((item, i) => {
-                    const transaction = db22.transaction([item], 'readonly');
-                    const objectStore = transaction.objectStore(item);
-                    const countRequest = objectStore.count();
+                // 3. If IDB is still not good then reset if it is not stuck. Log a error message if so suggesting user clears cache.
+                if (!IDB_IS_GOOD) {
+                    const NOW_TIMESTAMP  = new Date().getTime();
+                    const STORED_EXPIRY = Number(localStorage.getItem('STORED_EXPIRY'));
+                    const IS_RELOAD_TIMEOUT_OVER = (STORED_EXPIRY + 60000) < NOW_TIMESTAMP;
+                    const SHOULD_TIMEOUT = (STORED_EXPIRY + RELOAD_WINDOW_MS) < NOW_TIMESTAMP;
 
-                    let error = false;
-                    countRequest.onsuccess = async (event) => {
-                        let recordcount = event.currentTarget.result;
-                        let record = event.currentTarget.source.name;
-                        if (recordcount !== checksum[record]) {
-                            request22.result.close();
-                            delete_database22();
-                            window.location.reload();
+                    request22.result.close(); // Close database because it'd invalid for now.
+                    if(STORED_EXPIRY) {
+                        if (IS_RELOAD_TIMEOUT_OVER) {
+                            localStorage.setItem('STORED_EXPIRY', NOW_TIMESTAMP + RELOAD_WINDOW_MS);
+                        } else if(SHOULD_TIMEOUT) {
+                            const ERR_MSG = 'There was a problem loading the application. Please clear your cache.';
+                            console.error(ERR_MSG);
+                            document.getElementById("loader-msg").innerHTML = ERR_MSG;
                             reject('There was a problem loading database. Reload please.');
                         }
-                        j++;
+                    } else {
+                        localStorage.setItem('STORED_EXPIRY', NOW_TIMESTAMP + RELOAD_WINDOW_MS);
+                    }
 
-                        if (j == Object.keys(checksum).length - 1) {
-                            localStorage.setItem('checkedDB', true);
-                        }
-                    };
-                });
+                    // Reload the database and refresh the page. This will reset the checksum and rebuild the database. 
+                    localStorage.setItem('checkedDB', false);
+                    delete_database22();
+                    window.location.reload();
+                    reject('There was a problem loading database. Reload please.');
+                } else {
+                    localStorage.setItem('checkedDB', true);
+                }
             }
 
             resolve(db22);
         };
 
         request22.onupgradeneeded = async (event) => {
+            const STORED_EXPIRY = localStorage.getItem('STORED_EXPIRY');
             localStorage.clear(); // Clear all cached queries.
+            localStorage.setItem('STORED_EXPIRY', STORED_EXPIRY);
             checksumPromise = storeChecksum();
             localStorage.setItem('checkedDB', false);
             // Begin upgrade now.

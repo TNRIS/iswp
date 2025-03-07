@@ -453,6 +453,12 @@ $top-height: 34rem;
     }
 }
 
+.reactPivot-pageNumber:hover { 
+    //Override the reactpivot bold setting on hover since it moves blocks around. Use shadow instead.
+    text-shadow:0px 0px 1px black;
+    font-weight: normal !important;
+}
+
 .glossary {
     h5 {
         font-size: 1.8rem;
