@@ -10,12 +10,13 @@
     import { writable } from 'svelte/store';
     import { page } from '$app/stores';
 
+    let slug = $page.params.slug;
     let stratAd = ['Region', 'WMS Type', 'Strategy', 'Source', 'County', 'Entity'];
     let constants = getConstants($page.url.host);
     let wmsTypeSetting = new QuerySettings('datastrategies', 'WmsType');
-    wmsTypeSetting.setAll(data.slug);
+    wmsTypeSetting.setAll(slug);
     const wmsSetting2 = new QuerySettings('wmstype', 'WmsType');
-    wmsSetting2.setAll(data.slug);
+    wmsSetting2.setAll(slug);
     let db = load_indexeddb();
     let entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`;
     if (!$page.url.host.includes('2017'))
@@ -44,32 +45,32 @@
 </script>
 
 <svelte:head>
-    <title>Water Management Strategy Type{data.slug ? ` for ${data.slug}` : ''}</title>
+    <title>Water Management Strategy Type{slug ? ` for ${slug}` : ''}</title>
 </svelte:head>
 <div class="statewide-view" id="main-content" role="main">
     <section>
         <div class="view-top usage-type-view-top">
             <div class="summary-wrapper container">
                 <div class="view-summary usage-type-summary">
-                    <h1 aria-level="2">{data.slug}</h1>
-                    {constants.wms_info.WMS_TYPE_DESCRIPTIONS[data.slug.replace('AND', '&')]}
+                    <h1 aria-level="2">{slug}</h1>
+                    {constants.wms_info.WMS_TYPE_DESCRIPTIONS[slug.replace('AND', '&')]}
                 </div>
             </div>
         </div>
         <ProjectTable
-            project_title={`WMS TYPE - ${data.slug}`}
+            project_title={`WMS TYPE - ${slug}`}
             project_title2={'Projects related to Water Management Strategy Type'}
             {lrp}
             type={'region'} />
         <DataViewChoiceWrapInd
-            title={`WMS TYPE - ${data.slug}`}
-            fileName={`wmstype_${data.slug}`}
+            title={`WMS TYPE - ${slug}`}
+            fileName={`wmstype_${slug}`}
             {entityMapBlurb}
             {stratAd}
             {lrp}
             hideTheme={true}
             type={'wmstype'}
-            csvTitle={`${cap(data.slug)} WMS Type`}
+            csvTitle={`${cap(slug)} WMS Type`}
             {constants} />
     </section>
 </div>

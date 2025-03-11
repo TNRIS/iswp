@@ -3,14 +3,15 @@
     import ProjectTable from '$lib/components/ProjectTable/ProjectTable.svelte';
     import { QuerySettings } from '$lib/QuerySettings.js';
     import Statewide from '$lib/db/statewide.js';
-    export let data;
     import PopulationChart from '$lib/components/Charts/PopulationChart.svelte';
     import ThemeTotalsByDecadeChart from '$lib/components/ThemeTotalsByDecadeChart.svelte';
     import DataUsageType from '$lib/components/DataUsageType.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
     import ThemeTypesByDecadeChart from '$lib/components/ThemeTypesByDecadeChart.svelte';
-    import { load_indexeddb, getConstants, is_idb_loaded } from '$lib/helper.js?v1';
+    import { load_indexeddb, getConstants, is_idb_loaded } from '$lib/helper.js';
     import { page } from '$app/stores';
+
+    let slug = $page.params.slug;
     let entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`;
     if (!$page.url.host.includes('2017'))
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`;
@@ -21,7 +22,7 @@
     $: tagline = '';
     let constants = getConstants($page.url.host);
     let regionSetting = new QuerySettings('county', 'WugCounty');
-    regionSetting.setAll(data.slug.toUpperCase());
+    regionSetting.setAll(slug.toUpperCase());
     let db = load_indexeddb();
     let loadForCounty = async () => {
         await is_idb_loaded();
@@ -63,7 +64,7 @@
 </script>
 
 <svelte:head>
-    <title>{data.slug ? `${data.slug} County` : 'County'}</title>
+    <title>{slug ? `${slug} County` : 'County'}</title>
 </svelte:head>
 <div class="statewide-view" id="main-content" role="main">
     <section>
@@ -78,22 +79,21 @@
                 </div>
             </div>
         {:then}
-            <PopulationChart title={`${data.slug} County`} {lrp} {tagline} {constants} dont_capitalize_title={true} />
+            <PopulationChart title={`${slug} County`} {lrp} {tagline} {constants} dont_capitalize_title={true} />
         {/await}
-        <ThemeTotalsByDecadeChart title={`${data.slug} County`} {lrp} {constants} />
-        <ThemeTypesByDecadeChart chartTitle={'ct-usage-chart'} {lrp} title={`${data.slug} County`} {constants} />
-
-        <DataUsageType {lrp} {constants} title={`${data.slug} County`} />
-        <ProjectTable project_title={`${data.slug} COUNTY`} project_title2={'Projects Serving Area of Interest'} {lrp} type={'region'} />
+        <ThemeTotalsByDecadeChart title={`${slug} County`} {lrp} {constants} />
+        <ThemeTypesByDecadeChart chartTitle={'ct-usage-chart'} {lrp} title={`${slug} County`} {constants} />
+        <DataUsageType {lrp} {constants} title={`${slug} County`} />
+        <ProjectTable project_title={`${slug} COUNTY`} project_title2={'Projects Serving Area of Interest'} {lrp} type={'region'} />
         <DataViewChoiceWrapInd
-            title={`${data.slug} County`}
+            title={`${slug} County`}
             {entityMapBlurb}
             showPopulation={true}
             {stratAd}
             {activeDem}
             {lrp}
-            csvTitle={`${data.slug} County`}
-            fileName={`county_${data.slug.toLowerCase()}`}
+            csvTitle={`${slug} County`}
+            fileName={`county_${slug.toLowerCase()}`}
             {constants} />
     </section>
 </div>

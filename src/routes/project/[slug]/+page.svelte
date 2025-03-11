@@ -1,22 +1,22 @@
 <script>
     import ProjectTable2 from '$lib/components/ProjectTable/ProjectTable2.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
-
-    export let data;
     let db = load_indexeddb();
     import { QuerySettings } from '$lib/QuerySettings.js';
-    import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js?v1';
+    import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
     import Statewide from '$lib/db/statewide.js';
     import PopulationChart from '$lib/components/Charts/PopulationChart.svelte';
     import { page } from '$app/stores';
+
+    let slug = $page.params.slug;
     const entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried. Red triangles indicate capital projects. If a water user group does not display with the selected project, the project is not currently assigned to a specific water user group.</p>`;
     let constants = getConstants($page.url.host);
     $: tagline = '';
     let sourceSetting = new QuerySettings('strategies', 'WmsProjectId');
-    sourceSetting.setAll(Number(data.slug));
+    sourceSetting.setAll(slug);
 
     const sourceSetting2 = new QuerySettings('wms', 'WmsProjectId');
-    sourceSetting2.setAll(Number(data.slug));
+    sourceSetting2.setAll(slug);
     let projectName = '';
     const loadForSource = async () => {
         await is_idb_loaded();
@@ -77,7 +77,7 @@
             hideTheme={true}
             {constants}
             csvTitle={`${cap(projectName)} WMS`}
-            fileName={`project_${data.slug}`} />
+            fileName={`project_${slug}`} />
     {:catch error}
         <span>Error starting database {error.message}</span>
     {/await}

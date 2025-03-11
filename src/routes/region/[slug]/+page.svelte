@@ -6,16 +6,15 @@
     import ThemeTypesByDecadeChart from '$lib/components/ThemeTypesByDecadeChart.svelte';
     import ThemeTotalsByDecadeChart from '$lib/components/ThemeTotalsByDecadeChart.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
-    import { load_indexeddb, getConstants, is_idb_loaded } from '$lib/helper.js?v1';
+    import { load_indexeddb, getConstants, is_idb_loaded } from '$lib/helper.js';
     import Statewide from '$lib/db/statewide.js';
     import Counties from '$lib/db/counties.js';
-
     import { QuerySettings } from '$lib/QuerySettings.js';
-    export let data;
     import { setContext } from 'svelte';
     import { writable } from 'svelte/store';
     import { page } from '$app/stores';
 
+    let slug = $page.params.slug;
     const tagline = 'Regional Water Planning Area in <a href="/">Texas</a>';
     let stratAd = ['Strategy', 'WMS Type', 'Source', 'County', 'Entity'];
 
@@ -23,12 +22,12 @@
 
     let constants = getConstants($page.url.host);
     let regionSetting = new QuerySettings('region', 'WugRegion');
-    regionSetting.setAll(data.slug);
-    regionSetting.setProjects(data.slug, 'WmsProjectSponsorRegion');
+    regionSetting.setAll(slug);
+    regionSetting.setProjects(slug, 'WmsProjectSponsorRegion');
 
     let regionSetting2 = new QuerySettings('region', 'WugRegion');
-    regionSetting2.setAll(data.slug);
-    regionSetting2.setProjects(data.slug, 'WugRegion');
+    regionSetting2.setAll(slug);
+    regionSetting2.setProjects(slug, 'WugRegion');
     let db = load_indexeddb();
     let loadForRegion = async () => {
         db = await db;
@@ -37,8 +36,8 @@
         let start = Date.now();
         let sw = new Statewide(db);
         let cc = new Counties(db);
-        let [ccounties, dat, dat2] = await Promise.all([cc.get(data.slug), sw.get(regionSetting), sw.get(regionSetting2)]);
-        //let ccounties = await cc.get(data.slug);
+        let [ccounties, dat, dat2] = await Promise.all([cc.get(slug), sw.get(regionSetting), sw.get(regionSetting2)]);
+        //let ccounties = await cc.get(slug);
         //let dat =  await sw.get(regionSetting);
 
         dat.counties = ccounties;
@@ -61,12 +60,12 @@
 </script>
 
 <svelte:head>
-    <title>Planning Region {data.slug ? ` ${data.slug}` : ''}</title>
+    <title>Planning Region {slug ? ` ${slug}` : ''}</title>
 </svelte:head>
 <div class="statewide-view" id="main-content" role="main">
     <section>
         <PopulationChart
-            title={`Planning Region ${data.slug}`}
+            title={`Planning Region ${slug}`}
             lrp={loadForRegionPromise}
             {constants}
             {tagline}
@@ -78,47 +77,47 @@
                         {#if constants.regionalLink}
                             <!-- 2016 description. -->
                             <p
-                                >{constants.regionalDescription[data.slug]}
-                                <a href={`http://www.twdb.texas.gov/waterplanning/rwp/plans/2016/#region-${data.slug.toLowerCase()}`}>
-                                    http://www.twdb.texas.gov/waterplanning/rwp/plans/2016/#region-{data.slug.toLowerCase()}
-                                </a>. {constants.regionalLink[data.slug]}<a
-                                    href={`http://www.twdb.texas.gov/waterplanning/swp/2017/doc/2016_RegionalSummary_${data.slug}.pdf`}>
-                                    http://www.twdb.texas.gov/waterplanning/swp/2017/doc/2016_RegionalSummary_{data.slug}.pdf
+                                >{constants.regionalDescription[slug]}
+                                <a href={`http://www.twdb.texas.gov/waterplanning/rwp/plans/2016/#region-${slug.toLowerCase()}`}>
+                                    http://www.twdb.texas.gov/waterplanning/rwp/plans/2016/#region-{slug.toLowerCase()}
+                                </a>. {constants.regionalLink[slug]}<a
+                                    href={`http://www.twdb.texas.gov/waterplanning/swp/2017/doc/2016_RegionalSummary_${slug}.pdf`}>
+                                    http://www.twdb.texas.gov/waterplanning/swp/2017/doc/2016_RegionalSummary_{slug}.pdf
                                 </a>.
                             </p>
                         {:else}
                             <!-- 2022 description. -->
-                            <p style="word-break: break-word;">{constants.regionalDescription[data.slug]}
+                            <p style="word-break: break-word;">{constants.regionalDescription[slug]}
                                 {@html constants.region_footer}</p>
                         {/if}
                     </div>
                 </div>
             </div>
         </div>
-        <ThemeTotalsByDecadeChart lrp={loadForRegionPromise} {constants} title={`Planning Region ${data.slug}`} />
+        <ThemeTotalsByDecadeChart lrp={loadForRegionPromise} {constants} title={`Planning Region ${slug}`} />
         <ThemeTypesByDecadeChart
             chartTitle={'ct-usage-chart'}
             lrp={loadForRegionPromise}
             {constants}
-            title={`Planning Region ${data.slug}`} />
-        <DataUsageType title={`Planning Region ${data.slug}`} lrp={loadForRegionPromise} {constants} />
+            title={`Planning Region ${slug}`} />
+        <DataUsageType title={`Planning Region ${slug}`} lrp={loadForRegionPromise} {constants} />
         <ProjectTable
-            project_title={`PLANNING REGION ${data.slug}`}
+            project_title={`PLANNING REGION ${slug}`}
             project_title2={'Projects '}
             lrp={loadForRegionPromise}
             type={'region'} />
         {#await loadForRegionPromise then d}
             <DataViewChoiceWrapInd
-                title={`Planning Region ${data.slug}`}
+                title={`Planning Region ${slug}`}
                 showPopulation={true}
                 type={'region'}
-                slug={data.slug}
+                slug={slug}
                 {stratAd}
                 {activeDem}
                 {constants}
-                csvTitle={`Planning Region ${data.slug}`}
+                csvTitle={`Planning Region ${slug}`}
                 lrp={d}
-                fileName={`region_${data.slug.toLowerCase()}`}
+                fileName={`region_${slug.toLowerCase()}`}
                 {entityMapBlurb} />
         {/await}
     </section>

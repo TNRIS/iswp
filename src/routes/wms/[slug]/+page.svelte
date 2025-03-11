@@ -3,21 +3,22 @@
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
     import PopulationChart from '$lib/components/Charts/PopulationChart.svelte';
 
-    export let data;
     let db = load_indexeddb();
     import { QuerySettings } from '$lib/QuerySettings.js';
     import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
     import Statewide from '$lib/db/statewide.js';
     import { page } from '$app/stores';
+
+    let slug = $page.params.slug;
     $: tagline = '';
     let stratAd = ['Region', 'Strategy', 'WMS Type', 'Source', 'County', 'Entity'];
 
     let constants = getConstants($page.url.host);
     let wmsSetting = new QuerySettings('datastrategies', 'WmsId');
-    wmsSetting.setAll(Number(data.slug));
+    wmsSetting.setAll(slug);
 
     const wmsSetting2 = new QuerySettings('wms', 'WmsId');
-    wmsSetting2.setAll(Number(data.slug));
+    wmsSetting2.setAll(slug);
     let csvTitle = '';
     let entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`;
     if (!$page.url.host.includes('2017'))
@@ -61,8 +62,8 @@
             type={'region'} />
         <DataViewChoiceWrapInd
             title={`WATER MANAGEMENT STRATEGY - ${csvTitle}`}
-            fileName={`wms_${data.slug}`}
-            slug={data.slug}
+            fileName={`wms_${slug}`}
+            slug={slug}
             {entityMapBlurb}
             {stratAd}
             {lrp}
