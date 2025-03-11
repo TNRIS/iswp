@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import puppeteer from 'puppeteer'; // or import puppeteer from 'puppeteer-core';
-import { startDb22 } from './lib/db/db22?v1';
+import { startDb22 } from './lib/db/db22';
 import * as fs from 'fs';
 
 const pause = () => {

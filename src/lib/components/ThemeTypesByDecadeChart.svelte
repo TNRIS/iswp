@@ -6,8 +6,8 @@
     import ThemeSelector from '$lib/components/ThemeSelector.svelte';
     import ChartDataTable from '$lib/components/ChartDataTable.svelte';
     import ctAxisTitle from 'chartist-plugin-axistitle';
-
-    import { commafy } from '$lib/helper.js?v1';
+    import { commafy } from '$lib/helper.js';
+    
     const { chartTitle, lrp, constants, title } = $$props;
     let /** @type {visible} */ visible;
     let decades = constants.getDecades();

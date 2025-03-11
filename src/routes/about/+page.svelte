@@ -1,6 +1,6 @@
 <script>
     //@ts-nocheck
-    import { getConstants } from '$lib/helper.js?v1';
+    import { getConstants } from '$lib/helper.js';
     import { page } from '$app/stores';
 
     let constants = getConstants($page.url.host);

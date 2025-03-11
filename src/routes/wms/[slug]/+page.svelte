@@ -6,7 +6,7 @@
     export let data;
     let db = load_indexeddb();
     import { QuerySettings } from '$lib/QuerySettings.js';
-    import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js?v1';
+    import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
     import Statewide from '$lib/db/statewide.js';
     import { page } from '$app/stores';
     $: tagline = '';

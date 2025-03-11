@@ -1,11 +1,11 @@
 <script>
     // @ts-nocheck
-    import { split_every } from '$lib/helper.js?v1';
+    import { split_every } from '$lib/helper.js';
     import BarChart from './Charts/BarChart.svelte';
     import UsageTypeIcon from './UsageTypeIcon.svelte';
     import { onMount } from 'svelte';
     import ChartDataTable from '$lib/components/ChartDataTable.svelte';
-    import { slugify } from '$lib/helper.js?v1';
+    import { slugify } from '$lib/helper.js';
     import ColorCodeSpread from '$lib/components/ColorCodeIcons/ColorCodeSpread.svelte';
     const { lrp, constants, title } = $$props;
 

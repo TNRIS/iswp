@@ -1,7 +1,7 @@
 <script>
     import RegionalSummary from '$lib/db/regionalsummary.js';
     import { getContext } from 'svelte';
-    import { onMountSync, commafy, sortNumeric, sortAlphabetic } from '$lib/helper.js?v1';
+    import { onMountSync, commafy, sortNumeric, sortAlphabetic } from '$lib/helper.js';
     import CsvDownloads from '$lib/components/CsvDownloads.svelte';
 
     export let { db, swdata, csvTitle, constants, downloadPopulation } = $$props;

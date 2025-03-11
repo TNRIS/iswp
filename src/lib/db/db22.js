@@ -5,7 +5,7 @@ let UPGRADE_NEEDED = false;
 /** @type {number} Configure window in ms for how long to attempt to reload page before timing out and logging an error. */
 const RELOAD_WINDOW_MS = 10000;
 
-import { build_func } from './db_helper.js?v1';
+import { build_func } from './db_helper.js';
 let checksumPromise = async () => {
     /*placeholder*/
 };

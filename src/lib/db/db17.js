@@ -2,7 +2,7 @@
 let db17;
 let UPGRADE_NEEDED = false;
 
-import { build_func } from './db_helper.js?v1';
+import { build_func } from './db_helper.js';
 
 /** @type {number} Configure window in ms for how long to attempt to reload page before timing out and logging an error. */
 const RELOAD_WINDOW_MS = 10000;

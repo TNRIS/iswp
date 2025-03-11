@@ -3,7 +3,7 @@
     import RegionalSummary from '$lib/db/regionalsummary.js';
     import Treemap from '$lib/components/DataByPlanningDecadeAndTheme/RegionalSummaryTreeMap/Treemap.svelte';
     import { getContext } from 'svelte';
-    import { cap } from '$lib/helper.js?v1';
+    import { cap } from '$lib/helper.js';
     import { TreeDataStruct, TreeDataOuterStruct, TreeDataNode } from '$lib/zoomBarChart';
 
     export let /** @type {string} */ selectedTreemap;

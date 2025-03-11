@@ -3,7 +3,7 @@
     const { swdata, constants, fileName } = $$props;
     import CsvDownloads from '$lib/components/CsvDownloads.svelte';
 
-    import { onMountSync, usd_format, commafy } from '$lib/helper.js?v1';
+    import { onMountSync, usd_format, commafy } from '$lib/helper.js';
     let pivotLoaded = false;
 
     import { getContext } from 'svelte';
