@@ -33,7 +33,7 @@
         "puppeteer": "^22.12.1",
         "sass": "^1.64.2",
         "smui-theme": "^7.0.0-beta.16",
-        "svelte": "^4.2",
+        "svelte": "^5.22.6",
         "svelte-check": "^3.0.1",
         "svelte-preprocess": "^5.1.4",
         "typescript": "^5.0.0",
