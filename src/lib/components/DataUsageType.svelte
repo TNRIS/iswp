@@ -5,53 +5,38 @@
     import UsageTypeIcon from './UsageTypeIcon.svelte';
     import { onMount } from 'svelte';
     import ChartDataTable from '$lib/components/ChartDataTable.svelte';
-    import { slugify } from '$lib/helper.js';
+    import { slugify, onMountSync } from '$lib/helper.js';
     import ColorCodeSpread from '$lib/components/ColorCodeIcons/ColorCodeSpread.svelte';
-    const { lrp, constants, title } = $$props;
+    const { lrp, constants, title } = $props();
 
     const everyTwoTypes = split_every(2, constants.getUsageTypes());
 
     let dataUsageTypeData;
-    var getData = () => {
-        return new Promise((resolve, reject) => {
-            onMount(async () => {
-                let swdata = await lrp;
-                try {
-                    dataUsageTypeData = await buildDataUsageTypeData(swdata);
 
-                    resolve(dataUsageTypeData);
-                } catch (err) {
-                    reject(err);
-                }
+    let buildDataUsageTypeData = async (a) => {
+        let seriesByType = {};
+        constants.getUsageTypes().forEach((type) => {
+            seriesByType[type] = constants.getThemes().map((theme) => {
+                return {
+                    name: constants.getThemeTitles()[theme],
+                    meta: theme,
+                    className: `series-${theme}`,
+                    data: constants.getDecades().map((year) => {
+                        if (a?.[theme]?.typeTotals?.[type]) {
+                            return a[theme].typeTotals[type][year];
+                        }
+                        return 0;
+                    })
+                };
             });
         });
+        return seriesByType;
     };
 
-    let buildDataUsageTypeData = (a) => {
-        return new Promise((resolve, reject) => {
-            try {
-                let seriesByType = {};
-                constants.getUsageTypes().forEach((type) => {
-                    seriesByType[type] = constants.getThemes().map((theme) => {
-                        return {
-                            name: constants.getThemeTitles()[theme],
-                            meta: theme,
-                            className: `series-${theme}`,
-                            data: constants.getDecades().map((year) => {
-                                if (a?.[theme]?.typeTotals?.[type]) {
-                                    return a[theme].typeTotals[type][year];
-                                }
-                                return 0;
-                            })
-                        };
-                    });
-                });
-                resolve(seriesByType);
-            } catch (err) {
-                reject(err);
-            }
-        });
-    };
+    let getData = (async () => {
+        let swdata = await lrp;
+        return await buildDataUsageTypeData(swdata);
+    })();
 </script>
 
 <div class="container">
@@ -69,7 +54,7 @@
                     <ColorCodeSpread />
                 </div>
 
-                {#await getData()}
+                {#await Promise.all([onMountSync(), getData])}
                     <div class="loader"></div>
                 {:then data}
                     {#each everyTwoTypes as group_name, i}
@@ -81,7 +66,7 @@
                                 </h5>
                                 <BarChart
                                     iterator={i}
-                                    {data}
+                                    data={data[1]}
                                     group_name={group_name[0]}
                                     chartTitle={group_name[0] + '-bc'}
                                     {constants}
@@ -90,7 +75,7 @@
                                 <ChartDataTable
                                     visible={false}
                                     header={constants.getDecades()}
-                                    body={data[group_name[0]]}
+                                    body={data[1][group_name[0]]}
                                     titles={true}
                                     showHide={true}
                                     ariaHint={`${group_name[0]} water usage in acre feet / year`} />
@@ -103,7 +88,7 @@
                                 </h5>
                                 <BarChart
                                     iterator={(i + 1) * 999}
-                                    {data}
+                                    data={data[1]}
                                     group_name={group_name[1]}
                                     chartTitle={group_name[0] + '-bc'}
                                     {constants}
@@ -112,7 +97,7 @@
                                 <ChartDataTable
                                     visible={false}
                                     header={constants.getDecades()}
-                                    body={data[group_name[1]]}
+                                    body={data[1][group_name[1]]}
                                     titles={true}
                                     showHide={true}
                                     ariaHint={`${group_name[1]} water usage in acre feet / year`} />

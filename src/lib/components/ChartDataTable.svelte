@@ -1,7 +1,6 @@
 <script>
     import ToggleDisplay from './ToggleDisplay.svelte';
-    const { header, body, titles, showHide, titleMap, showTotal, ariaHint, byDecade } = $$props;
-    export /** @type {boolean} */ let visible;
+    let  { header, body, titles, showHide, titleMap, showTotal, ariaHint, byDecade, visible = $bindable() } = $props();
     let totals = [0, 0, 0, 0, 0, 0];
     if (showTotal) {
         body.forEach((b) => {
@@ -11,7 +10,7 @@
         });
     }
 
-    import { slugify, commafy } from '$lib/helper.js?v1';
+    import { slugify, commafy } from '$lib/helper.js';
 </script>
 
 <div class="chart-table-container">

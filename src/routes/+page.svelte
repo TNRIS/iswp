@@ -52,7 +52,7 @@
         {#await ThemeTotalsByDecadeChartPromise}
             <ComponentLoader />
         {:then { default: Component }}
-            <Component title={undefined} {lrp} {constants} />
+            <Component {lrp} {constants} />
         {/await}
 
         {#await ThemeTypesByDecadeChartPromise}
