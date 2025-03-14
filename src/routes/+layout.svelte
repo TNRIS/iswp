@@ -1,27 +1,21 @@
 <script>
     import Banner from './Banner.svelte';
     import Navigation from './Navigation.svelte';
-    import { getConstants } from '$lib/helper';
-    import { onMount } from 'svelte';
+    import { getConstants, load_indexeddb, onMountSync, is_idb_loaded } from '$lib/helper';
     import { page } from '$app/stores';
-
     //Remove temporary banner
     document.getElementById('temp-content')?.remove();
 
-    const { db, hideNav } = $$props;
     let selected = { id: $page.url.pathname.split(['/'])[1] };
     let constants = getConstants($page.url.host);
-    let onMountSync = () => {
-    return new Promise((resolve, reject) => {
-        try {
-            onMount(async () => {
-                resolve('mounted');
-            });
-        } catch (err) {
-            reject(err);
-        }
-    });
-};
+
+    let db = load_indexeddb();
+    let idb_loader = (async () => {
+        await onMountSync();
+        await is_idb_loaded();
+        db = await db;
+    })();
+
 </script>
 
 {#if constants.id == 27}
@@ -39,18 +33,19 @@
     </div>
 {/if}
 <Banner {constants} />
-{#if !hideNav}
-    {#await onMountSync() then}
-        <Navigation {selected} {db} {constants} />
+    {#await idb_loader then}
+        <Navigation {db} {selected} {constants} />
+    {:catch}
+        <span>There was an error loading the top navigation. Please clear your cache in your browser to reload the application.</span>
     {/await}
-{/if}
-<slot />
+    <slot />
 <style lang="css" global>
-    @import "$lib/leaflet/leaflet.css";
-    @import "$lib/leaflet/leaflet.legend.css";
-    @import "$lib/leaflet.EasyButton/src/easy-button.css";
-    @import "$lib/webfonts/gill-sans.css";
-    @import "$lib/css/normalize.css";
-    @import "$lib/css/skeleton.css";
-    @import "$lib/sass/main.css";
+    @import "normalize.css";
+    @import "$lib/styling/css/skeleton.css";
+    @import "$lib/styling/webfonts/gill-sans.css";
+    @import "leaflet";
+    @import "leaflet-easybutton";
+    @import "$lib/styling/sass/main.scss";
+    /* @import "$lib/leaflet/leaflet.legend.css";
+    @import "$lib/leaflet.EasyButton/src/easy-button.css"; */
 </style>

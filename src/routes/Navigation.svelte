@@ -1,9 +1,8 @@
 <!-- This file handles the top navigation. -->
 
 <script>
-    import { page } from '$app/stores';
     import Statewide from '$lib/db/statewide.js';
-    import { cap, onMountSync } from '$lib/helper.js?v1';
+    import { cap, onMountSync } from '$lib/helper.js';
     import Select from 'svelte-select';
 
     /**
@@ -37,17 +36,16 @@
     // Set to true to log some timings.
     const DEBUG_LOADING = false;
 
-    let selected = { id: $page.url.pathname.split('/')[1] };
-    let { db, constants } = $$props;
+    let { selected, db, constants } = $props();
     /** @type {Statewide} */
     let sw;
 
-    let chosen = selected.id;
+    let chosen = $state(selected.id);
     let label = '';
     if (chosen == 'statewide') {
         chosen = '';
     }
-    let chosen2 = /** @type {string}*/ '';
+    let chosen2 = /** @type {string}*/ $state('');
 
     /**
      * labelReducer: Create usable labels out of an array of strings.
@@ -97,7 +95,7 @@
     let usageTypes = /** @type NavLabel[] */ labelReducer(constants.getUsageTypes());
     let wmstype = /** @type NavLabel[] */ labelReducer(constants.WMS_TYPES);
 
-    $: region = chosen && chosen2 ? `/${chosen}/${chosen2}/` : !(chosen && chosen2) ? '/' : `/${chosen}/`;
+    let region = $derived(chosen && chosen2 ? `/${chosen}/${chosen2}/` : !(chosen && chosen2) ? '/' : `/${chosen}/`);
 
     const titles = constants.chosenTitles;
 
@@ -117,8 +115,8 @@
         { value: 'wmstype', label: 'WMS Type' }
     ];
 
-    /** @type {CategoryClass} */
-    let categories;
+    /** @type {CategoryClass | undefined} */
+    let categories = $state();
 
     const CategoryClass = class {
         /**
@@ -240,15 +238,14 @@
         }
     }
 
-    let setupChoices = async () => {
-        await onMountSync();
+    let setupChoices = (async () => {
         db = await db;
         categories = new CategoryClass(new Statewide(db));
-    };
+    })();
 
     /**
      * Action fired when secondary filter select is clicked. Can handle keyboard or mouse events.
-     * @param {KeyboardEvent &{target: HTMLAnchorElement} | MouseEvent &{target: HTMLAnchorElement} | null} event
+     * @param {KeyboardEvent | MouseEvent} event
      */
     let clicker = async (event) => {
         const error_message = 'Navigation error please report to TWDB. Contact info is found at the bottom of the website.';
@@ -280,7 +277,7 @@
 
     /**
      * Action fired when secondary filter select is keydowned.
-     * @param {KeyboardEvent &{target: HTMLAnchorElement} | null} event
+     * @param {KeyboardEvent} event
      */
     let keypresser = async (event) => {
         // Check key is enter or space.
@@ -311,7 +308,7 @@
 
 <div class="header-nav sticky-div">
     <div class="wrapper" id="wrapper">
-        <form id="top_nav_flex">
+        <div id="top_nav_flex">
             <label for="navcat" id="navlabel">View data for</label>
             <nav class="select-container" id="navcat_container">
                 <Select
@@ -329,7 +326,7 @@
                     }} />
             </nav>
 
-            {#await setupChoices() then}
+            {#await Promise.all([onMountSync(), setupChoices]) then}
                 {#if chosen && chosen !== '' && chosen !== 'statewide'}
                     {#if chosen == 'region' || chosen == 'county' || chosen == 'usagetype' || chosen == 'source' || chosen == 'wmstype'}
                         <nav class="select-container main_select">
@@ -357,7 +354,7 @@
                                 autocomplete="off"
                                 aria-label="Choose a page to navigate to related to the sub category to navigate to then hit the go button."
                                 aria-owns="nav_submit"
-                                on:keyup={filterSubCategory}
+                                onkeyup={filterSubCategory}
                                 placeholder="Start typing to find {titles[chosen]}" />
                             <ul id="secondList" class="nav-category-select">
                                 {#each categories?.[chosen] as r}
@@ -366,17 +363,17 @@
                                         aria-live="polite"
                                         aria-label="Sub Category filters"
                                         aria-details="List filters depending on the sub category input.">
-                                        <a
+                                        <div
                                             role="button"
                                             tabindex="0"
-                                            on:keydown={keypresser}
-                                            on:click={clicker}
+                                            onkeydown={keypresser}
+                                            onclick={clicker}
                                             id={r.label}
                                             class="listItem"
                                             aria-details="Submit this button to navigate to {cap(
                                                 r.value,
                                                 chosen
-                                            )} subcategory when you hit the go button.">{cap(r.value, chosen)}</a>
+                                            )} subcategory when you hit the go button.">{cap(r.value, chosen)}</div>
                                     </li>
                                 {/each}
                             </ul>
@@ -404,7 +401,7 @@
                     id="nav_submit"
                     title="Continue here after you’ve filled out all form elements to navigate to selected page." />
             </form>
-        </form>
+        </div>
     </div>
 </div>
 

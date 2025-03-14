@@ -50,7 +50,6 @@ This program is licenced under GPLV2 Please see LICENSE file for details.
 This program is distributed with the following programs under separate free licenses. View them for details.
 
 skeleton.css, react-pivot standalone, chartist
-https://github.com/jawj/OverlappingMarkerSpiderfier-Leaflet
 https://github.com/dhg/Skeleton
 https://github.com/L-Har/react-pivot
 https://github.com/davidguttman/react-pivot
