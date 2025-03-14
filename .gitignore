@@ -1,32 +1,17 @@
+# Build files that shouldn't be part of the repo.
 .DS_Store
 node_modules
-/build
-/.svelte-kit
-/package
-/src/cache
-.env
-.env.*
-!.env.example
+package-lock.json
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+/build
+/.svelte-kit
+
+# This needs to be downloaded from another source.
 src/lib/webfonts/gill-sans
 src/lib/webfonts/gill-sans.css
-"/home
-static/"
-/examples
-static/webfonts/gill-sans.css
-static/webfonts/gill-sans
-example.html
-example.json
-/iswpcdk
-iswpbak.zip
-package-lock.json
-dbcreds.js
-
 
 # Do not remove these. Run npm package instead if this is missing. It shouldn't be in the git repo. 
 static/tom-select.default.min.css
 static/tom-select.complete.js
 static/tom-select.complete.js.map
-
-src/lib/chartist
