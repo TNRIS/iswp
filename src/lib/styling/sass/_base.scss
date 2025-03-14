@@ -1,15 +1,12 @@
 @use "sass:color";
-@use "main";
-
-$font: GillSansMT, sans-serif;
-$bodyColor: #3e3e3e;
+@use 'constants';
 
 html {
     height: 100%;
 }
 
 body {
-    color: $bodyColor;
+    color: constants.$bodyColor;
     /*
     Seamless Paper Texture by Merry
     From: https://www.toptal.com/designers/subtlepatterns/seamless-paper-texture/
@@ -17,7 +14,7 @@ body {
   */
     background: url('/img/seamless_paper_texture.png');
     overflow-x: hidden;
-    font-family: $font;
+    font-family: constants.$font;
     font-size: 1.7em;
     height: 100%;
     margin: 0;
@@ -67,7 +64,7 @@ button[disabled] {
 
 #content {
     padding-bottom: 200px;
-    @media (min-width: main.$media-s) {
+    @media (min-width: constants.$media-s) {
         padding-bottom: 140px;
     }
 }
@@ -78,9 +75,9 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: $font;
+    font-family: constants.$font;
     font-weight: bold;
-    color: color.adjust(main.$twdb-blue, $lightness: -10%);
+    color: color.adjust(constants.$twdb-blue, constants.$lightness: -10%);
 }
 
 h3 {
@@ -94,18 +91,18 @@ h4 {
 
 h5 {
     font-size: 2.2rem;
-    font-family: $font;
-    color: $bodyColor;
+    font-family: constants.$font;
+    color: constants.$bodyColor;
     font-weight: normal;
     margin-bottom: 0.5rem;
 }
 
 a {
-    color: main.$twdb-blue;
+    color: constants.$twdb-blue;
     text-decoration: underline;
 
     &:hover {
-        color: main.$link-hover-color;
+        color: constants.$link-hover-color;
         text-decoration: underline;
     }
 }
@@ -123,26 +120,27 @@ select {
 }
 
 .container {
-    @media (max-width: main.$media-m) {
+    @media (max-width: constants.$media-m) {
         margin: 0;
         width: 100%;
         padding: 0;
     }
 
-    @media (min-width: main.$media-m) {
+    @media (min-width: constants.$media-m) {
         width: 90%;
     }
 }
 
 .wrapper {
-    @media (min-width: main.$media-l) {
+    width: auto;
+    margin: 0 1.5rem;
+    position: relative;
+
+    @media (min-width: constants.$media-l) {
         width: 1000px;
         margin: 0 auto;
     }
 
-    width: auto;
-    margin: 0 1.5rem;
-    position: relative;
 }
 
 .clear-float {
@@ -150,13 +148,10 @@ select {
 }
 
 .header {
-    @media (min-width: main.$media-s) {
-        margin-top: 0;
-    }
 
     margin-top: 0;
     padding: 8px 0 0 0;
-    background: main.$twdb-blue;
+    background: constants.$twdb-blue;
     position: relative;
 
     .header-title-container {
@@ -171,13 +166,13 @@ select {
         margin-bottom: 1rem;
         margin-left: 3rem;
 
-        @media (min-width: main.$media-l) {
+        @media (min-width: constants.$media-l) {
             width: 200px;
             float: right;
             margin-right: 160px;
         }
 
-        @media (max-width: main.$media-s) {
+        @media (max-width: constants.$media-s) {
             margin-left: 0;
         }
     }
@@ -196,7 +191,7 @@ select {
             font-weight: normal;
         }
 
-        @media (min-width: main.$media-m) {
+        @media (min-width: constants.$media-m) {
             font-size: 3rem;
             line-height: 2.5rem;
             margin-bottom: 1rem;
@@ -223,17 +218,21 @@ select {
     a:hover {
         text-decoration: none;
     }
+
+    @media (min-width: constants.$media-s) {
+        margin-top: 0;
+    }
 }
 
 #footer {
     text-align: center;
-    border-top: 1px solid main.$border-color;
+    border-top: 1px solid constants.$border-color;
     padding: 2rem 0;
     width: 100%;
     position: absolute;
     left: 0;
     bottom: 0;
-    background-color: main.$twdb-blue;
+    background-color: constants.$twdb-blue;
     color: white;
 
     p {
@@ -244,7 +243,7 @@ select {
         color: white;
 
         &:hover {
-            color: main.$link-hover-color;
+            color: constants.$link-hover-color;
         }
     }
 

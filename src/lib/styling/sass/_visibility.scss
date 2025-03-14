@@ -1,40 +1,40 @@
-@use "main";
+@use 'constants';
 
 //Some simple classes for responsiving hiding and showing
 // based on screen size
 
 .hide-large {
-    @media (min-width: main.$media-l) {
+    @media (min-width: constants.$media-l) {
         display: none !important;
     }
 }
 
 .hide-medium {
-    @media (min-width: main.$media-m) {
+    @media (min-width: constants.$media-m) {
         display: none !important;
     }
 }
 
 .hide-small {
-    @media (min-width: main.$media-s) {
+    @media (min-width: constants.$media-s) {
         display: none !important;
     }
 }
 
 .show-large {
-    @media (max-width: main.$media-l) {
+    @media (max-width: constants.$media-l) {
         display: none !important;
     }
 }
 
 .show-medium {
-    @media (max-width: main.$media-m) {
+    @media (max-width: constants.$media-m) {
         display: none !important;
     }
 }
 
 .show-small {
-    @media (max-width: main.$media-s) {
+    @media (max-width: constants.$media-s) {
         display: none !important;
     }
 }

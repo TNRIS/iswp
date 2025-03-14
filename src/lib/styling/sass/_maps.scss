@@ -1,5 +1,5 @@
 @use "sass:list";
-@use "main";
+@use 'constants';
 
 .theme-map {
     height: 300px;
@@ -7,7 +7,7 @@
     margin-bottom: 1.5rem;
 }
 
-@each $theme in main.$themes {
+@each $theme in constants.$themes {
     $name: list.nth($theme, 1);
     $color: list.nth($theme, 2);
 

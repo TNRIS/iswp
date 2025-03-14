@@ -1,31 +1,31 @@
 @use "sass:color";
-@use "main";
+@use 'constants';
 
-$nav-color: color.adjust(main.$twdb-blue, $lightness: 10%);
+$nav-color: color.adjust(constants.$twdb-blue, $lightness: 10%);
 
 #nav_submit {
     margin-bottom: 0px;
-    @media (min-width: main.$media-m) {
+    @media (min-width: constants.$media-m) {
         margin-left: 1em;
     }
 }
 
 .main_select {
     width: 100%;
-    @media (min-width: main.$media-m) {
+    @media (min-width: constants.$media-m) {
         padding-left: 1em;
     }
 }
 
 #navcat_container .svelte-select {
     width: 260px;
-    @media (max-width: main.$media-m) {
+    @media (max-width: constants.$media-m) {
         width: 100%;
     }
 }
 
 #navlabel {
-    @media (min-width: main.$media-m) {
+    @media (min-width: constants.$media-m) {
         display: inline-block;
         margin-left: 1rem;
         margin-top: auto;
@@ -35,7 +35,7 @@ $nav-color: color.adjust(main.$twdb-blue, $lightness: 10%);
 }
 
 #navlabel {
-    @media (max-width: main.$media-m) {
+    @media (max-width: constants.$media-m) {
         display: inline-block;
         margin-left: 1rem;
         margin-top: 0;
@@ -49,10 +49,7 @@ $nav-color: color.adjust(main.$twdb-blue, $lightness: 10%);
     right: 0;
     bottom: 0;
 
-    @media (max-width: 960px) {
-        position: relative;
-        text-align: right;
-    }
+
 
     button,
     .button {
@@ -89,10 +86,14 @@ $nav-color: color.adjust(main.$twdb-blue, $lightness: 10%);
             }
         }
     }
+    @media (max-width: 960px) {
+        position: relative;
+        text-align: right;
+    }
 }
 
 #top_nav_flex {
-    @media (min-width: main.$media-m) {
+    @media (min-width: constants.$media-m) {
         display: flex;
     }
 }
@@ -103,9 +104,6 @@ $nav-color: color.adjust(main.$twdb-blue, $lightness: 10%);
     padding: 4px 0px 10px;
     border-bottom: 1px solid white;
 
-    @media (min-width: main.$media-m) {
-        padding: 4px 0px 10px;
-    }
     form {
         margin: 0;
     }
@@ -114,7 +112,7 @@ $nav-color: color.adjust(main.$twdb-blue, $lightness: 10%);
         display: block;
         color: white;
 
-        @media (min-width: main.$media-s) {
+        @media (min-width: constants.$media-s) {
             display: inline-block;
         }
     }
@@ -124,7 +122,7 @@ $nav-color: color.adjust(main.$twdb-blue, $lightness: 10%);
         margin-bottom: 0;
         margin-top: 0.5rem;
 
-        @media (min-width: main.$media-s) {
+        @media (min-width: constants.$media-s) {
             margin-left: 1rem;
             margin-top: 0;
         }
@@ -135,16 +133,6 @@ $nav-color: color.adjust(main.$twdb-blue, $lightness: 10%);
         vertical-align: middle;
         margin-top: 0.5rem;
 
-
-        @media (max-width: main.$media-m) {
-            display: inline-block;
-            width: 70%;
-        }
-        @media (min-width: main.$media-m) {
-            display: inline-block;
-            margin-left: 1rem;
-            margin-top: 0;
-        }
 
         &.category-select {
             width: 200px;
@@ -165,6 +153,19 @@ $nav-color: color.adjust(main.$twdb-blue, $lightness: 10%);
         .Select-menu-outer {
             z-index: 10000;
         }
+
+        @media (max-width: constants.$media-m) {
+            display: inline-block;
+            width: 70%;
+        }
+        @media (min-width: constants.$media-m) {
+            display: inline-block;
+            margin-left: 1rem;
+            margin-top: 0;
+        }
+    }
+    @media (min-width: constants.$media-m) {
+        padding: 4px 0px 10px;
     }
 }
 
@@ -181,7 +182,7 @@ $nav-color: color.adjust(main.$twdb-blue, $lightness: 10%);
     display: inline-block;
     margin-bottom: none;
 
-    @media (max-width: main.$media-m) {
+    @media (max-width: constants.$media-m) {
         display:inline-block;
         margin-top: 0.5rem;
         margin-bottom: none;

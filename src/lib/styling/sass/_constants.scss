@@ -1,0 +1,46 @@
+/*
+Larger than mobile (xs)
+@media (min-width: 400px) {}
+
+Larger than phablet (s)
+@media (min-width: 550px) {}
+
+Larger than tablet (m)
+@media (min-width: 750px) {}
+
+Larger than desktop (l)
+@media (min-width: 1000px) {}
+
+Larger than Desktop HD (xl)
+@media (min-width: 1200px) {}
+*/
+
+$media-xxl: 1500px;
+$media-xl: 1200px;
+$media-l: 1000px;
+$media-m: 750px;
+$media-s: 550px;
+$media-xs: 400px;
+
+$font: GillSansMT, sans-serif;
+$bodyColor: #3e3e3e;
+$border-color: #e0e0e0;
+$twdb-blue: #3f556d;
+$link-hover-color: #0fa0ce;
+$panel-background-color: #fbfbfb;
+
+$themes: ('demands', rgb(172, 40, 133)), ('supplies', rgb(0, 151, 214)), ('needs', rgb(237, 27, 47)), ('strategies', rgb(10, 162, 69)),
+    ('population', rgb(252, 175, 23));
+
+$usageTypes: ('irrigation' rgb(0, 155, 144)), ('livestock', rgb(106, 138, 34)), ('manufacturing', rgb(234, 214, 4)),
+    ('mining', rgb(120, 182, 228)), ('municipal', rgb(237, 27, 47)), ('steam-electric-power', rgb(254, 195, 78));
+
+$regions: ('a', rgb(255, 249, 174)), ('b', rgb(170, 215, 212)), ('c', rgb(222, 231, 145)), ('d', rgb(254, 195, 78)),
+    ('e', rgb(255, 228, 175)), ('f', rgb(193, 225, 193)), ('g', rgb(168, 155, 195)), ('h', rgb(199, 223, 244)), ('i', rgb(126, 191, 133)),
+    ('j', rgb(249, 181, 171)), ('k', rgb(120, 182, 228)), ('l', rgb(255, 230, 30)), ('m', rgb(87, 187, 182)), ('n', rgb(182, 189, 224)),
+    ('o', rgb(194, 203, 32)), ('p', rgb(214, 170, 203));
+
+$demand-management-color: rgb(0, 131, 59);
+$water-color: rgb(0, 151, 214);
+
+

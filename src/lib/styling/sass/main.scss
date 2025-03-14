@@ -1,47 +1,5 @@
-/*
-Larger than mobile (xs)
-@media (min-width: 400px) {}
-
-Larger than phablet (s)
-@media (min-width: 550px) {}
-
-Larger than tablet (m)
-@media (min-width: 750px) {}
-
-Larger than desktop (l)
-@media (min-width: 1000px) {}
-
-Larger than Desktop HD (xl)
-@media (min-width: 1200px) {}
-*/
-
-$media-xxl: 1500px;
-$media-xl: 1200px;
-$media-l: 1000px;
-$media-m: 750px;
-$media-s: 550px;
-$media-xs: 400px;
-
-$border-color: #e0e0e0;
-$twdb-blue: #3f556d;
-$link-hover-color: #0fa0ce;
-$panel-background-color: #fbfbfb;
-
-$themes: ('demands', rgb(172, 40, 133)), ('supplies', rgb(0, 151, 214)), ('needs', rgb(237, 27, 47)), ('strategies', rgb(10, 162, 69)),
-    ('population', rgb(252, 175, 23));
-
-$usageTypes: ('irrigation' rgb(0, 155, 144)), ('livestock', rgb(106, 138, 34)), ('manufacturing', rgb(234, 214, 4)),
-    ('mining', rgb(120, 182, 228)), ('municipal', rgb(237, 27, 47)), ('steam-electric-power', rgb(254, 195, 78));
-
-$regions: ('a', rgb(255, 249, 174)), ('b', rgb(170, 215, 212)), ('c', rgb(222, 231, 145)), ('d', rgb(254, 195, 78)),
-    ('e', rgb(255, 228, 175)), ('f', rgb(193, 225, 193)), ('g', rgb(168, 155, 195)), ('h', rgb(199, 223, 244)), ('i', rgb(126, 191, 133)),
-    ('j', rgb(249, 181, 171)), ('k', rgb(120, 182, 228)), ('l', rgb(255, 230, 30)), ('m', rgb(87, 187, 182)), ('n', rgb(182, 189, 224)),
-    ('o', rgb(194, 203, 32)), ('p', rgb(214, 170, 203));
-
-$demand-management-color: rgb(0, 131, 59);
-$water-color: rgb(0, 151, 214);
-
 @use "sass:color";
+@use 'constants';
 @use 'base';
 @use 'charts';
 @use 'maps';
@@ -52,12 +10,13 @@ $water-color: rgb(0, 151, 214);
 @use 'visibility';
 
 section.content {
-    @media (min-width: $media-m) {
-        margin-top: 2rem;
-    }
     ul,
     ol {
         margin-left: 1rem;
+    }
+
+    @media (min-width: constants.$media-m) {
+        margin-top: 2rem;
     }
 }
 
@@ -75,17 +34,10 @@ section.content {
 
 .view-choice-container {
     text-align: center;
-    background-color: $twdb-blue;
+    background-color: constants.$twdb-blue;
     padding: 1rem 0;
     margin-bottom: 10px;
     margin-top: 58.1px;
-
-    @media (max-width: $media-m) {
-        .selector {
-            display: inline-block;
-            margin-right: 4rem;
-        }
-    }
 
     h4 {
         color: white;
@@ -131,14 +83,14 @@ section.content {
 
             &:hover {
                 color: #fff;
-                background: color.adjust($twdb-blue, $lightness: 15%);
+                background: color.adjust(constants.$twdb-blue, $lightness: 15%);
                 border-top: 1px solid #fff;
                 border-bottom: 1px solid #fff;
             }
 
             &.active {
                 color: #fff;
-                background: $twdb-blue;
+                background: constants.$twdb-blue;
                 margin-left: -1px;
                 border-right: none;
                 border-left: none;
@@ -158,12 +110,19 @@ section.content {
         color: #fff;
         font-weight: bold;
     }
+
+    @media (max-width: constants.$media-m) {
+        .selector {
+            display: inline-block;
+            margin-right: 4rem;
+        }
+    }
 }
 
 h4 > .units {
     font-weight: normal;
     font-size: 14px;
-    color: base.$bodyColor;
+    color: constants.$bodyColor;
     margin-left: 0.5rem;
 }
 
@@ -188,12 +147,12 @@ h4 > .units {
         margin: 0 0 1rem 1rem;
 
         &.active {
-            background: $twdb-blue;
+            background: constants.$twdb-blue;
             color: #fff;
             border: 1px solid #fff;
 
             &:focus {
-                background: color.adjust($twdb-blue, $lightness: 10%);
+                background: color.adjust(constants.$twdb-blue, $lightness: 10%);
             }
 
             &.prj {
@@ -232,14 +191,14 @@ button {
 
 .button.button-primary,
 button.button-primary {
-    background-color: $twdb-blue;
-    border-color: $twdb-blue;
+    background-color: constants.$twdb-blue;
+    border-color: constants.$twdb-blue;
 
     &:hover,
     &:active,
     &:focus {
-        background-color: $twdb-blue;
-        border-color: $twdb-blue;
+        background-color: constants.$twdb-blue;
+        border-color: constants.$twdb-blue;
     }
 }
 
@@ -253,24 +212,12 @@ $top-height: 34rem;
     position: relative;
     margin-bottom: 2rem;
 
-    @media (min-width: $media-m) {
-        height: $top-height;
-        &.usage-type-view-top {
-            height: auto;
-
-            .view-summary {
-                float: none;
-                margin-left: 0;
-            }
-        }
-    }
-
     .view-map {
         height: $top-height;
         width: 100%;
         position: relative;
 
-        @media (min-width: $media-m) {
+        @media (min-width: constants.$media-m) {
             position: absolute;
             top: 0;
             left: 0;
@@ -294,15 +241,6 @@ $top-height: 34rem;
         background: white;
         padding: 1rem;
         pointer-events: auto;
-
-        @media (min-width: $media-m) {
-            float: left;
-            width: 48%;
-            margin: 0.9rem 2% 1rem 0;
-            border-radius: 4px;
-            background: rgba(white, 0.9);
-            border-bottom: 1px solid color.adjust($twdb-blue, $lightness: 20%);
-        }
 
         p {
             margin-bottom: 0.5rem;
@@ -342,6 +280,14 @@ $top-height: 34rem;
                 margin-bottom: 0;
             }
         }
+        @media (min-width: constants.$media-m) {
+            float: left;
+            width: 48%;
+            margin: 0.9rem 2% 1rem 0;
+            border-radius: 4px;
+            background: rgba(white, 0.9);
+            border-bottom: 1px solid color.adjust(constants.$twdb-blue, $lightness: 20%);
+        }
     }
 
     .view-summary.src-summary {
@@ -355,6 +301,17 @@ $top-height: 34rem;
     .view-summary.wms-summary {
         min-height: 0;
     }
+    @media (min-width: constants.$media-m) {
+        height: $top-height;
+        &.usage-type-view-top {
+            height: auto;
+
+            .view-summary {
+                float: none;
+                margin-left: 0;
+            }
+        }
+    }
 }
 
 .place-view .container {
@@ -365,22 +322,22 @@ $top-height: 34rem;
     margin: 0 0 2rem 0;
     border-radius: 0;
     padding: 1rem 1.4rem;
-    background-color: $panel-background-color;
+    background-color: constants.$panel-background-color;
     border-bottom: 1px solid #a9a9a9;
-
-    @media (min-width: $media-m) {
-        border-radius: 4px;
-    }
 
     .spinner {
         margin: 2rem auto;
+    }
+
+    @media (min-width: constants.$media-m) {
+        border-radius: 4px;
     }
 }
 
 .view-name {
     display: block;
     text-transform: uppercase;
-    color: color.adjust($twdb-blue, $lightness: 10%);
+    color: color.adjust(constants.$twdb-blue, $lightness: 10%);
     font-size: 1.5rem;
     margin-bottom: -1rem;
 }

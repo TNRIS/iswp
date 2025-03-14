@@ -1,7 +1,7 @@
 @use "sass:list";
-@use "main";
+@use 'constants';
 
-@each $type in main.$usageTypes {
+@each $type in constants.$usageTypes {
     $name: list.nth($type, 1);
     $color: list.nth($type, 2);
 
