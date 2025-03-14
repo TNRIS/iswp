@@ -52,6 +52,7 @@
         "json-2-csv": "^5.0.1",
         "leaflet": "^1.9.4",
         "leaflet-easybutton": "^2.4.0",
+        "normalize.css": "^8.0.1",
         "ol": "^10.0.0",
         "svelte-select": "^5.8.3"
     },
