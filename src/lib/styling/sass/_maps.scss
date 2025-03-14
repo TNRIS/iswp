@@ -1,12 +1,15 @@
+@use "sass:list";
+@use "main";
+
 .theme-map {
     height: 300px;
     width: 100%;
     margin-bottom: 1.5rem;
 }
 
-@each $theme in $themes {
-    $name: nth($theme, 1);
-    $color: nth($theme, 2);
+@each $theme in main.$themes {
+    $name: list.nth($theme, 1);
+    $color: list.nth($theme, 2);
 
     .entity-marker-#{$name} {
         stroke: black;

@@ -1,3 +1,7 @@
+@use "sass:list";
+@use "base";
+@use "main";
+
 @mixin series-color($color) {
     .ct-point,
     .ct-line,
@@ -50,7 +54,7 @@
         > li {
             display: inline-block;
             margin: 0 0 0 1.2rem;
-            color: $bodyColor;
+            color: base.$bodyColor;
         }
     }
 
@@ -59,18 +63,18 @@
         height: 15px;
         margin-right: 2px;
 
-        @each $theme in $themes {
-            $name: nth($theme, 1);
-            $color: nth($theme, 2);
+        @each $theme in main.$themes {
+            $name: list.nth($theme, 1);
+            $color: list.nth($theme, 2);
 
             .series-#{$name} {
                 @include legend-color($color);
             }
         }
 
-        @each $type in $usageTypes {
-            $name: nth($type, 1);
-            $color: nth($type, 2);
+        @each $type in main.$usageTypes {
+            $name: list.nth($type, 1);
+            $color: list.nth($type, 2);
 
             .series-#{$name} {
                 @include legend-color($color);
@@ -91,7 +95,7 @@
         float: left;
         padding-right: 6px;
         margin-bottom: 0;
-        background-color: $panel-background-color;
+        background-color: main.$panel-background-color;
     }
 }
 
@@ -121,22 +125,22 @@
     }
 
     .ct-axis-title {
-        color: $bodyColor;
+        color: base.$bodyColor;
         font-size: 1.2rem;
     }
 
-    @each $theme in $themes {
-        $name: nth($theme, 1);
-        $color: nth($theme, 2);
+    @each $theme in main.$themes {
+        $name: list.nth($theme, 1);
+        $color: list.nth($theme, 2);
 
         .series-#{$name} {
             @include series-color($color);
         }
     }
 
-    @each $type in $usageTypes {
-        $name: nth($type, 1);
-        $color: nth($type, 2);
+    @each $type in main.$usageTypes {
+        $name: list.nth($type, 1);
+        $color: list.nth($type, 2);
 
         .series-#{$name} {
             @include series-color($color);
@@ -148,7 +152,7 @@
     .ct-slice-pie {
         stroke: white;
         stroke-width: 2px;
-        fill: $water-color;
+        fill: main.$water-color;
     }
 
     .single-slice .ct-slice-pie {
@@ -159,12 +163,12 @@
     .series-other-conservation .ct-slice-pie,
     .series-municipal-conservation .ct-slice-pie,
     .series-irrigation-conservation .ct-slice-pie {
-        fill: $demand-management-color;
+        fill: main.$demand-management-color;
     }
 }
 
 .ct-bar {
-    @media (max-width: $media-s) {
+    @media (max-width: main.$media-s) {
         stroke-width: 7px;
     }
 }
@@ -209,18 +213,18 @@
         top: -10000px;
     }
 
-    @each $theme in $themes {
-        $name: nth($theme, 1);
-        $color: nth($theme, 2);
+    @each $theme in main.$themes {
+        $name: list.nth($theme, 1);
+        $color: list.nth($theme, 2);
 
         &.tooltip-#{$name} {
             @include tooltip-color($color);
         }
     }
 
-    @each $type in $usageTypes {
-        $name: nth($type, 1);
-        $color: nth($type, 2);
+    @each $type in main.$usageTypes {
+        $name: list.nth($type, 1);
+        $color: list.nth($type, 2);
 
         &.tooltip-#{$name} {
             @include tooltip-color($color);
@@ -273,18 +277,18 @@
             background: #ffffb3;
         }
 
-        @each $theme in $themes {
-            $name: nth($theme, 1);
-            $color: nth($theme, 2);
+        @each $theme in main.$themes {
+            $name: list.nth($theme, 1);
+            $color: list.nth($theme, 2);
 
             tr.series-#{$name} .row-label > span {
                 @include row-label-decoration($color);
             }
         }
 
-        @each $type in $usageTypes {
-            $name: nth($type, 1);
-            $color: nth($type, 2);
+        @each $type in main.$usageTypes {
+            $name: list.nth($type, 1);
+            $color: list.nth($type, 2);
 
             tr.series-#{$name} .row-label > span {
                 @include row-label-decoration($color);
@@ -316,18 +320,18 @@
         }
 
         &.child {
-            @each $region in $regions {
-                $letter: nth($region, 1);
-                $color: nth($region, 2);
+            @each $region in main.$regions {
+                $letter: list.nth($region, 1);
+                $color: list.nth($region, 2);
 
                 &.region-#{$letter} {
                     fill: $color;
                 }
             }
 
-            @each $type in $usageTypes {
-                $name: nth($type, 1);
-                $color: nth($type, 2);
+            @each $type in main.$usageTypes {
+                $name: list.nth($type, 1);
+                $color: list.nth($type, 2);
 
                 &.type-#{$name} {
                     fill: $color;

@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "main";
+
 $font: GillSansMT, sans-serif;
 $bodyColor: #3e3e3e;
 
@@ -64,7 +67,7 @@ button[disabled] {
 
 #content {
     padding-bottom: 200px;
-    @media (min-width: $media-s) {
+    @media (min-width: main.$media-s) {
         padding-bottom: 140px;
     }
 }
@@ -77,7 +80,7 @@ h5,
 h6 {
     font-family: $font;
     font-weight: bold;
-    color: darken($twdb-blue, 10%);
+    color: color.adjust(main.$twdb-blue, $lightness: -10%);
 }
 
 h3 {
@@ -98,11 +101,11 @@ h5 {
 }
 
 a {
-    color: $twdb-blue;
+    color: main.$twdb-blue;
     text-decoration: underline;
 
     &:hover {
-        color: $link-hover-color;
+        color: main.$link-hover-color;
         text-decoration: underline;
     }
 }
@@ -120,19 +123,19 @@ select {
 }
 
 .container {
-    @media (max-width: $media-m) {
+    @media (max-width: main.$media-m) {
         margin: 0;
         width: 100%;
         padding: 0;
     }
 
-    @media (min-width: $media-m) {
+    @media (min-width: main.$media-m) {
         width: 90%;
     }
 }
 
 .wrapper {
-    @media (min-width: $media-l) {
+    @media (min-width: main.$media-l) {
         width: 1000px;
         margin: 0 auto;
     }
@@ -147,13 +150,13 @@ select {
 }
 
 .header {
-    @media (min-width: $media-s) {
+    @media (min-width: main.$media-s) {
         margin-top: 0;
     }
 
     margin-top: 0;
     padding: 8px 0 0 0;
-    background: $twdb-blue;
+    background: main.$twdb-blue;
     position: relative;
 
     .header-title-container {
@@ -168,13 +171,13 @@ select {
         margin-bottom: 1rem;
         margin-left: 3rem;
 
-        @media (min-width: $media-l) {
+        @media (min-width: main.$media-l) {
             width: 200px;
             float: right;
             margin-right: 160px;
         }
 
-        @media (max-width: $media-s) {
+        @media (max-width: main.$media-s) {
             margin-left: 0;
         }
     }
@@ -193,7 +196,7 @@ select {
             font-weight: normal;
         }
 
-        @media (min-width: $media-m) {
+        @media (min-width: main.$media-m) {
             font-size: 3rem;
             line-height: 2.5rem;
             margin-bottom: 1rem;
@@ -224,13 +227,13 @@ select {
 
 #footer {
     text-align: center;
-    border-top: 1px solid $border-color;
+    border-top: 1px solid main.$border-color;
     padding: 2rem 0;
     width: 100%;
     position: absolute;
     left: 0;
     bottom: 0;
-    background-color: $twdb-blue;
+    background-color: main.$twdb-blue;
     color: white;
 
     p {
@@ -241,7 +244,7 @@ select {
         color: white;
 
         &:hover {
-            color: $link-hover-color;
+            color: main.$link-hover-color;
         }
     }
 

@@ -1,6 +1,9 @@
-@each $type in $usageTypes {
-    $name: nth($type, 1);
-    $color: nth($type, 2);
+@use "sass:list";
+@use "main";
+
+@each $type in main.$usageTypes {
+    $name: list.nth($type, 1);
+    $color: list.nth($type, 2);
 
     .icon-#{$name} {
         fill: $color;

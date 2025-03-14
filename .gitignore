@@ -8,8 +8,8 @@ vite.config.ts.timestamp-*
 /.svelte-kit
 
 # This needs to be downloaded from another source.
-src/lib/webfonts/gill-sans
-src/lib/webfonts/gill-sans.css
+src/lib/styling/webfonts/gill-sans
+src/lib/styling/webfonts/gill-sans.css
 
 # Do not remove these. Run npm package instead if this is missing. It shouldn't be in the git repo. 
 static/tom-select.default.min.css

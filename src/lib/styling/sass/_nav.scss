@@ -1,28 +1,31 @@
-$nav-color: lighten($twdb-blue, 10%);
+@use "sass:color";
+@use "main";
+
+$nav-color: color.adjust(main.$twdb-blue, $lightness: 10%);
 
 #nav_submit {
     margin-bottom: 0px;
-    @media (min-width: $media-m) {
+    @media (min-width: main.$media-m) {
         margin-left: 1em;
     }
 }
 
 .main_select {
     width: 100%;
-    @media (min-width: $media-m) {
+    @media (min-width: main.$media-m) {
         padding-left: 1em;
     }
 }
 
 #navcat_container .svelte-select {
     width: 260px;
-    @media (max-width: $media-m) {
+    @media (max-width: main.$media-m) {
         width: 100%;
     }
 }
 
 #navlabel {
-    @media (min-width: $media-m) {
+    @media (min-width: main.$media-m) {
         display: inline-block;
         margin-left: 1rem;
         margin-top: auto;
@@ -32,7 +35,7 @@ $nav-color: lighten($twdb-blue, 10%);
 }
 
 #navlabel {
-    @media (max-width: $media-m) {
+    @media (max-width: main.$media-m) {
         display: inline-block;
         margin-left: 1rem;
         margin-top: 0;
@@ -89,7 +92,7 @@ $nav-color: lighten($twdb-blue, 10%);
 }
 
 #top_nav_flex {
-    @media (min-width: $media-m) {
+    @media (min-width: main.$media-m) {
         display: flex;
     }
 }
@@ -100,7 +103,7 @@ $nav-color: lighten($twdb-blue, 10%);
     padding: 4px 0px 10px;
     border-bottom: 1px solid white;
 
-    @media (min-width: $media-m) {
+    @media (min-width: main.$media-m) {
         padding: 4px 0px 10px;
     }
     form {
@@ -111,7 +114,7 @@ $nav-color: lighten($twdb-blue, 10%);
         display: block;
         color: white;
 
-        @media (min-width: $media-s) {
+        @media (min-width: main.$media-s) {
             display: inline-block;
         }
     }
@@ -121,7 +124,7 @@ $nav-color: lighten($twdb-blue, 10%);
         margin-bottom: 0;
         margin-top: 0.5rem;
 
-        @media (min-width: $media-s) {
+        @media (min-width: main.$media-s) {
             margin-left: 1rem;
             margin-top: 0;
         }
@@ -133,11 +136,11 @@ $nav-color: lighten($twdb-blue, 10%);
         margin-top: 0.5rem;
 
 
-        @media (max-width: $media-m) {
+        @media (max-width: main.$media-m) {
             display: inline-block;
             width: 70%;
         }
-        @media (min-width: $media-m) {
+        @media (min-width: main.$media-m) {
             display: inline-block;
             margin-left: 1rem;
             margin-top: 0;
@@ -178,7 +181,7 @@ $nav-color: lighten($twdb-blue, 10%);
     display: inline-block;
     margin-bottom: none;
 
-    @media (max-width: $media-m) {
+    @media (max-width: main.$media-m) {
         display:inline-block;
         margin-top: 0.5rem;
         margin-bottom: none;
