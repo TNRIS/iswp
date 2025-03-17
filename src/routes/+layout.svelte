@@ -3,6 +3,11 @@
     import Navigation from './Navigation.svelte';
     import { getConstants, load_indexeddb, onMountSync, is_idb_loaded } from '$lib/helper';
     import { page } from '$app/stores';
+
+    import "$lib/react-pivot-standalone-4.4.1.min.js";
+    import 'leaflet';
+    import 'leaflet-easybutton/src/easy-button.js';
+    import "leaflet-utfgrid/L.UTFGrid-min"
     //Remove temporary banner
     document.getElementById('temp-content')?.remove();
 
@@ -46,6 +51,4 @@
     @import "leaflet";
     @import "leaflet-easybutton";
     @import "$lib/styling/sass/main.scss";
-    /* @import "$lib/leaflet/leaflet.legend.css";
-    @import "$lib/leaflet.EasyButton/src/easy-button.css"; */
 </style>
