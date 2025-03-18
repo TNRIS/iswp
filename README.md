@@ -49,7 +49,7 @@ prettier-plugin-svelte Svelte for vs code extension has this installed.
 This program is licenced under GPLV2 Please see LICENSE file for details.
 This program is distributed with the following programs under separate free licenses. View them for details.
 
-skeleton.css, react-pivot standalone, chartist, overlapping market spiderfier
+skeleton.css, react-pivot standalone, chartist, overlapping market spiderfier, leaflet utfgrid
 https://github.com/dhg/Skeleton
 https://github.com/L-Har/react-pivot
 https://github.com/davidguttman/react-pivot
@@ -57,3 +57,5 @@ https://github.com/chartist-js/chartist
 https://github.com/L-Har/chartist
 https://github.com/jawj/OverlappingMarkerSpiderfier-Leaflet
 https://github.com/L-Har/OverlappingMarkerSpiderfier-Leaflet
+https://github.com/danzel/Leaflet.utfgrid
+https://github.com/L-Har/Leaflet.utfgrid

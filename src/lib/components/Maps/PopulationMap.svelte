@@ -174,7 +174,8 @@
             };
             map.addLayer(L.tileLayer(ret.tilesUrl));
             let utfGrid = L.utfGrid(ret.gridUrl, {
-                useJsonP: false
+                useJsonP: false,
+                pointerCursor: true
             });
             map.addLayer(utfGrid);
             utfGrid.on('click', navigateToRegion);

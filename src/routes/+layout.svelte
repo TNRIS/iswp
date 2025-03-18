@@ -4,10 +4,10 @@
     import { getConstants, load_indexeddb, onMountSync, is_idb_loaded } from '$lib/helper';
     import { page } from '$app/stores';
 
-    import "$lib/react-pivot-standalone-4.4.1.min.js";
+    import '$lib/react-pivot-standalone-4.4.1.min.js';
     import 'leaflet';
-    import 'leaflet-easybutton/src/easy-button.js';
-    import "leaflet-utfgrid/L.UTFGrid-min"
+    import 'leaflet-easybutton/src/easy-button';
+    import '$lib/leaflet/leaflet.utfgrid';
     //Remove temporary banner
     document.getElementById('temp-content')?.remove();
 

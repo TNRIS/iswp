@@ -42,10 +42,8 @@
         "json-2-csv": "^5.0.1",
         "leaflet": "^1.9.4",
         "leaflet-easybutton": "^2.4.0",
-        "leaflet-utfgrid": "^0.3.0",
         "normalize.css": "^8.0.1",
         "ol": "^10.0.0",
-        "overlapping-marker-spiderfier-leaflet": "^0.2.7",
         "svelte-select": "^5.8.3"
     },
     "jest": {
