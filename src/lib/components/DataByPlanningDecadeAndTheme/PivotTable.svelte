@@ -2,7 +2,6 @@
     //@ts-nocheck
     const { page, slug, swdata, fileName, constants, stratAd, activeDem, showPopulation } = $$props;
     import { commafy, onMountSync, usd_format } from '$lib/helper.js';
-    let pivotLoaded = false;
     import CsvDownloads from '$lib/components/CsvDownloads.svelte';
 
     import { getContext } from 'svelte';
@@ -14,10 +13,6 @@
     export let csvTitle;
     let getData = async () => {
         try {
-            if (!pivotLoaded) {
-                await onMountSync();
-            }
-            pivotLoaded = true;
             let rows, dimensions, reduce, calculations, sorter, activeDimensions;
             let getCalculations = (titleCalcField) => {
                 return [
@@ -121,8 +116,10 @@
                 };
                 calculations = getCalculations(`${$decadeStore} Population`);
             }
-
-            if (document.getElementById('reactpivot').firstChild) document.getElementById('reactpivot').firstChild.remove();
+            if(!document.getElementById('reactpivot')) {
+                return false;
+            }
+            if (document.getElementById('reactpivot')?.firstChild) document.getElementById('reactpivot').firstChild.remove();
 
             let formattedRows = JSON.parse(JSON.stringify(rows));
 
@@ -143,17 +140,18 @@
                 f.WmsName = f.WmsName?.startsWith('<a') ? f.WmsName : `<a id="${f.WmsName}" href="/wms/${f.WmsId}">${f.WmsName}</a>`;
                 f.WmsType = f.WmsType?.startsWith('<a') ? f.WmsType : `<a id="${f.WmsType}" href="/wmstype/${f.WmsType}">${f.WmsType}</a>`;
             });
-
-            ReactPivot(document.getElementById('reactpivot'), {
-                rows: formattedRows,
-                dimensions: dimensions,
-                calculations: calculations,
-                activeDimensions: activeDimensions,
-                reduce: reduce,
-                nPaginateRows: 50,
-                sortBy: sorter,
-                tableClassName: 'PivotTable'
-            });
+            if(document.getElementById('reactpivot')) {
+                ReactPivot(document.getElementById('reactpivot'), {
+                    rows: formattedRows,
+                    dimensions: dimensions,
+                    calculations: calculations,
+                    activeDimensions: activeDimensions,
+                    reduce: reduce,
+                    nPaginateRows: 50,
+                    sortBy: sorter,
+                    tableClassName: 'PivotTable'
+                });
+            }
         } catch (err) {
             console.log(err);
         }
@@ -184,7 +182,7 @@
 {#await onLoad()}
     <div class="loader"></div>
 {:then}
-    <table id="PivotTable" role="grid" />
+    <table id="PivotTable" role="grid"></table>
 {:catch}
     <span>Error loading pivottable</span>
 {/await}
@@ -214,9 +212,13 @@
 
     <div id="reactpivot"><!-- Sorry there is no raw data. --></div>
     <!-- If page is usagetype then only download if it's specifically Municipal. Download other pages with population if available. -->
+    {#await onLoad}
+    <div class="loader"></div>
+    {:then}
     {#if (slug == 'MUNICIPAL' && page == 'usagetype') || page !== 'usagetype'}
         <CsvDownloads {swdata} {csvTitle} {fileName} {constants} downloadPopulation={true} />
     {:else}
         <CsvDownloads {swdata} {csvTitle} {fileName} {constants} downloadPopulation={showPopulation} />
     {/if}
+    {/await}
 </div>

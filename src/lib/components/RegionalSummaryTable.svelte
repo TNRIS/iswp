@@ -1,7 +1,7 @@
 <script>
     import RegionalSummary from '$lib/db/regionalsummary.js';
     import { getContext } from 'svelte';
-    import { onMountSync, commafy, sortNumeric, sortAlphabetic } from '$lib/helper.js';
+    import { commafy, sortNumeric, sortAlphabetic } from '$lib/helper.js';
     import CsvDownloads from '$lib/components/CsvDownloads.svelte';
 
     let { db, swdata, csvTitle, constants, downloadPopulation } = $props();
@@ -10,7 +10,7 @@
     const decadeStore = getContext('myContext').decadeStore;
     const themeStore = getContext('myContext').themeStore;
     let dtstore = {};
-    let rtable;
+    let rtable = $state();
 
     /**
      * Total by supply type for a particular year
@@ -80,7 +80,7 @@
             {/if}
         </h4>
     </div>
-    {#await Promise.all([onMountSync(), getData])}
+    {#await getData}
     <div class="loader"></div>
     {:then data}
     <table

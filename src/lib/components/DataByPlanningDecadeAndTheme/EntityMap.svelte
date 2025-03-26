@@ -1418,7 +1418,7 @@
         role="presentation"
         aria-label="Interactive map with buttons placed overlaying a map of texas that you can hit and a tooltip gives details.">
         <div id="entity_map" style="width:100%; top:0;" role="presentation">
-            <div id="map-entity-hover-tooltip" />
+            <div id="map-entity-hover-tooltip"></div>
         </div>
 
         <span>{@html entityMapBlurb}</span>

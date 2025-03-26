@@ -4,7 +4,7 @@
     import ChartDataTable from '$lib/components/ChartDataTable.svelte';
     import { commafy } from '$lib/helper.js';
     import ColorCodeSpread from '$lib/components/ColorCodeIcons/ColorCodeSpread.svelte';
-    let /** @type {boolean} */ visible;
+    let /** @type {boolean} */ visible = $state(false);
     const chartOptions = {
         height: '200px',
         lineSmooth: false,

@@ -163,7 +163,7 @@
                 {:else}
                     <p>There are no recommended projects.</p>
                 {/if}
-                <div id="table-container" style="display:{display_table}" />
+                <div id="table-container" style="display:{display_table}"></div>
             </div>
         </div>
     </div>

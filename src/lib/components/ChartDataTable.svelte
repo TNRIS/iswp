@@ -25,7 +25,7 @@
                         aria-label={ariaHint ? ariaHint : 'Chart for Data table'}>
                         <thead>
                             <tr>
-                                <th />
+                                <th></th>
                                 {#each header as h}
                                     <th>{h}</th>
                                 {/each}
@@ -43,7 +43,7 @@
                                             {/if}
                                         </td>
                                     {:else}
-                                        <td />
+                                        <td></td>
                                     {/if}
                                     {#each b.data as bd}
                                         <td>{commafy(bd + '')}</td>
@@ -71,7 +71,7 @@
                 aria-label={ariaHint ? ariaHint : 'Chart for Data table'}>
                 <thead>
                     <tr>
-                        <th />
+                        <th></th>
                         {#each header as h}
                             <th>{h}</th>
                         {/each}
@@ -85,7 +85,7 @@
                                     <span>{b.name}</span>
                                 </td>
                             {:else}
-                                <td />
+                                <td></td>
                             {/if}
                             {#each b.data as bd}
                                 <td>{commafy(bd + '')}</td>

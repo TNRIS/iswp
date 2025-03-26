@@ -5,7 +5,7 @@
     import UsageTypeIcon from './UsageTypeIcon.svelte';
     import { onMount } from 'svelte';
     import ChartDataTable from '$lib/components/ChartDataTable.svelte';
-    import { slugify, onMountSync } from '$lib/helper.js';
+    import { slugify } from '$lib/helper.js';
     import ColorCodeSpread from '$lib/components/ColorCodeIcons/ColorCodeSpread.svelte';
     const { lrp, constants, title } = $props();
 
@@ -54,7 +54,7 @@
                     <ColorCodeSpread />
                 </div>
 
-                {#await Promise.all([onMountSync(), getData])}
+                {#await getData}
                     <div class="loader"></div>
                 {:then data}
                     {#each everyTwoTypes as group_name, i}

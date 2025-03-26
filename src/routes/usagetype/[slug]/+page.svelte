@@ -4,13 +4,12 @@
     import { QuerySettings } from '$lib/QuerySettings.js';
     import ThemeTotalsByDecadeChart from '$lib/components/ThemeTotalsByDecadeChart.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
-    export let data;
-    import Irrigation from '/src/lib/img/icon-irrigation.svg';
-    import Municipal from '/src/lib/img/icon-municipal.svg';
-    import Manufacturing from '/src/lib/img/icon-manufacturing.svg';
-    import SteamElectricPower from '/src/lib/img/icon-steam-electric-power.svg';
-    import Livestock from '/src/lib/img/icon-livestock.svg';
-    import Mining from '/src/lib/img/icon-mining.svg';
+    import Irrigation from '$lib/img/icon-irrigation.svg?component';
+    import Municipal from '$lib/img/icon-municipal.svg?component';
+    import Manufacturing from '$lib/img/icon-manufacturing.svg?component';
+    import SteamElectricPower from '$lib/img/icon-steam-electric-power.svg?component';
+    import Livestock from '$lib/img/icon-livestock.svg?component';
+    import Mining from '$lib/img/icon-mining.svg?component';
     import { page } from '$app/stores';
 
     let slug = $page.params.slug;
