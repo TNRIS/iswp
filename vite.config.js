@@ -1,12 +1,14 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import svg from '@poppanator/sveltekit-svg';
 import { defineConfig } from 'vite';
-import sveltePreprocess from 'svelte-preprocess';
+import svg from '@poppanator/sveltekit-svg';
+/** @type {import('vite').UserConfig} */
 
 export default defineConfig({
-    plugins: [sveltePreprocess(), sveltekit(), svg()],
+    plugins: [sveltekit(), svg()],
     build: {
-        sourcemap: true,
+		// inline all imported assets
+		assetsInlineLimit: Infinity,
+		sourcemap: true,
         minify: true
-    }
+	}
 });

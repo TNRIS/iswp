@@ -142,7 +142,7 @@
         </tr>
         </thead>
         <tbody>
-        {#each data[1][$themeStore][$decadeStore] as d}
+        {#each data[$themeStore][$decadeStore] as d}
             <tr>
                 <td><a href="region/{d.REGION}">{d.REGION}</a></td>
                 {#if $themeStore !== 'population'}

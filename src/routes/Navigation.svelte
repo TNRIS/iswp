@@ -2,16 +2,9 @@
 
 <script>
     import Statewide from '$lib/db/statewide.js';
-    import { cap, onMountSync } from '$lib/helper.js';
     import Select from 'svelte-select';
-
-    /**
-     * @typedef NavLabel
-     * @type {object}
-     * @property {string} value
-     * @property {string} label
-     */
-
+    import { objectExistsInArray, labelReducer } from '$lib/helper';
+    import { page } from '$app/stores';
     /**
      * @typedef EntityLabel
      * @type {object}
@@ -42,54 +35,13 @@
 
     let chosen = $state(selected.id);
     let label = '';
-    if (chosen == 'statewide') {
-        chosen = '';
-    }
-    let chosen2 = /** @type {string}*/ $state('');
 
-    /**
-     * labelReducer: Create usable labels out of an array of strings.
-     * @param {string[]} labels
-     * @param {string} [label_prefix] - Optional Paramater to prefix labels with.
-     */
-    let labelReducer = (labels, label_prefix = '') => {
-        return labels.reduce((/** @type {NavLabel[]} */ accumulator, /** @type {string} */ currentValue) => {
-            let navlabel = /** @type {NavLabel}*/ ({
-                value: currentValue,
-                label: `${label_prefix}${currentValue}`
-            });
-            accumulator.push(navlabel);
-            return accumulator;
-        }, []);
-    };
-
-    /**
-     * objectExistsInArray: Check if object exists in an array. Pass in keys to check so you can check if it partially matches..
-     * @param {any[]} accumulator
-     * @param {any}  label
-     * @param {string[]} keys
-     * @param {string[]} [secondkeys] Optional keys for the label object. Defaults to keys.
-     */
-    let objectExistsInArray = (accumulator, label, keys, secondkeys = keys) => {
-        let exists /** @type {boolean} */ = false; // Default to false.
-        try {
-            if (accumulator.length) {
-                exists = accumulator.some((/** @type {any} */ item) => {
-                    let match = true;
-                    keys.forEach((key, i) => {
-                        if (!(item[secondkeys[i]] === label[key])) match = false;
-                    });
-                    return match;
-                });
-
-                return exists;
-            }
-        } catch (e) {
-            return false;
+    (() => {
+        if (chosen == 'statewide') {
+            chosen = '';
         }
-        return false;
-    };
-
+    })();
+    let chosen2 = /** @type {string}*/ $state();
     let regions = /** @type NavLabel[] */ labelReducer(constants.getRegions(), 'Region ');
     let counties = /** @type NavLabel[] */ labelReducer(constants.getCountyNames());
     let usageTypes = /** @type NavLabel[] */ labelReducer(constants.getUsageTypes());
@@ -97,23 +49,10 @@
 
     let region = $derived(chosen && chosen2 ? `/${chosen}/${chosen2}/` : !(chosen && chosen2) ? '/' : `/${chosen}/`);
 
-    const titles = constants.chosenTitles;
+    let secondary_input_enabled = $derived(chosen && chosen.length && chosen2 && chosen2 !== undefined);
+    let is_home_selected = $derived(!chosen || chosen == '' || chosen == 'statewide');
 
-    const items = [
-        { value: '', label: 'All of Texas' },
-        {
-            value: 'region',
-            label: 'Planning Region',
-            placeholder_override: 'Region'
-        },
-        { value: 'county', label: 'County' },
-        { value: 'entity', label: 'Water User Group' },
-        { value: 'usagetype', label: 'Usage Type' },
-        { value: 'source', label: 'Water Source' },
-        { value: 'project', label: 'WMS Project' },
-        { value: 'wms', label: 'Water Management Strategy' },
-        { value: 'wmstype', label: 'WMS Type' }
-    ];
+    const titles = constants.chosenTitles;
 
     /** @type {CategoryClass | undefined} */
     let categories = $state();
@@ -147,8 +86,8 @@
 
                     if (!exists) {
                         accumulator.push({
-                            value: currentValue.EntityName,
-                            label: currentValue.EntityId
+                            label: currentValue.EntityName,
+                            value: currentValue.EntityId
                         });
                     }
 
@@ -167,8 +106,8 @@
 
                     if (!exists) {
                         accumulator.push({
-                            value: currentValue.ProjectName,
-                            label: currentValue.WmsProjectId
+                            label: currentValue.ProjectName,
+                            value: currentValue.WmsProjectId
                         });
                     }
 
@@ -187,8 +126,8 @@
 
                     if (!exists) {
                         accumulator.push({
-                            value: currentValue.WmsName,
-                            label: currentValue.WmsId
+                            label: currentValue.WmsName,
+                            value: currentValue.WmsId
                         });
                     }
 
@@ -200,92 +139,10 @@
         }
     };
 
-    /**
-     * Hides all of the subcategories in a secondary-category-select if the function is called on:keyup.
-     */
-    function filterSubCategory() {
-        const error_object = new Error('Cannot filter by sub category HTMLElements not setup correctly at this time.');
-
-        let input = /** @type { HTMLInputElement | null} */ (document?.getElementById('secondary-category-select'));
-        if (!input) throw error_object;
-
-        let filter = /** @type {string} */ (input.value.toUpperCase());
-
-        let ul = /** @type {HTMLUListElement | null} */ (document.getElementById('secondList'));
-
-        let li = /** @type {HTMLCollectionOf<HTMLLIElement> | null} */ (ul?.getElementsByTagName('li'));
-        if (!li) throw error_object;
-
-        // First check if filter has any input. Then if it doesn't hide everything.
-        if (filter.length <= 0) {
-            for (let i = 0; i < li.length; i++) {
-                li[i].style.display = 'none';
-            }
-            return;
-        }
-
-        // Loop through all list items, and hide those who don't match the search query
-        for (let i = 0; i < li.length; i++) {
-            /** @type {HTMLAnchorElement | null} */
-            let a = li[i].getElementsByTagName('a')[0];
-            /** @type {string}*/
-            let txtValue = a.textContent || a.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = '';
-            } else {
-                li[i].style.display = 'none';
-            }
-        }
-    }
-
     let setupChoices = (async () => {
         db = await db;
         categories = new CategoryClass(new Statewide(db));
     })();
-
-    /**
-     * Action fired when secondary filter select is clicked. Can handle keyboard or mouse events.
-     * @param {KeyboardEvent | MouseEvent} event
-     */
-    let clicker = async (event) => {
-        const error_message = 'Navigation error please report to TWDB. Contact info is found at the bottom of the website.';
-        var filter, a;
-
-        const target_anchor = event?.target;
-        if (!target_anchor) throw error_message;
-
-        chosen2 = target_anchor.id;
-
-        const secondary_input = /** @type {HTMLInputElement | null}*/ (document?.getElementById('secondary-category-select'));
-        if (!secondary_input) throw error_message;
-
-        secondary_input.value = target_anchor.text;
-
-        filter = secondary_input.value.toUpperCase();
-        const ul = /** @type {HTMLUListElement | null} */ (document.getElementById('secondList'));
-
-        if (!ul) throw error_message;
-
-        const li = /** @type {HTMLCollectionOf<HTMLElementTagNameMap["li"]>}*/ (ul.getElementsByTagName('li'));
-
-        // Loop through all list items, and hide those who don't match the search query
-        for (let i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName('a')[0];
-            li[i].style.display = 'none';
-        }
-    };
-
-    /**
-     * Action fired when secondary filter select is keydowned.
-     * @param {KeyboardEvent} event
-     */
-    let keypresser = async (event) => {
-        // Check key is enter or space.
-        if (!event?.key) throw new Error('No key found. In keypresser function.');
-
-        if (event.key == 'Escape') box2Change(event);
-        if (event.key == 'Enter') clicker(event);
-    };
 
     /**
      * Reset the second select box.
@@ -308,109 +165,71 @@
 
 <div class="header-nav sticky-div">
     <div class="wrapper" id="wrapper">
-        <div id="top_nav_flex">
-            <label for="navcat" id="navlabel">View data for</label>
-            <nav class="select-container" id="navcat_container">
-                <Select
-                    {items}
-                    containerStyles="width: revert-layer;"
-                    inputStyles="width: revert-layer;"
-                    clearable={false}
-                    on:change={reset}
-                    value={chosen ? chosen : 'All of Texas'}
-                    showChevron
-                    inputAttributes={{
-                        title: 'Category',
-                        'aria-label': 'Choose a page to navigate to related to the category then hit the go button.',
-                        'aria-owns': 'nav_submit'
-                    }} />
-            </nav>
-
-            {#await Promise.all([onMountSync(), setupChoices]) then}
-                {#if chosen && chosen !== '' && chosen !== 'statewide'}
-                    {#if chosen == 'region' || chosen == 'county' || chosen == 'usagetype' || chosen == 'source' || chosen == 'wmstype'}
-                        <nav class="select-container main_select">
-                            {#key chosen}
-                                <Select
-                                    items={categories[chosen]}
-                                    clearable={false}
-                                    on:change={box2Change}
-                                    placeholder="Select {titles[chosen]}"
-                                    showChevron
-                                    inputAttributes={{
-                                        title: 'Sub Category',
-                                        'aria-label':
-                                            'Choose a page to navigate to related to the sub category to navigate to then hit the go button.',
-                                        'aria-owns': 'nav_submit'
-                                    }} />
-                            {/key}
-                        </nav>
-                    {:else}
-                        <nav class="select-container main_select">
-                            <input
-                                style="padding: 8px;"
-                                type="text"
-                                id="secondary-category-select"
-                                autocomplete="off"
-                                aria-label="Choose a page to navigate to related to the sub category to navigate to then hit the go button."
-                                aria-owns="nav_submit"
-                                onkeyup={filterSubCategory}
-                                placeholder="Start typing to find {titles[chosen]}" />
-                            <ul id="secondList" class="nav-category-select">
-                                {#each categories?.[chosen] as r}
-                                    <li
-                                        style="display:none;"
-                                        aria-live="polite"
-                                        aria-label="Sub Category filters"
-                                        aria-details="List filters depending on the sub category input.">
-                                        <div
-                                            role="button"
-                                            tabindex="0"
-                                            onkeydown={keypresser}
-                                            onclick={clicker}
-                                            id={r.label}
-                                            class="listItem"
-                                            aria-details="Submit this button to navigate to {cap(
-                                                r.value,
-                                                chosen
-                                            )} subcategory when you hit the go button.">{cap(r.value, chosen)}</div>
-                                    </li>
-                                {/each}
-                            </ul>
-                        </nav>
-                    {/if}
+        <div id="top_nav_flex" class="submit-button"> <!-- todo change this to not use a form.-->
+            {#await setupChoices then}
+                <label for="navcat" id="navlabel">View data for</label>
+                <div class="select-container" id="navcat_container">
+                    <Select
+                        items={constants.nav_categories}
+                        id="navcat"
+                        containerStyles="width: revert-layer;"
+                        inputStyles="width: revert-layer;"
+                        clearable={false}
+                        on:change={reset}
+                        value={chosen ? chosen : 'All of Texas'}
+                        showChevron
+                        inputAttributes={{
+                            title: 'Category',
+                            'aria-label': 'Choose a page to navigate to related to the category then hit the go button.',
+                            'aria-owns': 'nav_submit'
+                        }} />
+                </div>
+                {#if !is_home_selected}
+                    <div class="select-container main_select">
+                        <Select
+                            inputStyles="outline-width: 0; "
+                            items={categories[chosen]}
+                            clearable={false}
+                            on:change={box2Change}
+                            value={chosen2}
+                            placeholder="Select {titles[chosen]}"
+                            showChevron
+                            inputAttributes={{
+                                title: 'Sub Category',
+                                'aria-label':
+                                    'Choose a page to navigate to related to the sub category to navigate to then hit the go button.',
+                                'aria-owns': 'nav_submit'
+                            }} />
+                    </div>
                 {/if}
+                <a
+                    href={region}
+                    type="submit"
+                    class="button button-nav-submit"
+                    id="nav_submit"
+                    title="Continue here after you’ve filled out all form elements to navigate to selected page."
+                    aria-label="Submit navigation selections."
+                    target={undefined}>Go
+                </a>
             {:catch error}
                 <span>Error loading nav {error}</span>
             {/await}
-            <form action={region} id="submit-button">
-                <input
-                    type="submit"
-                    class="button button-nav-submit"
-                    disabled={chosen == ''
-                        ? false
-                        : !(
-                              (
-                                  chosen &&
-                                  chosen.length &&
-                                  chosen2 &&
-                                  chosen2 !== undefined
-                              ) /* 0 is fine so check explicitly for undefined */
-                          )}
-                    value="Go"
-                    id="nav_submit"
-                    title="Continue here after you’ve filled out all form elements to navigate to selected page." />
-            </form>
         </div>
     </div>
 </div>
 
+
+
 <style>
+    :global(input[type=text]:hover) {
+        border:0px solid;
+    }
+
     .button-nav-submit:disabled {
         color: gray;
     }
 
-    #navcat {
+    :global(#navcat) {
         height: default !important;
     }
 
@@ -420,64 +239,8 @@
         font-size: revert;
     }
 
-    #secondary-category-select {
-        width: 100%;
-        border-radius: 8px;
-        height: 42px;
-        padding: 1em;
-    }
-
     .header-nav {
         z-index: 7000;
-    }
-
-    .listItem {
-        width: 100%;
-        padding: 20px 10px;
-        border: 1px solid #979997;
-        margin: 0px;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        -ms-appearance: none;
-        -o-appearance: none;
-        appearance: none;
-        cursor: pointer;
-        -webkit-border-radius: 4px;
-        -moz-border-radius: 4px;
-        -ms-border-radius: 4px;
-        -o-border-radius: 4px;
-        border-radius: 4px;
-
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-    }
-
-    #secondList {
-        /* Remove default list styling */
-        list-style-type: none;
-        margin: 0;
-        position: absolute;
-        width: 380px;
-        max-height: 400px;
-        overflow-y: scroll;
-        overflow-x: hidden;
-    }
-
-    #secondList li {
-        width: 100%;
-        margin: 0;
-    }
-
-    #secondList li a {
-        padding-top: 8px;
-        padding-bottom: 8px;
-        border: none;
-        width: 100%;
-        background-color: white;
-        text-decoration: none;
-        min-width: inherit;
-        display: inline-block;
     }
 
     :global(.mdc-select__anchor) {

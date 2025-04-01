@@ -20,7 +20,6 @@
         await is_idb_loaded();
         db = await db;
     })();
-
 </script>
 
 {#if constants.id == 27}

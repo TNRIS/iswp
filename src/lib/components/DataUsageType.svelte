@@ -66,7 +66,7 @@
                                 </h5>
                                 <BarChart
                                     iterator={i}
-                                    data={data[1]}
+                                    data={data}
                                     group_name={group_name[0]}
                                     chartTitle={group_name[0] + '-bc'}
                                     {constants}
@@ -75,7 +75,7 @@
                                 <ChartDataTable
                                     visible={false}
                                     header={constants.getDecades()}
-                                    body={data[1][group_name[0]]}
+                                    body={data[group_name[0]]}
                                     titles={true}
                                     showHide={true}
                                     ariaHint={`${group_name[0]} water usage in acre feet / year`} />
@@ -88,7 +88,7 @@
                                 </h5>
                                 <BarChart
                                     iterator={(i + 1) * 999}
-                                    data={data[1]}
+                                    data={data}
                                     group_name={group_name[1]}
                                     chartTitle={group_name[0] + '-bc'}
                                     {constants}
@@ -97,7 +97,7 @@
                                 <ChartDataTable
                                     visible={false}
                                     header={constants.getDecades()}
-                                    body={data[1][group_name[1]]}
+                                    body={data[group_name[1]]}
                                     titles={true}
                                     showHide={true}
                                     ariaHint={`${group_name[1]} water usage in acre feet / year`} />

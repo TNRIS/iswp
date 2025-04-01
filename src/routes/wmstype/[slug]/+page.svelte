@@ -5,26 +5,28 @@
     import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
     import Statewide from '$lib/db/statewide.js';
     import { QuerySettings } from '$lib/QuerySettings.js';
-    export let data;
     import { setContext } from 'svelte';
     import { writable } from 'svelte/store';
     import { page } from '$app/stores';
 
-    let slug = $page.params.slug;
+    let slug = $derived($page.params.slug);
     let stratAd = ['Region', 'WMS Type', 'Strategy', 'Source', 'County', 'Entity'];
     let constants = getConstants($page.url.host);
     let wmsTypeSetting = new QuerySettings('datastrategies', 'WmsType');
-    wmsTypeSetting.setAll(slug);
     const wmsSetting2 = new QuerySettings('wmstype', 'WmsType');
-    wmsSetting2.setAll(slug);
+
+    let set_all_wms_type_settings = (new_slug) => {
+        wmsTypeSetting.setAll(new_slug);
+        wmsSetting2.setAll(new_slug);
+    };
+    (() => {set_all_wms_type_settings(slug)})();
     let db = load_indexeddb();
-    let entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`;
+    let entityMapBlurb = $state(`<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`);
     if (!$page.url.host.includes('2017'))
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`;
 
     let loadForWmsType = async () => {
         await is_idb_loaded();
-        let start = Date.now();
         db = await db;
         let sw = new Statewide(db);
         let dat = await sw.get(wmsTypeSetting);
@@ -33,7 +35,6 @@
             strategies: dat.strategies,
             projects: dat2.projects
         };
-        console.log(`loadForRegion time in ms: ${Date.now() - start}`);
         return r;
     };
 
@@ -41,12 +42,18 @@
         getData: writable()
     });
 
-    const lrp = loadForWmsType();
+    let lrp = $state(loadForWmsType());
+
+    $effect(() => {
+        set_all_wms_type_settings(slug);
+        lrp = loadForWmsType()
+    });
 </script>
 
 <svelte:head>
-    <title>Water Management Strategy Type{slug ? ` for ${slug}` : ''}</title>
+    {#key slug}<title>Water Management Strategy Type{slug ? ` for ${slug}` : ''}</title>{/key}
 </svelte:head>
+{#key lrp}
 <div class="statewide-view" id="main-content" role="main">
     <section>
         <div class="view-top usage-type-view-top">
@@ -74,3 +81,4 @@
             {constants} />
     </section>
 </div>
+{/key}

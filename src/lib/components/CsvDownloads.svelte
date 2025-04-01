@@ -170,59 +170,70 @@
     <h5 id="dl_header" aria-level="4">Download Data</h5>
     <ul>
         {#if population.length && downloadPopulation}
-            <li
-                ><a
-                    href="#"
-                    on:click={() => {
+            <li>
+                <button class="a_button"
+                    onclick={() => {
                         dlpop(population, 'population.csv');
-                    }}>Download {csvTitle} Population data (Comma-Separated Values)</a
-                ></li>
+                    }}
+                    >Download {csvTitle} Population data (Comma-Separated Values)
+                </button>
+            </li>
         {/if}
         {#if demands.length}
-            <li
-                ><a
+            <li>
+                <button class="a_button"
                     href="#"
-                    on:click={() => {
+                    onclick={() => {
                         dlpop(demands, 'demands.csv');
-                    }}>Download {csvTitle} Demands data (Comma-Separated Values)</a
-                ></li>
+                    }}
+                    >Download {csvTitle} Demands data (Comma-Separated Values)
+                </button>
+            </li>
         {/if}
         {#if existing.length}
-            <li
-                ><a
+            <li>
+                <button class="a_button"
                     href="#"
-                    on:click={() => {
+                    onclick={() => {
                         dlpop(existing, 'existing.csv');
-                    }}>Download {csvTitle} Existing Supplies data (Comma-Separated Values)</a
-                ></li>
+                    }}
+                    >Download {csvTitle} Existing Supplies data (Comma-Separated Values)
+                </button>
+            </li>
         {/if}
         {#if needs.length}
-            <li
-                ><a
+            <li>
+                <button class="a_button"
                     href="#"
-                    on:click={() => {
+                    onclick={() => {
                         dlpop(needs, 'needs.csv');
-                    }}>Download {csvTitle} Needs (Potential Shortages) data (Comma-Separated Values)</a
-                ></li>
+                    }}
+                    >Download {csvTitle} Needs (Potential Shortages) data (Comma-Separated Values)
+                </button>
+            </li>
         {/if}
         {#if strategy.length}
-            <li
-                ><a
+            <li>
+                <button class="a_button"
                     href="#"
-                    on:click={() => {
+                    onclick={() => {
                         dlpop(strategy, 'strategies.csv');
-                    }}>Download {csvTitle} Strategy Supplies data (Comma-Separated Values)</a
-                ></li>
+                    }}
+                    >Download {csvTitle} Strategy Supplies data (Comma-Separated Values)
+                </button>
+            </li>
         {/if}
 
         {#if projects.length && window.location.pathname.includes('/project/')}
-            <li
-                ><a
+            <li>
+                <button class="a_button"
                     href="#"
-                    on:click={() => {
+                    onclick={() => {
                         dlpop(projects, 'projects.csv');
-                    }}>Download {csvTitle} Project data (Comma-Separated Values)</a
-                ></li>
+                    }}
+                    >Download {csvTitle} Project data (Comma-Separated Values)
+                </button>
+            </li>
         {/if}
 
         {#if !((population.length && downloadPopulation) || demands.length || existing.length || needs.length || strategy.length || (projects.length && window.location.pathname.includes('/project/')))}
@@ -235,4 +246,15 @@
     #dl_header {
         font-weight: bold;
     }
+    .a_button {
+        all: unset;
+        cursor:pointer;
+        color: #3f556d;
+        text-decoration:underline;
+    }
+    .a_button:hover {
+        color: #0fa0ce;
+        text-decoration: underline;
+    }
+    
 </style>

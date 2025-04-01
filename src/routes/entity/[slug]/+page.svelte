@@ -10,11 +10,11 @@
     import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
     import { page } from '$app/stores';
 
-    let slug = $page.params.slug;
+    let slug = $derived($page.params.slug);
     let { data, entityName = $bindable(''), tagline = $bindable('') } = $props();
     let constants = getConstants($page.url.host);
     let entitySetting = new QuerySettings('entity', 'EntityId');
-    entitySetting.setAll(Number(slug));
+    (() => {entitySetting.setAll(Number(slug))})();
     let entityMapBlurb = $state(`<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`);
     if (!$page.url.host.includes('2017'))
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`;
@@ -29,13 +29,11 @@
     let loadForEntity = async () => {
         await is_idb_loaded();
         entityName = JSON.parse(localStorage.entityCoordinates).find((element) => element.EntityId == slug).EntityName;
-        let start = Date.now();
         db = await db;
         let sw = new Statewide(db);
         let dat = await sw.get(entitySetting);
         const pops = dat?.population?.rows;
 
-        console.log(`loadForRegion time in ms: ${Date.now() - start}`);
         let groups = '';
 
         if (pops) {
@@ -55,14 +53,22 @@
         return dat;
     };
     // Promise to load for entity. Do not await here. Await later in individual entities.
-    const lrp = loadForEntity();
+    let lrp = $state(loadForEntity());
+
+    $effect(() => {
+        entitySetting.setAll(Number(slug));
+        lrp = loadForEntity();
+    });
 </script>
 
 <svelte:head>
+    {#key slug}
     <title>Water User Group{entityName ? ` for ${entityName}` : ''}</title>
+    {/key}
 </svelte:head>
 <div class="statewide-view" id="main-content" role="main">
     <section>
+        {#key lrp}
         <PopulationChart bind:tagline={tagline} title={camelCaseEntityName} {lrp} {constants} />
         <ThemeTotalsByDecadeChart {lrp} {constants} title={camelCaseEntityName} />
         <EntityStrategiesTable {lrp} {constants} title={camelCaseEntityName} />
@@ -81,5 +87,6 @@
             {stratAd}
             {activeDem}
             {entityMapBlurb} />
+        {/key}
     </section>
 </div>

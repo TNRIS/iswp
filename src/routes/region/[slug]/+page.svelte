@@ -14,59 +14,74 @@
     import { writable } from 'svelte/store';
     import { page } from '$app/stores';
 
-    let slug = $page.params.slug;
     const tagline = 'Regional Water Planning Area in <a href="/">Texas</a>';
     let stratAd = ['Strategy', 'WMS Type', 'Source', 'County', 'Entity'];
-
     let activeDem = ['County', 'Entity'];
 
+    let slug = $derived($page.params.slug);
     let constants = getConstants($page.url.host);
-    let regionSetting = new QuerySettings('region', 'WugRegion');
-    regionSetting.setAll(slug);
-    regionSetting.setProjects(slug, 'WmsProjectSponsorRegion');
-
-    let regionSetting2 = new QuerySettings('region', 'WugRegion');
-    regionSetting2.setAll(slug);
-    regionSetting2.setProjects(slug, 'WugRegion');
     let db = load_indexeddb();
-    let loadForRegion = async () => {
-        db = await db;
 
-        await is_idb_loaded();
-        let start = Date.now();
-        let sw = new Statewide(db);
-        let cc = new Counties(db);
-        let [ccounties, dat, dat2] = await Promise.all([cc.get(slug), sw.get(regionSetting), sw.get(regionSetting2)]);
-        //let ccounties = await cc.get(slug);
-        //let dat =  await sw.get(regionSetting);
+    //Setup region 1 and 2.
+    let regionSetting = new QuerySettings('region', 'WugRegion');
+    let regionSetting2 = new QuerySettings('region', 'WugRegion');
 
-        dat.counties = ccounties;
-        dat2.counties = ccounties;
-        dat.project_data = dat2;
+    /**
+     * Reused in a few places so just call it as needed. It resets the settings for the idb query.
+     */
+    let reset_region_settings = (new_slug) => {
+        regionSetting.setAll(new_slug);
+        regionSetting.setProjects(new_slug, 'WmsProjectSponsorRegion');
+        regionSetting2.setAll(new_slug);
+        regionSetting2.setProjects(new_slug, 'WugRegion');
+    }
 
-        console.log(`loadForRegion time in ms: ${Date.now() - start}`);
-        dat.supplies.rows
-        return dat;
-    };
+    //Initial reset.
+    (() => {reset_region_settings(slug)})();
 
     setContext('dataviewContext', {
         getData: writable()
     });
-    let entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`;
+    let entityMapBlurb = $state(`<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`);
     if (!$page.url.host.includes('2017'))
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`;
 
-    let loadForRegionPromise = loadForRegion();
+    let loadForRegionPromise = async () => {
+        // Just check that the indexeddb is loaded.
+        db = await db;
+        await is_idb_loaded();
+
+        let sw = new Statewide(db);
+        let cc = new Counties(db);
+        let [ccounties, dat, dat2] = await Promise.all([cc.get(slug), sw.get(regionSetting), sw.get(regionSetting2)]);
+        dat.counties = ccounties;
+        dat2.counties = ccounties;
+        dat.project_data = dat2;
+
+        return dat;
+    };
+    let lrp = $state(loadForRegionPromise());
+
+    $effect(() => {
+        reset_region_settings(slug);
+        lrp = loadForRegionPromise(); // Rebuild data on this page.
+    })
+
+
 </script>
 
 <svelte:head>
-    <title>Planning Region {slug ? ` ${slug}` : ''}</title>
+    {#key slug}
+        <title>Planning Region {slug ? ` ${slug}` : ''}</title>
+    {/key}
 </svelte:head>
+
+{#key lrp}
 <div class="statewide-view" id="main-content" role="main">
     <section>
         <PopulationChart
             title={`Planning Region ${slug}`}
-            lrp={loadForRegionPromise}
+            {lrp}
             {constants}
             {tagline}
             dont_capitalize_title={true} />
@@ -94,24 +109,24 @@
                 </div>
             </div>
         </div>
-        <ThemeTotalsByDecadeChart lrp={loadForRegionPromise} {constants} title={`Planning Region ${slug}`} />
+        <ThemeTotalsByDecadeChart {lrp} {constants} title={`Planning Region ${slug}`} />
         <ThemeTypesByDecadeChart
             chartTitle={'ct-usage-chart'}
-            lrp={loadForRegionPromise}
+            {lrp}
             {constants}
             title={`Planning Region ${slug}`} />
-        <DataUsageType title={`Planning Region ${slug}`} lrp={loadForRegionPromise} {constants} />
+        <DataUsageType title={`Planning Region ${slug}`} {lrp} {constants} />
         <ProjectTable
             project_title={`PLANNING REGION ${slug}`}
             project_title2={'Projects '}
-            lrp={loadForRegionPromise}
+            {lrp}
             type={'region'} />
-        {#await loadForRegionPromise then d}
+        {#await lrp then d}
             <DataViewChoiceWrapInd
                 title={`Planning Region ${slug}`}
                 showPopulation={true}
                 type={'region'}
-                slug={slug}
+                {slug}
                 {stratAd}
                 {activeDem}
                 {constants}
@@ -122,3 +137,4 @@
         {/await}
     </section>
 </div>
+{/key}

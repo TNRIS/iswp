@@ -1,16 +1,13 @@
 <script>
-    //@ts-nocheck
-    const { page, slug, swdata, fileName, constants, stratAd, activeDem, showPopulation } = $$props;
+    const { page, slug, swdata, fileName, constants, stratAd, activeDem, showPopulation, title, csvTitle } = $props();
     import { commafy, onMountSync, usd_format } from '$lib/helper.js';
     import CsvDownloads from '$lib/components/CsvDownloads.svelte';
-
-    import { getContext } from 'svelte';
+    import { getContext, onMount } from 'svelte';
     const decadeStore = getContext('myContext').decadeStore;
     const themeStore = getContext('myContext').themeStore;
     const dataviewContext = getContext('dataviewContext');
     const themeTitles = constants.getThemeTitles();
-    export let title;
-    export let csvTitle;
+
     let getData = async () => {
         try {
             let rows, dimensions, reduce, calculations, sorter, activeDimensions;
@@ -174,12 +171,21 @@
     };
 
     dataviewContext.getData.set(getData);
-    let onLoad = async () => {
-        await getData();
-    };
+    let onLoad = $state(new Promise((resolve, reject)=> {
+        try{
+            onMount(async () => {
+                await getData();
+                resolve("done");
+            });
+        } catch(err) {
+            reject(err);
+        }
+    }));
+
+
 </script>
 
-{#await onLoad()}
+{#await onLoad}
     <div class="loader"></div>
 {:then}
     <table id="PivotTable" role="grid"></table>

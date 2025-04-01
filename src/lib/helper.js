@@ -1,5 +1,5 @@
-import { onMount, beforeUpdate, afterUpdate } from 'svelte';
-import { start_all_db, start_db_2017, start_db_2022, start_db_2027 } from './db/db.js';
+import { onMount, afterUpdate } from 'svelte';
+import { start_db_2017, start_db_2022, start_db_2027 } from './db/db.js';
 import { Constant2027 } from './Constant2027.js';
 import { Constant2022 } from './Constant2022.js';
 import { Constant2017 } from './Constant2017.js';
@@ -342,4 +342,52 @@ export let scaleTonew = (scale1, scale2, constants) => {
     let radius = Math.floor(r) + constants.MIN_RADIUS;
     if(radius > constants.MAX_RADIUS) radius = constants.MAX_RADIUS;
     return radius;
+};
+
+/**
+ * objectExistsInArray: Check if object exists in an array. Pass in keys to check so you can check if it partially matches..
+ * @param {any[]} accumulator
+ * @param {any}  label
+ * @param {string[]} keys
+ * @param {string[]} [secondkeys] Optional keys for the label object. Defaults to keys.
+ */
+export let objectExistsInArray = (accumulator, label, keys, secondkeys = keys) => {
+    let exists /** @type {boolean} */ = false; // Default to false.
+    try {
+        if (accumulator.length) {
+            exists = accumulator.some((/** @type {any} */ item) => {
+                let match = true;
+                keys.forEach((key, i) => {
+                    if (!(item[secondkeys[i]] === label[key])) match = false;
+                });
+                return match;
+            });
+
+            return exists;
+        }
+    } catch (e) {
+        return false;
+    }
+    return false;
+};
+
+/**
+ * labelReducer: Create usable labels out of an array of strings.
+ * @param {string[]} labels
+ * @param {string} [label_prefix] - Optional Paramater to prefix labels with.
+ * 
+ * @typedef NavLabel
+ * @type {object}
+ * @property {string} value
+ * @property {string} label
+ */
+export let labelReducer = (labels, label_prefix = '') => {
+    return labels.reduce((/** @type {NavLabel[]} */ accumulator, /** @type {string} */ currentValue) => {
+        let navlabel = /** @type {NavLabel}*/ ({
+            value: currentValue,
+            label: `${label_prefix}${currentValue}`
+        });
+        accumulator.push(navlabel);
+        return accumulator;
+    }, []);
 };

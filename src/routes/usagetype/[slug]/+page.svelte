@@ -12,39 +12,45 @@
     import Mining from '$lib/img/icon-mining.svg?component';
     import { page } from '$app/stores';
 
-    let slug = $page.params.slug;
-    let entityMapBlurb = `<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`;
+    let slug = $derived($page.params.slug);
+    let entityMapBlurb = $state(`<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`);
     if (!$page.url.host.includes('2017'))
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`;
 
     let constants = getConstants($page.url.host);
     let utSetting = new QuerySettings('usagetype', 'WugType');
-    utSetting.setAll(slug.toUpperCase());
+    (() => {utSetting.setAll(slug.toUpperCase())})();
 
     let db = load_indexeddb();
 
     let stratAd = ['Region', 'Strategy', 'WMS Type', 'Source', 'County', 'Entity'];
-
     let activeDem = ['Region', 'County', 'Entity'];
 
-    let loadForRegion = async () => {
+    let loadForUsageType = async () => {
         await is_idb_loaded();
-        let start = Date.now();
         db = await db;
         let sw = new Statewide(db);
         let dat = await sw.get(utSetting);
-        console.log(`loadForRegion time in ms: ${Date.now() - start}`);
         return dat;
     };
 
     // Promise to load for region. Do not await here. Await later in individual entities.
-    const lrp = loadForRegion();
+    let lrp = $state(loadForUsageType());
+
+    $effect(() => {
+        utSetting.setAll(slug.toUpperCase());
+        lrp = loadForUsageType();
+    })
 </script>
 
 <svelte:head>
+    {#key slug}
     <title>Usage Type{slug ? ` for ${slug}` : ''}</title>
+    {/key}
 </svelte:head>
+{#key lrp}
 <div class="statewide-view" id="main-content" role="main">
+    
     <div class="view-top usage-type-view-top">
         <div class="summary-wrapper container">
             <div class="view-summary usage-type-summary">
@@ -70,7 +76,7 @@
             </div>
         </div>
     </div>
-    <ThemeTotalsByDecadeChart {lrp} {constants} title={`Usage Type - ${slugify(slug)}`} />
+    <ThemeTotalsByDecadeChart {lrp} wugRegionFilter={undefined} {constants} title={`Usage Type - ${slugify(slug)}`} />
     <DataViewChoiceWrapInd
         page="usagetype"
         slug={slug}
@@ -84,3 +90,4 @@
         fileName={`usagetype_${slug.toLowerCase()}`}
         {constants} />
 </div>
+{/key}
