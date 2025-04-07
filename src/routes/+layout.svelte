@@ -1,6 +1,6 @@
 <script>
-    import Banner from './Banner.svelte';
-    import Navigation from './Navigation.svelte';
+    import Banner from '$lib/Banner.svelte';
+    import Navigation from '$lib/Navigation.svelte';
     import { getConstants, load_indexeddb, onMountSync, is_idb_loaded } from '$lib/helper';
     import { page } from '$app/stores';
 

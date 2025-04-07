@@ -10,10 +10,10 @@
     let db = load_indexeddb();
     let slug = $derived($page.params.slug);
     let entityMapBlurb = $state(`<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`);
-    if (!$page.url.host.includes('2017'))
+    let constants = getConstants($page.url.host);
+    if (constants.id !== 17)
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`;
 
-    let constants = getConstants($page.url.host);
     let sourceSetting = new QuerySettings('source', 'MapSourceId');
     (() => {sourceSetting.setAll(slug)})();
     let title = $state('');
