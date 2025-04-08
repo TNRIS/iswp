@@ -135,10 +135,8 @@
 
     (async () => {
         await onMountSync();
-        console.log("Test");
         let tries = 0;
         let waitTableLoad = setInterval(() => {
-            console.log("Interval")
             if (tries >= 10) {
                 // Only wait 10 times.
                 clearInterval(waitTableLoad);

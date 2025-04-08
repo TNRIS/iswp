@@ -140,7 +140,6 @@ export default class Statewide {
                 console.log('reducer err: ' + err);
             }
         }, Object.create(null));
-        //console.log("reduced: " + JSON.stringify(reduced))
         return reduced;
     };
 

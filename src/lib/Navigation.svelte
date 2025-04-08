@@ -4,6 +4,7 @@
     import Statewide from '$lib/db/statewide.js';
     import Select from 'svelte-select';
     import { objectExistsInArray, labelReducer } from '$lib/helper';
+
     /**
      * @typedef EntityLabel
      * @type {object}
@@ -25,13 +26,12 @@
      * @property {string} WmsId
      */
 
-     /**
+    /**
      * @typedef NavLabel
      * @type {object}
      * @property {string} value
      * @property {string} label
      */
-
 
     // Set to true to log some timings.
     const DEBUG_LOADING = false;
@@ -48,6 +48,7 @@
             chosen = '';
         }
     })();
+
     let chosen2 = /** @type {string}*/ $state("");
     let regions = /** @type {NavLabel[]} */ labelReducer(constants.getRegions(), 'Region ');
     let counties = /** @type {NavLabel[]} */ labelReducer(constants.getCountyNames());
@@ -232,11 +233,6 @@
           if (a.label < b.label) return -1;
         })
     }
-
-    let resetBoxSearch = () => {
-        filter_search_selector.handleClear();
-        console.log("Here");
-    };
 </script>
 
 <div class="header-nav sticky-div">
