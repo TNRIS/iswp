@@ -2,17 +2,13 @@
     import ProjectTable from '$lib/components/ProjectTable/ProjectTable.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
     import PopulationChart from '$lib/components/Charts/PopulationChart.svelte';
-
-    let db = load_indexeddb();
     import { QuerySettings } from '$lib/QuerySettings.js';
-    import { load_indexeddb, getConstants, cap, handle_idb_downloading } from '$lib/helper.js';
-    import Statewide from '$lib/db/statewide.js';
+    import { getConstants, cap, wrapupCommonIdbTasks } from '$lib/helper.js';
     import { page } from '$app/stores';
 
     let slug = $derived($page.params.slug);
     let tagline = $state('');
     let stratAd = ['Region', 'Strategy', 'WMS Type', 'Source', 'County', 'Entity'];
-
     let constants = getConstants($page.url.host);
     let wmsSetting = new QuerySettings('datastrategies', 'WmsId');
     const wmsSetting2 = new QuerySettings('wms', 'WmsId');
@@ -30,9 +26,7 @@
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`;
 
     let loadForWms = async () => {
-        await handle_idb_downloading();
-        db = await db;
-        let sw = new Statewide(db);
+        let [db, sw] = await wrapupCommonIdbTasks();
         let dat = await sw.get(wmsSetting);
         let dat2 = await sw.get(wmsSetting2);
         csvTitle = cap(dat2.projects[0]['WmsName']);

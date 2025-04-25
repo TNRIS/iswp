@@ -3,11 +3,9 @@
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
     import PopulationChart from '$lib/components/Charts/PopulationChart.svelte';
     import { QuerySettings } from '$lib/QuerySettings.js';
-    import { load_indexeddb, getConstants, cap, handle_idb_downloading } from '$lib/helper.js';
-    import Statewide from '$lib/db/statewide.js';
+    import { getConstants, cap, wrapupCommonIdbTasks } from '$lib/helper.js';
     import { page } from '$app/stores';
 
-    let db = load_indexeddb();
     let slug = $derived($page.params.slug);
     let entityMapBlurb = $state(`<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`);
     let constants = getConstants($page.url.host);
@@ -21,7 +19,6 @@
     let stratAd = ['Region', 'County', 'Entity', 'Strategy', 'WMS Type', 'Source'];
     let activeDem = ['Region', 'County', 'Entity']; // Active pivot columns for everything other than strategy supplies.
     let loadForSource = async () => {
-        await handle_idb_downloading();
         title = constants.sourceNames.find((x) => x.value == parseInt(slug))?.label;
 
         if (title?.includes('|')) {
@@ -33,8 +30,7 @@
             tagline = `Surface Water Source in <a href="/">Texas</a>`;
         }
 
-        db = await db;
-        let sw = new Statewide(db);
+        let [db, sw] = await wrapupCommonIdbTasks();
         let dat = await sw.get(sourceSetting);
         return dat;
     };

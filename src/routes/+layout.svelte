@@ -1,27 +1,22 @@
 <script>
     import Banner from '$lib/Banner.svelte';
     import Navigation from '$lib/Navigation.svelte';
-    import { getConstants, load_indexeddb, onMountSync, is_idb_loaded } from '$lib/helper';
+    import { getConstants, load_indexeddb, handle_idb_downloading } from '$lib/helper';
     import { page } from '$app/stores';
+    import { setContext } from 'svelte';
 
     import '$lib/react-pivot-standalone-4.4.1.min.js';
     import 'leaflet';
     import 'leaflet-easybutton/src/easy-button';
     import '$lib/leaflet/leaflet.utfgrid';
-    //Remove temporary banner
-    document.getElementById('temp-content')?.remove();
-
+    let { children } = $props();
     let selected = { id: $page.url.pathname.split(['/'])[1] };
     let constants = getConstants($page.url.host);
-
     let db = load_indexeddb();
-    let idb_loader = (async () => {
-        await onMountSync();
-        await is_idb_loaded();
-        db = await db;
-    })();
+    setContext('db', db);
+    //Remove temporary banner
+    document.getElementById('temp-content')?.remove();
 </script>
-
 {#if constants.id == 27}
     <div class="draft-note">
         <div class="wrapper" style="word-break: break-word;">
@@ -37,12 +32,15 @@
     </div>
 {/if}
 <Banner {constants} />
-    {#await idb_loader then}
+    {#await Promise.all([handle_idb_downloading, db]) then}
         <Navigation {db} {selected} {constants} />
     {:catch}
         <span>There was an error loading the top navigation. Please clear your cache in your browser to reload the application.</span>
     {/await}
-    <slot />
+
+<div id="loadable-content">
+{@render children()}
+</div>
 <style lang="css" global>
     @import "normalize.css";
     @import "$lib/styling/css/skeleton.css";

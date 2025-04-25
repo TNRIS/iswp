@@ -3,6 +3,9 @@ import { start_db_2017, start_db_2022, start_db_2027 } from './db/db.js';
 import { Constant2027 } from './Constant2027.js';
 import { Constant2022 } from './Constant2022.js';
 import { Constant2017 } from './Constant2017.js';
+import Statewide from '$lib/db/statewide.js';
+import { getContext } from 'svelte';
+
 export let DEFAULT_FLAG = '2022';
 
 export let getConstants = (host) => {
@@ -100,7 +103,6 @@ export let usd_format_whole = new Intl.NumberFormat('en-US', {
 // Load indexeddb
 export let load_indexeddb = async () => {
     try {
-        const start = Date.now();
         await onMountSync();
         let IS_2017_WEBSITE = window.location.href.indexOf('2017') > -1;
         let IS_2022_WEBSITE = window.location.href.indexOf('2022') > -1;
@@ -395,3 +397,21 @@ export let labelReducer = (labels, label_prefix = '') => {
         return accumulator;
     }, []);
 };
+
+/**
+ * wrapupCommonIdbTasks: Wrap up common idb tasks.
+ * @returns {Promise<any>}: Object with a indexeddb, and a Statewide object
+ */
+export let wrapupCommonIdbTasks = async () => {
+    let db = getContext('db');
+    await onMountSync();
+    await handle_idb_downloading();
+    db = await db;
+    let sw = new Statewide(db)
+
+    let items = [
+        db,
+        sw
+    ]
+    return items;
+}

@@ -1,13 +1,11 @@
 <script>
-    //@ts-nocheck
     import PopulationChart from '$lib/components/Charts/PopulationChart.svelte';
     import DataUsageType from '$lib/components/DataUsageType.svelte';
     import ProjectTable from '$lib/components/ProjectTable/ProjectTable.svelte';
     import ThemeTypesByDecadeChart from '$lib/components/ThemeTypesByDecadeChart.svelte';
     import ThemeTotalsByDecadeChart from '$lib/components/ThemeTotalsByDecadeChart.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
-    import { load_indexeddb, getConstants, handle_idb_downloading } from '$lib/helper.js';
-    import Statewide from '$lib/db/statewide.js';
+    import { getConstants, wrapupCommonIdbTasks } from '$lib/helper.js';
     import Counties from '$lib/db/counties.js';
     import { QuerySettings } from '$lib/QuerySettings.js';
     import { setContext } from 'svelte';
@@ -20,7 +18,7 @@
 
     let slug = $derived($page.params.slug);
     let constants = getConstants($page.url.host);
-    let db = load_indexeddb();
+    let db;
 
     //Setup region 1 and 2.
     let regionSetting = new QuerySettings('region', 'WugRegion');
@@ -48,10 +46,8 @@
 
     let loadForRegionPromise = async () => {
         // Just check that the indexeddb is loaded.
-        db = await db;
-        await handle_idb_downloading();
-
-        let sw = new Statewide(db);
+        let sw;
+        [db, sw] = await wrapupCommonIdbTasks();
         let cc = new Counties(db);
         let [ccounties, dat, dat2] = await Promise.all([cc.get(slug), sw.get(regionSetting), sw.get(regionSetting2)]);
         dat.counties = ccounties;

@@ -1,9 +1,7 @@
 <script>
-    //@ts-nocheck
     import ProjectTable from '$lib/components/ProjectTable/ProjectTable.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
-    import { load_indexeddb, getConstants, cap, handle_idb_downloading } from '$lib/helper.js';
-    import Statewide from '$lib/db/statewide.js';
+    import { getConstants, cap, wrapupCommonIdbTasks } from '$lib/helper.js';
     import { QuerySettings } from '$lib/QuerySettings.js';
     import { setContext } from 'svelte';
     import { writable } from 'svelte/store';
@@ -20,15 +18,12 @@
         wmsSetting2.setAll(new_slug);
     };
     (() => {set_all_wms_type_settings(slug)})();
-    let db = load_indexeddb();
     let entityMapBlurb = $state(`<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`);
     if (constants.id !== 17)
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`;
 
     let loadForWmsType = async () => {
-        await handle_idb_downloading();
-        db = await db;
-        let sw = new Statewide(db);
+        let [db, sw] = await wrapupCommonIdbTasks();
         let dat = await sw.get(wmsTypeSetting);
         let dat2 = await sw.get(wmsSetting2);
         let r = {

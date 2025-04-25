@@ -7,25 +7,16 @@
     const DataViewChoiceWrapPromise = import('$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrap.svelte');
 
     import { QuerySettings } from '$lib/QuerySettings.js';
-    import { load_indexeddb, onMountSync, getConstants, is_idb_loaded } from '$lib/helper.js';
-    import Statewide from '$lib/db/statewide.js';
+    import { getConstants, wrapupCommonIdbTasks } from '$lib/helper.js';
     import { page } from '$app/stores';
     import ComponentLoader from '$lib/components/ComponentLoader.svelte';
 
     let constants = getConstants($page.url.host);
     let stateSettings = new QuerySettings();
-    let db = load_indexeddb();
-
+    let db, sw;
     let loadForState = async () => {
-        await onMountSync();
-        await is_idb_loaded();
-        let start = Date.now();
-        db = await db;
-        let sw = new Statewide(db);
-        let dat = await sw.get(stateSettings);
-
-        console.log(`loadForState() time in ms: ${Date.now() - start}`);
-        return dat;
+        [db, sw] = await wrapupCommonIdbTasks();
+        return await sw.get(stateSettings);
     };
 
     // Pass the promise to load for state in order to load each entity one at a time.

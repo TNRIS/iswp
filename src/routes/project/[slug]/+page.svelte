@@ -1,10 +1,8 @@
 <script>
     import ProjectTable2 from '$lib/components/ProjectTable/ProjectTable2.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
-    let db = load_indexeddb();
     import { QuerySettings } from '$lib/QuerySettings.js';
-    import { load_indexeddb, getConstants, cap, handle_idb_downloading } from '$lib/helper.js';
-    import Statewide from '$lib/db/statewide.js';
+    import { getConstants, cap, wrapupCommonIdbTasks } from '$lib/helper.js';
     import PopulationChart from '$lib/components/Charts/PopulationChart.svelte';
     import { page } from '$app/stores';
 
@@ -23,10 +21,7 @@
 
     let projectName = $state('');
     const loadForSource = async () => {
-        await handle_idb_downloading();
-        const start = Date.now();
-        db = await db;
-        const sw = new Statewide(db);
+        let [db, sw] = await wrapupCommonIdbTasks();
         let dat2 = await sw.get(sourceSetting);
         let dat = await sw.get(sourceSetting2);
 
@@ -48,7 +43,6 @@
         const capital_cost = formatter.format(dat?.projects[0].CapitalCost);
 
         tagline = `<span>Decade Online: ${decade_online}</span><br /><span>Capital Cost: ${capital_cost}</span>`;
-        console.log(`loadForRegion time in ms: ${Date.now() - start}`);
 
         projectName = dat.projects[0].ProjectName;
         return dat;

@@ -1,13 +1,11 @@
 <script>
-    //@ts-nocheck
     import ProjectTable from '$lib/components/ProjectTable/ProjectTable.svelte';
     import PopulationChart from '$lib/components/Charts/PopulationChart.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
     import ThemeTotalsByDecadeChart from '$lib/components/ThemeTotalsByDecadeChart.svelte';
     import EntityStrategiesTable from '$lib/components/EntityStrategiesTable.svelte';
     import { QuerySettings } from '$lib/QuerySettings.js';
-    import Statewide from '$lib/db/statewide.js';
-    import { load_indexeddb, getConstants, cap, handle_idb_downloading } from '$lib/helper.js';
+    import { getConstants, cap, wrapupCommonIdbTasks } from '$lib/helper.js';
     import { page } from '$app/stores';
 
     let slug = $derived($page.params.slug);
@@ -19,7 +17,6 @@
     if (!constants.id == 17)
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`;
 
-    let db = load_indexeddb();
     let camelCaseEntityName = $derived("Water User Group - " + entityName);
     let capsEntityName = $state("WATER USER GROUP - " + entityName);
 
@@ -27,10 +24,8 @@
     let activeDem = ['Region', 'County', 'Entity'];
 
     let loadForEntity = async () => {
-        await handle_idb_downloading();
         entityName = JSON.parse(localStorage.entityCoordinates).find((element) => element.EntityId == slug).EntityName;
-        db = await db;
-        let sw = new Statewide(db);
+        let [db, sw] = await wrapupCommonIdbTasks();
         let dat = await sw.get(entitySetting);
         const pops = dat?.population?.rows;
 

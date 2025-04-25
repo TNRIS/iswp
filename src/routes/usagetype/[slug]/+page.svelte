@@ -1,6 +1,5 @@
 <script>
-    import { load_indexeddb, slugify, getConstants, cap, handle_idb_downloading } from '$lib/helper.js';
-    import Statewide from '$lib/db/statewide.js';
+    import { slugify, getConstants, cap, wrapupCommonIdbTasks } from '$lib/helper.js';
     import { QuerySettings } from '$lib/QuerySettings.js';
     import ThemeTotalsByDecadeChart from '$lib/components/ThemeTotalsByDecadeChart.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
@@ -14,22 +13,19 @@
 
     let slug = $derived($page.params.slug);
     let entityMapBlurb = $state(`<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`);
+
+    let constants = getConstants($page.url.host);
     if (constants.id !== 17)
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`;
 
-    let constants = getConstants($page.url.host);
     let utSetting = new QuerySettings('usagetype', 'WugType');
     (() => {utSetting.setAll(slug.toUpperCase())})();
-
-    let db = load_indexeddb();
 
     let stratAd = ['Region', 'Strategy', 'WMS Type', 'Source', 'County', 'Entity'];
     let activeDem = ['Region', 'County', 'Entity'];
 
     let loadForUsageType = async () => {
-        await handle_idb_downloading();
-        db = await db;
-        let sw = new Statewide(db);
+        let [db, sw] = await wrapupCommonIdbTasks();
         let dat = await sw.get(utSetting);
         return dat;
     };
