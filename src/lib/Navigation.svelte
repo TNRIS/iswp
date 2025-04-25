@@ -33,13 +33,7 @@
      * @property {string} label
      */
 
-    // Set to true to log some timings.
-    const DEBUG_LOADING = false;
-
     let { selected, db, constants } = $props();
-    /** @type {Statewide} */
-    let sw;
-
     let /** @type {string} */ chosen = $state(selected.id);
     let label = '';
 
@@ -170,7 +164,6 @@
 
     /** @type {CategoryClass} */
     let categories = $state(new CategoryClass());
-
     let setupChoices = (async () => {
         db = await db;
         categories = new CategoryClass(new Statewide(db));
@@ -184,7 +177,6 @@
         chosen = event.detail.value;
         label = event.detail.placeholder_override ? event.detail.placeholder_override : event.detail.label;
         chosen2 = '';
-        
     };
 
     let IS_FILTER_BOX /** @type {boolean}*/ = $derived(chosen == "wms" || chosen == "project" || chosen == "entity");

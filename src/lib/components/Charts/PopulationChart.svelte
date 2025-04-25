@@ -4,7 +4,7 @@
     //@ts-nocheck
     import LineChart from './LineChart.svelte';
     import ChartDataTable from '$lib/components/ChartDataTable.svelte';
-    let { lrp, titleOnly, constants, noMap=false, dont_capitalize_title=false, title, tagline } = $props();
+    let { lrp=true, titleOnly, constants, noMap=false, dont_capitalize_title=false, title, tagline } = $props();
     import PopulationMap from '$lib/components/Maps/PopulationMap.svelte';
     import { commafy } from '$lib/helper.js';
     let /** @type {visible} */ visible = $state(false);
