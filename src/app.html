@@ -7,6 +7,8 @@
 </head>
 %sveltekit.head%
 
+
+
 <body>
   <div id="page-wrapper">
     <div id="content">
@@ -22,11 +24,11 @@
           </div>
         </div> -->
 
-
+        <div style="display: contents">%sveltekit.body%</div>
       <div id="main-loader" style="display: none;">
         <div class="summary-wrapper container" id="loader-msg" style="z-index: 600">
           <div class="w3-light-grey">
-            <div role="progressbar" id="myBar" class="w3-container w3-green"
+            <div role="progressbar" id="idb_progress_bar" class="w3-container w3-green"
               style="height:24px;width:1%;background-color: #477fc7;">
             </div>
           </div>
@@ -34,9 +36,7 @@
             times over 2 minutes, please clear the browser’s cookies/cache for this webpage.</i>
         </div>
       </div>
-        <div style="display: contents">%sveltekit.body%</div>
-        <div id="loadable-content">
-        </div>
+      <div id="loadable-content"></div>
     </div>
     <footer id="footer">
       <p>This website is brought to you by the <a href="http://www.twdb.texas.gov"
@@ -71,7 +71,7 @@
           clearInterval(id);
         } else {
           width++;
-          document.getElementById("myBar").style.width = width + '%';
+          document.getElementById("idb_progress_bar").style.width = width + '%';
         }
       }
     }
