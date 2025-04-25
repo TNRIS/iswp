@@ -5,7 +5,7 @@
 
     let db = load_indexeddb();
     import { QuerySettings } from '$lib/QuerySettings.js';
-    import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
+    import { load_indexeddb, getConstants, cap, handle_idb_downloading } from '$lib/helper.js';
     import Statewide from '$lib/db/statewide.js';
     import { page } from '$app/stores';
 
@@ -30,7 +30,7 @@
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`;
 
     let loadForWms = async () => {
-        await is_idb_loaded();
+        await handle_idb_downloading();
         db = await db;
         let sw = new Statewide(db);
         let dat = await sw.get(wmsSetting);

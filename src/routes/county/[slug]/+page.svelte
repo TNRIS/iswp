@@ -8,7 +8,7 @@
     import DataUsageType from '$lib/components/DataUsageType.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
     import ThemeTypesByDecadeChart from '$lib/components/ThemeTypesByDecadeChart.svelte';
-    import { load_indexeddb, getConstants, is_idb_loaded } from '$lib/helper.js';
+    import { load_indexeddb, getConstants, handle_idb_downloading } from '$lib/helper.js';
     import { page } from '$app/stores';
     import { onMount } from 'svelte';
 
@@ -24,7 +24,7 @@
     let regionSetting = new QuerySettings('county', 'WugCounty');
 
     let loadForCounty = async () => {
-            await is_idb_loaded();
+            await handle_idb_downloading();
             db = await db;
             
             let sw = new Statewide(db);

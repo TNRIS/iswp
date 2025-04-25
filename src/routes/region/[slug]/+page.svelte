@@ -6,7 +6,7 @@
     import ThemeTypesByDecadeChart from '$lib/components/ThemeTypesByDecadeChart.svelte';
     import ThemeTotalsByDecadeChart from '$lib/components/ThemeTotalsByDecadeChart.svelte';
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
-    import { load_indexeddb, getConstants, is_idb_loaded } from '$lib/helper.js';
+    import { load_indexeddb, getConstants, handle_idb_downloading } from '$lib/helper.js';
     import Statewide from '$lib/db/statewide.js';
     import Counties from '$lib/db/counties.js';
     import { QuerySettings } from '$lib/QuerySettings.js';
@@ -49,7 +49,7 @@
     let loadForRegionPromise = async () => {
         // Just check that the indexeddb is loaded.
         db = await db;
-        await is_idb_loaded();
+        await handle_idb_downloading();
 
         let sw = new Statewide(db);
         let cc = new Counties(db);

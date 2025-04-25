@@ -3,7 +3,7 @@
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
     import PopulationChart from '$lib/components/Charts/PopulationChart.svelte';
     import { QuerySettings } from '$lib/QuerySettings.js';
-    import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
+    import { load_indexeddb, getConstants, cap, handle_idb_downloading } from '$lib/helper.js';
     import Statewide from '$lib/db/statewide.js';
     import { page } from '$app/stores';
 
@@ -21,7 +21,7 @@
     let stratAd = ['Region', 'County', 'Entity', 'Strategy', 'WMS Type', 'Source'];
     let activeDem = ['Region', 'County', 'Entity']; // Active pivot columns for everything other than strategy supplies.
     let loadForSource = async () => {
-        await is_idb_loaded();
+        await handle_idb_downloading();
         title = constants.sourceNames.find((x) => x.value == parseInt(slug))?.label;
 
         if (title?.includes('|')) {
@@ -57,7 +57,7 @@
 <div class="statewide-view" id="main-content" role="main">
     {#await lrp then}
         <!-- TODO remove this await and await in individual entities. For now await because of title generation. -->
-        <PopulationChart lrp={true} {tagline} titleOnly={true} {title} {constants} />
+        <PopulationChart {tagline} titleOnly={true} {title} {constants} />
         <ProjectTable
             {lrp}
             type={'region'}

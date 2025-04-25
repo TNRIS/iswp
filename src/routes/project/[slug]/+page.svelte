@@ -3,7 +3,7 @@
     import DataViewChoiceWrapInd from '$lib/components/DataByPlanningDecadeAndTheme/DataViewChoiceWrapInd.svelte';
     let db = load_indexeddb();
     import { QuerySettings } from '$lib/QuerySettings.js';
-    import { load_indexeddb, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
+    import { load_indexeddb, getConstants, cap, handle_idb_downloading } from '$lib/helper.js';
     import Statewide from '$lib/db/statewide.js';
     import PopulationChart from '$lib/components/Charts/PopulationChart.svelte';
     import { page } from '$app/stores';
@@ -23,7 +23,7 @@
 
     let projectName = $state('');
     const loadForSource = async () => {
-        await is_idb_loaded();
+        await handle_idb_downloading();
         const start = Date.now();
         db = await db;
         const sw = new Statewide(db);

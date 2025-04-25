@@ -8,10 +8,9 @@ using node 22.2.0
 
 ## Pre-setup 
 1. Download gill-sans font insteuctions in gill-sans/README.md
-2. Download a copy of [react-pivot-standalone-4.1.1.min.js](https://github.com/TNRIS/iswp/blob/main/static/react-pivot-standalone-4.1.1.min.js) and place in static folder root.
-3. Compile a version of chartist located here. https://github.com/L-Har/chartist (Trying to get this in upstream)
-4. Create a local modules folder and place the chartist src and dist in it.
-5. Link to library with `npm link chartist`
+2. Compile a version of chartist located here. https://github.com/L-Har/chartist (Trying to get this in upstream)
+3. Create a local modules folder and place the chartist src and dist in it.
+4. Link to library with `npm link chartist`
    You can preview the production build with `npm run preview`.
 
 ## Developing

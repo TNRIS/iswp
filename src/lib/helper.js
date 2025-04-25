@@ -48,25 +48,28 @@ export let real_clone = (obj) => {
     return JSON.parse(JSON.stringify(obj));
 };
 
-export let is_idb_loaded = () => {
-    return new Promise((resolve, reject) => {
-        try {
-            const checkDBDone = () => {
-                if (localStorage.getItem('checkedDB') == 'true') {
-                    clearInterval(interval);
-                    document.getElementById('loadable-content').style.display = 'block';
-                    document.getElementById('main-loader').style.display = 'none';
-                    resolve('Done');
-                } else {
-                    document.getElementById('loadable-content').style.display = 'none';
-                    document.getElementById('main-loader').style.display = 'block';
-                }
-            };
-            let interval = setInterval(checkDBDone, 50);
-        } catch (err) {
-            reject('error checking idb');
-        }
-    });
+/**
+ * This is for checking if the indexeddb is downloaded, and hiding portions of the page based on that info.
+ * @returns {Promise<boolean>} true if successful, otherwise false.
+ */
+export let handle_idb_downloading = async () => {
+    try {
+        const checkDBDone = () => {
+            if (localStorage.getItem('checkedDB') == 'true') {
+                clearInterval(interval);
+                document.getElementById('loadable-content').style.display = 'block';
+                document.getElementById('main-loader').style.display = 'none';
+                return true;
+            } else {
+                document.getElementById('loadable-content').style.display = 'none';
+                document.getElementById('main-loader').style.display = 'block';
+            }
+        };
+        let interval = setInterval(checkDBDone, 50);
+    } catch(err) {
+        console.log("Error checking indexed database in handle_idb_downloading function.")
+        return false;
+    }
 };
 
 export let afterUpdateSync = () => {
@@ -125,6 +128,7 @@ export let load_indexeddb = async () => {
         console.log(err);
     }
 };
+
 /**
  * Capitalizing function for the iswp.
  * 

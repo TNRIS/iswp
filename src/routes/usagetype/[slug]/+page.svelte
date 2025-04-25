@@ -1,5 +1,5 @@
 <script>
-    import { load_indexeddb, slugify, getConstants, cap, is_idb_loaded } from '$lib/helper.js';
+    import { load_indexeddb, slugify, getConstants, cap, handle_idb_downloading } from '$lib/helper.js';
     import Statewide from '$lib/db/statewide.js';
     import { QuerySettings } from '$lib/QuerySettings.js';
     import ThemeTotalsByDecadeChart from '$lib/components/ThemeTotalsByDecadeChart.svelte';
@@ -27,7 +27,7 @@
     let activeDem = ['Region', 'County', 'Entity'];
 
     let loadForUsageType = async () => {
-        await is_idb_loaded();
+        await handle_idb_downloading();
         db = await db;
         let sw = new Statewide(db);
         let dat = await sw.get(utSetting);
