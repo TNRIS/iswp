@@ -380,7 +380,7 @@ export let objLeftjoin = (left, right, where) => {
  * Scale numbers to portion of new max
  * @param {number} scale1
  * @param {number} scale2
- * @param {Constant2017 | Constant2022 | Constant2027} constants object of constants can 
+ * @param {Constant2017 | Constant2022 | Constant2027} constants
  */
 export let scaleTonew = (scale1, scale2, constants) => {
     let portion = scale1 / scale2;
