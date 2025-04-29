@@ -30,8 +30,10 @@ export let getConstants = (host) => {
     }
 };
 
-// Helper to make onmount awaitable.
-export let onMountSync = () => {
+/**
+ * Make onMount awaitable for use in async functions.
+ * @returns {Promise<any>} mounted if successful, otherwise reject with error.
+ */export let onMountSync = () => {
     return new Promise((resolve, reject) => {
         try {
             onMount(async () => {
@@ -43,10 +45,21 @@ export let onMountSync = () => {
     });
 };
 
+/**
+ * Replace spaces with dash.
+ * @param {*} s String to check for spaces, and replace them with dashes.
+ * @returns {string} String with the spaces replaced with dashes.
+ */
 export let slugify = (s) => {
     return s.replace(/\s+/g, '-');
 };
 
+/**
+ * Deep clone an object.
+ * Needed when you want to clone an object and have two distinct objects to edit.
+ * @param {*} obj Object to clone
+ * @returns Object that is mapped to a seperate part of memory, making it a clone of the original rather than a pointer.
+ */
 export let real_clone = (obj) => {
     return JSON.parse(JSON.stringify(obj));
 };
@@ -57,15 +70,21 @@ export let real_clone = (obj) => {
  */
 export let visualize_idb_downloading = async () => {
     try {
+        let loadableContent /** @type {HTMLElement} */ = document.getElementById('loadable-content');
+        let mainLoader /** @type {HTMLElement} */ = document.getElementById('main-loader');
+        
         const checkDBDone = () => {
+            if(!loadableContent || !mainLoader) {
+                throw("Cannot find loadable content section or mainloader section.");
+            }
             if (localStorage.getItem('checkedDB') == 'true') {
                 clearInterval(interval);
-                document.getElementById('loadable-content').style.display = 'block';
-                document.getElementById('main-loader').style.display = 'none';
+                loadableContent.style.display = 'block';
+                mainLoader.style.display = 'none';
                 return true;
             } else {
-                document.getElementById('loadable-content').style.display = 'none';
-                document.getElementById('main-loader').style.display = 'block';
+                loadableContent.style.display = 'none';
+                mainLoader.style.display = 'block';
             }
         };
         let interval = setInterval(checkDBDone, 50);
@@ -75,6 +94,10 @@ export let visualize_idb_downloading = async () => {
     }
 };
 
+/**
+ * Promise wrapper around the afterUpdate callback function. To make it usable with a async/await style.
+ * @returns {Promise<any>}
+ */
 export let afterUpdateSync = () => {
     return new Promise((resolve, reject) => {
         try {
@@ -87,21 +110,32 @@ export let afterUpdateSync = () => {
     });
 };
 
-// Helper to format a number.
+/**
+ * Get a number format constructor that is configured to use USD. This has decimal points.
+ * @returns {Intl.NumberFormatConstructor}
+ */
 export let usd_format = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD'
     //maximumFractionDigits: decimalpoints
 });
 
+/**
+ * Get a number format constructor that is configured to use USD. This does not have decimal points.
+ * @returns {Intl.NumberFormatConstructor}
+ */
 export let usd_format_whole = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     maximumFractionDigits: 0
 });
 
-// Load indexeddb
-export let load_indexeddb = async () => {
+/**
+ * Download and load water planning data into an indexeddb, for the year desired. This also checks the data for correctness.
+ * 
+ * @returns {Promise<any>} A promise indicating when the database is done downloading.
+ */
+ export let load_indexeddb = async () => {
     try {
         await onMountSync();
         let IS_2017_WEBSITE = window.location.href.indexOf('2017') > -1;
@@ -152,6 +186,12 @@ export let cap = (s,  chosen="") => {
     return format_string;
 };
 
+/**
+ * Make a 2 dimensional array out of a 1 dimensional array. split the 1d array every size characters then push that subset into a new array. Then return it.
+ * @param {number} size 
+ * @param {number[]} array 
+ * @returns 
+ */
 export let split_every = (size, array) => {
     var array2d = [];
     let arr = JSON.parse(JSON.stringify(array)); // Hard copy array.
@@ -173,6 +213,7 @@ export let calcPercentage = (array, value) => {
 
     return `${percent}%`;
 };
+
 /**
  * Returns a string with commas every 3 characters.
  * @param {string} s
@@ -271,12 +312,12 @@ let tableSort = (table, n, parseFunc, SKIP_BOTTOM_ROW = true) => {
 };
 
 /**
- * Sort a table Numerically
+ * Sort a table numerically
  * @param {object} table Object referencing a table element selected with svelte.
  * @param {number} n Index of column to sort.
  * @param {string} [start] Optional Start value to sort between.
  * @param {string} [end] Optional End value to sort between.
- * @param {number} [skips=1] how many columns to skip (For total column mainly (you don't want total sorted)) make 0 if there is no total.
+ * @param {boolean} SKIP_BOTTOM_ROW whether to skip the bottom row or not, in case it's used as a header column.
  */
 export let sortNumeric = (table, n, start, end, SKIP_BOTTOM_ROW = true) => {
     tableSort(
@@ -296,7 +337,7 @@ export let sortNumeric = (table, n, start, end, SKIP_BOTTOM_ROW = true) => {
 };
 
 /**
- * Sort a table Numerically
+ * Sort a table alphabetically.
  * @param {object} table Object referencing a table element selected with svelte.
  * @param {number} n Index of column to sort.
  */
@@ -339,7 +380,7 @@ export let objLeftjoin = (left, right, where) => {
  * Scale numbers to portion of new max
  * @param {number} scale1
  * @param {number} scale2
- * @param {number} newMax
+ * @param {Constant2017 | Constant2022 | Constant2027} constants object of constants can 
  */
 export let scaleTonew = (scale1, scale2, constants) => {
     let portion = scale1 / scale2;
@@ -400,7 +441,7 @@ export let labelReducer = (labels, label_prefix = '') => {
 
 /**
  * wrapupCommonIdbTasks: Wrap up common idb tasks.
- * @returns {Promise<any>}: Object with a indexeddb, and a Statewide object
+ * @returns {Promise<Array<any>>}: Object with a indexeddb, and a Statewide object
  */
 export let wrapupCommonIdbTasks = async () => {
     let db = getContext('db');
