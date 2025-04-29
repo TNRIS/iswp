@@ -1,7 +1,7 @@
 <script>
     import Banner from '$lib/Banner.svelte';
     import Navigation from '$lib/Navigation.svelte';
-    import { getConstants, load_indexeddb, handle_idb_downloading } from '$lib/helper';
+    import { getConstants, load_indexeddb, visualize_idb_downloading } from '$lib/helper';
     import { page } from '$app/stores';
     import { setContext } from 'svelte';
 
@@ -32,7 +32,7 @@
     </div>
 {/if}
 <Banner {constants} />
-    {#await Promise.all([handle_idb_downloading, db]) then}
+    {#await Promise.all([visualize_idb_downloading, db]) then}
         <Navigation {db} {selected} {constants} />
     {:catch}
         <span>There was an error loading the top navigation. Please clear your cache in your browser to reload the application.</span>

@@ -55,7 +55,7 @@ export let real_clone = (obj) => {
  * This is for checking if the indexeddb is downloaded, and hiding portions of the page based on that info.
  * @returns {Promise<boolean>} true if successful, otherwise false.
  */
-export let handle_idb_downloading = async () => {
+export let visualize_idb_downloading = async () => {
     try {
         const checkDBDone = () => {
             if (localStorage.getItem('checkedDB') == 'true') {
@@ -70,7 +70,7 @@ export let handle_idb_downloading = async () => {
         };
         let interval = setInterval(checkDBDone, 50);
     } catch(err) {
-        console.log("Error checking indexed database in handle_idb_downloading function.")
+        console.log("Error checking indexed database in visualize_idb_downloading function.")
         return false;
     }
 };
@@ -405,7 +405,7 @@ export let labelReducer = (labels, label_prefix = '') => {
 export let wrapupCommonIdbTasks = async () => {
     let db = getContext('db');
     await onMountSync();
-    await handle_idb_downloading();
+    await visualize_idb_downloading();
     db = await db;
     let sw = new Statewide(db)
 
