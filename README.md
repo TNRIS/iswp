@@ -8,10 +8,7 @@ using node 22.2.0
 
 ## Pre-setup 
 1. Download gill-sans font insteuctions in gill-sans/README.md
-2. Compile a version of chartist located here. https://github.com/L-Har/chartist (Trying to get this in upstream)
-3. Create a local modules folder and place the chartist src and dist in it.
-4. Link to library with `npm link chartist`
-   You can preview the production build with `npm run preview`.
+
 
 ## Developing
 Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
@@ -23,6 +20,7 @@ npm run dev
 # or start the server and open the app in a new browser tab
 npm run dev -- --open
 ```
+You can preview the production build with `npm run preview`.
 
 ## Building
 To create a production version of your app:
@@ -48,12 +46,10 @@ prettier-plugin-svelte Svelte for vs code extension has this installed.
 This program is licenced under GPLV2 Please see LICENSE file for details.
 This program is distributed with the following programs under separate free licenses. View them for details.
 
-skeleton.css, react-pivot standalone, chartist, overlapping market spiderfier, leaflet utfgrid
+skeleton.css, react-pivot standalone, overlapping market spiderfier, leaflet utfgrid
 https://github.com/dhg/Skeleton
 https://github.com/L-Har/react-pivot
 https://github.com/davidguttman/react-pivot
-https://github.com/chartist-js/chartist
-https://github.com/L-Har/chartist
 https://github.com/jawj/OverlappingMarkerSpiderfier-Leaflet
 https://github.com/L-Har/OverlappingMarkerSpiderfier-Leaflet
 https://github.com/danzel/Leaflet.utfgrid

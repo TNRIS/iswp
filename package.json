@@ -35,6 +35,7 @@
     "type": "module",
     "dependencies": {
         "@poppanator/sveltekit-svg": "^5.0.1",
+        "chartist": "^1.4.0",
         "chartist-plugin-axistitle": "^0.0.7",
         "d3": "^7.8.5",
         "fast-xml-parser": "^4.4.1",
