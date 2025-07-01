@@ -18,7 +18,7 @@
         entityMapBlurb += `<p class="note">The following sources are not mapped to a specific location: 'Direct Reuse', 'Local Surface Water Supply', 'Atmosphere', and 'Rainwater Harvesting'.</p>`;
 
     let camelCaseEntityName = $derived("Water User Group - " + entityName);
-    let capsEntityName = $state("WATER USER GROUP - " + entityName);
+    let capsEntityName = $derived("WATER USER GROUP - " + entityName);
 
     let stratAd = ['Region', 'County', 'Entity', 'Strategy', 'WMS Type', 'Source'];
     let activeDem = ['Region', 'County', 'Entity'];
@@ -64,7 +64,7 @@
 <div class="statewide-view" id="main-content" role="main">
     <section>
         {#key lrp}
-        <PopulationChart bind:tagline={tagline} title={camelCaseEntityName} {lrp} {constants} />
+        <PopulationChart bind:tagline={tagline} title={entityName} {lrp} {constants} />
         <ThemeTotalsByDecadeChart {lrp} {constants} title={camelCaseEntityName} />
         <EntityStrategiesTable {lrp} {constants} title={camelCaseEntityName} />
         <ProjectTable
