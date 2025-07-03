@@ -37,7 +37,17 @@
     {:catch}
         <span>There was an error loading the top navigation. Please clear your cache in your browser to reload the application.</span>
     {/await}
-
+<div id="main-loader" style="display: none;">
+<div class="summary-wrapper container" id="loader-msg" style="z-index: 600">
+    <div class="w3-light-grey">
+    <div role="progressbar" id="idb_progress_bar" class="w3-container w3-green"
+        style="height:24px;width:1%;background-color: #477fc7;">
+    </div>
+    </div>
+    Welcome. Please be patient while Interactive State Water Plan loads. <br /> <i>If you experience initial load
+    times over 2 minutes, please clear the browser’s cookies/cache for this webpage.</i>
+</div>
+</div>
 <div id="loadable-content">
 {@render children()}
 </div>
