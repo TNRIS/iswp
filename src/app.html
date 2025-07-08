@@ -2,25 +2,12 @@
 <html lang="en">
 
 <head>
-  %sveltekit.head%
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="/img/favicon.ico" />
-
-  <script src="/react-pivot-standalone-4.4.1.min.js"></script>
-  <script src="/leaflet/leaflet.js"></script>
-  <script src="/leaflet/utf-grid.js"></script>
-  <script src="/leaflet/leaflet.legend.js"></script>
-  <script src="/leaflet.EasyButton/src/easy-button.js"></script>
-
-  <link rel="stylesheet" type="text/css" href="/leaflet/leaflet.css">
-  <link rel="stylesheet" type="text/css" href="/leaflet/leaflet.legend.css">
-  <link rel="stylesheet" type="text/css" href="/leaflet.EasyButton/src/easy-button.css">
-  <link rel="stylesheet" type="text/css" href="/webfonts/gill-sans.css">
-  <link rel="stylesheet" type="text/css" href="/css/normalize.css">
-  <link rel="stylesheet" type="text/css" href="/css/skeleton.css">
-  <link rel="stylesheet" type="text/css" href="/css/main.css?v1">
 </head>
+%sveltekit.head%
+
+
 
 <body>
   <div id="page-wrapper">
@@ -37,59 +24,19 @@
           </div>
         </div> -->
 
-
-      <!-- Temporary header to be displayed while dynamic page is loaded in when the site is generated.
-This is only needed in the live version of the site due to prerender=true not working if you use dynamic routing. -->
-      <div id="temp-content">
-        <div style="display: contents">
-          <div class="header">
-            <div class="header-title-container">
-              <div class="header-title wrapper">
-                <h1><a href="/" title="Home"><span id="temp-header" class="first-line"></span> <br> Texas State Water
-                    Plan</a></h1><img src="/img/twdb-logo-dark-bkgd-w200px-3c.png" class="logo"
-                  alt="Texas Water Development Board Logo">
-                <div class="nav-container" style="font-size:0px"><a class="button button-home" aria-label="Home"
-                    href="/" title="Home"><svg version="1" viewBox="0 0 24 24" data-reactid=".0.1.0.3.0.0">
-                      <path d="M20 20v-8h2L12 3 2 12h2v8c0 .6.4 1 1 1h5v-7h4v7h5c.6 0 1-.4 1-1z"
-                        data-reactid=".0.1.0.3.0.0.0"></path>
-                    </svg></a> <a class="button active" title="About" href="/about"
-                    data-svelte-h="svelte-n9qb8m">About</a></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="main-loader" style="display: none;">
-        <div>
-          <div class="header">
-            <div class="header-title-container">
-              <div class="header-title wrapper">
-                <h1><a href="/" title="Home"><span id="temp-header" class="first-line"></span> <br> Texas State Water
-                    Plan</a></h1><img src="/img/twdb-logo-dark-bkgd-w200px-3c.png" class="logo"
-                  alt="Texas Water Development Board Logo">
-                <div class="nav-container" style="font-size:0px"><a class="button button-home" aria-label="Home"
-                    href="/" title="Home"><svg version="1" viewBox="0 0 24 24" data-reactid=".0.1.0.3.0.0">
-                      <path d="M20 20v-8h2L12 3 2 12h2v8c0 .6.4 1 1 1h5v-7h4v7h5c.6 0 1-.4 1-1z"
-                        data-reactid=".0.1.0.3.0.0.0"></path>
-                    </svg></a> <a class="button active" title="About" href="/about"
-                    data-svelte-h="svelte-n9qb8m">About</a></div>
-              </div>
-            </div>
-          </div>
-          <div class="summary-wrapper container" id="loader-msg" style="z-index: 600">
-            <div class="w3-light-grey">
-              <div role="progressbar" id="myBar" class="w3-container w3-green"
-                style="height:24px;width:1%;background-color: #477fc7;">
-              </div>
-            </div>
-            Welcome. Please be patient while Interactive State Water Plan loads. <br /> <i>If you experience initial load times over 2 minutes, please clear the browser’s cookies/cache for this webpage.</i>
-          </div>
-        </div>
-      </div>
-      <div id="loadable-content">
         <div style="display: contents">%sveltekit.body%</div>
+      <div id="main-loader" style="display: none;">
+        <div class="summary-wrapper container" id="loader-msg" style="z-index: 600">
+          <div class="w3-light-grey">
+            <div role="progressbar" id="idb_progress_bar" class="w3-container w3-green"
+              style="height:24px;width:1%;background-color: #477fc7;">
+            </div>
+          </div>
+          Welcome. Please be patient while Interactive State Water Plan loads. <br /> <i>If you experience initial load
+            times over 2 minutes, please clear the browser’s cookies/cache for this webpage.</i>
+        </div>
       </div>
+      <div id="loadable-content"></div>
     </div>
     <footer id="footer">
       <p>This website is brought to you by the <a href="http://www.twdb.texas.gov"
@@ -110,13 +57,15 @@ This is only needed in the live version of the site due to prerender=true not wo
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <!-- <script async src="https://www.googletagmanager.com/gtag/js?id={{ gaTrackingCode }}"></script>-->
+<!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8YLSYH0S51"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
+    function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', '{{ gaTrackingCode }}');
-
-
+    gtag('config', 'G-8YLSYH0S51');
+  </script>
+  <script>
     function move() {
       var width = 1;
       var id = setInterval(frame, 150);
@@ -125,7 +74,7 @@ This is only needed in the live version of the site due to prerender=true not wo
           clearInterval(id);
         } else {
           width++;
-          document.getElementById("myBar").style.width = width + '%';
+          document.getElementById("idb_progress_bar").style.width = width + '%';
         }
       }
     }

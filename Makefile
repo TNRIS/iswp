@@ -6,12 +6,8 @@ deploy_prod: static_site s3_deploy
 deploy_prod_test: static_site s3_deploy_test
 deploy_staging: static_site s3_deploy_staging
 
-static_site: css
+static_site:
 	npm run build
-css:
-	sass ./src/lib/sass/main.scss ./src/lib/sass/main.css
-	cp ./src/lib/sass/main.css ./static/css/main.css
-	cp ./src/lib/sass/main.css.map ./static/css/main.css.map
 
 # For internal TWDB use only.
 s3_deploy_test:

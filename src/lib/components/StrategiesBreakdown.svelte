@@ -1,7 +1,7 @@
 <script>
     //@ts-nocheck
     const { swdata } = $$props;
-    import { calcPercentage, commafy, sortAlphabetic, sortNumeric } from '$lib/helper.js?v1';
+    import { calcPercentage, commafy, sortAlphabetic, sortNumeric } from '$lib/helper.js';
     import { getContext, onMount } from 'svelte';
     import { hoverHelper, clearInteraction } from '$lib/actions/HoverAction';
     const decadeStore = getContext('myContext').decadeStore;
@@ -165,9 +165,9 @@
                     aria-label="Pie Chart describing Water Share usage percentages."
                     role="figure"
                     id="share_by_water_resource_chart">
-                    <div class="strat-chart" on:mousemove={onHover} on:mouseleave={onLeave} role="presentation" />
+                    <div class="strat-chart" on:mousemove={onHover} on:mouseleave={onLeave} role="presentation"></div>
                 </div>
-                <div id="strat-chart-tooltip" />
+                <div id="strat-chart-tooltip"></div>
             </div>
             <div class="six columns strategies-by-source-type-container">
                 <h5 id="sharelabel">Share by Strategy Type</h5>
@@ -176,26 +176,30 @@
                     aria-describedby="sharelabel"
                     role="grid"
                     bind:this={srttable}>
-                    <tr id="strat_header">
-                        <th
-                            on:click={() => {
-                                sortAlphabetic(srttable, 0, false);
-                            }}>Strategy Type</th>
-                        <th
-                            on:click={() => {
-                                sortNumeric(srttable, 1, '(', ')', false);
-                            }}>Amount</th>
-                    </tr>
-                    {#each stt_entries as t}
-                        {#if t[1] > 0}
-                            <tr>
-                                <td role="link"><a href="/wmstype/{t[0]}">{t[0]}</a></td>
-                                <td>
-                                    {`${calcPercentage(stt_entries, t[1])} (${commafy(t[1].toString())})`}
-                                </td>
-                            </tr>
-                        {/if}
-                    {/each}
+                    <thead>
+                        <tr id="strat_header">
+                            <th
+                                on:click={() => {
+                                    sortAlphabetic(srttable, 0, false);
+                                }}>Strategy Type</th>
+                            <th
+                                on:click={() => {
+                                    sortNumeric(srttable, 1, '(', ')', false);
+                                }}>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {#each stt_entries as t}
+                            {#if t[1] > 0}
+                                <tr>
+                                    <td role="link"><a href="/wmstype/{t[0]}">{t[0]}</a></td>
+                                    <td>
+                                        {`${calcPercentage(stt_entries, t[1])} (${commafy(t[1].toString())})`}
+                                    </td>
+                                </tr>
+                            {/if}
+                        {/each}
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -207,11 +211,6 @@
 <style>
     .hider {
         display: none;
-    }
-    .strat-chart .ct-label {
-        font-size: 1rem !important;
-        color: #000 !important;
-        fill: #000 !important;
     }
     #strat_header {
         cursor: pointer;

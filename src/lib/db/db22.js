@@ -5,7 +5,7 @@ let UPGRADE_NEEDED = false;
 /** @type {number} Configure window in ms for how long to attempt to reload page before timing out and logging an error. */
 const RELOAD_WINDOW_MS = 10000;
 
-import { build_func } from './db_helper.js?v1';
+import { build_func } from './db_helper.js';
 let checksumPromise = async () => {
     /*placeholder*/
 };
@@ -32,13 +32,10 @@ export const delete_database22 = () => {
 
 const storeChecksum = async () => {
     // Store checksum in localstorage
-    const start = Date.now();
     const checksum_url = 'https://tnris-droc.s3.amazonaws.com/iswp/2022/checksum.json';
     const response = await fetch(checksum_url);
     const cs = await response.json();
     localStorage.setItem('checksum2022', JSON.stringify(cs));
-    //OK: Tested around 10 milliseconds cost in dev. Probably faster on a normal web server Rather than dev. Only ran on upgrade needed.
-    console.log(`Checksum parse time: ${Date.now() - start}ms.`);
 };
 
 export function startDb22() {
@@ -52,18 +49,11 @@ export function startDb22() {
         request22.onsuccess = async (event) => {
             db22 = event.target.result;
             if (UPGRADE_NEEDED) {
-                const BASE_URL = 'https://tnris-droc.s3.amazonaws.com/iswp/';
-                const cache_2022 = '2022/cache.json';
-                let start = Date.now();
-                let gz22 = await fetch(BASE_URL + cache_2022, {
+                let gz22 = await fetch('https://tnris-droc.s3.amazonaws.com/iswp/2022/cache.json', {
                     decompress: true
                 });
-
-                console.log(`Time step 1: ${Date.now() - start}`);
                 let j22 = await gz22.json();
-
                 let object_stores = Array.from(db22.objectStoreNames);
-                console.log(`Time step 2: ${Date.now() - start}`);
 
                 for (let id in object_stores) {
                     let oname = object_stores[id];
@@ -73,7 +63,6 @@ export function startDb22() {
                         store.add(vwc);
                     });
                 }
-                console.log(`Time step 3: ${Date.now() - start}`);
             }
 
             // Check we set entityCoordinates up and redownload if needed.
@@ -113,7 +102,7 @@ export function startDb22() {
                 let IDB_IS_GOOD = db22.objectStoreNames.length == Object.keys(checksum).length
 
                 // 2. Do a long check if quick check succeeds.
-                  if(IDB_IS_GOOD) {
+                if(IDB_IS_GOOD) {
                     // idb queriesmust be awaited.
                     IDB_IS_GOOD = await new Promise((res, rej) => {
                         const db22_tables = Object.values(db22.objectStoreNames)

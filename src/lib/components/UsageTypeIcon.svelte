@@ -3,12 +3,12 @@
 <script>
     // @ts-nocheck
 
-    import Irrigation from '/static/img/icon-irrigation.svg';
-    import Municipal from '/static/img/icon-municipal.svg';
-    import Manufacturing from '/static/img/icon-manufacturing.svg';
-    import SteamElectricPower from '/static/img/icon-steam-electric-power.svg';
-    import Livestock from '/static/img/icon-livestock.svg';
-    import Mining from '/static/img/icon-mining.svg';
+    import Irrigation from '$lib/img/icon-irrigation.svg?raw';
+    import Municipal from '$lib/img/icon-municipal.svg?raw';
+    import Manufacturing from '$lib/img/icon-manufacturing.svg?raw';
+    import SteamElectricPower from '$lib/img/icon-steam-electric-power.svg?raw';
+    import Livestock from '$lib/img/icon-livestock.svg?raw';
+    import Mining from '$lib/img/icon-mining.svg?raw';
 
     const { group_name } = $$props;
     let icon_src;
@@ -35,7 +35,7 @@
             cname = 'usage-type-icon icon-livestock';
             break;
         case 'MINING':
-            icon_src = '/img/icon-mining.svg';
+            icon_src = 'img/icon-mining.svg';
             cname = 'usage-type-icon icon-mining';
             break;
     }
@@ -43,20 +43,33 @@
 
 <!-- Setting alt to "" on purely decorative images was recommended by mozilla in 2024. -->
 {#if group_name == 'IRRIGATION'}
-    <Irrigation alt="" aria-hidden="true" class="usage-type-icon icon-irrigation legend-marker" />
+    <!--  -->
+    <svg alt="" aria-hidden="true" class="usage-type-icon icon-irrigation legend-marker">
+        {@html Irrigation}
+    </svg>
 {/if}
 {#if group_name == 'MUNICIPAL'}
-    <Municipal alt="" aria-hidden="true" class="usage-type-icon icon-municipal legend-marker" />
+<svg alt="" aria-hidden="true" class="usage-type-icon icon-municipal legend-marker">
+    {@html Municipal}
+</svg>
 {/if}
 {#if group_name == 'MANUFACTURING'}
-    <Manufacturing alt="" aria-hidden="true" class="usage-type-icon icon-manufacturing legend-marker" />
+<svg alt="" aria-hidden="true" class="usage-type-icon icon-manufacturing legend-marker">
+    {@html Manufacturing}
+</svg>
 {/if}
 {#if group_name == 'STEAM ELECTRIC POWER'}
-    <SteamElectricPower alt="" aria-hidden="true" class="usage-type-icon icon-steam-electric-power legend-marker" />
+<svg alt="" aria-hidden="true" class="usage-type-icon icon-steam-electric-power legend-marker">
+    {@html SteamElectricPower}
+</svg>
 {/if}
 {#if group_name == 'LIVESTOCK'}
-    <Livestock alt="" aria-hidden="true" class="usage-type-icon icon-livestock legend-marker" />
+<svg alt="" aria-hidden="true" class="usage-type-icon icon-livestock legend-marker">
+    {@html Livestock}
+</svg>
 {/if}
 {#if group_name == 'MINING'}
-    <Mining alt="" aria-hidden="true" class="usage-type-icon icon-mining legend-marker" />
+<svg alt="" aria-hidden="true" class="usage-type-icon icon-mining legend-marker">
+    {@html Mining}
+</svg>
 {/if}

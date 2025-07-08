@@ -140,14 +140,12 @@ export default class Statewide {
                 console.log('reducer err: ' + err);
             }
         }, Object.create(null));
-        //console.log("reduced: " + JSON.stringify(reduced))
         return reduced;
     };
 
     #getAllTransaction = (key, where, project_filter) => {
         return new Promise((resolve, reject) => {
             try {
-                let start = Date.now();
                 //vwWMSProjectsByWmsType
                 if (key == `${this.constants.tappend}WMSProjectsByWmsType`) {
                     // Temporary workaround until I find out why these are cased differently.
@@ -168,9 +166,6 @@ export default class Statewide {
                     rdemands = objectStore.getAll(project_filter);
                 }
                 rdemands.onsuccess = (event) => {
-                    // Do something with the request.result!
-                    console.log(`Transaction in ms: ${Date.now() - start}`);
-
                     resolve(event.target.result);
                 };
                 rdemands.onerror = (event) => {
@@ -188,9 +183,6 @@ export default class Statewide {
         return red;
     };
     get = async (setting) => {
-        let start = Date.now();
-        console.log('Starting get timer');
-
         let demands_observable;
         let needs_observable;
         let population_observable;
@@ -218,7 +210,6 @@ export default class Statewide {
                 setting.s_needs.filter
             );
         }
-        console.log(`get time 1 in ms: ${Date.now() - start}`);
 
         let supplies_observable, strategies_observable;
 
@@ -237,7 +228,6 @@ export default class Statewide {
                 setting.s_strategies.filter
             );
         }
-        console.log(`get time 2 in ms: ${Date.now() - start}`);
 
         let projects_observable;
         const HAS_PROJECTS =
@@ -264,7 +254,6 @@ export default class Statewide {
             strategies_observable,
             projects_observable
         ]);
-        console.log(`get time 3 in ms: ${Date.now() - start}`);
 
         //TODO: Make more efficient.
 
@@ -275,8 +264,6 @@ export default class Statewide {
             this.#measuredStateWideReducer(population, 'P'),
             this.#measuredStateWideReducer(strategies, 'SS')
         ]);
-
-        console.log(`get time 4 in ms: ${Date.now() - start}`);
 
         let c = {
             demands: demands,
@@ -292,7 +279,6 @@ export default class Statewide {
             let b = await this.#getAllTransaction(`${this.constants.tappend}EntityCoordinates`);
             let ent5 = await this.#getAllTransaction(`${this.constants.tappend}WMSProjects`);
             let ent6 = await this.#getAllTransaction(`${this.constants.tappend}WMSProjectBySource`);
-            console.log(`get time 5 in ms: ${Date.now() - start}`);
 
             if (c.strategies.rows) objLeftjoin(c.strategies.rows, b, ['EntityId']);
             if (c.needs.rows) objLeftjoin(c.needs.rows, b, ['EntityId']);
@@ -302,8 +288,6 @@ export default class Statewide {
             objLeftjoin(ent5, ent6, ['WmsProjectId']);
             c.wug_projects = ent5;
         }
-
-        console.log(`get time total in ms: ${Date.now() - start}`);
 
         return c;
     };

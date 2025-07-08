@@ -1,13 +1,10 @@
 <script>
     //@ts-nocheck
-    import Header from '$lib/components/Header.svelte';
-    import { getConstants } from '$lib/helper.js?v1';
+    import { getConstants } from '$lib/helper.js';
     import { page } from '$app/stores';
 
     let constants = getConstants($page.url.host);
 </script>
-
-<Header {constants} hideNav={true} />
 
 <title>About | 2022 Texas State Water Plan</title>
 
@@ -582,9 +579,12 @@
                     </p>
 
                     <p>
-                        The TWDB strives to ensure all of its websites comply with the <a href="https://www.w3.org/TR/WCAG20/"
-                            >Web Content Accessibility Guidelines</a> (WCAG) when possible without causing undue burden to the agency. The TWDB
-                        will be monitoring these sections and will develop accessible solutions as technology improves. In order to ensure no
+                        The TWDB strives to ensure all of its websites comply with the <a href="https://www.w3.org/TR/WCAG21/"
+                            >Web Content Accessibility Guidelines</a> (WCAG),  
+                            <a href="https://texas-sos.appianportalsgov.com/rules-and-meetings?$locale=en_US&interface=VIEW_TAC_SUMMARY&queryAsDate=03%2F27%2F2025&recordId=187575">TAC 206.50</a>
+                            <a href="https://texas-sos.appianportalsgov.com/rules-and-meetings?$locale=en_US&interface=VIEW_TAC_SUMMARY&queryAsDate=03%2F27%2F2025&recordId=197293">TAC 213</a>
+                            when possible without causing undue burden to the agency.
+                                The TWDB will be monitoring these sections and will develop accessible solutions as technology improves. In order to ensure no
                         user is disadvantaged, the TWDB will respond to all accessibility assistance requests by either altering the necessary
                         content as soon as possible or, if requested, by providing the information in an alternative format at no cost to the
                         user within a reasonable timeframe. It is the responsibility of the webpage owner to provide these alternative formats.

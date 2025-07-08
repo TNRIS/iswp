@@ -2,7 +2,7 @@
     // @ts-nocheck
     import { onMount } from 'svelte';
     //import TitlePlugin from './ChartistAxisTitlePlugin';
-    import { commafy } from '$lib/helper.js?v1';
+    import { commafy } from '$lib/helper.js';
     import { hoverHelper, clearInteraction } from '$lib/actions/HoverAction';
     import ctAxisTitle from 'chartist-plugin-axistitle';
     import 'chartist/dist/index.css';
@@ -107,8 +107,9 @@
             on:mouseout={onLeave}
             on:blur
             class="{chartTitle} ct-chart-bar-{iterator} ct-chart"
-            role="region" />
+            role="region">
+        </div>
         <!-- This tooltip get's populated by chartist which should allow aria to view the text when hovered over. Title is just a placeholder-->
-        <div role="tooltip" id={`${chartTitle}-tooltip`} title={`${chartTitle} tooltip`} />
+        <div role="tooltip" id={`${chartTitle}-tooltip`} title={`${chartTitle} tooltip`}></div>
     </div>
 </div>

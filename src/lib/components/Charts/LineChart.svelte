@@ -35,8 +35,10 @@
         on:focus
         on:mouseleave={onLeave}
         on:mouseout={onLeave}
-        on:blur />
-    <div id={`${chartTitle}-tooltip`} />
+        on:blur
+        role="presentation"
+        aria-hidden="true"></div>
+    <div id={`${chartTitle}-tooltip`}></div>
 </div>
 
 <style>

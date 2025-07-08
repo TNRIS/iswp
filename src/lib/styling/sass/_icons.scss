@@ -1,0 +1,11 @@
+@use "sass:list";
+@use 'constants';
+
+@each $type in constants.$usageTypes {
+    $name: list.nth($type, 1);
+    $color: list.nth($type, 2);
+
+    .icon-#{$name} {
+        fill: $color;
+    }
+}

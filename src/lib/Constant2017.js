@@ -11,6 +11,22 @@ export class Constant2017 {
     sourcemap = 'iswp_sourcefeatures2017.map';
     sourcetables = 'iswp_sourcefeatures2017';
 
+    nav_categories = [
+        { value: '', label: 'All of Texas' },
+        {
+            value: 'region',
+            label: 'Planning Region',
+            placeholder_override: 'Region'
+        },
+        { value: 'county', label: 'County' },
+        { value: 'entity', label: 'Water User Group' },
+        { value: 'usagetype', label: 'Usage Type' },
+        { value: 'source', label: 'Water Source' },
+        { value: 'project', label: 'WMS Project' },
+        { value: 'wms', label: 'Water Management Strategy' },
+        { value: 'wmstype', label: 'WMS Type' }
+    ];
+    
     regionalDescription = {
         A: 'The Panhandle (Region A) Regional Water Planning Area includes 21 counties split between the Canadian and Red River basins. The major cities in the region include Amarillo, Pampa, Borger, and Dumas. Groundwater from the Ogallala Aquifer is the region’s primary source of water and is used at a rate that exceeds recharge. The economy of this region is grounded in agribusiness. The full 2016 Panhandle (A) Regional Water Plan can be found on the TWDB Web site at',
         B: 'The Region B Regional Water Planning Area encompasses all or parts of 11 counties in north central Texas bordering the Red River. Parts of three river basins (Red, Brazos, and Trinity) lie within the region. The major cities in the region include Wichita Falls, Burkburnett, and Vernon. The main components of the region’s economy are farming, mineral production, and ranching. The full 2016 Region B Regional Water Plan can be found on the TWDB Web site at',

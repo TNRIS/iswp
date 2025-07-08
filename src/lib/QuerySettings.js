@@ -1,4 +1,27 @@
-import { QuerySetting } from './QuerySetting.js';
+export class QuerySetting {
+    /**
+     * @param { string } [type]
+     * @param { string } [filter]
+     * @param { string } [whereClause]
+     */
+    constructor(type, filter, whereClause) {
+        (this.type = type), (this.filter = filter);
+        this.whereClause = whereClause;
+    }
+
+    getType() {
+        return this.type;
+    }
+
+    getFilter() {
+        return this.filter;
+    }
+
+    getWhereClause() {
+        return this.whereClause;
+    }
+}
+
 
 /** Class representing settings to send to Statewide query to configure specific queries as needed. */
 export class QuerySettings {

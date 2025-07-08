@@ -11,6 +11,22 @@ export class Constant2022 {
     sourcemap = 'iswp_sourcefeatures2022.map';
     sourcetables = 'iswp_sourcefeatures2022';
 
+    nav_categories = [
+        { value: '', label: 'All of Texas' },
+        {
+            value: 'region',
+            label: 'Planning Region',
+            placeholder_override: 'Region'
+        },
+        { value: 'county', label: 'County' },
+        { value: 'entity', label: 'Water User Group' },
+        { value: 'usagetype', label: 'Usage Type' },
+        { value: 'source', label: 'Water Source' },
+        { value: 'project', label: 'WMS Project' },
+        { value: 'wms', label: 'Water Management Strategy' },
+        { value: 'wmstype', label: 'WMS Type' }
+    ];
+    
     regionalDescription = {
         A: 'The Panhandle (Region A) Regional Water Planning Area includes 21 counties split between the Canadian and Red river basins. The major cities in the region include Amarillo, Pampa, Borger, and Dumas.',
         B: 'The Region B Regional Water Planning Area encompasses all or parts of 11 counties in north central Texas bordering the Red River. Parts of three river basins (Red, Brazos, and Trinity) lie within the region. The major cities in the region include Wichita Falls, Burkburnett, and Vernon.',

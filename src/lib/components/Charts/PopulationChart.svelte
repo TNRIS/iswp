@@ -4,13 +4,10 @@
     //@ts-nocheck
     import LineChart from './LineChart.svelte';
     import ChartDataTable from '$lib/components/ChartDataTable.svelte';
-    let { lrp, titleOnly, constants, noMap, dont_capitalize_title } = $$props;
+    let { lrp=true, titleOnly, constants, noMap=false, dont_capitalize_title=false, title, tagline } = $props();
     import PopulationMap from '$lib/components/Maps/PopulationMap.svelte';
-    import { commafy } from '$lib/helper.js?v1';
-    export let title; 
-    export let tagline; // Tagline won't refresh unless I define the svelte property here instead of using $$Props for some reason.
-
-    let /** @type {visible} */ visible;
+    import { commafy } from '$lib/helper.js';
+    let /** @type {visible} */ visible = $state(false);
     let decades = constants.getDecades();
     var getData = async () => {
         let swdata = await lrp;

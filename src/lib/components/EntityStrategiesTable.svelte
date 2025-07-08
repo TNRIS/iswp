@@ -3,7 +3,7 @@
     import { Grid, html } from 'gridjs';
     import 'gridjs/dist/theme/mermaid.css';
     import { onMount } from 'svelte';
-    import { usd_format, commafy } from '$lib/helper.js?v1';
+    import { usd_format, commafy } from '$lib/helper.js';
     const { lrp, type, constants } = $$props;
     let sum = 0;
 
@@ -112,7 +112,7 @@
             <div class="recommended-projects-container">
                 <h4 aria-level="3">Water Management Strategies</h4>
                 {#if strats}
-                    <div id="tab-con" />
+                    <div id="tab-con"></div>
                 {:else}
                     There are no water management strategies.
                 {/if}

@@ -1,0 +1,265 @@
+@use "sass:color";
+@use 'constants';
+
+html {
+    height: 100%;
+}
+
+body {
+    color: constants.$bodyColor;
+    /*
+    Seamless Paper Texture by Merry
+    From: https://www.toptal.com/designers/subtlepatterns/seamless-paper-texture/
+    CC-BY-SA: http://creativecommons.org/licenses/by-sa/3.0/
+  */
+    background: url('/img/seamless_paper_texture.png');
+    overflow-x: hidden;
+    font-family: constants.$font;
+    font-size: 1.7em;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+ul,
+ol {
+    margin-bottom: 1rem;
+}
+
+.sticky-div,
+.sticky-div-2 {
+    position: sticky;
+    padding: 10px 0px;
+    z-index: 1001;
+}
+
+.sticky-div {
+    top: 0px;
+}
+
+.sticky-div-2 {
+    top: 0px;
+}
+
+button[disabled] {
+    background: #efefef;
+    border-color: #efefef;
+    color: #999;
+
+    &:hover,
+    &:focus {
+        border-color: #efefef;
+        color: #999;
+    }
+}
+
+#page-wrapper {
+    min-height: 100%;
+    position: relative;
+}
+
+#content {
+    padding-bottom: 200px;
+    @media (min-width: constants.$media-s) {
+        padding-bottom: 140px;
+    }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: constants.$font;
+    font-weight: bold;
+    color: color.adjust(constants.$twdb-blue, constants.$lightness: -10%);
+}
+
+h3 {
+    margin-bottom: 1rem;
+}
+
+h4 {
+    font-size: 2.4rem;
+    margin-bottom: 0.5rem;
+}
+
+h5 {
+    font-size: 2.2rem;
+    font-family: constants.$font;
+    color: constants.$bodyColor;
+    font-weight: normal;
+    margin-bottom: 0.5rem;
+}
+
+a {
+    color: constants.$twdb-blue;
+    text-decoration: underline;
+
+    &:hover {
+        color: constants.$link-hover-color;
+        text-decoration: underline;
+    }
+}
+
+input[type='email'],
+input[type='number'],
+input[type='search'],
+input[type='text'],
+input[type='tel'],
+input[type='url'],
+input[type='password'],
+textarea,
+select {
+    border-radius: 0;
+}
+
+.container {
+    @media (max-width: constants.$media-m) {
+        margin: 0;
+        width: 100%;
+        padding: 0;
+    }
+
+    @media (min-width: constants.$media-m) {
+        width: 90%;
+    }
+}
+
+.wrapper {
+    width: auto;
+    margin: 0 1.5rem;
+    position: relative;
+
+    @media (min-width: constants.$media-l) {
+        width: 1000px;
+        margin: 0 auto;
+    }
+
+}
+
+.clear-float {
+    clear: both;
+}
+
+.header {
+
+    margin-top: 0;
+    padding: 8px 0 0 0;
+    background: constants.$twdb-blue;
+    position: relative;
+
+    .header-title-container {
+        border-bottom: 1px solid white;
+    }
+
+    .logo {
+        display: inline-block;
+        width: 140px;
+        vertical-align: bottom;
+        padding-right: 1rem;
+        margin-bottom: 1rem;
+        margin-left: 3rem;
+
+        @media (min-width: constants.$media-l) {
+            width: 200px;
+            float: right;
+            margin-right: 160px;
+        }
+
+        @media (max-width: constants.$media-s) {
+            margin-left: 0;
+        }
+    }
+
+    h1 {
+        display: inline-block;
+        font-size: 2rem;
+        line-height: 2rem;
+        margin-right: 1rem;
+        margin-bottom: 0.8rem;
+        color: #fff;
+
+        .first-line {
+            color: #bad4e6;
+            font-size: 1.8rem;
+            font-weight: normal;
+        }
+
+        @media (min-width: constants.$media-m) {
+            font-size: 3rem;
+            line-height: 2.5rem;
+            margin-bottom: 1rem;
+
+            .first-line {
+                font-size: 2.3rem;
+            }
+        }
+
+        a,
+        a:hover,
+        a:visited {
+            text-decoration: none;
+            color: inherit;
+        }
+    }
+
+    .by-the {
+        margin-right: 1rem;
+        font-style: italic;
+        color: #fff;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+
+    @media (min-width: constants.$media-s) {
+        margin-top: 0;
+    }
+}
+
+#footer {
+    text-align: center;
+    border-top: 1px solid constants.$border-color;
+    padding: 2rem 0;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-color: constants.$twdb-blue;
+    color: white;
+
+    p {
+        margin: 0;
+    }
+
+    a {
+        color: white;
+
+        &:hover {
+            color: constants.$link-hover-color;
+        }
+    }
+
+    .tnris-logo {
+        width: 80px;
+        margin-top: 8px;
+    }
+}
+
+@media (max-width: 900px) {
+    .six.columns.wide {
+        width: 100%;
+    }
+
+    .columns.wide,
+    .column.wide {
+        margin-left: 0;
+    }
+}

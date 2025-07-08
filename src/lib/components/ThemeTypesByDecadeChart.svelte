@@ -2,14 +2,13 @@
     // @ts-nocheck
     import LineChart from '$lib/components/Charts/LineChart.svelte';
     import IconSpread from '$lib/components/IconSpread.svelte';
-    import { onMount } from 'svelte';
     import ThemeSelector from '$lib/components/ThemeSelector.svelte';
     import ChartDataTable from '$lib/components/ChartDataTable.svelte';
     import ctAxisTitle from 'chartist-plugin-axistitle';
+    import { commafy, onMountSync } from '$lib/helper.js';
 
-    import { commafy } from '$lib/helper.js?v1';
-    const { chartTitle, lrp, constants, title } = $$props;
-    let /** @type {visible} */ visible;
+    const { chartTitle, lrp, constants, title="" } = $props();
+    let /** @type {visible} */ visible = $state(false);
     let decades = constants.getDecades();
     let titleMap = {
         irrigation: 'Irrigation',
@@ -53,11 +52,11 @@
 
     let usage_types = constants.getUsageTypes();
 
-    let selectedTheme = 'demands';
-    let demands_visible = true;
-    let supplies_visible = false;
-    let needs_visible = false;
-    let strategies_visible = false;
+    let selectedTheme = $state('demands');
+    let demands_visible = $state(true);
+    let supplies_visible = $state(false);
+    let needs_visible = $state(false);
+    let strategies_visible = $state(false);
     let show = (event) => {
         selectedTheme = event.target.value;
         switch (event.target.value) {
@@ -103,90 +102,82 @@
         };
     };
 
-    var getData = () => {
-        return new Promise((resolve, reject) => {
-            onMount(async () => {
-                try {
-                    const swdata = await lrp;
-                    // Create a simple line chart
-                    let data = {};
-                    data.demands = {
-                        // A labels array that can contain any sort of values
-                        labels: constants.getDecades(),
-                        // Our series array that contains series objects or in this case series data arrays
-                        series: [
-                            makeSeries('demands', 'mining', usage_types[5], swdata),
-                            makeSeries('demands', 'livestock', usage_types[4], swdata),
-                            makeSeries('demands', 'steam-electric-power', usage_types[3], swdata),
-                            makeSeries('demands', 'manufacturing', usage_types[2], swdata),
-                            makeSeries('demands', 'municipal', usage_types[1], swdata),
-                            makeSeries('demands', 'irrigation', usage_types[0], swdata)
-                        ]
-                    };
+    let buildData = (async () => {
+        const swdata = await lrp;
+        // Create a simple line chart
+        let data = {};
+        data.demands = {
+            // A labels array that can contain any sort of values
+            labels: constants.getDecades(),
+            // Our series array that contains series objects or in this case series data arrays
+            series: [
+                makeSeries('demands', 'mining', usage_types[5], swdata),
+                makeSeries('demands', 'livestock', usage_types[4], swdata),
+                makeSeries('demands', 'steam-electric-power', usage_types[3], swdata),
+                makeSeries('demands', 'manufacturing', usage_types[2], swdata),
+                makeSeries('demands', 'municipal', usage_types[1], swdata),
+                makeSeries('demands', 'irrigation', usage_types[0], swdata)
+            ]
+        };
 
-                    data.needs = {
-                        // A labels array that can contain any sort of values
-                        labels: constants.getDecades(),
-                        // Our series array that contains series objects or in this case series data arrays
-                        series: [
-                            makeSeries('needs', 'irrigation', usage_types[0], swdata),
-                            makeSeries('needs', 'livestock', usage_types[4], swdata),
-                            makeSeries('needs', 'manufacturing', usage_types[2], swdata),
-                            makeSeries('needs', 'steam-electric-power', usage_types[3], swdata),
-                            makeSeries('needs', 'mining', usage_types[5], swdata),
-                            makeSeries('needs', 'municipal', usage_types[1], swdata)
-                        ]
-                    };
+        data.needs = {
+            // A labels array that can contain any sort of values
+            labels: constants.getDecades(),
+            // Our series array that contains series objects or in this case series data arrays
+            series: [
+                makeSeries('needs', 'irrigation', usage_types[0], swdata),
+                makeSeries('needs', 'livestock', usage_types[4], swdata),
+                makeSeries('needs', 'manufacturing', usage_types[2], swdata),
+                makeSeries('needs', 'steam-electric-power', usage_types[3], swdata),
+                makeSeries('needs', 'mining', usage_types[5], swdata),
+                makeSeries('needs', 'municipal', usage_types[1], swdata)
+            ]
+        };
 
-                    data.population = {
-                        // A labels array that can contain any sort of values
-                        labels: constants.getDecades(),
-                        // Our series array that contains series objects or in this case series data arrays
-                        series: [
-                            makeSeries('population', 'irrigation', usage_types[0], swdata),
-                            makeSeries('population', 'livestock', usage_types[4], swdata),
-                            makeSeries('population', 'manufacturing', usage_types[2], swdata),
-                            makeSeries('population', 'steam-electric-power', usage_types[3], swdata),
-                            makeSeries('population', 'mining', usage_types[5], swdata),
-                            makeSeries('population', 'municipal', usage_types[1], swdata)
-                        ]
-                    };
+        data.population = {
+            // A labels array that can contain any sort of values
+            labels: constants.getDecades(),
+            // Our series array that contains series objects or in this case series data arrays
+            series: [
+                makeSeries('population', 'irrigation', usage_types[0], swdata),
+                makeSeries('population', 'livestock', usage_types[4], swdata),
+                makeSeries('population', 'manufacturing', usage_types[2], swdata),
+                makeSeries('population', 'steam-electric-power', usage_types[3], swdata),
+                makeSeries('population', 'mining', usage_types[5], swdata),
+                makeSeries('population', 'municipal', usage_types[1], swdata)
+            ]
+        };
 
-                    data.strategies = {
-                        // A labels array that can contain any sort of values
-                        labels: constants.getDecades(),
-                        // Our series array that contains series objects or in this case series data arrays
-                        series: [
-                            makeSeries('strategies', 'irrigation', usage_types[0], swdata),
-                            makeSeries('strategies', 'livestock', usage_types[4], swdata),
-                            makeSeries('strategies', 'manufacturing', usage_types[2], swdata),
-                            makeSeries('strategies', 'steam-electric-power', usage_types[3], swdata),
-                            makeSeries('strategies', 'mining', usage_types[5], swdata),
-                            makeSeries('strategies', 'municipal', usage_types[1], swdata)
-                        ]
-                    };
+        data.strategies = {
+            // A labels array that can contain any sort of values
+            labels: constants.getDecades(),
+            // Our series array that contains series objects or in this case series data arrays
+            series: [
+                makeSeries('strategies', 'irrigation', usage_types[0], swdata),
+                makeSeries('strategies', 'livestock', usage_types[4], swdata),
+                makeSeries('strategies', 'manufacturing', usage_types[2], swdata),
+                makeSeries('strategies', 'steam-electric-power', usage_types[3], swdata),
+                makeSeries('strategies', 'mining', usage_types[5], swdata),
+                makeSeries('strategies', 'municipal', usage_types[1], swdata)
+            ]
+        };
 
-                    data.supplies = {
-                        // A labels array that can contain any sort of values
-                        labels: constants.getDecades(),
-                        // Our series array that contains series objects or in this case series data arrays
-                        series: [
-                            makeSeries('supplies', 'irrigation', usage_types[0], swdata),
-                            makeSeries('supplies', 'livestock', usage_types[4], swdata),
-                            makeSeries('supplies', 'manufacturing', usage_types[2], swdata),
-                            makeSeries('supplies', 'steam-electric-power', usage_types[3], swdata),
-                            makeSeries('supplies', 'mining', usage_types[5], swdata),
-                            makeSeries('supplies', 'municipal', usage_types[1], swdata)
-                        ]
-                    };
+        data.supplies = {
+            // A labels array that can contain any sort of values
+            labels: constants.getDecades(),
+            // Our series array that contains series objects or in this case series data arrays
+            series: [
+                makeSeries('supplies', 'irrigation', usage_types[0], swdata),
+                makeSeries('supplies', 'livestock', usage_types[4], swdata),
+                makeSeries('supplies', 'manufacturing', usage_types[2], swdata),
+                makeSeries('supplies', 'steam-electric-power', usage_types[3], swdata),
+                makeSeries('supplies', 'mining', usage_types[5], swdata),
+                makeSeries('supplies', 'municipal', usage_types[1], swdata)
+            ]
+        };
 
-                    resolve(data);
-                } catch (err) {
-                    reject(err);
-                }
-            });
-        });
-    };
+        return data;
+    })();
 </script>
 
 <div class="summary-wrapper container" id="point-chart-usage-type">
@@ -206,13 +197,12 @@
             </div>
             <ThemeSelector {show} showPopulation={false} bind:select_theme={selectedTheme} id_pre="usage_type" />
         </div>
-
-        {#await getData()}
+        {#await Promise.all([onMountSync(), buildData])}
             <div class="loader"></div>
         {:then data}
             {#if demands_visible}
                 <LineChart
-                    data={data.demands}
+                    data={data[1].demands}
                     chartTitle={`${chartTitle}-demands`}
                     altClass={'ct-line-chart-size'}
                     options={chartOptions} />
@@ -220,7 +210,7 @@
                     <ChartDataTable
                         bind:visible
                         header={decades}
-                        body={data.demands.series}
+                        body={data[1].demands.series}
                         titles={true}
                         showHide={true}
                         {titleMap}
@@ -231,7 +221,7 @@
             {/if}
             {#if supplies_visible}
                 <LineChart
-                    data={data.supplies}
+                    data={data[1].supplies}
                     chartTitle={`${chartTitle}-supplies`}
                     altClass={'ct-line-chart-size'}
                     options={chartOptions} />
@@ -240,7 +230,7 @@
                     <ChartDataTable
                         bind:visible
                         header={decades}
-                        body={data.supplies.series}
+                        body={data[1].supplies.series}
                         titles={true}
                         showHide={true}
                         {titleMap}
@@ -250,13 +240,17 @@
                 </div>
             {/if}
             {#if needs_visible}
-                <LineChart data={data.needs} chartTitle={`${chartTitle}-needs`} altClass={'ct-line-chart-size'} options={chartOptions} />
+                <LineChart
+                    data={data[1].needs}
+                    chartTitle={`${chartTitle}-needs`}
+                    altClass={'ct-line-chart-size'}
+                    options={chartOptions} />
 
                 <div class="toggle-container">
                     <ChartDataTable
                         bind:visible
                         header={decades}
-                        body={data.needs.series}
+                        body={data[1].needs.series}
                         titles={true}
                         showHide={true}
                         {titleMap}
@@ -267,7 +261,7 @@
             {/if}
             {#if strategies_visible}
                 <LineChart
-                    data={data.strategies}
+                    data={data[1].strategies}
                     chartTitle={`${chartTitle}-strategies`}
                     altClass={'ct-line-chart-size'}
                     options={chartOptions} />
@@ -276,7 +270,7 @@
                     <ChartDataTable
                         bind:visible
                         header={decades}
-                        body={data.strategies.series}
+                        body={data[1].strategies.series}
                         titles={true}
                         showHide={true}
                         {titleMap}
@@ -286,7 +280,7 @@
                 </div>
             {/if}
         {:catch error}
-            <span>There is a error: {error.message}</span>
+        <span>There is a error: {error.message}</span>
         {/await}
     </div>
 </div>

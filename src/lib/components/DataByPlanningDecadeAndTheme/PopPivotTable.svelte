@@ -3,7 +3,7 @@
     const { swdata, constants, fileName } = $$props;
     import CsvDownloads from '$lib/components/CsvDownloads.svelte';
 
-    import { onMountSync, usd_format, commafy } from '$lib/helper.js?v1';
+    import { onMountSync, usd_format, commafy } from '$lib/helper.js';
     let pivotLoaded = false;
 
     import { getContext } from 'svelte';
@@ -108,7 +108,7 @@
 {#await onLoad}
     <div class="loader"></div>
 {:then}
-    <table id="PivotTable" />
+    <table id="PivotTable"></table>
 {:catch}
     <span>Error loading pivottable</span>
 {/await}
@@ -119,7 +119,7 @@
     {#if !swdata?.projects?.length}
         Sorry, there is no Population data.
     {/if}
-    <div id="reactpivot" />
+    <div id="reactpivot"></div>
     {#await onLoad then d}
         <CsvDownloads swdata={d} {csvTitle} {fileName} {constants} />
     {/await}

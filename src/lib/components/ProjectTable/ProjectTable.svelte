@@ -2,16 +2,17 @@
     import { Grid, html } from 'gridjs';
     import 'gridjs/dist/theme/mermaid.css';
     import { onMount } from 'svelte';
-    import { usd_format, usd_format_whole } from '$lib/helper.js?v1';
-    const { lrp, type,  project_title2 } = $$props;
+    import { usd_format, usd_format_whole, onMountSync } from '$lib/helper.js';
+    const { lrp, type, project_title, project_title2 } = $props();
     let sum = 0;
     let projects = false;
-    export let project_title;
+
     /**
      * @type {Array<Array<Object>>}
      */
-    $: project_data = [];
-    $: display_table = 'none';
+    let project_data = $state([]);
+    let display_table = $state('none');
+    
     onMount(async () => {
         /** @type {Array<Object>}*/
         let project_ids = [];
@@ -121,22 +122,6 @@
             // @ts-ignore because document is defined since this is onMount();
         }).render(document.getElementById('table-container'));
 
-        // No event emitter for page load so workaround is to check like this every 10th of a second.
-        let tries = 0;
-        let waitTableLoad = setInterval(() => {
-            let firstColumn = document.getElementsByClassName('rec-proj')[0];
-            if (firstColumn) {
-                // Click on success.
-                firstColumn.click();
-                clearInterval(waitTableLoad);
-            }
-            if (tries >= 10) {
-                // Only wait 10 times.
-                clearInterval(waitTableLoad);
-            }
-            tries++;
-        }, 500);
-
         // No built in way to customize the placeholder for gridjs-input so I need to do this workaround.
         // @ts-ignore because document is defined since this is onMount();
         let gridjs_input = document.getElementById('rpc').getElementsByClassName('gridjs-input')[0];
@@ -147,6 +132,28 @@
     const format_sum = () => {
         return sum % 1 != 0 ? usd_format_whole.format(sum) : usd_format_whole.format(sum);
     };
+
+    (async () => {
+        await onMountSync();
+        let tries = 0;
+        let waitTableLoad = setInterval(() => {
+            if (tries >= 10) {
+                // Only wait 10 times.
+                clearInterval(waitTableLoad);
+                return;
+            }
+            let firstColumn = document.getElementsByClassName('rec-proj')[0];
+            if (firstColumn) {
+                // Click on success.
+                firstColumn.click();
+                tries = 11;
+                clearInterval(waitTableLoad);
+            }
+
+            tries++;
+        }, 500);
+    })();
+
 </script>
 
 <div class="container">
@@ -163,7 +170,7 @@
                 {:else}
                     <p>There are no recommended projects.</p>
                 {/if}
-                <div id="table-container" style="display:{display_table}" />
+                <div id="table-container" style="display:{display_table}"></div>
             </div>
         </div>
     </div>

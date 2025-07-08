@@ -174,7 +174,8 @@
             };
             map.addLayer(L.tileLayer(ret.tilesUrl));
             let utfGrid = L.utfGrid(ret.gridUrl, {
-                useJsonP: false
+                useJsonP: false,
+                pointerCursor: true
             });
             map.addLayer(utfGrid);
             utfGrid.on('click', navigateToRegion);
@@ -341,7 +342,7 @@
 </script>
 
 <div id="map" style="width:100%; top:0; position:absolute; height:100%;" role="presentation">
-    <div id="map-hover-tooltip" />
+    <div id="map-hover-tooltip"></div>
 </div>
 
 <style>

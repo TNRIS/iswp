@@ -4,7 +4,7 @@
     import { ProjectItem, EntityItem } from '$lib/TypeDefinitions';
     import { getContext, onMount } from 'svelte';
     import { scaleTonew, usd_format, objLeftjoin, commafy, coordFitter } from '$lib/helper';
-    import { runOMS } from '$lib/leaflet.oms.js';
+    import { runOMS } from '$lib/leaflet/leaflet.oms.js';
     import { map } from 'd3';
 
     /* Work in progress */
@@ -26,7 +26,6 @@
         notEqualTo as notEqualToFilter,
         or as orFilter
     } from 'ol/format/filter.js';
-
     const countyTable = 'county_extended';
     const regionTable = 'rwpas';
     const { slug, constants, type, entityMapBlurb } = $$props;
@@ -1419,7 +1418,7 @@
         role="presentation"
         aria-label="Interactive map with buttons placed overlaying a map of texas that you can hit and a tooltip gives details.">
         <div id="entity_map" style="width:100%; top:0;" role="presentation">
-            <div id="map-entity-hover-tooltip" />
+            <div id="map-entity-hover-tooltip"></div>
         </div>
 
         <span>{@html entityMapBlurb}</span>
