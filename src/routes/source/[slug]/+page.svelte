@@ -38,7 +38,7 @@
     // Promise to load for source. Do not await here. Await later in individual entities.
     let lrp = $state(loadForSource());
     $effect(() => {
-        sourceSetting.setAll(slug);
+        sourceSetting.setAll(Number(slug));
         lrp = loadForSource();
     });
 
