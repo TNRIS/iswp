@@ -3,7 +3,7 @@
 <script>
     import Statewide from '$lib/db/statewide.js';
     import Select from 'svelte-select';
-    import { objectExistsInArray, labelReducer } from '$lib/helper';
+    import { objectExistsInArray, labelReducer, objectExistsInArrayPresorted } from '$lib/helper';
 
     /**
      * @typedef EntityLabel
@@ -105,7 +105,7 @@
                             accumulator,
                             currentValue,
                             ['EntityName', 'EntityId'],
-                            ['value', 'label']
+                            ['label', 'value']
                         );
 
                         if (!exists) {
@@ -125,7 +125,7 @@
                             accumulator,
                             currentValue,
                             ['ProjectName', 'WmsProjectId'],
-                            ['value', 'label']
+                            ['label', 'value']
                         );
 
                         if (!exists) {
@@ -140,12 +140,22 @@
                 });
 
                 sw.getWms().then((/** @type {WmsLabel[]}*/ x) => {
+                    x = x.sort((a, b) => {
+                        if (a.WmsName < b.WmsName) {
+                            return -1;
+                        }
+                        if (a.WmsName > b.WmsName) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+
                     this.wms = x.reduce((/** @type {object[]} */ accumulator, /** @type {any} */ currentValue) => {
-                        let exists /** @type {boolean} */ = objectExistsInArray(
+                        let exists /** @type {boolean} */ = objectExistsInArrayPresorted(
                             accumulator,
                             currentValue,
                             ['WmsName', 'WmsId'],
-                            ['value', 'label']
+                            ['label', 'value']
                         );
 
                         if (!exists) {
