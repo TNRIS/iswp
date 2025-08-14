@@ -4,6 +4,7 @@
     import Statewide from '$lib/db/statewide.js';
     import Select from 'svelte-select';
     import { objectExistsInArray, labelReducer, objectExistsInArrayPresorted } from '$lib/helper';
+    import Fuse from 'fuse.js';
 
     /**
      * @typedef EntityLabel
@@ -219,21 +220,24 @@
      * @param {string} filter
      */
     let filterBoxSearch = async(filter) => {
-        if (!filter.length || filter.length < 3) {
-            return []; // Return a empty array for svelte select.
+        const options = {
+            includeScore: true,
+            keys: ['label'],
+            shouldSort: true,
+            ignoreFieldNorm: true
         }
-        //Remove spaces and underscores.
-        filter = filter ? filter.replace(' ','_') : '';
-        filter = filter.toLowerCase();
-        
-        let filtered = categories[chosen].filter((x) => {
-            return x.label.toLowerCase().includes(filter)
-        });
 
-        return filtered.sort((a, b) => {
-          if (a.label > b.label) return 1;
-          if (a.label < b.label) return -1;
-        })
+        const fuse = new Fuse(categories[chosen], options);
+
+        const result = fuse.search(filter);
+        
+        let top_matches = result.slice(0, 50).map((unit) => {
+            return {
+                value: unit.item.value,
+                label: unit.item.label
+            }
+        });
+        return top_matches;
     }
 </script>
 
