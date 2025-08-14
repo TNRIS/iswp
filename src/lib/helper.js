@@ -392,7 +392,7 @@ export let scaleTonew = (scale1, scale2, constants) => {
 };
 
 /**
- * objectExistsInArray: Check if object exists in an array. Pass in keys to check so you can check if it partially matches..
+ * objectExistsInArray: Check if object exists in an array. Pass in keys to check so you can check if it partially matches. Does not assume accumulator is sorted alphebetically. So very inefficient.
  * @param {any[]} accumulator
  * @param {any}  label
  * @param {string[]} keys
@@ -416,6 +416,26 @@ export let objectExistsInArray = (accumulator, label, keys, secondkeys = keys) =
         return false;
     }
     return false;
+};
+
+
+/**
+ * objectExistsInArray: Check if object exists in an array. Pass in keys to check so you can check if it partially matches. Assumes accumulator is sorted alphebetically.
+ * @param {any[]} accumulator
+ * @param {any}  label
+ * @param {string[]} keys
+ * @param {string[]} [secondkeys] Optional keys for the label object. Defaults to keys.
+ */
+export let objectExistsInArrayPresorted = (accumulator, label, keys, secondkeys = keys) => {
+    if(!accumulator.length) return false;
+    let match = false;
+    keys.forEach((key, i) => {
+        if ((accumulator[accumulator.length-1][secondkeys[i]] === label[key])) {
+            match = true;
+        }
+    });
+
+    return match;
 };
 
 /**

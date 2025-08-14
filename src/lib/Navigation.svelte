@@ -3,7 +3,8 @@
 <script>
     import Statewide from '$lib/db/statewide.js';
     import Select from 'svelte-select';
-    import { objectExistsInArray, labelReducer } from '$lib/helper';
+    import { objectExistsInArray, labelReducer, objectExistsInArrayPresorted } from '$lib/helper';
+    import Fuse from 'fuse.js';
 
     /**
      * @typedef EntityLabel
@@ -105,7 +106,7 @@
                             accumulator,
                             currentValue,
                             ['EntityName', 'EntityId'],
-                            ['value', 'label']
+                            ['label', 'value']
                         );
 
                         if (!exists) {
@@ -125,7 +126,7 @@
                             accumulator,
                             currentValue,
                             ['ProjectName', 'WmsProjectId'],
-                            ['value', 'label']
+                            ['label', 'value']
                         );
 
                         if (!exists) {
@@ -140,12 +141,22 @@
                 });
 
                 sw.getWms().then((/** @type {WmsLabel[]}*/ x) => {
+                    x = x.sort((a, b) => {
+                        if (a.WmsName < b.WmsName) {
+                            return -1;
+                        }
+                        if (a.WmsName > b.WmsName) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+
                     this.wms = x.reduce((/** @type {object[]} */ accumulator, /** @type {any} */ currentValue) => {
-                        let exists /** @type {boolean} */ = objectExistsInArray(
+                        let exists /** @type {boolean} */ = objectExistsInArrayPresorted(
                             accumulator,
                             currentValue,
                             ['WmsName', 'WmsId'],
-                            ['value', 'label']
+                            ['label', 'value']
                         );
 
                         if (!exists) {
@@ -209,21 +220,24 @@
      * @param {string} filter
      */
     let filterBoxSearch = async(filter) => {
-        if (!filter.length || filter.length < 3) {
-            return []; // Return a empty array for svelte select.
+        const options = {
+            includeScore: true,
+            keys: ['label'],
+            shouldSort: true,
+            ignoreFieldNorm: true
         }
-        //Remove spaces and underscores.
-        filter = filter ? filter.replace(' ','_') : '';
-        filter = filter.toLowerCase();
-        
-        let filtered = categories[chosen].filter((x) => {
-            return x.label.toLowerCase().includes(filter)
-        });
 
-        return filtered.sort((a, b) => {
-          if (a.label > b.label) return 1;
-          if (a.label < b.label) return -1;
-        })
+        const fuse = new Fuse(categories[chosen], options);
+
+        const result = fuse.search(filter);
+        
+        let top_matches = result.slice(0, 50).map((unit) => {
+            return {
+                value: unit.item.value,
+                label: unit.item.label
+            }
+        });
+        return top_matches;
     }
 </script>
 
