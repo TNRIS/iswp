@@ -10,8 +10,7 @@
             <div class="twelve columns iswp-description" title="ISWP description" role="article">
                 {#if constants.getYear() == 2027}
                     <p>
-                        This website lets water users statewide take an up-close look at the 2026 draft regional water planning data and how
-                        water needs change over time by showing:
+                        This website lets water users statewide take an up-close look at the 2026 regional water planning data and how water needs change over time by showing:
                     </p>
                 {:else}
                     <p>

@@ -20,14 +20,16 @@
 {#if constants.id == 27}
     <div class="draft-note">
         <div class="wrapper" style="word-break: break-word;">
-            This web application displays draft data to assist with the review of the draft regional water plans (RWPs) and is
-            current as of 03/05/2025. Although the data is subject to change as the draft plans are edited, the data displayed will
-            not be refreshed until the final regional water plans are approved (early 2026). Please visit the 2026 Draft RWP
-            homepage to view the published plans at: https://www.twdb.texas.gov/waterplanning/rwp/plans/2026/index.asp. You
-            can also visit the Texas Water Development Board Secure Agency Reporting Application at
-            https://www3.twdb.texas.gov/apps/SARA/reports/list to view 2026 Draft Regional Water Plan data. Use the global filter
-            option located at the top of the reporting application and filter the reports by the text '2026' to see all reports
-            associated with the 2026 RWPs.
+            This web application displays data associated with the final
+            regional water plans (RWPs). The data is current as of 12/31/2025.
+            Please visit the 2026 RWP homepage to view the published plans at:
+            https://www.twdb.texas.gov/waterplanning/rwp/plans/2026/index.asp.
+            You can also visit the Texas Water Development Board Secure Agency
+            Reporting Application at https://www3.twdb.texas.gov/apps/SARA/reports/list
+            to view 2026 Regional Water Plan data. Use the global filter option
+            located at the top of the reporting application and filter the
+            reports by the text '2026' to see all reports associated with the
+            2026 RWPs.
         </div>
     </div>
 {/if}
