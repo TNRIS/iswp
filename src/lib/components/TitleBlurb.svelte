@@ -8,7 +8,7 @@
     <div class="clear-float u-full-width">
         <div class="row panel-row">
             <div class="twelve columns iswp-description" title="ISWP description" role="article">
-                {#if constants.getYear() == 2027}
+                {#if constants.id == 27}
                     <p>
                         This website lets water users statewide take an up-close look at the 2026 regional water planning data and how water needs change over time by showing:
                     </p>

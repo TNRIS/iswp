@@ -27,7 +27,7 @@ export class Constant2027 {
     ];
 
     regionalDescription = {
-        A: `The Panhandle (Region A) Regional Water Planning Area includes 21 counties split between the Canadian and Red river basins. The major cities in the rgion include Amarillo, Pampa, Borger, and Dumas.`,
+        A: `The Panhandle (Region A) Regional Water Planning Area includes 21 counties split between the Canadian and Red river basins. The major cities in the region include Amarillo, Pampa, Borger, and Dumas.`,
         B: `The Region B Regional Water Planning Area encompasses all or parts of 11 counties in north central Texas bordering the Red River. Parts of three river basins (Red, Brazos, and Trinity) lie within the region. The major cities in the region include Wichita Falls, Burkburnett, and Vernon.`,
         C: `The Region C Regional Water Planning Area includes all or parts of 16 counties. Overlapping much of the upper portion of the Trinity River Basin, Region C also includes smaller parts of the Red, Brazos, Sulphur, and Sabine river basins. The Dallas-Fort Worth metropolitan area is centrally located in the region.`,
         D: `The North East Texas (Region D) Regional Water Planning Area encompasses all or parts of 19 counties. While largely rural, the region includes the cities of Longview, Texarkana, and Greenville. The planning area overlaps large portions of the Red, Sulphur, Cypress, and Sabine river basins and smaller parts of the Trinity and Neches river basins.`,
@@ -127,6 +127,7 @@ export class Constant2027 {
         WMS_TYPES: [
             'AGRICULTURAL CONSERVATION',
             'AQUIFER STORAGE AND RECOVERY',
+            'AQUIFER RECHARGE',
             'CONJUNCTIVE USE',
             'DIRECT POTABLE REUSE',
             'DROUGHT MANAGEMENT',
@@ -139,13 +140,16 @@ export class Constant2027 {
             'OTHER DIRECT REUSE',
             'OTHER STRATEGIES',
             'OTHER SURFACE WATER',
-            'SEAWATER DESALINATION'
+            'SEAWATER DESALINATION',
+            'WATER RECYCLING REUSE'
         ],
         WMS_TYPE_DESCRIPTIONS: {
             'AGRICULTURAL CONSERVATION':
                 'Agricultural conservation is primarily irrigation conservation strategies and some livestock conservation based on best management practices. Irrigation conservation strategies include changes to irrigation methods, equipment, and crops. For example, conversion to Low Energy Precision Application systems and irrigation scheduling, as well as other activities associated with irrigation best management practices, can help producers reduce their water use. Like municipal conservation, irrigation conservation strategies tend to be an aggregate of multiple best management practices, any one or several of which could be implemented to achieve the estimated water savings of the strategy.',
             'AQUIFER STORAGE & RECOVERY':
                 'Aquifer storage and recovery water management strategies inject water, when available, into an aquifer where it is stored for later use.',
+            'AQUIFER RECHARGE' :
+                'Water recycling reuse water management strategies involve onsite recycling and reuse of graywater, blackwater, oil and gas produced water, and other mining/industrial onsite recycling.',
             'CONJUNCTIVE USE':
                 'Conjunctive use water management strategies combine multiple water sources, usually surface water and groundwater, to optimize the beneficial characteristics of each source, yielding additional firm water supplies.',
             'DIRECT POTABLE REUSE':
@@ -171,7 +175,9 @@ export class Constant2027 {
             'OTHER SURFACE WATER':
                 'Other surface water management strategies includes minor reservoirs (less than 5,000 acre-feet of storage) and subordination as well as a wide variety of other strategies that convey, treat, reassign, or otherwise make accessible additional surface water supplies to users with or without additional infrastructure.',
             'SEAWATER DESALINATION':
-                'Seawater desalination water management strategies involve the process of removing dissolved solids from seawater, often by forcing the source water through membranes under high pressure.'
+                'Seawater desalination water management strategies involve the process of removing dissolved solids from seawater, often by forcing the source water through membranes under high pressure.',
+            'WATER RECYCLING REUSE':
+                'Water Recycling Reuse" is a new WMS type added to the list this planning cycle. We need to add a description to its iSWP application page title text box.'
         }
     };
 
