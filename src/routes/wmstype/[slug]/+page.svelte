@@ -55,7 +55,7 @@
             <div class="summary-wrapper container">
                 <div class="view-summary usage-type-summary">
                     <h1 aria-level="2">{slug}</h1>
-                    {constants.wms_info.WMS_TYPE_DESCRIPTIONS[slug?.toUpperCase().replace('AND', '&')]}
+                    {constants.wms_info.WMS_TYPE_DESCRIPTIONS[slug?.split('(')[0].toUpperCase().replace('AND', '&').trim()]}
                 </div>
             </div>
         </div>

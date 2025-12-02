@@ -149,7 +149,7 @@ export class Constant2027 {
             'AQUIFER STORAGE & RECOVERY':
                 'Aquifer storage and recovery water management strategies inject water, when available, into an aquifer where it is stored for later use.',
             'AQUIFER RECHARGE' :
-                'Aquifer recharge water management strategies involve adding water to an aquifer via injection well, infiltration basin, or other means of infiltration to replenish water in an aquifer.',
+                'Water recycling reuse water management strategies involve onsite recycling and reuse of graywater, blackwater, oil and gas produced water, and other mining/industrial onsite recycling.',
             'CONJUNCTIVE USE':
                 'Conjunctive use water management strategies combine multiple water sources, usually surface water and groundwater, to optimize the beneficial characteristics of each source, yielding additional firm water supplies.',
             'DIRECT POTABLE REUSE':
