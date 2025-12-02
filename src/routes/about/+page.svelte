@@ -289,7 +289,11 @@
 
                     <p>
                         The actual locations and physical extent of recommended projects will vary and, in many instances such as pipelines,
-                        will encompass multiple geographic locations and facilities.
+                        will encompass multiple geographic locations and facilities. Recommended reservoir footprints or representative
+                        locations may be hypothetical locations of facilities for regional water planning purposes only as it relates to 
+                        planning-level cost estimates. The locations presented in this site may be conceptual in nature and may not represent 
+                        actual locations of facilities. Siting of facilities are subject to studies, designs, engineering, and/or contract 
+                        negotiations to be determined by the project's sponsor at a later date.
                     </p>
                 </section>
 

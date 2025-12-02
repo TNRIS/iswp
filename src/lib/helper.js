@@ -6,7 +6,7 @@ import { Constant2017 } from './Constant2017.js';
 import Statewide from '$lib/db/statewide.js';
 import { getContext } from 'svelte';
 
-export let DEFAULT_FLAG = '2022';
+export let DEFAULT_FLAG = '2027';
 
 export let getConstants = (host) => {
     if (host.includes('2027')) {

@@ -1424,7 +1424,11 @@
         <span>{@html entityMapBlurb}</span>
         {#if $themeStore === 'strategies'}
             <p class="note"
-                >Red triangles indicate capital projects associated with strategy supplies that have been assigned to a Water User Group. <a
+                >Red triangles indicate capital projects associated with strategy supplies that have been assigned to a Water User Group.
+                 Recommended reservoir footprints or representative locations may be hypothetical locations of facilities for regional 
+                 water planning purposes only as it relates to planning-level cost estimates. The locations presented in this site may be
+                 conceptual in nature and may not represent actual locations of facilities. Siting of facilities are subject to studies,
+                 designs, engineering, and/or contract negotiations to be determined by the project's sponsor at a later date.<a
                     id="hp_link"
                     on:click={() => hideshowmarkers()}
                     on:keydown={(key) => {
