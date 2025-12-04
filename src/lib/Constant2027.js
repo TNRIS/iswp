@@ -127,7 +127,7 @@ export class Constant2027 {
         WMS_TYPES: [
             'AGRICULTURAL CONSERVATION',
             'AQUIFER STORAGE AND RECOVERY',
-            'AQUIFER RECHARGE',
+            'AQUIFER RECHARGE (AR)',
             'CONJUNCTIVE USE',
             'DIRECT POTABLE REUSE',
             'DROUGHT MANAGEMENT',
@@ -148,8 +148,8 @@ export class Constant2027 {
                 'Agricultural conservation is primarily irrigation conservation strategies and some livestock conservation based on best management practices. Irrigation conservation strategies include changes to irrigation methods, equipment, and crops. For example, conversion to Low Energy Precision Application systems and irrigation scheduling, as well as other activities associated with irrigation best management practices, can help producers reduce their water use. Like municipal conservation, irrigation conservation strategies tend to be an aggregate of multiple best management practices, any one or several of which could be implemented to achieve the estimated water savings of the strategy.',
             'AQUIFER STORAGE & RECOVERY':
                 'Aquifer storage and recovery water management strategies inject water, when available, into an aquifer where it is stored for later use.',
-            'AQUIFER RECHARGE' :
-                'Water recycling reuse water management strategies involve onsite recycling and reuse of graywater, blackwater, oil and gas produced water, and other mining/industrial onsite recycling.',
+            'AQUIFER RECHARGE (AR)' :
+                'Aquifer recharge water management strategies involve adding water to an aquifer via injection well, infiltration basin, or other means of infiltration to replenish water in an aquifer.',
             'CONJUNCTIVE USE':
                 'Conjunctive use water management strategies combine multiple water sources, usually surface water and groundwater, to optimize the beneficial characteristics of each source, yielding additional firm water supplies.',
             'DIRECT POTABLE REUSE':
@@ -177,7 +177,7 @@ export class Constant2027 {
             'SEAWATER DESALINATION':
                 'Seawater desalination water management strategies involve the process of removing dissolved solids from seawater, often by forcing the source water through membranes under high pressure.',
             'WATER RECYCLING REUSE':
-                'Water Recycling Reuse" is a new WMS type added to the list this planning cycle. We need to add a description to its iSWP application page title text box.'
+                'Water recycling reuse water management strategies involve onsite recycling and reuse of graywater, blackwater, oil and gas produced water, and other mining/industrial onsite recycling.'
         }
     };
 
@@ -441,985 +441,3135 @@ export class Constant2027 {
     ];
 
     sourceNames = [
-        { value: 2, label: "ALAN HENRY LAKE/RESERVOIR" },
-        { value: 3, label: "ALCOA LAKE/RESERVOIR" },
-        { value: 4, label: "ALLENS CREEK LAKE/RESERVOIR" },
-        { value: 6, label: "AMISTAD-FALCON LAKE/RESERVOIR SYSTEM" },
-        { value: 7, label: "AMON G. CARTER LAKE/RESERVOIR" },
-        { value: 9, label: "ATHENS LAKE/RESERVOIR" },
-        { value: 820, label: "ATMOSPHERE" },
-        { value: 885, label: "AUSTIN CHALK AQUIFER | KINNEY" },
-        { value: 886, label: "AUSTIN CHALK AQUIFER | UVALDE" },
-        { value: 1079, label: "AUSTIN OFF-CHANNEL LAKE/RESERVOIR" },
-        { value: 887, label: "BAIRD LAKE/RESERVOIR" },
-        { value: 10, label: "BALLINGER/MOONEN LAKE/RESERVOIR" },
-        { value: 11, label: "BALMORHEA LAKE/RESERVOIR" },
-        { value: 12, label: "BARDWELL LAKE/RESERVOIR" },
-        { value: 14, label: "BELLWOOD LAKE/RESERVOIR" },
-        { value: 15, label: "BIG CREEK LAKE/RESERVOIR" },
-        { value: 16, label: "BIG SANDY CREEK LAKE/RESERVOIR" },
-        { value: 17, label: "BLAINE AQUIFER | CHILDRESS" },
-        { value: 18, label: "BLAINE AQUIFER | COLLINGSWORTH" },
-        { value: 19, label: "BLAINE AQUIFER | COTTLE" },
-        { value: 20, label: "BLAINE AQUIFER | FISHER" },
-        { value: 21, label: "BLAINE AQUIFER | FOARD" },
-        { value: 23, label: "BLAINE AQUIFER | HARDEMAN" },
-        { value: 24, label: "BLAINE AQUIFER | KING" },
-        { value: 25, label: "BLAINE AQUIFER | KNOX" },
-        { value: 26, label: "BLAINE AQUIFER | NOLAN" },
-        { value: 27, label: "BLAINE AQUIFER | STONEWALL" },
-        { value: 32, label: "BLOSSOM AQUIFER | RED RIVER" },
-        { value: 33, label: "BOB SANDLIN LAKE/RESERVOIR" },
-        { value: 34, label: "BOERNE LAKE/RESERVOIR" },
-        { value: 35, label: "BONE SPRING-VICTORIO PEAK AQUIFER | HUDSPETH" },
-        { value: 36, label: "BONHAM LAKE/RESERVOIR" },
-        { value: 1076, label: "BRA SYSTEM OPERATIONS PERMIT SUPPLY" },
-        { value: 37, label: "BRADY CREEK LAKE/RESERVOIR" },
-        { value: 38, label: "BRANDY BRANCH LAKE/RESERVOIR" },
-        { value: 952, label: "BRAZOS INDIRECT REUSE" },
-        { value: 42, label: "BRAZOS RIVER ALLUVIUM AQUIFER | BRAZOS" },
-        { value: 43, label: "BRAZOS RIVER ALLUVIUM AQUIFER | BURLESON" },
-        { value: 44, label: "BRAZOS RIVER ALLUVIUM AQUIFER | FALLS" },
-        { value: 46, label: "BRAZOS RIVER ALLUVIUM AQUIFER | GRIMES" },
-        { value: 47, label: "BRAZOS RIVER ALLUVIUM AQUIFER | HILL" },
-        { value: 48, label: "BRAZOS RIVER ALLUVIUM AQUIFER | MCLENNAN" },
-        { value: 49, label: "BRAZOS RIVER ALLUVIUM AQUIFER | MILAM" },
-        { value: 50, label: "BRAZOS RIVER ALLUVIUM AQUIFER | ROBERTSON" },
-        { value: 51, label: "BRAZOS RIVER ALLUVIUM AQUIFER | WALLER" },
-        { value: 52, label: "BRAZOS RIVER ALLUVIUM AQUIFER | WASHINGTON" },
-        {
-            value: 53,
-            label: "BRAZOS RIVER AUTHORITY AQUILLA LAKE/RESERVOIR SYSTEM"
-        },
-        {
-            value: 54,
-            label: "BRAZOS RIVER AUTHORITY LITTLE RIVER LAKE/RESERVOIR SYSTEM"
-        },
-        {
-            value: 55,
-            label: "BRAZOS RIVER AUTHORITY MAIN STEM LAKE/RESERVOIR SYSTEM"
-        },
-        { value: 655, label: "BRAZOS RUN-OF-RIVER" },
-        { value: 656, label: "BRAZOS-COLORADO RUN-OF-RIVER" },
-        { value: 57, label: "BROWNWOOD LAKE/RESERVOIR" },
-        { value: 59, label: "BRUSHY CREEK LAKE/RESERVOIR" },
-        { value: 889, label: "BUDA LIMESTONE AQUIFER | UVALDE" },
-        { value: 62, label: "CALAVERAS LAKE/RESERVOIR" },
-        { value: 657, label: "CANADIAN RUN-OF-RIVER" },
-        { value: 64, label: "CANYON LAKE/RESERVOIR" },
-        { value: 65, label: "CAPITAN REEF COMPLEX AQUIFER | BREWSTER" },
-        { value: 66, label: "CAPITAN REEF COMPLEX AQUIFER | CULBERSON" },
-        { value: 67, label: "CAPITAN REEF COMPLEX AQUIFER | HUDSPETH" },
-        { value: 68, label: "CAPITAN REEF COMPLEX AQUIFER | PECOS" },
-        { value: 1088, label: "CARRIZO-AQUIFER ASR | BEXAR" },
-        { value: 71, label: "CARRIZO-WILCOX AQUIFER | ANDERSON" },
-        { value: 72, label: "CARRIZO-WILCOX AQUIFER | ANGELINA" },
-        { value: 73, label: "CARRIZO-WILCOX AQUIFER | ATASCOSA" },
-        { value: 74, label: "CARRIZO-WILCOX AQUIFER | BASTROP" },
-        { value: 76, label: "CARRIZO-WILCOX AQUIFER | BEXAR" },
-        { value: 77, label: "CARRIZO-WILCOX AQUIFER | BOWIE" },
-        { value: 78, label: "CARRIZO-WILCOX AQUIFER | BRAZOS" },
-        { value: 79, label: "CARRIZO-WILCOX AQUIFER | BURLESON" },
-        { value: 80, label: "CARRIZO-WILCOX AQUIFER | CALDWELL" },
-        { value: 81, label: "CARRIZO-WILCOX AQUIFER | CAMP" },
-        { value: 82, label: "CARRIZO-WILCOX AQUIFER | CASS" },
-        { value: 83, label: "CARRIZO-WILCOX AQUIFER | CHEROKEE" },
-        { value: 84, label: "CARRIZO-WILCOX AQUIFER | DIMMIT" },
-        { value: 85, label: "CARRIZO-WILCOX AQUIFER | FALLS" },
-        { value: 86, label: "CARRIZO-WILCOX AQUIFER | FAYETTE" },
-        { value: 87, label: "CARRIZO-WILCOX AQUIFER | FRANKLIN" },
-        { value: 88, label: "CARRIZO-WILCOX AQUIFER | FREESTONE" },
-        { value: 89, label: "CARRIZO-WILCOX AQUIFER | FRIO" },
-        { value: 90, label: "CARRIZO-WILCOX AQUIFER | GONZALES" },
-        { value: 91, label: "CARRIZO-WILCOX AQUIFER | GREGG" },
-        { value: 92, label: "CARRIZO-WILCOX AQUIFER | GRIMES" },
-        { value: 93, label: "CARRIZO-WILCOX AQUIFER | GUADALUPE" },
-        { value: 94, label: "CARRIZO-WILCOX AQUIFER | HARRISON" },
-        { value: 95, label: "CARRIZO-WILCOX AQUIFER | HENDERSON" },
-        { value: 96, label: "CARRIZO-WILCOX AQUIFER | HOPKINS" },
-        { value: 97, label: "CARRIZO-WILCOX AQUIFER | HOUSTON" },
-        { value: 99, label: "CARRIZO-WILCOX AQUIFER | KARNES" },
-        { value: 100, label: "CARRIZO-WILCOX AQUIFER | LA SALLE" },
-        { value: 101, label: "CARRIZO-WILCOX AQUIFER | LEE" },
-        { value: 102, label: "CARRIZO-WILCOX AQUIFER | LEON" },
-        { value: 103, label: "CARRIZO-WILCOX AQUIFER | LIMESTONE" },
-        { value: 106, label: "CARRIZO-WILCOX AQUIFER | MARION" },
-        { value: 107, label: "CARRIZO-WILCOX AQUIFER | MAVERICK" },
-        { value: 108, label: "CARRIZO-WILCOX AQUIFER | MCMULLEN" },
-        { value: 109, label: "CARRIZO-WILCOX AQUIFER | MEDINA" },
-        { value: 110, label: "CARRIZO-WILCOX AQUIFER | MILAM" },
-        { value: 111, label: "CARRIZO-WILCOX AQUIFER | MORRIS" },
-        { value: 112, label: "CARRIZO-WILCOX AQUIFER | NACOGDOCHES" },
-        { value: 113, label: "CARRIZO-WILCOX AQUIFER | NAVARRO" },
-        { value: 114, label: "CARRIZO-WILCOX AQUIFER | PANOLA" },
-        { value: 115, label: "CARRIZO-WILCOX AQUIFER | RAINS" },
-        { value: 117, label: "CARRIZO-WILCOX AQUIFER | ROBERTSON" },
-        { value: 118, label: "CARRIZO-WILCOX AQUIFER | RUSK" },
-        { value: 119, label: "CARRIZO-WILCOX AQUIFER | SABINE" },
-        { value: 120, label: "CARRIZO-WILCOX AQUIFER | SAN AUGUSTINE" },
-        { value: 121, label: "CARRIZO-WILCOX AQUIFER | SHELBY" },
-        { value: 122, label: "CARRIZO-WILCOX AQUIFER | SMITH" },
-        { value: 123, label: "CARRIZO-WILCOX AQUIFER | TITUS" },
-        { value: 125, label: "CARRIZO-WILCOX AQUIFER | UPSHUR" },
-        { value: 127, label: "CARRIZO-WILCOX AQUIFER | VAN ZANDT" },
-        { value: 129, label: "CARRIZO-WILCOX AQUIFER | WEBB" },
-        { value: 891, label: "CARRIZO-WILCOX AQUIFER | WILLIAMSON" },
-        { value: 130, label: "CARRIZO-WILCOX AQUIFER | WILSON" },
-        { value: 131, label: "CARRIZO-WILCOX AQUIFER | WOOD" },
-        { value: 132, label: "CARRIZO-WILCOX AQUIFER | ZAVALA" },
-        { value: 892, label: "CARRIZO-WILCOX AQUIFER ASR | BASTROP" },
-        { value: 1066, label: "CARRIZO-WILCOX AQUIFER ASR | GONZALES" },
-        { value: 137, label: "CEDAR RIDGE LAKE/RESERVOIR" },
-        { value: 147, label: "CENTER LAKE/RESERVOIR" },
-        {
-            value: 148,
-            label: "CHAPMAN/COOPER LAKE/RESERVOIR NON-SYSTEM PORTION"
-        },
-        { value: 150, label: "CHEROKEE LAKE/RESERVOIR" },
-        { value: 151, label: "CISCO LAKE/RESERVOIR" },
-        { value: 895, label: "CLIFTON LAKE/RESERVOIR" },
-        { value: 155, label: "COLEMAN LAKE/RESERVOIR" },
-        { value: 156, label: "COLETO CREEK LAKE/RESERVOIR" },
-        { value: 157, label: "COLORADO CITY-CHAMPION LAKE/RESERVOIR SYSTEM" },
-        { value: 381, label: "COLORADO INDIRECT REUSE" },
-        { value: 1222, label: "COLORADO RIVER ALLUVIUM AQUIFER | TRAVIS" },
-        { value: 158, label: "COLORADO RIVER MWD LAKE/RESERVOIR SYSTEM" },
-        { value: 658, label: "COLORADO RUN-OF-RIVER" },
-        { value: 159, label: "COLUMBIA LAKE/RESERVOIR" },
-        { value: 160, label: "CONROE LAKE/RESERVOIR" },
-        {
-            value: 163,
-            label: "CORPUS CHRISTI-CHOKE CANYON LAKE/RESERVOIR SYSTEM"
-        },
-        {
-            value: 652,
-            label: "CORSICANA RICHLAND CHAMBERS-HALBERT LAKE/RESERVOIR SYSTEM"
-        },
-        { value: 164, label: "CORYELL COUNTY OFF-CHANNEL LAKE/RESERVOIR" },
-        { value: 896, label: "CRAWFORD LAKE/RESERVOIR" },
-        { value: 165, label: "CROOK LAKE/RESERVOIR" },
-        { value: 1090, label: "CROSS TIMBERS AQUIFER | ARCHER" },
-        { value: 1091, label: "CROSS TIMBERS AQUIFER | BAYLOR" },
-        { value: 1070, label: "CROSS TIMBERS AQUIFER | BROWN" },
-        { value: 1092, label: "CROSS TIMBERS AQUIFER | CLAY" },
-        { value: 1093, label: "CROSS TIMBERS AQUIFER | COLEMAN" },
-        { value: 1071, label: "CROSS TIMBERS AQUIFER | JACK" },
-        { value: 1095, label: "CROSS TIMBERS AQUIFER | MONTAGUE" },
-        { value: 1072, label: "CROSS TIMBERS AQUIFER | PARKER" },
-        { value: 1096, label: "CROSS TIMBERS AQUIFER | SHACKELFORD" },
-        { value: 1097, label: "CROSS TIMBERS AQUIFER | STEPHENS" },
-        { value: 1073, label: "CROSS TIMBERS AQUIFER | THROCKMORTON" },
-        { value: 1098, label: "CROSS TIMBERS AQUIFER | WICHITA" },
-        { value: 1074, label: "CROSS TIMBERS AQUIFER | YOUNG" },
-        { value: 660, label: "CYPRESS RUN-OF-RIVER" },
-        { value: 166, label: "CYPRESS SPRINGS LAKE/RESERVOIR" },
-        { value: 167, label: "DANIEL LAKE/RESERVOIR" },
-        {
-            value: 168,
-            label: "DANSBY POWER PLANT/BRYAN UTILITIES LAKE/RESERVOIR"
-        },
-        { value: 169, label: "DIRECT REUSE" },
-        { value: 170, label: "DOCKUM AQUIFER | ANDREWS" },
-        { value: 171, label: "DOCKUM AQUIFER | ARMSTRONG" },
-        { value: 172, label: "DOCKUM AQUIFER | BORDEN" },
-        { value: 174, label: "DOCKUM AQUIFER | CARSON" },
-        { value: 900, label: "DOCKUM AQUIFER | CASTRO" },
-        { value: 176, label: "DOCKUM AQUIFER | CRANE" },
-        { value: 903, label: "DOCKUM AQUIFER | CROSBY" },
-        { value: 177, label: "DOCKUM AQUIFER | DALLAM" },
-        { value: 178, label: "DOCKUM AQUIFER | DEAF SMITH" },
-        { value: 905, label: "DOCKUM AQUIFER | DICKENS" },
-        { value: 179, label: "DOCKUM AQUIFER | ECTOR" },
-        { value: 180, label: "DOCKUM AQUIFER | FISHER" },
-        { value: 906, label: "DOCKUM AQUIFER | FLOYD" },
-        { value: 181, label: "DOCKUM AQUIFER | GARZA" },
-        { value: 908, label: "DOCKUM AQUIFER | HALE" },
-        { value: 183, label: "DOCKUM AQUIFER | HARTLEY" },
-        { value: 909, label: "DOCKUM AQUIFER | HOCKLEY" },
-        { value: 184, label: "DOCKUM AQUIFER | HOWARD" },
-        { value: 910, label: "DOCKUM AQUIFER | IRION" },
-        { value: 185, label: "DOCKUM AQUIFER | KENT" },
-        { value: 186, label: "DOCKUM AQUIFER | LOVING" },
-        { value: 188, label: "DOCKUM AQUIFER | MITCHELL" },
-        { value: 189, label: "DOCKUM AQUIFER | MOORE" },
-        { value: 915, label: "DOCKUM AQUIFER | MOTLEY" },
-        { value: 190, label: "DOCKUM AQUIFER | NOLAN" },
-        { value: 191, label: "DOCKUM AQUIFER | OLDHAM" },
-        { value: 916, label: "DOCKUM AQUIFER | PARMER" },
-        { value: 193, label: "DOCKUM AQUIFER | POTTER" },
-        { value: 194, label: "DOCKUM AQUIFER | RANDALL" },
-        { value: 195, label: "DOCKUM AQUIFER | REAGAN" },
-        { value: 196, label: "DOCKUM AQUIFER | REEVES" },
-        { value: 197, label: "DOCKUM AQUIFER | SCURRY" },
-        { value: 198, label: "DOCKUM AQUIFER | SHERMAN" },
-        { value: 199, label: "DOCKUM AQUIFER | SWISHER" },
-        { value: 201, label: "DOCKUM AQUIFER | UPTON" },
-        { value: 202, label: "DOCKUM AQUIFER | WARD" },
-        { value: 203, label: "DOCKUM AQUIFER | WINKLER" },
-        { value: 1127, label: "DOW HARRIS RESERVOIR EXPANSION" },
-        { value: 919, label: "EASTLAND LAKE/RESERVOIR" },
-        { value: 206, label: "EDGEWOOD CITY LAKE/RESERVOIR" },
-        { value: 207, label: "EDWARDS-BFZ AQUIFER | ATASCOSA" },
-        { value: 208, label: "EDWARDS-BFZ AQUIFER | BELL" },
-        { value: 209, label: "EDWARDS-BFZ AQUIFER | BEXAR" },
-        { value: 923, label: "EDWARDS-BFZ AQUIFER | CALDWELL" },
-        { value: 210, label: "EDWARDS-BFZ AQUIFER | COMAL" },
-        { value: 211, label: "EDWARDS-BFZ AQUIFER | GUADALUPE" },
-        { value: 212, label: "EDWARDS-BFZ AQUIFER | HAYS" },
-        { value: 213, label: "EDWARDS-BFZ AQUIFER | KINNEY" },
-        { value: 214, label: "EDWARDS-BFZ AQUIFER | MEDINA" },
-        { value: 215, label: "EDWARDS-BFZ AQUIFER | TRAVIS" },
-        { value: 216, label: "EDWARDS-BFZ AQUIFER | UVALDE" },
-        { value: 217, label: "EDWARDS-BFZ AQUIFER | WILLIAMSON" },
-        {
-            value: 999,
-            label: "EDWARDS-TRINITY-PLATEAU AND PECOS VALLEY AQUIFERS | CRANE"
-        },
-        {
-            value: 235,
-            label: "EDWARDS-TRINITY-PLATEAU AND PECOS VALLEY AQUIFERS | JEFF DAVIS"
-        },
-        {
-            value: 141,
-            label: "EDWARDS-TRINITY-PLATEAU AND PECOS VALLEY AQUIFERS | LOVING"
-        },
-        {
-            value: 1000,
-            label: "EDWARDS-TRINITY-PLATEAU AND PECOS VALLEY AQUIFERS | PECOS"
-        },
-        {
-            value: 1001,
-            label: "EDWARDS-TRINITY-PLATEAU AND PECOS VALLEY AQUIFERS | REEVES"
-        },
-        {
-            value: 145,
-            label: "EDWARDS-TRINITY-PLATEAU AND PECOS VALLEY AQUIFERS | WARD"
-        },
-        {
-            value: 1002,
-            label: "EDWARDS-TRINITY-PLATEAU AND PECOS VALLEY AQUIFERS | WINKLER"
-        },
-        { value: 220, label: "EDWARDS-TRINITY-PLATEAU AQUIFER | ANDREWS" },
-        { value: 221, label: "EDWARDS-TRINITY-PLATEAU AQUIFER | BANDERA" },
-        { value: 223, label: "EDWARDS-TRINITY-PLATEAU AQUIFER | BREWSTER" },
-        { value: 228, label: "EDWARDS-TRINITY-PLATEAU AQUIFER | CULBERSON" },
-        { value: 233, label: "EDWARDS-TRINITY-PLATEAU AQUIFER | HOWARD" },
-        { value: 236, label: "EDWARDS-TRINITY-PLATEAU AQUIFER | KENDALL" },
-        { value: 237, label: "EDWARDS-TRINITY-PLATEAU AQUIFER | KERR" },
-        {
-            value: 224,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | COKE"
-        },
-        {
-            value: 225,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | CONCHO"
-        },
-        {
-            value: 227,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | CROCKETT"
-        },
-        {
-            value: 229,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | ECTOR"
-        },
-        {
-            value: 230,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | EDWARDS"
-        },
-        {
-            value: 231,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | GILLESPIE"
-        },
-        {
-            value: 232,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | GLASSCOCK"
-        },
-        {
-            value: 234,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | IRION"
-        },
-        {
-            value: 238,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | KIMBLE"
-        },
-        {
-            value: 239,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | KINNEY"
-        },
-        {
-            value: 242,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | MCCULLOCH"
-        },
-        {
-            value: 243,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | MENARD"
-        },
-        {
-            value: 244,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | MIDLAND"
-        },
-        {
-            value: 245,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | NOLAN"
-        },
-        {
-            value: 246,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | PECOS"
-        },
-        {
-            value: 247,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | REAGAN"
-        },
-        {
-            value: 248,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | REAL"
-        },
-        {
-            value: 250,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | SCHLEICHER"
-        },
-        {
-            value: 251,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | STERLING"
-        },
-        {
-            value: 252,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | SUTTON"
-        },
-        {
-            value: 253,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | TAYLOR"
-        },
-        {
-            value: 254,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | TERRELL"
-        },
-        {
-            value: 255,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | TOM GREEN"
-        },
-        {
-            value: 256,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | UPTON"
-        },
-        {
-            value: 257,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | UVALDE"
-        },
-        {
-            value: 258,
-            label: "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | VAL VERDE"
-        },
-        { value: 261, label: "ELLENBURGER-SAN SABA AQUIFER | BLANCO" },
-        { value: 262, label: "ELLENBURGER-SAN SABA AQUIFER | BURNET" },
-        { value: 263, label: "ELLENBURGER-SAN SABA AQUIFER | GILLESPIE" },
-        { value: 937, label: "ELLENBURGER-SAN SABA AQUIFER | KERR" },
-        { value: 264, label: "ELLENBURGER-SAN SABA AQUIFER | KIMBLE" },
-        { value: 265, label: "ELLENBURGER-SAN SABA AQUIFER | LAMPASAS" },
-        { value: 266, label: "ELLENBURGER-SAN SABA AQUIFER | LLANO" },
-        { value: 267, label: "ELLENBURGER-SAN SABA AQUIFER | MASON" },
-        { value: 268, label: "ELLENBURGER-SAN SABA AQUIFER | MCCULLOCH" },
-        { value: 269, label: "ELLENBURGER-SAN SABA AQUIFER | MENARD" },
-        { value: 270, label: "ELLENBURGER-SAN SABA AQUIFER | MILLS" },
-        { value: 271, label: "ELLENBURGER-SAN SABA AQUIFER | SAN SABA" },
-        { value: 273, label: "ELLISON CREEK LAKE/RESERVOIR" },
-        { value: 275, label: "FAIRFIELD LAKE/RESERVOIR" },
-        { value: 276, label: "FARMERS CREEK/NOCONA LAKE/RESERVOIR" },
-        { value: 279, label: "FORK LAKE/RESERVOIR" },
-        { value: 281, label: "FORT PHANTOM HILL LAKE/RESERVOIR" },
-        { value: 1069, label: "FRIO RIVER ALLUVIUM AQUIFER | REAL" },
-        { value: 879, label: "GBRA LOWER BASIN OFF-CHANNEL LAKE/RESERVOIR" },
-        { value: 285, label: "GIBBONS CREEK LAKE/RESERVOIR" },
-        { value: 288, label: "GLADEWATER LAKE/RESERVOIR" },
-        { value: 940, label: "GORDON LAKE/RESERVOIR" },
-        { value: 290, label: "GRAHAM/EDDLEMAN LAKE/RESERVOIR" },
-        { value: 292, label: "GRAPEVINE LAKE/RESERVOIR NON-SYSTEM PORTION" },
-        { value: 293, label: "GREENBELT LAKE/RESERVOIR" },
-        { value: 294, label: "GREENVILLE CITY LAKE/RESERVOIR" },
-        { value: 295, label: "GROESBECK OFF-CHANNEL LAKE/RESERVOIR" },
-        { value: 942, label: "GUADALUPE RIVER OFF-CHANNEL LAKE/RESERVOIR" },
-        { value: 661, label: "GUADALUPE RUN-OF-RIVER" },
-        { value: 944, label: "GULF COAST AQUIFER ASR | VICTORIA" },
-        { value: 296, label: "GULF COAST AQUIFER SYSTEM | ARANSAS" },
-        { value: 297, label: "GULF COAST AQUIFER SYSTEM | AUSTIN" },
-        { value: 298, label: "GULF COAST AQUIFER SYSTEM | BEE" },
-        { value: 299, label: "GULF COAST AQUIFER SYSTEM | BRAZORIA" },
-        { value: 301, label: "GULF COAST AQUIFER SYSTEM | BROOKS" },
-        { value: 302, label: "GULF COAST AQUIFER SYSTEM | CALHOUN" },
-        { value: 303, label: "GULF COAST AQUIFER SYSTEM | CAMERON" },
-        { value: 304, label: "GULF COAST AQUIFER SYSTEM | CHAMBERS" },
-        { value: 305, label: "GULF COAST AQUIFER SYSTEM | COLORADO" },
-        { value: 306, label: "GULF COAST AQUIFER SYSTEM | DEWITT" },
-        { value: 307, label: "GULF COAST AQUIFER SYSTEM | DUVAL" },
-        { value: 308, label: "GULF COAST AQUIFER SYSTEM | FAYETTE" },
-        { value: 309, label: "GULF COAST AQUIFER SYSTEM | FORT BEND" },
-        { value: 310, label: "GULF COAST AQUIFER SYSTEM | GALVESTON" },
-        { value: 311, label: "GULF COAST AQUIFER SYSTEM | GOLIAD" },
-        { value: 313, label: "GULF COAST AQUIFER SYSTEM | GRIMES" },
-        { value: 314, label: "GULF COAST AQUIFER SYSTEM | HARDIN" },
-        { value: 315, label: "GULF COAST AQUIFER SYSTEM | HARRIS" },
-        { value: 316, label: "GULF COAST AQUIFER SYSTEM | HIDALGO" },
-        { value: 317, label: "GULF COAST AQUIFER SYSTEM | JACKSON" },
-        { value: 318, label: "GULF COAST AQUIFER SYSTEM | JASPER" },
-        { value: 319, label: "GULF COAST AQUIFER SYSTEM | JEFFERSON" },
-        { value: 320, label: "GULF COAST AQUIFER SYSTEM | JIM HOGG" },
-        { value: 321, label: "GULF COAST AQUIFER SYSTEM | JIM WELLS" },
-        { value: 322, label: "GULF COAST AQUIFER SYSTEM | KARNES" },
-        { value: 323, label: "GULF COAST AQUIFER SYSTEM | KENEDY" },
-        { value: 324, label: "GULF COAST AQUIFER SYSTEM | KLEBERG" },
-        { value: 325, label: "GULF COAST AQUIFER SYSTEM | LAVACA" },
-        { value: 326, label: "GULF COAST AQUIFER SYSTEM | LIBERTY" },
-        { value: 327, label: "GULF COAST AQUIFER SYSTEM | LIVE OAK" },
-        { value: 328, label: "GULF COAST AQUIFER SYSTEM | MATAGORDA" },
-        { value: 329, label: "GULF COAST AQUIFER SYSTEM | MCMULLEN" },
-        { value: 330, label: "GULF COAST AQUIFER SYSTEM | MONTGOMERY" },
-        { value: 331, label: "GULF COAST AQUIFER SYSTEM | NEWTON" },
-        { value: 332, label: "GULF COAST AQUIFER SYSTEM | NUECES" },
-        { value: 333, label: "GULF COAST AQUIFER SYSTEM | ORANGE" },
-        { value: 334, label: "GULF COAST AQUIFER SYSTEM | POLK" },
-        { value: 335, label: "GULF COAST AQUIFER SYSTEM | REFUGIO" },
-        { value: 337, label: "GULF COAST AQUIFER SYSTEM | SAN JACINTO" },
-        { value: 338, label: "GULF COAST AQUIFER SYSTEM | SAN PATRICIO" },
-        { value: 339, label: "GULF COAST AQUIFER SYSTEM | STARR" },
-        { value: 1104, label: "GULF COAST AQUIFER SYSTEM | TRINITY" },
-        { value: 341, label: "GULF COAST AQUIFER SYSTEM | TYLER" },
-        { value: 342, label: "GULF COAST AQUIFER SYSTEM | VICTORIA" },
-        { value: 343, label: "GULF COAST AQUIFER SYSTEM | WALKER" },
-        { value: 344, label: "GULF COAST AQUIFER SYSTEM | WALLER" },
-        { value: 345, label: "GULF COAST AQUIFER SYSTEM | WASHINGTON" },
-        { value: 346, label: "GULF COAST AQUIFER SYSTEM | WEBB" },
-        { value: 347, label: "GULF COAST AQUIFER SYSTEM | WHARTON" },
-        { value: 348, label: "GULF COAST AQUIFER SYSTEM | WILLACY" },
-        {
-            value: 1105,
-            label: "GULF COAST AQUIFER SYSTEM ASR (CORPUS CHRISTI) | NUECES"
-        },
-        { value: 355, label: "GULF OF MEXICO" },
-        { value: 358, label: "HICKORY AQUIFER | BLANCO" },
-        { value: 359, label: "HICKORY AQUIFER | BURNET" },
-        { value: 360, label: "HICKORY AQUIFER | CONCHO" },
-        { value: 361, label: "HICKORY AQUIFER | GILLESPIE" },
-        { value: 947, label: "HICKORY AQUIFER | KIMBLE" },
-        { value: 362, label: "HICKORY AQUIFER | LLANO" },
-        { value: 363, label: "HICKORY AQUIFER | MASON" },
-        { value: 364, label: "HICKORY AQUIFER | MCCULLOCH" },
-        { value: 365, label: "HICKORY AQUIFER | MENARD" },
-        { value: 367, label: "HICKORY AQUIFER | SAN SABA" },
-        { value: 368, label: "HIGHLAND LAKES LAKE/RESERVOIR SYSTEM" },
-        { value: 370, label: "HORDS CREEK LAKE/RESERVOIR" },
-        { value: 371, label: "HOUSTON COUNTY LAKE/RESERVOIR" },
-        { value: 372, label: "HOUSTON LAKE/RESERVOIR" },
-        { value: 373, label: "HUBBARD CREEK LAKE/RESERVOIR" },
-        { value: 374, label: "HUBERT H MOSS LAKE/RESERVOIR" },
-        { value: 375, label: "HUECO-MESILLA BOLSON AQUIFER | EL PASO" },
-        { value: 376, label: "HUECO-MESILLA BOLSON AQUIFER | HUDSPETH" },
-        { value: 951, label: "HUECO-MESILLA BOLSON AQUIFER ASR | EL PASO" },
-        { value: 377, label: "IGNEOUS AQUIFER | BREWSTER" },
-        { value: 378, label: "IGNEOUS AQUIFER | CULBERSON" },
-        { value: 379, label: "IGNEOUS AQUIFER | JEFF DAVIS" },
-        { value: 380, label: "IGNEOUS AQUIFER | PRESIDIO" },
-        { value: 1107, label: "IGNEOUS AQUIFER | REEVES" },
-        { value: 391, label: "JACKSONVILLE LAKE/RESERVOIR" },
-        { value: 392, label: "JOE POOL LAKE/RESERVOIR" },
-        { value: 393, label: "JOHNSON CREEK LAKE/RESERVOIR" },
-        { value: 394, label: "KEMP-DIVERSION LAKE/RESERVOIR SYSTEM" },
-        { value: 397, label: "KURTH LAKE/RESERVOIR" },
-        { value: 398, label: "LAKE 7 (JIM BERTRAM LAKE/RESERVOIR SYSTEM)" },
-        { value: 399, label: "LAKE CREEK LAKE/RESERVOIR" },
-        { value: 401, label: "LANGFORD LAKE/RESERVOIR" },
-        { value: 402, label: "LAVACA RIVER OFF-CHANNEL LAKE/RESERVOIR" },
-        { value: 956, label: "LCRA NEW OFF-CHANNEL RESERVOIR (2030 DECADE)" },
-        { value: 404, label: "LEON LAKE/RESERVOIR" },
-        { value: 958, label: "LEONA GRAVEL AQUIFER | MEDINA" },
-        { value: 959, label: "LEONA GRAVEL AQUIFER | UVALDE" },
-        { value: 405, label: "LEWISVILLE LAKE/RESERVOIR NON-SYSTEM PORTION" },
-        { value: 406, label: "LIPAN AQUIFER | CONCHO" },
-        { value: 961, label: "LIPAN AQUIFER | IRION" },
-        { value: 407, label: "LIPAN AQUIFER | RUNNELS" },
-        { value: 408, label: "LIPAN AQUIFER | TOM GREEN" },
-        { value: 830, label: "LITTLE WICHITA RIVER LAKE/RESERVOIR SYSTEM" },
-        { value: 410, label: "LIVINGSTON-WALLISVILLE LAKE/RESERVOIR SYSTEM" },
-        { value: 412, label: "LOCAL SURFACE WATER SUPPLY" },
-        { value: 413, label: "LOMA LAKE/RESERVOIR" },
-        { value: 414, label: "LOST CREEK-JACKSBORO LAKE/RESERVOIR SYSTEM" },
-        { value: 963, label: "LYTLE LAKE/RESERVOIR" },
-        { value: 416, label: "MACKENZIE LAKE/RESERVOIR" },
-        { value: 417, label: "MARATHON AQUIFER | BREWSTER" },
-        { value: 419, label: "MARBLE FALLS AQUIFER | BURNET" },
-        { value: 964, label: "MARBLE FALLS AQUIFER | KIMBLE" },
-        { value: 420, label: "MARBLE FALLS AQUIFER | LAMPASAS" },
-        { value: 422, label: "MARBLE FALLS AQUIFER | MCCULLOCH" },
-        { value: 423, label: "MARBLE FALLS AQUIFER | SAN SABA" },
-        { value: 424, label: "MARTIN LAKE/RESERVOIR" },
-        { value: 425, label: "MARVIN NICHOLS LAKE/RESERVOIR" },
-        { value: 965, label: "MCCARTY LAKE/RESERVOIR" },
-        { value: 427, label: "MEREDITH LAKE/RESERVOIR" },
-        { value: 428, label: "MEXIA LAKE/RESERVOIR" },
-        { value: 429, label: "MILL CREEK LAKE/RESERVOIR" },
-        { value: 430, label: "MILLERS CREEK LAKE/RESERVOIR" },
-        { value: 433, label: "MONTICELLO LAKE/RESERVOIR" },
-        { value: 434, label: "MOUNTAIN CREEK LAKE/RESERVOIR | COLORADO" },
-        { value: 435, label: "MOUNTAIN CREEK LAKE/RESERVOIR | TRINITY" },
-        { value: 436, label: "MUENSTER LAKE/RESERVOIR" },
-        { value: 437, label: "MURVAUL LAKE/RESERVOIR" },
-        { value: 438, label: "NACATOCH AQUIFER | BOWIE" },
-        { value: 439, label: "NACATOCH AQUIFER | DELTA" },
-        { value: 442, label: "NACATOCH AQUIFER | HOPKINS" },
-        { value: 443, label: "NACATOCH AQUIFER | HUNT" },
-        { value: 444, label: "NACATOCH AQUIFER | KAUFMAN" },
-        { value: 446, label: "NACATOCH AQUIFER | NAVARRO" },
-        { value: 448, label: "NACATOCH AQUIFER | RED RIVER" },
-        { value: 451, label: "NACOGDOCHES LAKE/RESERVOIR" },
-        { value: 453, label: "NAVARRO MILLS LAKE/RESERVOIR" },
-        { value: 969, label: "NAVASOTA RIVER ALLUVIUM AQUIFER | GRIMES" },
-        { value: 1138, label: "NCTMWA LAKE CREEK LAKE/RESERVOIR" },
-        { value: 382, label: "NECHES INDIRECT REUSE" },
-        { value: 663, label: "NECHES RUN-OF-RIVER" },
-        { value: 664, label: "NECHES-TRINITY RUN-OF-RIVER" },
-        { value: 1175, label: "NEW LAKE MART LAKE/RESERVOIR" },
-        { value: 1139, label: "NEW MARLIN CITY LAKE/RESERVOIR" },
-        { value: 1137, label: "NEW THROCKMORTON LAKE/RESERVOIR" },
-        { value: 1068, label: "NORTH TEXAS MWD LAKE/RESERVOIR SYSTEM" },
-        { value: 1129, label: "NUECES LOCAL BALANCING RESERVOIR" },
-        { value: 970, label: "NUECES RIVER ALLUVIUM AQUIFER | EDWARDS" },
-        { value: 971, label: "NUECES RIVER ALLUVIUM AQUIFER | REAL" },
-        { value: 665, label: "NUECES RUN-OF-RIVER" },
-        { value: 1064, label: "NUECES-RIO GRANDE INDIRECT REUSE" },
-        { value: 666, label: "NUECES-RIO GRANDE RUN-OF-RIVER" },
-        {
-            value: 1124,
-            label: "NUECES-RIO GRANDE RUN-OF-RIVER STORAGE (BANCO MORALES)"
-        },
-        { value: 457, label: "O' THE PINES LAKE/RESERVOIR" },
-        { value: 458, label: "OAK CREEK LAKE/RESERVOIR" },
-        {
-            value: 460,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | ANDREWS"
-        },
-        {
-            value: 462,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | BAILEY"
-        },
-        {
-            value: 463,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | BORDEN"
-        },
-        {
-            value: 464,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | BRISCOE"
-        },
-        {
-            value: 466,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | CASTRO"
-        },
-        {
-            value: 467,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | COCHRAN"
-        },
-        {
-            value: 469,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | CROSBY"
-        },
-        {
-            value: 471,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | DAWSON"
-        },
-        {
-            value: 472,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | DEAF SMITH"
-        },
-        {
-            value: 476,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | FLOYD"
-        },
-        {
-            value: 477,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | GAINES"
-        },
-        {
-            value: 478,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | GARZA"
-        },
-        {
-            value: 481,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | HALE"
-        },
-        {
-            value: 485,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | HOCKLEY"
-        },
-        {
-            value: 486,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | HOWARD"
-        },
-        {
-            value: 488,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | LAMB"
-        },
-        {
-            value: 490,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | LUBBOCK"
-        },
-        {
-            value: 491,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | LYNN"
-        },
-        {
-            value: 492,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | MARTIN"
-        },
-        {
-            value: 498,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | PARMER"
-        },
-        {
-            value: 503,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | SWISHER"
-        },
-        {
-            value: 504,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | TERRY"
-        },
-        {
-            value: 506,
-            label: "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | YOAKUM"
-        },
-        { value: 980, label: "OGALLALA AND RITA BLANCA AQUIFERS | DALLAM" },
-        { value: 981, label: "OGALLALA AND RITA BLANCA AQUIFERS | HARTLEY" },
-        { value: 461, label: "OGALLALA AQUIFER | ARMSTRONG" },
-        { value: 465, label: "OGALLALA AQUIFER | CARSON" },
-        { value: 473, label: "OGALLALA AQUIFER | DICKENS" },
-        { value: 474, label: "OGALLALA AQUIFER | DONLEY" },
-        { value: 475, label: "OGALLALA AQUIFER | ECTOR" },
-        { value: 479, label: "OGALLALA AQUIFER | GLASSCOCK" },
-        { value: 480, label: "OGALLALA AQUIFER | GRAY" },
-        { value: 482, label: "OGALLALA AQUIFER | HANSFORD" },
-        { value: 484, label: "OGALLALA AQUIFER | HEMPHILL" },
-        { value: 487, label: "OGALLALA AQUIFER | HUTCHINSON" },
-        { value: 489, label: "OGALLALA AQUIFER | LIPSCOMB" },
-        { value: 493, label: "OGALLALA AQUIFER | MIDLAND" },
-        { value: 494, label: "OGALLALA AQUIFER | MOORE" },
-        { value: 495, label: "OGALLALA AQUIFER | MOTLEY" },
-        { value: 496, label: "OGALLALA AQUIFER | OCHILTREE" },
-        { value: 497, label: "OGALLALA AQUIFER | OLDHAM" },
-        { value: 499, label: "OGALLALA AQUIFER | POTTER" },
-        { value: 500, label: "OGALLALA AQUIFER | RANDALL" },
-        { value: 501, label: "OGALLALA AQUIFER | ROBERTS" },
-        { value: 502, label: "OGALLALA AQUIFER | SHERMAN" },
-        { value: 505, label: "OGALLALA AQUIFER | WHEELER" },
-        { value: 1112, label: "OGALLALA AQUIFER ASR | GRAY" },
-        { value: 977, label: "OGALLALA AQUIFER ASR | LUBBOCK" },
-        { value: 1113, label: "OGALLALA AQUIFER ASR | RANDALL" },
-        { value: 507, label: "OH IVIE LAKE/RESERVOIR NON-SYSTEM PORTION" },
-        { value: 509, label: "OLNEY-COOPER LAKE/RESERVOIR SYSTEM" },
-        { value: 510, label: "OTHER AQUIFER | ANDERSON" },
-        { value: 511, label: "OTHER AQUIFER | ANGELINA" },
-        { value: 513, label: "OTHER AQUIFER | ARMSTRONG" },
-        { value: 514, label: "OTHER AQUIFER | BASTROP" },
-        { value: 515, label: "OTHER AQUIFER | BORDEN" },
-        { value: 518, label: "OTHER AQUIFER | BREWSTER" },
-        { value: 519, label: "OTHER AQUIFER | BRISCOE" },
-        { value: 521, label: "OTHER AQUIFER | BURNET" },
-        { value: 984, label: "OTHER AQUIFER | CHEROKEE" },
-        { value: 522, label: "OTHER AQUIFER | CHILDRESS" },
-        { value: 524, label: "OTHER AQUIFER | COKE" },
-        { value: 525, label: "OTHER AQUIFER | COLEMAN" },
-        { value: 527, label: "OTHER AQUIFER | COLLINGSWORTH" },
-        { value: 529, label: "OTHER AQUIFER | CONCHO" },
-        { value: 531, label: "OTHER AQUIFER | COTTLE" },
-        { value: 985, label: "OTHER AQUIFER | CROSBY" },
-        { value: 535, label: "OTHER AQUIFER | DICKENS" },
-        { value: 536, label: "OTHER AQUIFER | DONLEY" },
-        { value: 538, label: "OTHER AQUIFER | EL PASO" },
-        { value: 540, label: "OTHER AQUIFER | FANNIN" },
-        { value: 541, label: "OTHER AQUIFER | FAYETTE" },
-        { value: 986, label: "OTHER AQUIFER | FLOYD" },
-        { value: 987, label: "OTHER AQUIFER | FOARD" },
-        { value: 988, label: "OTHER AQUIFER | GARZA" },
-        { value: 544, label: "OTHER AQUIFER | HALL" },
-        { value: 990, label: "OTHER AQUIFER | HARDEMAN" },
-        { value: 545, label: "OTHER AQUIFER | HENDERSON" },
-        { value: 548, label: "OTHER AQUIFER | HOUSTON" },
-        { value: 549, label: "OTHER AQUIFER | HUDSPETH" },
-        { value: 555, label: "OTHER AQUIFER | KING" },
-        { value: 557, label: "OTHER AQUIFER | LLANO" },
-        { value: 1114, label: "OTHER AQUIFER | MASON" },
-        { value: 560, label: "OTHER AQUIFER | MCCULLOCH" },
-        { value: 562, label: "OTHER AQUIFER | MITCHELL" },
-        { value: 564, label: "OTHER AQUIFER | MOTLEY" },
-        { value: 565, label: "OTHER AQUIFER | NACOGDOCHES" },
-        { value: 1115, label: "OTHER AQUIFER | NAVARRO" },
-        { value: 569, label: "OTHER AQUIFER | PECOS" },
-        { value: 575, label: "OTHER AQUIFER | RUNNELS" },
-        { value: 991, label: "OTHER AQUIFER | RUSK" },
-        { value: 576, label: "OTHER AQUIFER | SABINE" },
-        { value: 577, label: "OTHER AQUIFER | SAN AUGUSTINE" },
-        { value: 578, label: "OTHER AQUIFER | SCURRY" },
-        { value: 579, label: "OTHER AQUIFER | SHACKELFORD" },
-        { value: 580, label: "OTHER AQUIFER | SMITH" },
-        { value: 582, label: "OTHER AQUIFER | STEPHENS" },
-        { value: 587, label: "OTHER AQUIFER | TRAVIS" },
-        { value: 588, label: "OTHER AQUIFER | TRINITY" },
-        { value: 592, label: "OTHER AQUIFER | WHEELER" },
-        { value: 594, label: "OTHER AQUIFER | WILBARGER" },
-        { value: 595, label: "OTHER AQUIFER | WILLIAMSON" },
-        { value: 600, label: "PALESTINE LAKE/RESERVOIR" },
-        { value: 602, label: "PALO PINTO LAKE/RESERVOIR" },
-        { value: 603, label: "PAT CLEBURNE LAKE/RESERVOIR" },
-        { value: 604, label: "PAT MAYSE LAKE/RESERVOIR" },
-        { value: 138, label: "PECOS VALLEY AQUIFER | ANDREWS" },
-        { value: 607, label: "PINKSTON LAKE/RESERVOIR" },
-        { value: 609, label: "QUEEN CITY AQUIFER | ANDERSON" },
-        { value: 611, label: "QUEEN CITY AQUIFER | ATASCOSA" },
-        { value: 612, label: "QUEEN CITY AQUIFER | BASTROP" },
-        { value: 613, label: "QUEEN CITY AQUIFER | BRAZOS" },
-        { value: 614, label: "QUEEN CITY AQUIFER | BURLESON" },
-        { value: 615, label: "QUEEN CITY AQUIFER | CALDWELL" },
-        { value: 616, label: "QUEEN CITY AQUIFER | CAMP" },
-        { value: 617, label: "QUEEN CITY AQUIFER | CASS" },
-        { value: 618, label: "QUEEN CITY AQUIFER | CHEROKEE" },
-        { value: 619, label: "QUEEN CITY AQUIFER | FAYETTE" },
-        { value: 621, label: "QUEEN CITY AQUIFER | FRIO" },
-        { value: 622, label: "QUEEN CITY AQUIFER | GONZALES" },
-        { value: 625, label: "QUEEN CITY AQUIFER | HARRISON" },
-        { value: 626, label: "QUEEN CITY AQUIFER | HENDERSON" },
-        { value: 627, label: "QUEEN CITY AQUIFER | HOUSTON" },
-        { value: 628, label: "QUEEN CITY AQUIFER | LA SALLE" },
-        { value: 629, label: "QUEEN CITY AQUIFER | LEE" },
-        { value: 630, label: "QUEEN CITY AQUIFER | LEON" },
-        { value: 631, label: "QUEEN CITY AQUIFER | MADISON" },
-        { value: 632, label: "QUEEN CITY AQUIFER | MARION" },
-        { value: 633, label: "QUEEN CITY AQUIFER | MCMULLEN" },
-        { value: 634, label: "QUEEN CITY AQUIFER | MILAM" },
-        { value: 635, label: "QUEEN CITY AQUIFER | MORRIS" },
-        { value: 636, label: "QUEEN CITY AQUIFER | NACOGDOCHES" },
-        { value: 637, label: "QUEEN CITY AQUIFER | ROBERTSON" },
-        { value: 638, label: "QUEEN CITY AQUIFER | RUSK" },
-        { value: 639, label: "QUEEN CITY AQUIFER | SMITH" },
-        { value: 640, label: "QUEEN CITY AQUIFER | UPSHUR" },
-        { value: 641, label: "QUEEN CITY AQUIFER | VAN ZANDT" },
-        { value: 642, label: "QUEEN CITY AQUIFER | WALKER" },
-        { value: 643, label: "QUEEN CITY AQUIFER | WILSON" },
-        { value: 644, label: "QUEEN CITY AQUIFER | WOOD" },
-        { value: 1067, label: "RAINWATER HARVESTING" },
-        { value: 646, label: "RALPH HALL LAKE/RESERVOIR" },
-        { value: 647, label: "RANDELL LAKE/RESERVOIR" },
-        { value: 648, label: "RAY HUBBARD LAKE/RESERVOIR" },
-        { value: 649, label: "RAY ROBERTS LAKE/RESERVOIR NON-SYSTEM PORTION" },
-        {
-            value: 650,
-            label: "RAY ROBERTS-LEWISVILLE-GRAPEVINE LAKE/RESERVOIR SYSTEM"
-        },
-        { value: 651, label: "RED BLUFF LAKE/RESERVOIR" },
-        { value: 386, label: "RED INDIRECT REUSE" },
-        { value: 667, label: "RED RUN-OF-RIVER" },
-        { value: 1015, label: "REGULATING LAKE/RESERVOIR" },
-        { value: 1075, label: "RHINES LAKE/RESERVOIR" },
-        { value: 653, label: "RINGGOLD LAKE/RESERVOIR" },
-        { value: 387, label: "RIO GRANDE INDIRECT REUSE" },
-        { value: 668, label: "RIO GRANDE RUN-OF-RIVER" },
-        { value: 679, label: "RUSK CITY LAKE/RESERVOIR" },
-        { value: 680, label: "RUSTLER AQUIFER | CULBERSON" },
-        { value: 1018, label: "RUSTLER AQUIFER | LOVING" },
-        { value: 681, label: "RUSTLER AQUIFER | PECOS" },
-        { value: 682, label: "RUSTLER AQUIFER | REEVES" },
-        { value: 953, label: "SABINE INDIRECT REUSE" },
-        { value: 1177, label: "SABINE RIVER OFF-CHANNEL RESERVOIR" },
-        { value: 669, label: "SABINE RUN-OF-RIVER" },
-        { value: 683, label: "SAM RAYBURN-STEINHAGEN LAKE/RESERVOIR SYSTEM" },
-        { value: 1020, label: "SAN ANGELO LAKES LAKE/RESERVOIR SYSTEM" },
-        { value: 1125, label: "SAN ANTONIO INDIRECT REUSE" },
-        { value: 670, label: "SAN ANTONIO RUN-OF-RIVER" },
-        { value: 671, label: "SAN ANTONIO-NUECES RUN-OF-RIVER" },
-        { value: 684, label: "SAN AUGUSTINE LAKE/RESERVOIR" },
-        { value: 388, label: "SAN JACINTO INDIRECT REUSE" },
-        { value: 672, label: "SAN JACINTO RUN-OF-RIVER" },
-        { value: 673, label: "SAN JACINTO-BRAZOS RUN-OF-RIVER" },
-        { value: 1119, label: "SAN MARCOS RIVER ALLUVIUM AQUIFER | CALDWELL" },
-        { value: 685, label: "SANTA ROSA LAKE/RESERVOIR" },
-        { value: 686, label: "SEYMOUR AQUIFER | BAYLOR" },
-        { value: 687, label: "SEYMOUR AQUIFER | BRISCOE" },
-        { value: 688, label: "SEYMOUR AQUIFER | CHILDRESS" },
-        { value: 689, label: "SEYMOUR AQUIFER | CLAY" },
-        { value: 690, label: "SEYMOUR AQUIFER | COLLINGSWORTH" },
-        { value: 694, label: "SEYMOUR AQUIFER | FISHER" },
-        { value: 695, label: "SEYMOUR AQUIFER | FOARD" },
-        { value: 696, label: "SEYMOUR AQUIFER | HALL" },
-        { value: 697, label: "SEYMOUR AQUIFER | HARDEMAN" },
-        { value: 698, label: "SEYMOUR AQUIFER | HASKELL" },
-        { value: 699, label: "SEYMOUR AQUIFER | JONES" },
-        { value: 700, label: "SEYMOUR AQUIFER | KENT" },
-        { value: 701, label: "SEYMOUR AQUIFER | KNOX" },
-        { value: 702, label: "SEYMOUR AQUIFER | MOTLEY" },
-        { value: 703, label: "SEYMOUR AQUIFER | STONEWALL" },
-        { value: 1024, label: "SEYMOUR AQUIFER | THROCKMORTON" },
-        { value: 705, label: "SEYMOUR AQUIFER | WICHITA" },
-        { value: 706, label: "SEYMOUR AQUIFER | WILBARGER" },
-        { value: 1025, label: "SEYMOUR AQUIFER | YOUNG" },
-        { value: 1026, label: "SIMSBORO AQUIFER ASR | BRAZOS" },
-        { value: 1036, label: "SPARTA AND QUEEN CITY AQUIFER ASR | BRAZOS" },
-        { value: 708, label: "SPARTA AQUIFER | ANDERSON" },
-        { value: 709, label: "SPARTA AQUIFER | ANGELINA" },
-        { value: 710, label: "SPARTA AQUIFER | ATASCOSA" },
-        { value: 711, label: "SPARTA AQUIFER | BASTROP" },
-        { value: 712, label: "SPARTA AQUIFER | BRAZOS" },
-        { value: 713, label: "SPARTA AQUIFER | BURLESON" },
-        { value: 714, label: "SPARTA AQUIFER | CHEROKEE" },
-        { value: 715, label: "SPARTA AQUIFER | FAYETTE" },
-        { value: 716, label: "SPARTA AQUIFER | FRIO" },
-        { value: 717, label: "SPARTA AQUIFER | GONZALES" },
-        { value: 719, label: "SPARTA AQUIFER | HOUSTON" },
-        { value: 720, label: "SPARTA AQUIFER | LA SALLE" },
-        { value: 721, label: "SPARTA AQUIFER | LEE" },
-        { value: 722, label: "SPARTA AQUIFER | LEON" },
-        { value: 723, label: "SPARTA AQUIFER | MADISON" },
-        { value: 725, label: "SPARTA AQUIFER | NACOGDOCHES" },
-        { value: 726, label: "SPARTA AQUIFER | ROBERTSON" },
-        { value: 727, label: "SPARTA AQUIFER | SABINE" },
-        { value: 728, label: "SPARTA AQUIFER | SAN AUGUSTINE" },
-        { value: 731, label: "SPARTA AQUIFER | WILSON" },
-        { value: 732, label: "SQUAW CREEK LAKE/RESERVOIR" },
-        { value: 733, label: "STAMFORD LAKE/RESERVOIR" },
-        { value: 1077, label: "STPNOC LAKE/RESERVOIR" },
-        { value: 1037, label: "STRAWN LAKE/RESERVOIR" },
-        { value: 734, label: "STRIKER LAKE/RESERVOIR" },
-        { value: 389, label: "SULPHUR INDIRECT REUSE" },
-        { value: 674, label: "SULPHUR RUN-OF-RIVER" },
-        { value: 735, label: "SULPHUR SPRINGS LAKE/RESERVOIR" },
-        { value: 737, label: "TANKERSLEY LAKE/RESERVOIR" },
-        { value: 738, label: "TAWAKONI LAKE/RESERVOIR" },
-        { value: 740, label: "TEHUACANA LAKE/RESERVOIR" },
-        { value: 742, label: "TEXANA LAKE/RESERVOIR" },
-        { value: 744, label: "TEXOMA LAKE/RESERVOIR NON-SYSTEM PORTION" },
-        { value: 746, label: "THROCKMORTON LAKE/RESERVOIR" },
-        { value: 747, label: "TIMPSON LAKE/RESERVOIR" },
-        { value: 748, label: "TOLEDO BEND LAKE/RESERVOIR" },
-        { value: 1049, label: "TRADINGHOUSE CREEK LAKE/RESERVOIR" },
-        { value: 752, label: "TRINIDAD LAKE/RESERVOIR" },
-        {
-            value: 1039,
-            label: "TRINITY AND/OR BRACKISH EDWARDS AQUIFER ASR | COMAL"
-        },
-        { value: 753, label: "TRINITY AQUIFER | BANDERA" },
-        { value: 1179, label: "TRINITY AQUIFER | BASTROP" },
-        { value: 755, label: "TRINITY AQUIFER | BELL" },
-        { value: 756, label: "TRINITY AQUIFER | BEXAR" },
-        { value: 757, label: "TRINITY AQUIFER | BLANCO" },
-        { value: 758, label: "TRINITY AQUIFER | BOSQUE" },
-        { value: 759, label: "TRINITY AQUIFER | BROWN" },
-        { value: 760, label: "TRINITY AQUIFER | BURNET" },
-        { value: 761, label: "TRINITY AQUIFER | CALDWELL" },
-        { value: 762, label: "TRINITY AQUIFER | CALLAHAN" },
-        { value: 763, label: "TRINITY AQUIFER | COLLIN" },
-        { value: 764, label: "TRINITY AQUIFER | COMAL" },
-        { value: 765, label: "TRINITY AQUIFER | COMANCHE" },
-        { value: 766, label: "TRINITY AQUIFER | COOKE" },
-        { value: 767, label: "TRINITY AQUIFER | CORYELL" },
-        { value: 768, label: "TRINITY AQUIFER | DALLAS" },
-        { value: 769, label: "TRINITY AQUIFER | DELTA" },
-        { value: 770, label: "TRINITY AQUIFER | DENTON" },
-        { value: 771, label: "TRINITY AQUIFER | EASTLAND" },
-        { value: 772, label: "TRINITY AQUIFER | ELLIS" },
-        { value: 773, label: "TRINITY AQUIFER | ERATH" },
-        { value: 774, label: "TRINITY AQUIFER | FALLS" },
-        { value: 775, label: "TRINITY AQUIFER | FANNIN" },
-        { value: 777, label: "TRINITY AQUIFER | GRAYSON" },
-        { value: 1040, label: "TRINITY AQUIFER | GUADALUPE" },
-        { value: 778, label: "TRINITY AQUIFER | HAMILTON" },
-        { value: 779, label: "TRINITY AQUIFER | HAYS" },
-        { value: 780, label: "TRINITY AQUIFER | HILL" },
-        { value: 781, label: "TRINITY AQUIFER | HOOD" },
-        { value: 782, label: "TRINITY AQUIFER | HUNT" },
-        { value: 784, label: "TRINITY AQUIFER | JOHNSON" },
-        { value: 786, label: "TRINITY AQUIFER | KENDALL" },
-        { value: 787, label: "TRINITY AQUIFER | KERR" },
-        { value: 788, label: "TRINITY AQUIFER | LAMAR" },
-        { value: 789, label: "TRINITY AQUIFER | LAMPASAS" },
-        { value: 790, label: "TRINITY AQUIFER | LIMESTONE" },
-        { value: 791, label: "TRINITY AQUIFER | MCLENNAN" },
-        { value: 792, label: "TRINITY AQUIFER | MEDINA" },
-        { value: 793, label: "TRINITY AQUIFER | MILAM" },
-        { value: 794, label: "TRINITY AQUIFER | MILLS" },
-        { value: 795, label: "TRINITY AQUIFER | MONTAGUE" },
-        { value: 797, label: "TRINITY AQUIFER | PALO PINTO" },
-        { value: 798, label: "TRINITY AQUIFER | PARKER" },
-        { value: 800, label: "TRINITY AQUIFER | RED RIVER" },
-        { value: 802, label: "TRINITY AQUIFER | SOMERVELL" },
-        { value: 803, label: "TRINITY AQUIFER | TARRANT" },
-        { value: 804, label: "TRINITY AQUIFER | TAYLOR" },
-        { value: 805, label: "TRINITY AQUIFER | TRAVIS" },
-        { value: 806, label: "TRINITY AQUIFER | UVALDE" },
-        { value: 807, label: "TRINITY AQUIFER | WILLIAMSON" },
-        { value: 808, label: "TRINITY AQUIFER | WISE" },
-        { value: 1041, label: "TRINITY AQUIFER ASR | BANDERA" },
-        { value: 1181, label: "TRINITY AQUIFER ASR | BELL" },
-        { value: 1230, label: "TRINITY AQUIFER ASR | DENTON" },
-        { value: 1042, label: "TRINITY AQUIFER ASR | HAYS" },
-        { value: 1044, label: "TRINITY AQUIFER ASR | KERR" },
-        { value: 1205, label: "TRINITY AQUIFER ASR | MEDINA" },
-        { value: 1123, label: "TRINITY AQUIFER ASR | TARRANT" },
-        { value: 1047, label: "TRINITY AQUIFER ASR | WILLIAMSON" },
-        { value: 390, label: "TRINITY INDIRECT REUSE" },
-        { value: 675, label: "TRINITY RUN-OF-RIVER" },
-        { value: 676, label: "TRINITY-SAN JACINTO RUN-OF-RIVER" },
-        { value: 810, label: "TRWD LAKE/RESERVOIR SYSTEM" },
-        { value: 811, label: "TURKEY CREEK LAKE/RESERVOIR" },
-        { value: 812, label: "TURKEY PEAK LAKE/RESERVOIR" },
-        { value: 814, label: "TWIN OAK LAKE/RESERVOIR" },
-        { value: 815, label: "TYLER LAKE/RESERVOIR" },
-        { value: 817, label: "VICTOR BRAUNIG LAKE/RESERVOIR" },
-        { value: 818, label: "WACO LAKE/RESERVOIR" },
-        { value: 1174, label: "WATER RECYCLING" },
-        { value: 819, label: "WAXAHACHIE LAKE/RESERVOIR" },
-        { value: 821, label: "WEATHERFORD LAKE/RESERVOIR" },
-        { value: 822, label: "WELSH LAKE/RESERVOIR" },
-        { value: 823, label: "WEST TEXAS BOLSONS AQUIFER | CULBERSON" },
-        { value: 824, label: "WEST TEXAS BOLSONS AQUIFER | HUDSPETH" },
-        { value: 825, label: "WEST TEXAS BOLSONS AQUIFER | JEFF DAVIS" },
-        { value: 826, label: "WEST TEXAS BOLSONS AQUIFER | PRESIDIO" },
-        { value: 827, label: "WHEELER BRANCH OFF-CHANNEL LAKE/RESERVOIR" },
-        { value: 829, label: "WHITE ROCK LAKE/RESERVOIR" },
-        { value: 832, label: "WINTERS LAKE/RESERVOIR" },
-        { value: 833, label: "WOODBINE AQUIFER | COLLIN" },
-        { value: 834, label: "WOODBINE AQUIFER | COOKE" },
-        { value: 835, label: "WOODBINE AQUIFER | DALLAS" },
-        { value: 837, label: "WOODBINE AQUIFER | DENTON" },
-        { value: 838, label: "WOODBINE AQUIFER | ELLIS" },
-        { value: 839, label: "WOODBINE AQUIFER | FANNIN" },
-        { value: 840, label: "WOODBINE AQUIFER | GRAYSON" },
-        { value: 841, label: "WOODBINE AQUIFER | HILL" },
-        { value: 842, label: "WOODBINE AQUIFER | HUNT" },
-        { value: 843, label: "WOODBINE AQUIFER | JOHNSON" },
-        { value: 845, label: "WOODBINE AQUIFER | LAMAR" },
-        { value: 848, label: "WOODBINE AQUIFER | NAVARRO" },
-        { value: 850, label: "WOODBINE AQUIFER | RED RIVER" },
-        { value: 852, label: "WOODBINE AQUIFER | TARRANT" },
-        { value: 1054, label: "WOODSON LAKE/RESERVOIR" },
-        { value: 854, label: "WRIGHT PATMAN LAKE/RESERVOIR" },
-        { value: 855, label: "YEGUA-JACKSON AQUIFER | ANGELINA" },
-        { value: 1055, label: "YEGUA-JACKSON AQUIFER | ATASCOSA" },
-        { value: 856, label: "YEGUA-JACKSON AQUIFER | BRAZOS" },
-        { value: 857, label: "YEGUA-JACKSON AQUIFER | BURLESON" },
-        { value: 858, label: "YEGUA-JACKSON AQUIFER | FAYETTE" },
-        { value: 1057, label: "YEGUA-JACKSON AQUIFER | GONZALES" },
-        { value: 859, label: "YEGUA-JACKSON AQUIFER | GRIMES" },
-        { value: 860, label: "YEGUA-JACKSON AQUIFER | HOUSTON" },
-        { value: 1194, label: "YEGUA-JACKSON AQUIFER | JASPER" },
-        { value: 1058, label: "YEGUA-JACKSON AQUIFER | KARNES" },
-        { value: 1059, label: "YEGUA-JACKSON AQUIFER | LA SALLE" },
-        { value: 1061, label: "YEGUA-JACKSON AQUIFER | MADISON" },
-        { value: 863, label: "YEGUA-JACKSON AQUIFER | NACOGDOCHES" },
-        { value: 864, label: "YEGUA-JACKSON AQUIFER | POLK" },
-        { value: 865, label: "YEGUA-JACKSON AQUIFER | SABINE" },
-        { value: 866, label: "YEGUA-JACKSON AQUIFER | SAN AUGUSTINE" },
-        { value: 867, label: "YEGUA-JACKSON AQUIFER | STARR" },
-        { value: 868, label: "YEGUA-JACKSON AQUIFER | TRINITY" },
-        { value: 870, label: "YEGUA-JACKSON AQUIFER | WALKER" },
-        { value: 871, label: "YEGUA-JACKSON AQUIFER | WASHINGTON" },
-        { value: 872, label: "YEGUA-JACKSON AQUIFER | WEBB" },
-        { value: 1063, label: "YEGUA-JACKSON AQUIFER | WILSON" },
-        { value: 873, label: "YEGUA-JACKSON AQUIFER | ZAPATA" }
-    ];
+    {
+        "value": 2,
+        "label": "ALAN HENRY LAKE/RESERVOIR"
+    },
+    {
+        "value": 3,
+        "label": "ALCOA LAKE/RESERVOIR"
+    },
+    {
+        "value": 4,
+        "label": "ALLENS CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 6,
+        "label": "AMISTAD-FALCON LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 7,
+        "label": "AMON G. CARTER LAKE/RESERVOIR"
+    },
+    {
+        "value": 9,
+        "label": "ATHENS LAKE/RESERVOIR"
+    },
+    {
+        "value": 820,
+        "label": "ATMOSPHERE"
+    },
+    {
+        "value": 885,
+        "label": "AUSTIN CHALK AQUIFER | KINNEY"
+    },
+    {
+        "value": 886,
+        "label": "AUSTIN CHALK AQUIFER | UVALDE"
+    },
+    {
+        "value": 1079,
+        "label": "AUSTIN OFF-CHANNEL LAKE/RESERVOIR"
+    },
+    {
+        "value": 887,
+        "label": "BAIRD LAKE/RESERVOIR"
+    },
+    {
+        "value": 10,
+        "label": "BALLINGER/MOONEN LAKE/RESERVOIR"
+    },
+    {
+        "value": 11,
+        "label": "BALMORHEA LAKE/RESERVOIR"
+    },
+    {
+        "value": 12,
+        "label": "BARDWELL LAKE/RESERVOIR"
+    },
+    {
+        "value": 1132,
+        "label": "BEAUMONT WEST REGIONAL LAKE/RESERVOIR"
+    },
+    {
+        "value": 14,
+        "label": "BELLWOOD LAKE/RESERVOIR"
+    },
+    {
+        "value": 15,
+        "label": "BIG CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 16,
+        "label": "BIG SANDY CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 17,
+        "label": "BLAINE AQUIFER | CHILDRESS"
+    },
+    {
+        "value": 18,
+        "label": "BLAINE AQUIFER | COLLINGSWORTH"
+    },
+    {
+        "value": 19,
+        "label": "BLAINE AQUIFER | COTTLE"
+    },
+    {
+        "value": 20,
+        "label": "BLAINE AQUIFER | FISHER"
+    },
+    {
+        "value": 21,
+        "label": "BLAINE AQUIFER | FOARD"
+    },
+    {
+        "value": 23,
+        "label": "BLAINE AQUIFER | HARDEMAN"
+    },
+    {
+        "value": 24,
+        "label": "BLAINE AQUIFER | KING"
+    },
+    {
+        "value": 25,
+        "label": "BLAINE AQUIFER | KNOX"
+    },
+    {
+        "value": 26,
+        "label": "BLAINE AQUIFER | NOLAN"
+    },
+    {
+        "value": 27,
+        "label": "BLAINE AQUIFER | STONEWALL"
+    },
+    {
+        "value": 32,
+        "label": "BLOSSOM AQUIFER | RED RIVER"
+    },
+    {
+        "value": 33,
+        "label": "BOB SANDLIN LAKE/RESERVOIR"
+    },
+    {
+        "value": 34,
+        "label": "BOERNE LAKE/RESERVOIR"
+    },
+    {
+        "value": 35,
+        "label": "BONE SPRING-VICTORIO PEAK AQUIFER | HUDSPETH"
+    },
+    {
+        "value": 36,
+        "label": "BONHAM LAKE/RESERVOIR"
+    },
+    {
+        "value": 1076,
+        "label": "BRA SYSTEM OPERATIONS PERMIT SUPPLY"
+    },
+    {
+        "value": 37,
+        "label": "BRADY CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 38,
+        "label": "BRANDY BRANCH LAKE/RESERVOIR"
+    },
+    {
+        "value": 952,
+        "label": "BRAZOS INDIRECT REUSE"
+    },
+    {
+        "value": 42,
+        "label": "BRAZOS RIVER ALLUVIUM AQUIFER | BRAZOS"
+    },
+    {
+        "value": 43,
+        "label": "BRAZOS RIVER ALLUVIUM AQUIFER | BURLESON"
+    },
+    {
+        "value": 44,
+        "label": "BRAZOS RIVER ALLUVIUM AQUIFER | FALLS"
+    },
+    {
+        "value": 46,
+        "label": "BRAZOS RIVER ALLUVIUM AQUIFER | GRIMES"
+    },
+    {
+        "value": 47,
+        "label": "BRAZOS RIVER ALLUVIUM AQUIFER | HILL"
+    },
+    {
+        "value": 48,
+        "label": "BRAZOS RIVER ALLUVIUM AQUIFER | MCLENNAN"
+    },
+    {
+        "value": 49,
+        "label": "BRAZOS RIVER ALLUVIUM AQUIFER | MILAM"
+    },
+    {
+        "value": 50,
+        "label": "BRAZOS RIVER ALLUVIUM AQUIFER | ROBERTSON"
+    },
+    {
+        "value": 51,
+        "label": "BRAZOS RIVER ALLUVIUM AQUIFER | WALLER"
+    },
+    {
+        "value": 52,
+        "label": "BRAZOS RIVER ALLUVIUM AQUIFER | WASHINGTON"
+    },
+    {
+        "value": 53,
+        "label": "BRAZOS RIVER AUTHORITY AQUILLA LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 54,
+        "label": "BRAZOS RIVER AUTHORITY LITTLE RIVER LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 55,
+        "label": "BRAZOS RIVER AUTHORITY MAIN STEM LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 655,
+        "label": "BRAZOS RUN-OF-RIVER"
+    },
+    {
+        "value": 656,
+        "label": "BRAZOS-COLORADO RUN-OF-RIVER"
+    },
+    {
+        "value": 57,
+        "label": "BROWNWOOD LAKE/RESERVOIR"
+    },
+    {
+        "value": 59,
+        "label": "BRUSHY CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 889,
+        "label": "BUDA LIMESTONE AQUIFER | UVALDE"
+    },
+    {
+        "value": 1231,
+        "label": "C.B. LONG LAKE/RESERVOIR"
+    },
+    {
+        "value": 62,
+        "label": "CALAVERAS LAKE/RESERVOIR"
+    },
+    {
+        "value": 657,
+        "label": "CANADIAN RUN-OF-RIVER"
+    },
+    {
+        "value": 64,
+        "label": "CANYON LAKE/RESERVOIR"
+    },
+    {
+        "value": 65,
+        "label": "CAPITAN REEF COMPLEX AQUIFER | BREWSTER"
+    },
+    {
+        "value": 66,
+        "label": "CAPITAN REEF COMPLEX AQUIFER | CULBERSON"
+    },
+    {
+        "value": 67,
+        "label": "CAPITAN REEF COMPLEX AQUIFER | HUDSPETH"
+    },
+    {
+        "value": 68,
+        "label": "CAPITAN REEF COMPLEX AQUIFER | PECOS"
+    },
+    {
+        "value": 1088,
+        "label": "CARRIZO-AQUIFER ASR | BEXAR"
+    },
+    {
+        "value": 71,
+        "label": "CARRIZO-WILCOX AQUIFER | ANDERSON"
+    },
+    {
+        "value": 72,
+        "label": "CARRIZO-WILCOX AQUIFER | ANGELINA"
+    },
+    {
+        "value": 73,
+        "label": "CARRIZO-WILCOX AQUIFER | ATASCOSA"
+    },
+    {
+        "value": 74,
+        "label": "CARRIZO-WILCOX AQUIFER | BASTROP"
+    },
+    {
+        "value": 76,
+        "label": "CARRIZO-WILCOX AQUIFER | BEXAR"
+    },
+    {
+        "value": 77,
+        "label": "CARRIZO-WILCOX AQUIFER | BOWIE"
+    },
+    {
+        "value": 78,
+        "label": "CARRIZO-WILCOX AQUIFER | BRAZOS"
+    },
+    {
+        "value": 79,
+        "label": "CARRIZO-WILCOX AQUIFER | BURLESON"
+    },
+    {
+        "value": 80,
+        "label": "CARRIZO-WILCOX AQUIFER | CALDWELL"
+    },
+    {
+        "value": 81,
+        "label": "CARRIZO-WILCOX AQUIFER | CAMP"
+    },
+    {
+        "value": 82,
+        "label": "CARRIZO-WILCOX AQUIFER | CASS"
+    },
+    {
+        "value": 83,
+        "label": "CARRIZO-WILCOX AQUIFER | CHEROKEE"
+    },
+    {
+        "value": 84,
+        "label": "CARRIZO-WILCOX AQUIFER | DIMMIT"
+    },
+    {
+        "value": 85,
+        "label": "CARRIZO-WILCOX AQUIFER | FALLS"
+    },
+    {
+        "value": 86,
+        "label": "CARRIZO-WILCOX AQUIFER | FAYETTE"
+    },
+    {
+        "value": 87,
+        "label": "CARRIZO-WILCOX AQUIFER | FRANKLIN"
+    },
+    {
+        "value": 88,
+        "label": "CARRIZO-WILCOX AQUIFER | FREESTONE"
+    },
+    {
+        "value": 89,
+        "label": "CARRIZO-WILCOX AQUIFER | FRIO"
+    },
+    {
+        "value": 90,
+        "label": "CARRIZO-WILCOX AQUIFER | GONZALES"
+    },
+    {
+        "value": 91,
+        "label": "CARRIZO-WILCOX AQUIFER | GREGG"
+    },
+    {
+        "value": 92,
+        "label": "CARRIZO-WILCOX AQUIFER | GRIMES"
+    },
+    {
+        "value": 93,
+        "label": "CARRIZO-WILCOX AQUIFER | GUADALUPE"
+    },
+    {
+        "value": 94,
+        "label": "CARRIZO-WILCOX AQUIFER | HARRISON"
+    },
+    {
+        "value": 95,
+        "label": "CARRIZO-WILCOX AQUIFER | HENDERSON"
+    },
+    {
+        "value": 96,
+        "label": "CARRIZO-WILCOX AQUIFER | HOPKINS"
+    },
+    {
+        "value": 97,
+        "label": "CARRIZO-WILCOX AQUIFER | HOUSTON"
+    },
+    {
+        "value": 99,
+        "label": "CARRIZO-WILCOX AQUIFER | KARNES"
+    },
+    {
+        "value": 100,
+        "label": "CARRIZO-WILCOX AQUIFER | LA SALLE"
+    },
+    {
+        "value": 101,
+        "label": "CARRIZO-WILCOX AQUIFER | LEE"
+    },
+    {
+        "value": 102,
+        "label": "CARRIZO-WILCOX AQUIFER | LEON"
+    },
+    {
+        "value": 103,
+        "label": "CARRIZO-WILCOX AQUIFER | LIMESTONE"
+    },
+    {
+        "value": 106,
+        "label": "CARRIZO-WILCOX AQUIFER | MARION"
+    },
+    {
+        "value": 107,
+        "label": "CARRIZO-WILCOX AQUIFER | MAVERICK"
+    },
+    {
+        "value": 108,
+        "label": "CARRIZO-WILCOX AQUIFER | MCMULLEN"
+    },
+    {
+        "value": 109,
+        "label": "CARRIZO-WILCOX AQUIFER | MEDINA"
+    },
+    {
+        "value": 110,
+        "label": "CARRIZO-WILCOX AQUIFER | MILAM"
+    },
+    {
+        "value": 111,
+        "label": "CARRIZO-WILCOX AQUIFER | MORRIS"
+    },
+    {
+        "value": 112,
+        "label": "CARRIZO-WILCOX AQUIFER | NACOGDOCHES"
+    },
+    {
+        "value": 113,
+        "label": "CARRIZO-WILCOX AQUIFER | NAVARRO"
+    },
+    {
+        "value": 114,
+        "label": "CARRIZO-WILCOX AQUIFER | PANOLA"
+    },
+    {
+        "value": 115,
+        "label": "CARRIZO-WILCOX AQUIFER | RAINS"
+    },
+    {
+        "value": 117,
+        "label": "CARRIZO-WILCOX AQUIFER | ROBERTSON"
+    },
+    {
+        "value": 118,
+        "label": "CARRIZO-WILCOX AQUIFER | RUSK"
+    },
+    {
+        "value": 119,
+        "label": "CARRIZO-WILCOX AQUIFER | SABINE"
+    },
+    {
+        "value": 120,
+        "label": "CARRIZO-WILCOX AQUIFER | SAN AUGUSTINE"
+    },
+    {
+        "value": 121,
+        "label": "CARRIZO-WILCOX AQUIFER | SHELBY"
+    },
+    {
+        "value": 122,
+        "label": "CARRIZO-WILCOX AQUIFER | SMITH"
+    },
+    {
+        "value": 123,
+        "label": "CARRIZO-WILCOX AQUIFER | TITUS"
+    },
+    {
+        "value": 125,
+        "label": "CARRIZO-WILCOX AQUIFER | UPSHUR"
+    },
+    {
+        "value": 127,
+        "label": "CARRIZO-WILCOX AQUIFER | VAN ZANDT"
+    },
+    {
+        "value": 129,
+        "label": "CARRIZO-WILCOX AQUIFER | WEBB"
+    },
+    {
+        "value": 891,
+        "label": "CARRIZO-WILCOX AQUIFER | WILLIAMSON"
+    },
+    {
+        "value": 130,
+        "label": "CARRIZO-WILCOX AQUIFER | WILSON"
+    },
+    {
+        "value": 131,
+        "label": "CARRIZO-WILCOX AQUIFER | WOOD"
+    },
+    {
+        "value": 132,
+        "label": "CARRIZO-WILCOX AQUIFER | ZAVALA"
+    },
+    {
+        "value": 892,
+        "label": "CARRIZO-WILCOX AQUIFER ASR | BASTROP"
+    },
+    {
+        "value": 1066,
+        "label": "CARRIZO-WILCOX AQUIFER ASR | GONZALES"
+    },
+    {
+        "value": 137,
+        "label": "CEDAR RIDGE LAKE/RESERVOIR"
+    },
+    {
+        "value": 147,
+        "label": "CENTER LAKE/RESERVOIR"
+    },
+    {
+        "value": 148,
+        "label": "CHAPMAN/COOPER LAKE/RESERVOIR NON-SYSTEM PORTION"
+    },
+    {
+        "value": 150,
+        "label": "CHEROKEE LAKE/RESERVOIR"
+    },
+    {
+        "value": 151,
+        "label": "CISCO LAKE/RESERVOIR"
+    },
+    {
+        "value": 895,
+        "label": "CLIFTON LAKE/RESERVOIR"
+    },
+    {
+        "value": 155,
+        "label": "COLEMAN LAKE/RESERVOIR"
+    },
+    {
+        "value": 156,
+        "label": "COLETO CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 157,
+        "label": "COLORADO CITY-CHAMPION LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 381,
+        "label": "COLORADO INDIRECT REUSE"
+    },
+    {
+        "value": 1222,
+        "label": "COLORADO RIVER ALLUVIUM AQUIFER | TRAVIS"
+    },
+    {
+        "value": 158,
+        "label": "COLORADO RIVER MWD LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 658,
+        "label": "COLORADO RUN-OF-RIVER"
+    },
+    {
+        "value": 159,
+        "label": "COLUMBIA LAKE/RESERVOIR"
+    },
+    {
+        "value": 160,
+        "label": "CONROE LAKE/RESERVOIR"
+    },
+    {
+        "value": 163,
+        "label": "CORPUS CHRISTI-CHOKE CANYON LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 652,
+        "label": "CORSICANA RICHLAND CHAMBERS-HALBERT LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 164,
+        "label": "CORYELL COUNTY OFF-CHANNEL LAKE/RESERVOIR"
+    },
+    {
+        "value": 896,
+        "label": "CRAWFORD LAKE/RESERVOIR"
+    },
+    {
+        "value": 165,
+        "label": "CROOK LAKE/RESERVOIR"
+    },
+    {
+        "value": 1090,
+        "label": "CROSS TIMBERS AQUIFER | ARCHER"
+    },
+    {
+        "value": 1091,
+        "label": "CROSS TIMBERS AQUIFER | BAYLOR"
+    },
+    {
+        "value": 1070,
+        "label": "CROSS TIMBERS AQUIFER | BROWN"
+    },
+    {
+        "value": 1092,
+        "label": "CROSS TIMBERS AQUIFER | CLAY"
+    },
+    {
+        "value": 1093,
+        "label": "CROSS TIMBERS AQUIFER | COLEMAN"
+    },
+    {
+        "value": 1071,
+        "label": "CROSS TIMBERS AQUIFER | JACK"
+    },
+    {
+        "value": 1095,
+        "label": "CROSS TIMBERS AQUIFER | MONTAGUE"
+    },
+    {
+        "value": 1072,
+        "label": "CROSS TIMBERS AQUIFER | PARKER"
+    },
+    {
+        "value": 1096,
+        "label": "CROSS TIMBERS AQUIFER | SHACKELFORD"
+    },
+    {
+        "value": 1097,
+        "label": "CROSS TIMBERS AQUIFER | STEPHENS"
+    },
+    {
+        "value": 1073,
+        "label": "CROSS TIMBERS AQUIFER | THROCKMORTON"
+    },
+    {
+        "value": 1098,
+        "label": "CROSS TIMBERS AQUIFER | WICHITA"
+    },
+    {
+        "value": 1074,
+        "label": "CROSS TIMBERS AQUIFER | YOUNG"
+    },
+    {
+        "value": 660,
+        "label": "CYPRESS RUN-OF-RIVER"
+    },
+    {
+        "value": 166,
+        "label": "CYPRESS SPRINGS LAKE/RESERVOIR"
+    },
+    {
+        "value": 167,
+        "label": "DANIEL LAKE/RESERVOIR"
+    },
+    {
+        "value": 168,
+        "label": "DANSBY POWER PLANT/BRYAN UTILITIES LAKE/RESERVOIR"
+    },
+    {
+        "value": 169,
+        "label": "DIRECT REUSE"
+    },
+    {
+        "value": 170,
+        "label": "DOCKUM AQUIFER | ANDREWS"
+    },
+    {
+        "value": 171,
+        "label": "DOCKUM AQUIFER | ARMSTRONG"
+    },
+    {
+        "value": 172,
+        "label": "DOCKUM AQUIFER | BORDEN"
+    },
+    {
+        "value": 174,
+        "label": "DOCKUM AQUIFER | CARSON"
+    },
+    {
+        "value": 900,
+        "label": "DOCKUM AQUIFER | CASTRO"
+    },
+    {
+        "value": 176,
+        "label": "DOCKUM AQUIFER | CRANE"
+    },
+    {
+        "value": 903,
+        "label": "DOCKUM AQUIFER | CROSBY"
+    },
+    {
+        "value": 177,
+        "label": "DOCKUM AQUIFER | DALLAM"
+    },
+    {
+        "value": 178,
+        "label": "DOCKUM AQUIFER | DEAF SMITH"
+    },
+    {
+        "value": 905,
+        "label": "DOCKUM AQUIFER | DICKENS"
+    },
+    {
+        "value": 179,
+        "label": "DOCKUM AQUIFER | ECTOR"
+    },
+    {
+        "value": 180,
+        "label": "DOCKUM AQUIFER | FISHER"
+    },
+    {
+        "value": 906,
+        "label": "DOCKUM AQUIFER | FLOYD"
+    },
+    {
+        "value": 181,
+        "label": "DOCKUM AQUIFER | GARZA"
+    },
+    {
+        "value": 908,
+        "label": "DOCKUM AQUIFER | HALE"
+    },
+    {
+        "value": 183,
+        "label": "DOCKUM AQUIFER | HARTLEY"
+    },
+    {
+        "value": 909,
+        "label": "DOCKUM AQUIFER | HOCKLEY"
+    },
+    {
+        "value": 184,
+        "label": "DOCKUM AQUIFER | HOWARD"
+    },
+    {
+        "value": 910,
+        "label": "DOCKUM AQUIFER | IRION"
+    },
+    {
+        "value": 185,
+        "label": "DOCKUM AQUIFER | KENT"
+    },
+    {
+        "value": 186,
+        "label": "DOCKUM AQUIFER | LOVING"
+    },
+    {
+        "value": 188,
+        "label": "DOCKUM AQUIFER | MITCHELL"
+    },
+    {
+        "value": 189,
+        "label": "DOCKUM AQUIFER | MOORE"
+    },
+    {
+        "value": 915,
+        "label": "DOCKUM AQUIFER | MOTLEY"
+    },
+    {
+        "value": 190,
+        "label": "DOCKUM AQUIFER | NOLAN"
+    },
+    {
+        "value": 191,
+        "label": "DOCKUM AQUIFER | OLDHAM"
+    },
+    {
+        "value": 916,
+        "label": "DOCKUM AQUIFER | PARMER"
+    },
+    {
+        "value": 193,
+        "label": "DOCKUM AQUIFER | POTTER"
+    },
+    {
+        "value": 194,
+        "label": "DOCKUM AQUIFER | RANDALL"
+    },
+    {
+        "value": 195,
+        "label": "DOCKUM AQUIFER | REAGAN"
+    },
+    {
+        "value": 196,
+        "label": "DOCKUM AQUIFER | REEVES"
+    },
+    {
+        "value": 197,
+        "label": "DOCKUM AQUIFER | SCURRY"
+    },
+    {
+        "value": 198,
+        "label": "DOCKUM AQUIFER | SHERMAN"
+    },
+    {
+        "value": 199,
+        "label": "DOCKUM AQUIFER | SWISHER"
+    },
+    {
+        "value": 201,
+        "label": "DOCKUM AQUIFER | UPTON"
+    },
+    {
+        "value": 202,
+        "label": "DOCKUM AQUIFER | WARD"
+    },
+    {
+        "value": 203,
+        "label": "DOCKUM AQUIFER | WINKLER"
+    },
+    {
+        "value": 1127,
+        "label": "DOW HARRIS RESERVOIR EXPANSION"
+    },
+    {
+        "value": 1232,
+        "label": "DWU MAIN STEM BALANCING RESERVOIR"
+    },
+    {
+        "value": 919,
+        "label": "EASTLAND LAKE/RESERVOIR"
+    },
+    {
+        "value": 206,
+        "label": "EDGEWOOD CITY LAKE/RESERVOIR"
+    },
+    {
+        "value": 207,
+        "label": "EDWARDS-BFZ AQUIFER | ATASCOSA"
+    },
+    {
+        "value": 208,
+        "label": "EDWARDS-BFZ AQUIFER | BELL"
+    },
+    {
+        "value": 209,
+        "label": "EDWARDS-BFZ AQUIFER | BEXAR"
+    },
+    {
+        "value": 923,
+        "label": "EDWARDS-BFZ AQUIFER | CALDWELL"
+    },
+    {
+        "value": 210,
+        "label": "EDWARDS-BFZ AQUIFER | COMAL"
+    },
+    {
+        "value": 211,
+        "label": "EDWARDS-BFZ AQUIFER | GUADALUPE"
+    },
+    {
+        "value": 212,
+        "label": "EDWARDS-BFZ AQUIFER | HAYS"
+    },
+    {
+        "value": 213,
+        "label": "EDWARDS-BFZ AQUIFER | KINNEY"
+    },
+    {
+        "value": 214,
+        "label": "EDWARDS-BFZ AQUIFER | MEDINA"
+    },
+    {
+        "value": 215,
+        "label": "EDWARDS-BFZ AQUIFER | TRAVIS"
+    },
+    {
+        "value": 216,
+        "label": "EDWARDS-BFZ AQUIFER | UVALDE"
+    },
+    {
+        "value": 217,
+        "label": "EDWARDS-BFZ AQUIFER | WILLIAMSON"
+    },
+    {
+        "value": 999,
+        "label": "EDWARDS-TRINITY-PLATEAU AND PECOS VALLEY AQUIFERS | CRANE"
+    },
+    {
+        "value": 235,
+        "label": "EDWARDS-TRINITY-PLATEAU AND PECOS VALLEY AQUIFERS | JEFF DAVIS"
+    },
+    {
+        "value": 141,
+        "label": "EDWARDS-TRINITY-PLATEAU AND PECOS VALLEY AQUIFERS | LOVING"
+    },
+    {
+        "value": 1000,
+        "label": "EDWARDS-TRINITY-PLATEAU AND PECOS VALLEY AQUIFERS | PECOS"
+    },
+    {
+        "value": 1001,
+        "label": "EDWARDS-TRINITY-PLATEAU AND PECOS VALLEY AQUIFERS | REEVES"
+    },
+    {
+        "value": 145,
+        "label": "EDWARDS-TRINITY-PLATEAU AND PECOS VALLEY AQUIFERS | WARD"
+    },
+    {
+        "value": 1002,
+        "label": "EDWARDS-TRINITY-PLATEAU AND PECOS VALLEY AQUIFERS | WINKLER"
+    },
+    {
+        "value": 220,
+        "label": "EDWARDS-TRINITY-PLATEAU AQUIFER | ANDREWS"
+    },
+    {
+        "value": 221,
+        "label": "EDWARDS-TRINITY-PLATEAU AQUIFER | BANDERA"
+    },
+    {
+        "value": 223,
+        "label": "EDWARDS-TRINITY-PLATEAU AQUIFER | BREWSTER"
+    },
+    {
+        "value": 228,
+        "label": "EDWARDS-TRINITY-PLATEAU AQUIFER | CULBERSON"
+    },
+    {
+        "value": 233,
+        "label": "EDWARDS-TRINITY-PLATEAU AQUIFER | HOWARD"
+    },
+    {
+        "value": 236,
+        "label": "EDWARDS-TRINITY-PLATEAU AQUIFER | KENDALL"
+    },
+    {
+        "value": 237,
+        "label": "EDWARDS-TRINITY-PLATEAU AQUIFER | KERR"
+    },
+    {
+        "value": 224,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | COKE"
+    },
+    {
+        "value": 225,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | CONCHO"
+    },
+    {
+        "value": 227,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | CROCKETT"
+    },
+    {
+        "value": 229,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | ECTOR"
+    },
+    {
+        "value": 230,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | EDWARDS"
+    },
+    {
+        "value": 231,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | GILLESPIE"
+    },
+    {
+        "value": 232,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | GLASSCOCK"
+    },
+    {
+        "value": 234,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | IRION"
+    },
+    {
+        "value": 238,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | KIMBLE"
+    },
+    {
+        "value": 239,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | KINNEY"
+    },
+    {
+        "value": 242,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | MCCULLOCH"
+    },
+    {
+        "value": 243,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | MENARD"
+    },
+    {
+        "value": 244,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | MIDLAND"
+    },
+    {
+        "value": 245,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | NOLAN"
+    },
+    {
+        "value": 246,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | PECOS"
+    },
+    {
+        "value": 247,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | REAGAN"
+    },
+    {
+        "value": 248,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | REAL"
+    },
+    {
+        "value": 250,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | SCHLEICHER"
+    },
+    {
+        "value": 251,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | STERLING"
+    },
+    {
+        "value": 252,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | SUTTON"
+    },
+    {
+        "value": 253,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | TAYLOR"
+    },
+    {
+        "value": 254,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | TERRELL"
+    },
+    {
+        "value": 255,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | TOM GREEN"
+    },
+    {
+        "value": 256,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | UPTON"
+    },
+    {
+        "value": 257,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | UVALDE"
+    },
+    {
+        "value": 258,
+        "label": "EDWARDS-TRINITY-PLATEAU, PECOS VALLEY, AND TRINITY AQUIFERS | VAL VERDE"
+    },
+    {
+        "value": 261,
+        "label": "ELLENBURGER-SAN SABA AQUIFER | BLANCO"
+    },
+    {
+        "value": 262,
+        "label": "ELLENBURGER-SAN SABA AQUIFER | BURNET"
+    },
+    {
+        "value": 263,
+        "label": "ELLENBURGER-SAN SABA AQUIFER | GILLESPIE"
+    },
+    {
+        "value": 937,
+        "label": "ELLENBURGER-SAN SABA AQUIFER | KERR"
+    },
+    {
+        "value": 264,
+        "label": "ELLENBURGER-SAN SABA AQUIFER | KIMBLE"
+    },
+    {
+        "value": 265,
+        "label": "ELLENBURGER-SAN SABA AQUIFER | LAMPASAS"
+    },
+    {
+        "value": 266,
+        "label": "ELLENBURGER-SAN SABA AQUIFER | LLANO"
+    },
+    {
+        "value": 267,
+        "label": "ELLENBURGER-SAN SABA AQUIFER | MASON"
+    },
+    {
+        "value": 268,
+        "label": "ELLENBURGER-SAN SABA AQUIFER | MCCULLOCH"
+    },
+    {
+        "value": 269,
+        "label": "ELLENBURGER-SAN SABA AQUIFER | MENARD"
+    },
+    {
+        "value": 270,
+        "label": "ELLENBURGER-SAN SABA AQUIFER | MILLS"
+    },
+    {
+        "value": 271,
+        "label": "ELLENBURGER-SAN SABA AQUIFER | SAN SABA"
+    },
+    {
+        "value": 273,
+        "label": "ELLISON CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 275,
+        "label": "FAIRFIELD LAKE/RESERVOIR"
+    },
+    {
+        "value": 276,
+        "label": "FARMERS CREEK/NOCONA LAKE/RESERVOIR"
+    },
+    {
+        "value": 279,
+        "label": "FORK LAKE/RESERVOIR"
+    },
+    {
+        "value": 281,
+        "label": "FORT PHANTOM HILL LAKE/RESERVOIR"
+    },
+    {
+        "value": 1069,
+        "label": "FRIO RIVER ALLUVIUM AQUIFER | REAL"
+    },
+    {
+        "value": 879,
+        "label": "GBRA LOWER BASIN OFF-CHANNEL LAKE/RESERVOIR"
+    },
+    {
+        "value": 285,
+        "label": "GIBBONS CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 288,
+        "label": "GLADEWATER LAKE/RESERVOIR"
+    },
+    {
+        "value": 940,
+        "label": "GORDON LAKE/RESERVOIR"
+    },
+    {
+        "value": 290,
+        "label": "GRAHAM/EDDLEMAN LAKE/RESERVOIR"
+    },
+    {
+        "value": 292,
+        "label": "GRAPEVINE LAKE/RESERVOIR NON-SYSTEM PORTION"
+    },
+    {
+        "value": 293,
+        "label": "GREENBELT LAKE/RESERVOIR"
+    },
+    {
+        "value": 294,
+        "label": "GREENVILLE CITY LAKE/RESERVOIR"
+    },
+    {
+        "value": 295,
+        "label": "GROESBECK OFF-CHANNEL LAKE/RESERVOIR"
+    },
+    {
+        "value": 942,
+        "label": "GUADALUPE RIVER OFF-CHANNEL LAKE/RESERVOIR"
+    },
+    {
+        "value": 661,
+        "label": "GUADALUPE RUN-OF-RIVER"
+    },
+    {
+        "value": 944,
+        "label": "GULF COAST AQUIFER ASR | VICTORIA"
+    },
+    {
+        "value": 296,
+        "label": "GULF COAST AQUIFER SYSTEM | ARANSAS"
+    },
+    {
+        "value": 297,
+        "label": "GULF COAST AQUIFER SYSTEM | AUSTIN"
+    },
+    {
+        "value": 298,
+        "label": "GULF COAST AQUIFER SYSTEM | BEE"
+    },
+    {
+        "value": 299,
+        "label": "GULF COAST AQUIFER SYSTEM | BRAZORIA"
+    },
+    {
+        "value": 301,
+        "label": "GULF COAST AQUIFER SYSTEM | BROOKS"
+    },
+    {
+        "value": 302,
+        "label": "GULF COAST AQUIFER SYSTEM | CALHOUN"
+    },
+    {
+        "value": 303,
+        "label": "GULF COAST AQUIFER SYSTEM | CAMERON"
+    },
+    {
+        "value": 304,
+        "label": "GULF COAST AQUIFER SYSTEM | CHAMBERS"
+    },
+    {
+        "value": 305,
+        "label": "GULF COAST AQUIFER SYSTEM | COLORADO"
+    },
+    {
+        "value": 306,
+        "label": "GULF COAST AQUIFER SYSTEM | DEWITT"
+    },
+    {
+        "value": 307,
+        "label": "GULF COAST AQUIFER SYSTEM | DUVAL"
+    },
+    {
+        "value": 308,
+        "label": "GULF COAST AQUIFER SYSTEM | FAYETTE"
+    },
+    {
+        "value": 309,
+        "label": "GULF COAST AQUIFER SYSTEM | FORT BEND"
+    },
+    {
+        "value": 310,
+        "label": "GULF COAST AQUIFER SYSTEM | GALVESTON"
+    },
+    {
+        "value": 311,
+        "label": "GULF COAST AQUIFER SYSTEM | GOLIAD"
+    },
+    {
+        "value": 313,
+        "label": "GULF COAST AQUIFER SYSTEM | GRIMES"
+    },
+    {
+        "value": 314,
+        "label": "GULF COAST AQUIFER SYSTEM | HARDIN"
+    },
+    {
+        "value": 315,
+        "label": "GULF COAST AQUIFER SYSTEM | HARRIS"
+    },
+    {
+        "value": 316,
+        "label": "GULF COAST AQUIFER SYSTEM | HIDALGO"
+    },
+    {
+        "value": 317,
+        "label": "GULF COAST AQUIFER SYSTEM | JACKSON"
+    },
+    {
+        "value": 318,
+        "label": "GULF COAST AQUIFER SYSTEM | JASPER"
+    },
+    {
+        "value": 319,
+        "label": "GULF COAST AQUIFER SYSTEM | JEFFERSON"
+    },
+    {
+        "value": 320,
+        "label": "GULF COAST AQUIFER SYSTEM | JIM HOGG"
+    },
+    {
+        "value": 321,
+        "label": "GULF COAST AQUIFER SYSTEM | JIM WELLS"
+    },
+    {
+        "value": 322,
+        "label": "GULF COAST AQUIFER SYSTEM | KARNES"
+    },
+    {
+        "value": 323,
+        "label": "GULF COAST AQUIFER SYSTEM | KENEDY"
+    },
+    {
+        "value": 324,
+        "label": "GULF COAST AQUIFER SYSTEM | KLEBERG"
+    },
+    {
+        "value": 325,
+        "label": "GULF COAST AQUIFER SYSTEM | LAVACA"
+    },
+    {
+        "value": 326,
+        "label": "GULF COAST AQUIFER SYSTEM | LIBERTY"
+    },
+    {
+        "value": 327,
+        "label": "GULF COAST AQUIFER SYSTEM | LIVE OAK"
+    },
+    {
+        "value": 328,
+        "label": "GULF COAST AQUIFER SYSTEM | MATAGORDA"
+    },
+    {
+        "value": 329,
+        "label": "GULF COAST AQUIFER SYSTEM | MCMULLEN"
+    },
+    {
+        "value": 330,
+        "label": "GULF COAST AQUIFER SYSTEM | MONTGOMERY"
+    },
+    {
+        "value": 331,
+        "label": "GULF COAST AQUIFER SYSTEM | NEWTON"
+    },
+    {
+        "value": 332,
+        "label": "GULF COAST AQUIFER SYSTEM | NUECES"
+    },
+    {
+        "value": 333,
+        "label": "GULF COAST AQUIFER SYSTEM | ORANGE"
+    },
+    {
+        "value": 334,
+        "label": "GULF COAST AQUIFER SYSTEM | POLK"
+    },
+    {
+        "value": 335,
+        "label": "GULF COAST AQUIFER SYSTEM | REFUGIO"
+    },
+    {
+        "value": 337,
+        "label": "GULF COAST AQUIFER SYSTEM | SAN JACINTO"
+    },
+    {
+        "value": 338,
+        "label": "GULF COAST AQUIFER SYSTEM | SAN PATRICIO"
+    },
+    {
+        "value": 339,
+        "label": "GULF COAST AQUIFER SYSTEM | STARR"
+    },
+    {
+        "value": 1104,
+        "label": "GULF COAST AQUIFER SYSTEM | TRINITY"
+    },
+    {
+        "value": 341,
+        "label": "GULF COAST AQUIFER SYSTEM | TYLER"
+    },
+    {
+        "value": 342,
+        "label": "GULF COAST AQUIFER SYSTEM | VICTORIA"
+    },
+    {
+        "value": 343,
+        "label": "GULF COAST AQUIFER SYSTEM | WALKER"
+    },
+    {
+        "value": 344,
+        "label": "GULF COAST AQUIFER SYSTEM | WALLER"
+    },
+    {
+        "value": 345,
+        "label": "GULF COAST AQUIFER SYSTEM | WASHINGTON"
+    },
+    {
+        "value": 346,
+        "label": "GULF COAST AQUIFER SYSTEM | WEBB"
+    },
+    {
+        "value": 347,
+        "label": "GULF COAST AQUIFER SYSTEM | WHARTON"
+    },
+    {
+        "value": 348,
+        "label": "GULF COAST AQUIFER SYSTEM | WILLACY"
+    },
+    {
+        "value": 1105,
+        "label": "GULF COAST AQUIFER SYSTEM ASR (CORPUS CHRISTI) | NUECES"
+    },
+    {
+        "value": 355,
+        "label": "GULF OF MEXICO"
+    },
+    {
+        "value": 358,
+        "label": "HICKORY AQUIFER | BLANCO"
+    },
+    {
+        "value": 359,
+        "label": "HICKORY AQUIFER | BURNET"
+    },
+    {
+        "value": 360,
+        "label": "HICKORY AQUIFER | CONCHO"
+    },
+    {
+        "value": 361,
+        "label": "HICKORY AQUIFER | GILLESPIE"
+    },
+    {
+        "value": 947,
+        "label": "HICKORY AQUIFER | KIMBLE"
+    },
+    {
+        "value": 362,
+        "label": "HICKORY AQUIFER | LLANO"
+    },
+    {
+        "value": 363,
+        "label": "HICKORY AQUIFER | MASON"
+    },
+    {
+        "value": 364,
+        "label": "HICKORY AQUIFER | MCCULLOCH"
+    },
+    {
+        "value": 365,
+        "label": "HICKORY AQUIFER | MENARD"
+    },
+    {
+        "value": 367,
+        "label": "HICKORY AQUIFER | SAN SABA"
+    },
+    {
+        "value": 368,
+        "label": "HIGHLAND LAKES LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 370,
+        "label": "HORDS CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 371,
+        "label": "HOUSTON COUNTY LAKE/RESERVOIR"
+    },
+    {
+        "value": 372,
+        "label": "HOUSTON LAKE/RESERVOIR"
+    },
+    {
+        "value": 373,
+        "label": "HUBBARD CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 374,
+        "label": "HUBERT H MOSS LAKE/RESERVOIR"
+    },
+    {
+        "value": 375,
+        "label": "HUECO-MESILLA BOLSON AQUIFER | EL PASO"
+    },
+    {
+        "value": 376,
+        "label": "HUECO-MESILLA BOLSON AQUIFER | HUDSPETH"
+    },
+    {
+        "value": 951,
+        "label": "HUECO-MESILLA BOLSON AQUIFER ASR | EL PASO"
+    },
+    {
+        "value": 377,
+        "label": "IGNEOUS AQUIFER | BREWSTER"
+    },
+    {
+        "value": 378,
+        "label": "IGNEOUS AQUIFER | CULBERSON"
+    },
+    {
+        "value": 379,
+        "label": "IGNEOUS AQUIFER | JEFF DAVIS"
+    },
+    {
+        "value": 380,
+        "label": "IGNEOUS AQUIFER | PRESIDIO"
+    },
+    {
+        "value": 1107,
+        "label": "IGNEOUS AQUIFER | REEVES"
+    },
+    {
+        "value": 391,
+        "label": "JACKSONVILLE LAKE/RESERVOIR"
+    },
+    {
+        "value": 392,
+        "label": "JOE POOL LAKE/RESERVOIR"
+    },
+    {
+        "value": 393,
+        "label": "JOHNSON CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 394,
+        "label": "KEMP-DIVERSION LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 397,
+        "label": "KURTH LAKE/RESERVOIR"
+    },
+    {
+        "value": 398,
+        "label": "LAKE 7 (JIM BERTRAM) LAKE/RESERVOIR"
+    },
+    {
+        "value": 399,
+        "label": "LAKE CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 400,
+        "label": "LAKE NACONICHE LAKE/RESERVOIR"
+    },
+    {
+        "value": 401,
+        "label": "LANGFORD LAKE/RESERVOIR"
+    },
+    {
+        "value": 402,
+        "label": "LAVACA RIVER OFF-CHANNEL LAKE/RESERVOIR"
+    },
+    {
+        "value": 956,
+        "label": "LCRA NEW OFF-CHANNEL RESERVOIR"
+    },
+    {
+        "value": 404,
+        "label": "LEON LAKE/RESERVOIR"
+    },
+    {
+        "value": 958,
+        "label": "LEONA GRAVEL AQUIFER | MEDINA"
+    },
+    {
+        "value": 959,
+        "label": "LEONA GRAVEL AQUIFER | UVALDE"
+    },
+    {
+        "value": 405,
+        "label": "LEWISVILLE LAKE/RESERVOIR NON-SYSTEM PORTION"
+    },
+    {
+        "value": 406,
+        "label": "LIPAN AQUIFER | CONCHO"
+    },
+    {
+        "value": 961,
+        "label": "LIPAN AQUIFER | IRION"
+    },
+    {
+        "value": 407,
+        "label": "LIPAN AQUIFER | RUNNELS"
+    },
+    {
+        "value": 408,
+        "label": "LIPAN AQUIFER | TOM GREEN"
+    },
+    {
+        "value": 830,
+        "label": "LITTLE WICHITA RIVER LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 410,
+        "label": "LIVINGSTON-WALLISVILLE LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 412,
+        "label": "LOCAL SURFACE WATER SUPPLY"
+    },
+    {
+        "value": 413,
+        "label": "LOMA LAKE/RESERVOIR"
+    },
+    {
+        "value": 414,
+        "label": "LOST CREEK-JACKSBORO LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 963,
+        "label": "LYTLE LAKE/RESERVOIR"
+    },
+    {
+        "value": 416,
+        "label": "MACKENZIE LAKE/RESERVOIR"
+    },
+    {
+        "value": 417,
+        "label": "MARATHON AQUIFER | BREWSTER"
+    },
+    {
+        "value": 419,
+        "label": "MARBLE FALLS AQUIFER | BURNET"
+    },
+    {
+        "value": 964,
+        "label": "MARBLE FALLS AQUIFER | KIMBLE"
+    },
+    {
+        "value": 420,
+        "label": "MARBLE FALLS AQUIFER | LAMPASAS"
+    },
+    {
+        "value": 422,
+        "label": "MARBLE FALLS AQUIFER | MCCULLOCH"
+    },
+    {
+        "value": 423,
+        "label": "MARBLE FALLS AQUIFER | SAN SABA"
+    },
+    {
+        "value": 424,
+        "label": "MARTIN LAKE/RESERVOIR"
+    },
+    {
+        "value": 425,
+        "label": "MARVIN NICHOLS LAKE/RESERVOIR"
+    },
+    {
+        "value": 965,
+        "label": "MCCARTY LAKE/RESERVOIR"
+    },
+    {
+        "value": 427,
+        "label": "MEREDITH LAKE/RESERVOIR"
+    },
+    {
+        "value": 428,
+        "label": "MEXIA LAKE/RESERVOIR"
+    },
+    {
+        "value": 429,
+        "label": "MILL CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 430,
+        "label": "MILLERS CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 433,
+        "label": "MONTICELLO LAKE/RESERVOIR"
+    },
+    {
+        "value": 434,
+        "label": "MOUNTAIN CREEK LAKE/RESERVOIR | COLORADO"
+    },
+    {
+        "value": 435,
+        "label": "MOUNTAIN CREEK LAKE/RESERVOIR | TRINITY"
+    },
+    {
+        "value": 436,
+        "label": "MUENSTER LAKE/RESERVOIR"
+    },
+    {
+        "value": 437,
+        "label": "MURVAUL LAKE/RESERVOIR"
+    },
+    {
+        "value": 438,
+        "label": "NACATOCH AQUIFER | BOWIE"
+    },
+    {
+        "value": 439,
+        "label": "NACATOCH AQUIFER | DELTA"
+    },
+    {
+        "value": 442,
+        "label": "NACATOCH AQUIFER | HOPKINS"
+    },
+    {
+        "value": 443,
+        "label": "NACATOCH AQUIFER | HUNT"
+    },
+    {
+        "value": 444,
+        "label": "NACATOCH AQUIFER | KAUFMAN"
+    },
+    {
+        "value": 446,
+        "label": "NACATOCH AQUIFER | NAVARRO"
+    },
+    {
+        "value": 448,
+        "label": "NACATOCH AQUIFER | RED RIVER"
+    },
+    {
+        "value": 451,
+        "label": "NACOGDOCHES LAKE/RESERVOIR"
+    },
+    {
+        "value": 453,
+        "label": "NAVARRO MILLS LAKE/RESERVOIR"
+    },
+    {
+        "value": 969,
+        "label": "NAVASOTA RIVER ALLUVIUM AQUIFER | GRIMES"
+    },
+    {
+        "value": 1138,
+        "label": "NCTMWA LAKE CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 382,
+        "label": "NECHES INDIRECT REUSE"
+    },
+    {
+        "value": 663,
+        "label": "NECHES RUN-OF-RIVER"
+    },
+    {
+        "value": 664,
+        "label": "NECHES-TRINITY RUN-OF-RIVER"
+    },
+    {
+        "value": 1175,
+        "label": "NEW LAKE MART LAKE/RESERVOIR"
+    },
+    {
+        "value": 1139,
+        "label": "NEW MARLIN CITY LAKE/RESERVOIR"
+    },
+    {
+        "value": 1137,
+        "label": "NEW THROCKMORTON LAKE/RESERVOIR"
+    },
+    {
+        "value": 1068,
+        "label": "NORTH TEXAS MWD LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 1129,
+        "label": "NUECES LOCAL BALANCING RESERVOIR"
+    },
+    {
+        "value": 970,
+        "label": "NUECES RIVER ALLUVIUM AQUIFER | EDWARDS"
+    },
+    {
+        "value": 971,
+        "label": "NUECES RIVER ALLUVIUM AQUIFER | REAL"
+    },
+    {
+        "value": 665,
+        "label": "NUECES RUN-OF-RIVER"
+    },
+    {
+        "value": 1064,
+        "label": "NUECES-RIO GRANDE INDIRECT REUSE"
+    },
+    {
+        "value": 666,
+        "label": "NUECES-RIO GRANDE RUN-OF-RIVER"
+    },
+    {
+        "value": 1124,
+        "label": "NUECES-RIO GRANDE RUN-OF-RIVER STORAGE (BANCO MORALES)"
+    },
+    {
+        "value": 457,
+        "label": "O' THE PINES LAKE/RESERVOIR"
+    },
+    {
+        "value": 458,
+        "label": "OAK CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 460,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | ANDREWS"
+    },
+    {
+        "value": 462,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | BAILEY"
+    },
+    {
+        "value": 463,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | BORDEN"
+    },
+    {
+        "value": 464,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | BRISCOE"
+    },
+    {
+        "value": 466,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | CASTRO"
+    },
+    {
+        "value": 467,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | COCHRAN"
+    },
+    {
+        "value": 469,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | CROSBY"
+    },
+    {
+        "value": 471,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | DAWSON"
+    },
+    {
+        "value": 472,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | DEAF SMITH"
+    },
+    {
+        "value": 476,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | FLOYD"
+    },
+    {
+        "value": 477,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | GAINES"
+    },
+    {
+        "value": 478,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | GARZA"
+    },
+    {
+        "value": 481,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | HALE"
+    },
+    {
+        "value": 485,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | HOCKLEY"
+    },
+    {
+        "value": 486,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | HOWARD"
+    },
+    {
+        "value": 488,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | LAMB"
+    },
+    {
+        "value": 490,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | LUBBOCK"
+    },
+    {
+        "value": 491,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | LYNN"
+    },
+    {
+        "value": 492,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | MARTIN"
+    },
+    {
+        "value": 498,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | PARMER"
+    },
+    {
+        "value": 503,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | SWISHER"
+    },
+    {
+        "value": 504,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | TERRY"
+    },
+    {
+        "value": 506,
+        "label": "OGALLALA AND EDWARDS-TRINITY-HIGH PLAINS AQUIFERS | YOAKUM"
+    },
+    {
+        "value": 980,
+        "label": "OGALLALA AND RITA BLANCA AQUIFERS | DALLAM"
+    },
+    {
+        "value": 981,
+        "label": "OGALLALA AND RITA BLANCA AQUIFERS | HARTLEY"
+    },
+    {
+        "value": 461,
+        "label": "OGALLALA AQUIFER | ARMSTRONG"
+    },
+    {
+        "value": 465,
+        "label": "OGALLALA AQUIFER | CARSON"
+    },
+    {
+        "value": 473,
+        "label": "OGALLALA AQUIFER | DICKENS"
+    },
+    {
+        "value": 474,
+        "label": "OGALLALA AQUIFER | DONLEY"
+    },
+    {
+        "value": 475,
+        "label": "OGALLALA AQUIFER | ECTOR"
+    },
+    {
+        "value": 479,
+        "label": "OGALLALA AQUIFER | GLASSCOCK"
+    },
+    {
+        "value": 480,
+        "label": "OGALLALA AQUIFER | GRAY"
+    },
+    {
+        "value": 482,
+        "label": "OGALLALA AQUIFER | HANSFORD"
+    },
+    {
+        "value": 484,
+        "label": "OGALLALA AQUIFER | HEMPHILL"
+    },
+    {
+        "value": 487,
+        "label": "OGALLALA AQUIFER | HUTCHINSON"
+    },
+    {
+        "value": 489,
+        "label": "OGALLALA AQUIFER | LIPSCOMB"
+    },
+    {
+        "value": 493,
+        "label": "OGALLALA AQUIFER | MIDLAND"
+    },
+    {
+        "value": 494,
+        "label": "OGALLALA AQUIFER | MOORE"
+    },
+    {
+        "value": 495,
+        "label": "OGALLALA AQUIFER | MOTLEY"
+    },
+    {
+        "value": 496,
+        "label": "OGALLALA AQUIFER | OCHILTREE"
+    },
+    {
+        "value": 497,
+        "label": "OGALLALA AQUIFER | OLDHAM"
+    },
+    {
+        "value": 499,
+        "label": "OGALLALA AQUIFER | POTTER"
+    },
+    {
+        "value": 500,
+        "label": "OGALLALA AQUIFER | RANDALL"
+    },
+    {
+        "value": 501,
+        "label": "OGALLALA AQUIFER | ROBERTS"
+    },
+    {
+        "value": 502,
+        "label": "OGALLALA AQUIFER | SHERMAN"
+    },
+    {
+        "value": 505,
+        "label": "OGALLALA AQUIFER | WHEELER"
+    },
+    {
+        "value": 1112,
+        "label": "OGALLALA AQUIFER ASR | GRAY"
+    },
+    {
+        "value": 974,
+        "label": "OGALLALA AQUIFER ASR | HALE"
+    },
+    {
+        "value": 1113,
+        "label": "OGALLALA AQUIFER ASR | RANDALL"
+    },
+    {
+        "value": 977,
+        "label": "OGALLALA AQUIFER ASR | ROBERTS"
+    },
+    {
+        "value": 507,
+        "label": "OH IVIE LAKE/RESERVOIR NON-SYSTEM PORTION"
+    },
+    {
+        "value": 509,
+        "label": "OLNEY-COOPER LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 510,
+        "label": "OTHER AQUIFER | ANDERSON"
+    },
+    {
+        "value": 511,
+        "label": "OTHER AQUIFER | ANGELINA"
+    },
+    {
+        "value": 513,
+        "label": "OTHER AQUIFER | ARMSTRONG"
+    },
+    {
+        "value": 514,
+        "label": "OTHER AQUIFER | BASTROP"
+    },
+    {
+        "value": 515,
+        "label": "OTHER AQUIFER | BORDEN"
+    },
+    {
+        "value": 518,
+        "label": "OTHER AQUIFER | BREWSTER"
+    },
+    {
+        "value": 519,
+        "label": "OTHER AQUIFER | BRISCOE"
+    },
+    {
+        "value": 521,
+        "label": "OTHER AQUIFER | BURNET"
+    },
+    {
+        "value": 984,
+        "label": "OTHER AQUIFER | CHEROKEE"
+    },
+    {
+        "value": 522,
+        "label": "OTHER AQUIFER | CHILDRESS"
+    },
+    {
+        "value": 524,
+        "label": "OTHER AQUIFER | COKE"
+    },
+    {
+        "value": 525,
+        "label": "OTHER AQUIFER | COLEMAN"
+    },
+    {
+        "value": 527,
+        "label": "OTHER AQUIFER | COLLINGSWORTH"
+    },
+    {
+        "value": 529,
+        "label": "OTHER AQUIFER | CONCHO"
+    },
+    {
+        "value": 531,
+        "label": "OTHER AQUIFER | COTTLE"
+    },
+    {
+        "value": 985,
+        "label": "OTHER AQUIFER | CROSBY"
+    },
+    {
+        "value": 535,
+        "label": "OTHER AQUIFER | DICKENS"
+    },
+    {
+        "value": 536,
+        "label": "OTHER AQUIFER | DONLEY"
+    },
+    {
+        "value": 538,
+        "label": "OTHER AQUIFER | EL PASO"
+    },
+    {
+        "value": 540,
+        "label": "OTHER AQUIFER | FANNIN"
+    },
+    {
+        "value": 541,
+        "label": "OTHER AQUIFER | FAYETTE"
+    },
+    {
+        "value": 986,
+        "label": "OTHER AQUIFER | FLOYD"
+    },
+    {
+        "value": 987,
+        "label": "OTHER AQUIFER | FOARD"
+    },
+    {
+        "value": 988,
+        "label": "OTHER AQUIFER | GARZA"
+    },
+    {
+        "value": 544,
+        "label": "OTHER AQUIFER | HALL"
+    },
+    {
+        "value": 990,
+        "label": "OTHER AQUIFER | HARDEMAN"
+    },
+    {
+        "value": 545,
+        "label": "OTHER AQUIFER | HENDERSON"
+    },
+    {
+        "value": 548,
+        "label": "OTHER AQUIFER | HOUSTON"
+    },
+    {
+        "value": 549,
+        "label": "OTHER AQUIFER | HUDSPETH"
+    },
+    {
+        "value": 555,
+        "label": "OTHER AQUIFER | KING"
+    },
+    {
+        "value": 557,
+        "label": "OTHER AQUIFER | LLANO"
+    },
+    {
+        "value": 1114,
+        "label": "OTHER AQUIFER | MASON"
+    },
+    {
+        "value": 560,
+        "label": "OTHER AQUIFER | MCCULLOCH"
+    },
+    {
+        "value": 562,
+        "label": "OTHER AQUIFER | MITCHELL"
+    },
+    {
+        "value": 564,
+        "label": "OTHER AQUIFER | MOTLEY"
+    },
+    {
+        "value": 565,
+        "label": "OTHER AQUIFER | NACOGDOCHES"
+    },
+    {
+        "value": 1115,
+        "label": "OTHER AQUIFER | NAVARRO"
+    },
+    {
+        "value": 569,
+        "label": "OTHER AQUIFER | PECOS"
+    },
+    {
+        "value": 575,
+        "label": "OTHER AQUIFER | RUNNELS"
+    },
+    {
+        "value": 991,
+        "label": "OTHER AQUIFER | RUSK"
+    },
+    {
+        "value": 576,
+        "label": "OTHER AQUIFER | SABINE"
+    },
+    {
+        "value": 577,
+        "label": "OTHER AQUIFER | SAN AUGUSTINE"
+    },
+    {
+        "value": 578,
+        "label": "OTHER AQUIFER | SCURRY"
+    },
+    {
+        "value": 579,
+        "label": "OTHER AQUIFER | SHACKELFORD"
+    },
+    {
+        "value": 580,
+        "label": "OTHER AQUIFER | SMITH"
+    },
+    {
+        "value": 582,
+        "label": "OTHER AQUIFER | STEPHENS"
+    },
+    {
+        "value": 587,
+        "label": "OTHER AQUIFER | TRAVIS"
+    },
+    {
+        "value": 588,
+        "label": "OTHER AQUIFER | TRINITY"
+    },
+    {
+        "value": 592,
+        "label": "OTHER AQUIFER | WHEELER"
+    },
+    {
+        "value": 594,
+        "label": "OTHER AQUIFER | WILBARGER"
+    },
+    {
+        "value": 595,
+        "label": "OTHER AQUIFER | WILLIAMSON"
+    },
+    {
+        "value": 600,
+        "label": "PALESTINE LAKE/RESERVOIR"
+    },
+    {
+        "value": 602,
+        "label": "PALO PINTO LAKE/RESERVOIR"
+    },
+    {
+        "value": 603,
+        "label": "PAT CLEBURNE LAKE/RESERVOIR"
+    },
+    {
+        "value": 604,
+        "label": "PAT MAYSE LAKE/RESERVOIR"
+    },
+    {
+        "value": 138,
+        "label": "PECOS VALLEY AQUIFER | ANDREWS"
+    },
+    {
+        "value": 607,
+        "label": "PINKSTON LAKE/RESERVOIR"
+    },
+    {
+        "value": 609,
+        "label": "QUEEN CITY AQUIFER | ANDERSON"
+    },
+    {
+        "value": 611,
+        "label": "QUEEN CITY AQUIFER | ATASCOSA"
+    },
+    {
+        "value": 612,
+        "label": "QUEEN CITY AQUIFER | BASTROP"
+    },
+    {
+        "value": 613,
+        "label": "QUEEN CITY AQUIFER | BRAZOS"
+    },
+    {
+        "value": 614,
+        "label": "QUEEN CITY AQUIFER | BURLESON"
+    },
+    {
+        "value": 615,
+        "label": "QUEEN CITY AQUIFER | CALDWELL"
+    },
+    {
+        "value": 616,
+        "label": "QUEEN CITY AQUIFER | CAMP"
+    },
+    {
+        "value": 617,
+        "label": "QUEEN CITY AQUIFER | CASS"
+    },
+    {
+        "value": 618,
+        "label": "QUEEN CITY AQUIFER | CHEROKEE"
+    },
+    {
+        "value": 619,
+        "label": "QUEEN CITY AQUIFER | FAYETTE"
+    },
+    {
+        "value": 621,
+        "label": "QUEEN CITY AQUIFER | FRIO"
+    },
+    {
+        "value": 622,
+        "label": "QUEEN CITY AQUIFER | GONZALES"
+    },
+    {
+        "value": 625,
+        "label": "QUEEN CITY AQUIFER | HARRISON"
+    },
+    {
+        "value": 626,
+        "label": "QUEEN CITY AQUIFER | HENDERSON"
+    },
+    {
+        "value": 627,
+        "label": "QUEEN CITY AQUIFER | HOUSTON"
+    },
+    {
+        "value": 628,
+        "label": "QUEEN CITY AQUIFER | LA SALLE"
+    },
+    {
+        "value": 629,
+        "label": "QUEEN CITY AQUIFER | LEE"
+    },
+    {
+        "value": 630,
+        "label": "QUEEN CITY AQUIFER | LEON"
+    },
+    {
+        "value": 631,
+        "label": "QUEEN CITY AQUIFER | MADISON"
+    },
+    {
+        "value": 632,
+        "label": "QUEEN CITY AQUIFER | MARION"
+    },
+    {
+        "value": 633,
+        "label": "QUEEN CITY AQUIFER | MCMULLEN"
+    },
+    {
+        "value": 634,
+        "label": "QUEEN CITY AQUIFER | MILAM"
+    },
+    {
+        "value": 635,
+        "label": "QUEEN CITY AQUIFER | MORRIS"
+    },
+    {
+        "value": 636,
+        "label": "QUEEN CITY AQUIFER | NACOGDOCHES"
+    },
+    {
+        "value": 637,
+        "label": "QUEEN CITY AQUIFER | ROBERTSON"
+    },
+    {
+        "value": 638,
+        "label": "QUEEN CITY AQUIFER | RUSK"
+    },
+    {
+        "value": 639,
+        "label": "QUEEN CITY AQUIFER | SMITH"
+    },
+    {
+        "value": 640,
+        "label": "QUEEN CITY AQUIFER | UPSHUR"
+    },
+    {
+        "value": 641,
+        "label": "QUEEN CITY AQUIFER | VAN ZANDT"
+    },
+    {
+        "value": 642,
+        "label": "QUEEN CITY AQUIFER | WALKER"
+    },
+    {
+        "value": 643,
+        "label": "QUEEN CITY AQUIFER | WILSON"
+    },
+    {
+        "value": 644,
+        "label": "QUEEN CITY AQUIFER | WOOD"
+    },
+    {
+        "value": 1067,
+        "label": "RAINWATER HARVESTING"
+    },
+    {
+        "value": 646,
+        "label": "RALPH HALL LAKE/RESERVOIR"
+    },
+    {
+        "value": 647,
+        "label": "RANDELL LAKE/RESERVOIR"
+    },
+    {
+        "value": 648,
+        "label": "RAY HUBBARD LAKE/RESERVOIR"
+    },
+    {
+        "value": 649,
+        "label": "RAY ROBERTS LAKE/RESERVOIR NON-SYSTEM PORTION"
+    },
+    {
+        "value": 650,
+        "label": "RAY ROBERTS-LEWISVILLE-GRAPEVINE LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 651,
+        "label": "RED BLUFF LAKE/RESERVOIR"
+    },
+    {
+        "value": 386,
+        "label": "RED INDIRECT REUSE"
+    },
+    {
+        "value": 667,
+        "label": "RED RUN-OF-RIVER"
+    },
+    {
+        "value": 1015,
+        "label": "REGULATING LAKE/RESERVOIR"
+    },
+    {
+        "value": 1075,
+        "label": "RHINES LAKE/RESERVOIR"
+    },
+    {
+        "value": 653,
+        "label": "RINGGOLD LAKE/RESERVOIR"
+    },
+    {
+        "value": 387,
+        "label": "RIO GRANDE INDIRECT REUSE"
+    },
+    {
+        "value": 668,
+        "label": "RIO GRANDE RUN-OF-RIVER"
+    },
+    {
+        "value": 679,
+        "label": "RUSK CITY LAKE/RESERVOIR"
+    },
+    {
+        "value": 680,
+        "label": "RUSTLER AQUIFER | CULBERSON"
+    },
+    {
+        "value": 1018,
+        "label": "RUSTLER AQUIFER | LOVING"
+    },
+    {
+        "value": 681,
+        "label": "RUSTLER AQUIFER | PECOS"
+    },
+    {
+        "value": 682,
+        "label": "RUSTLER AQUIFER | REEVES"
+    },
+    {
+        "value": 953,
+        "label": "SABINE INDIRECT REUSE"
+    },
+    {
+        "value": 1177,
+        "label": "SABINE RIVER OFF-CHANNEL RESERVOIR"
+    },
+    {
+        "value": 669,
+        "label": "SABINE RUN-OF-RIVER"
+    },
+    {
+        "value": 683,
+        "label": "SAM RAYBURN-STEINHAGEN LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 1020,
+        "label": "SAN ANGELO LAKES LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 1125,
+        "label": "SAN ANTONIO INDIRECT REUSE"
+    },
+    {
+        "value": 670,
+        "label": "SAN ANTONIO RUN-OF-RIVER"
+    },
+    {
+        "value": 671,
+        "label": "SAN ANTONIO-NUECES RUN-OF-RIVER"
+    },
+    {
+        "value": 684,
+        "label": "SAN AUGUSTINE LAKE/RESERVOIR"
+    },
+    {
+        "value": 388,
+        "label": "SAN JACINTO INDIRECT REUSE"
+    },
+    {
+        "value": 672,
+        "label": "SAN JACINTO RUN-OF-RIVER"
+    },
+    {
+        "value": 673,
+        "label": "SAN JACINTO-BRAZOS RUN-OF-RIVER"
+    },
+    {
+        "value": 1119,
+        "label": "SAN MARCOS RIVER ALLUVIUM AQUIFER | CALDWELL"
+    },
+    {
+        "value": 685,
+        "label": "SANTA ROSA LAKE/RESERVOIR"
+    },
+    {
+        "value": 686,
+        "label": "SEYMOUR AQUIFER | BAYLOR"
+    },
+    {
+        "value": 687,
+        "label": "SEYMOUR AQUIFER | BRISCOE"
+    },
+    {
+        "value": 688,
+        "label": "SEYMOUR AQUIFER | CHILDRESS"
+    },
+    {
+        "value": 689,
+        "label": "SEYMOUR AQUIFER | CLAY"
+    },
+    {
+        "value": 690,
+        "label": "SEYMOUR AQUIFER | COLLINGSWORTH"
+    },
+    {
+        "value": 694,
+        "label": "SEYMOUR AQUIFER | FISHER"
+    },
+    {
+        "value": 695,
+        "label": "SEYMOUR AQUIFER | FOARD"
+    },
+    {
+        "value": 696,
+        "label": "SEYMOUR AQUIFER | HALL"
+    },
+    {
+        "value": 697,
+        "label": "SEYMOUR AQUIFER | HARDEMAN"
+    },
+    {
+        "value": 698,
+        "label": "SEYMOUR AQUIFER | HASKELL"
+    },
+    {
+        "value": 699,
+        "label": "SEYMOUR AQUIFER | JONES"
+    },
+    {
+        "value": 700,
+        "label": "SEYMOUR AQUIFER | KENT"
+    },
+    {
+        "value": 701,
+        "label": "SEYMOUR AQUIFER | KNOX"
+    },
+    {
+        "value": 702,
+        "label": "SEYMOUR AQUIFER | MOTLEY"
+    },
+    {
+        "value": 703,
+        "label": "SEYMOUR AQUIFER | STONEWALL"
+    },
+    {
+        "value": 1024,
+        "label": "SEYMOUR AQUIFER | THROCKMORTON"
+    },
+    {
+        "value": 705,
+        "label": "SEYMOUR AQUIFER | WICHITA"
+    },
+    {
+        "value": 706,
+        "label": "SEYMOUR AQUIFER | WILBARGER"
+    },
+    {
+        "value": 1025,
+        "label": "SEYMOUR AQUIFER | YOUNG"
+    },
+    {
+        "value": 1026,
+        "label": "SIMSBORO AQUIFER ASR | BRAZOS"
+    },
+    {
+        "value": 1036,
+        "label": "SPARTA AND QUEEN CITY AQUIFER ASR | BRAZOS"
+    },
+    {
+        "value": 708,
+        "label": "SPARTA AQUIFER | ANDERSON"
+    },
+    {
+        "value": 709,
+        "label": "SPARTA AQUIFER | ANGELINA"
+    },
+    {
+        "value": 710,
+        "label": "SPARTA AQUIFER | ATASCOSA"
+    },
+    {
+        "value": 711,
+        "label": "SPARTA AQUIFER | BASTROP"
+    },
+    {
+        "value": 712,
+        "label": "SPARTA AQUIFER | BRAZOS"
+    },
+    {
+        "value": 713,
+        "label": "SPARTA AQUIFER | BURLESON"
+    },
+    {
+        "value": 714,
+        "label": "SPARTA AQUIFER | CHEROKEE"
+    },
+    {
+        "value": 715,
+        "label": "SPARTA AQUIFER | FAYETTE"
+    },
+    {
+        "value": 716,
+        "label": "SPARTA AQUIFER | FRIO"
+    },
+    {
+        "value": 717,
+        "label": "SPARTA AQUIFER | GONZALES"
+    },
+    {
+        "value": 719,
+        "label": "SPARTA AQUIFER | HOUSTON"
+    },
+    {
+        "value": 720,
+        "label": "SPARTA AQUIFER | LA SALLE"
+    },
+    {
+        "value": 721,
+        "label": "SPARTA AQUIFER | LEE"
+    },
+    {
+        "value": 722,
+        "label": "SPARTA AQUIFER | LEON"
+    },
+    {
+        "value": 723,
+        "label": "SPARTA AQUIFER | MADISON"
+    },
+    {
+        "value": 725,
+        "label": "SPARTA AQUIFER | NACOGDOCHES"
+    },
+    {
+        "value": 726,
+        "label": "SPARTA AQUIFER | ROBERTSON"
+    },
+    {
+        "value": 727,
+        "label": "SPARTA AQUIFER | SABINE"
+    },
+    {
+        "value": 728,
+        "label": "SPARTA AQUIFER | SAN AUGUSTINE"
+    },
+    {
+        "value": 731,
+        "label": "SPARTA AQUIFER | WILSON"
+    },
+    {
+        "value": 732,
+        "label": "SQUAW CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 733,
+        "label": "STAMFORD LAKE/RESERVOIR"
+    },
+    {
+        "value": 1077,
+        "label": "STPNOC LAKE/RESERVOIR"
+    },
+    {
+        "value": 1037,
+        "label": "STRAWN LAKE/RESERVOIR"
+    },
+    {
+        "value": 734,
+        "label": "STRIKER LAKE/RESERVOIR"
+    },
+    {
+        "value": 389,
+        "label": "SULPHUR INDIRECT REUSE"
+    },
+    {
+        "value": 674,
+        "label": "SULPHUR RUN-OF-RIVER"
+    },
+    {
+        "value": 735,
+        "label": "SULPHUR SPRINGS LAKE/RESERVOIR"
+    },
+    {
+        "value": 737,
+        "label": "TANKERSLEY LAKE/RESERVOIR"
+    },
+    {
+        "value": 738,
+        "label": "TAWAKONI LAKE/RESERVOIR"
+    },
+    {
+        "value": 740,
+        "label": "TEHUACANA LAKE/RESERVOIR"
+    },
+    {
+        "value": 742,
+        "label": "TEXANA LAKE/RESERVOIR"
+    },
+    {
+        "value": 744,
+        "label": "TEXOMA LAKE/RESERVOIR NON-SYSTEM PORTION"
+    },
+    {
+        "value": 746,
+        "label": "THROCKMORTON LAKE/RESERVOIR"
+    },
+    {
+        "value": 747,
+        "label": "TIMPSON LAKE/RESERVOIR"
+    },
+    {
+        "value": 748,
+        "label": "TOLEDO BEND LAKE/RESERVOIR"
+    },
+    {
+        "value": 1049,
+        "label": "TRADINGHOUSE CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 752,
+        "label": "TRINIDAD LAKE/RESERVOIR"
+    },
+    {
+        "value": 1039,
+        "label": "TRINITY AND/OR BRACKISH EDWARDS AQUIFER ASR | COMAL"
+    },
+    {
+        "value": 753,
+        "label": "TRINITY AQUIFER | BANDERA"
+    },
+    {
+        "value": 1179,
+        "label": "TRINITY AQUIFER | BASTROP"
+    },
+    {
+        "value": 755,
+        "label": "TRINITY AQUIFER | BELL"
+    },
+    {
+        "value": 756,
+        "label": "TRINITY AQUIFER | BEXAR"
+    },
+    {
+        "value": 757,
+        "label": "TRINITY AQUIFER | BLANCO"
+    },
+    {
+        "value": 758,
+        "label": "TRINITY AQUIFER | BOSQUE"
+    },
+    {
+        "value": 759,
+        "label": "TRINITY AQUIFER | BROWN"
+    },
+    {
+        "value": 760,
+        "label": "TRINITY AQUIFER | BURNET"
+    },
+    {
+        "value": 761,
+        "label": "TRINITY AQUIFER | CALDWELL"
+    },
+    {
+        "value": 762,
+        "label": "TRINITY AQUIFER | CALLAHAN"
+    },
+    {
+        "value": 763,
+        "label": "TRINITY AQUIFER | COLLIN"
+    },
+    {
+        "value": 764,
+        "label": "TRINITY AQUIFER | COMAL"
+    },
+    {
+        "value": 765,
+        "label": "TRINITY AQUIFER | COMANCHE"
+    },
+    {
+        "value": 766,
+        "label": "TRINITY AQUIFER | COOKE"
+    },
+    {
+        "value": 767,
+        "label": "TRINITY AQUIFER | CORYELL"
+    },
+    {
+        "value": 768,
+        "label": "TRINITY AQUIFER | DALLAS"
+    },
+    {
+        "value": 769,
+        "label": "TRINITY AQUIFER | DELTA"
+    },
+    {
+        "value": 770,
+        "label": "TRINITY AQUIFER | DENTON"
+    },
+    {
+        "value": 771,
+        "label": "TRINITY AQUIFER | EASTLAND"
+    },
+    {
+        "value": 772,
+        "label": "TRINITY AQUIFER | ELLIS"
+    },
+    {
+        "value": 773,
+        "label": "TRINITY AQUIFER | ERATH"
+    },
+    {
+        "value": 774,
+        "label": "TRINITY AQUIFER | FALLS"
+    },
+    {
+        "value": 775,
+        "label": "TRINITY AQUIFER | FANNIN"
+    },
+    {
+        "value": 777,
+        "label": "TRINITY AQUIFER | GRAYSON"
+    },
+    {
+        "value": 1040,
+        "label": "TRINITY AQUIFER | GUADALUPE"
+    },
+    {
+        "value": 778,
+        "label": "TRINITY AQUIFER | HAMILTON"
+    },
+    {
+        "value": 779,
+        "label": "TRINITY AQUIFER | HAYS"
+    },
+    {
+        "value": 780,
+        "label": "TRINITY AQUIFER | HILL"
+    },
+    {
+        "value": 781,
+        "label": "TRINITY AQUIFER | HOOD"
+    },
+    {
+        "value": 782,
+        "label": "TRINITY AQUIFER | HUNT"
+    },
+    {
+        "value": 784,
+        "label": "TRINITY AQUIFER | JOHNSON"
+    },
+    {
+        "value": 786,
+        "label": "TRINITY AQUIFER | KENDALL"
+    },
+    {
+        "value": 787,
+        "label": "TRINITY AQUIFER | KERR"
+    },
+    {
+        "value": 788,
+        "label": "TRINITY AQUIFER | LAMAR"
+    },
+    {
+        "value": 789,
+        "label": "TRINITY AQUIFER | LAMPASAS"
+    },
+    {
+        "value": 790,
+        "label": "TRINITY AQUIFER | LIMESTONE"
+    },
+    {
+        "value": 791,
+        "label": "TRINITY AQUIFER | MCLENNAN"
+    },
+    {
+        "value": 792,
+        "label": "TRINITY AQUIFER | MEDINA"
+    },
+    {
+        "value": 793,
+        "label": "TRINITY AQUIFER | MILAM"
+    },
+    {
+        "value": 794,
+        "label": "TRINITY AQUIFER | MILLS"
+    },
+    {
+        "value": 795,
+        "label": "TRINITY AQUIFER | MONTAGUE"
+    },
+    {
+        "value": 797,
+        "label": "TRINITY AQUIFER | PALO PINTO"
+    },
+    {
+        "value": 798,
+        "label": "TRINITY AQUIFER | PARKER"
+    },
+    {
+        "value": 800,
+        "label": "TRINITY AQUIFER | RED RIVER"
+    },
+    {
+        "value": 802,
+        "label": "TRINITY AQUIFER | SOMERVELL"
+    },
+    {
+        "value": 803,
+        "label": "TRINITY AQUIFER | TARRANT"
+    },
+    {
+        "value": 804,
+        "label": "TRINITY AQUIFER | TAYLOR"
+    },
+    {
+        "value": 805,
+        "label": "TRINITY AQUIFER | TRAVIS"
+    },
+    {
+        "value": 806,
+        "label": "TRINITY AQUIFER | UVALDE"
+    },
+    {
+        "value": 807,
+        "label": "TRINITY AQUIFER | WILLIAMSON"
+    },
+    {
+        "value": 808,
+        "label": "TRINITY AQUIFER | WISE"
+    },
+    {
+        "value": 1041,
+        "label": "TRINITY AQUIFER ASR | BANDERA"
+    },
+    {
+        "value": 1181,
+        "label": "TRINITY AQUIFER ASR | BELL"
+    },
+    {
+        "value": 1230,
+        "label": "TRINITY AQUIFER ASR | DENTON"
+    },
+    {
+        "value": 1042,
+        "label": "TRINITY AQUIFER ASR | HAYS"
+    },
+    {
+        "value": 1044,
+        "label": "TRINITY AQUIFER ASR | KERR"
+    },
+    {
+        "value": 1205,
+        "label": "TRINITY AQUIFER ASR | MEDINA"
+    },
+    {
+        "value": 1123,
+        "label": "TRINITY AQUIFER ASR | TARRANT"
+    },
+    {
+        "value": 1047,
+        "label": "TRINITY AQUIFER ASR | WILLIAMSON"
+    },
+    {
+        "value": 390,
+        "label": "TRINITY INDIRECT REUSE"
+    },
+    {
+        "value": 675,
+        "label": "TRINITY RUN-OF-RIVER"
+    },
+    {
+        "value": 676,
+        "label": "TRINITY-SAN JACINTO RUN-OF-RIVER"
+    },
+    {
+        "value": 810,
+        "label": "TRWD LAKE/RESERVOIR SYSTEM"
+    },
+    {
+        "value": 811,
+        "label": "TURKEY CREEK LAKE/RESERVOIR"
+    },
+    {
+        "value": 812,
+        "label": "TURKEY PEAK LAKE/RESERVOIR"
+    },
+    {
+        "value": 814,
+        "label": "TWIN OAK LAKE/RESERVOIR"
+    },
+    {
+        "value": 815,
+        "label": "TYLER LAKE/RESERVOIR"
+    },
+    {
+        "value": 817,
+        "label": "VICTOR BRAUNIG LAKE/RESERVOIR"
+    },
+    {
+        "value": 818,
+        "label": "WACO LAKE/RESERVOIR"
+    },
+    {
+        "value": 1174,
+        "label": "WATER RECYCLING"
+    },
+    {
+        "value": 819,
+        "label": "WAXAHACHIE LAKE/RESERVOIR"
+    },
+    {
+        "value": 821,
+        "label": "WEATHERFORD LAKE/RESERVOIR"
+    },
+    {
+        "value": 822,
+        "label": "WELSH LAKE/RESERVOIR"
+    },
+    {
+        "value": 823,
+        "label": "WEST TEXAS BOLSONS AQUIFER | CULBERSON"
+    },
+    {
+        "value": 824,
+        "label": "WEST TEXAS BOLSONS AQUIFER | HUDSPETH"
+    },
+    {
+        "value": 825,
+        "label": "WEST TEXAS BOLSONS AQUIFER | JEFF DAVIS"
+    },
+    {
+        "value": 826,
+        "label": "WEST TEXAS BOLSONS AQUIFER | PRESIDIO"
+    },
+    {
+        "value": 827,
+        "label": "WHEELER BRANCH OFF-CHANNEL LAKE/RESERVOIR"
+    },
+    {
+        "value": 829,
+        "label": "WHITE ROCK LAKE/RESERVOIR"
+    },
+    {
+        "value": 832,
+        "label": "WINTERS LAKE/RESERVOIR"
+    },
+    {
+        "value": 833,
+        "label": "WOODBINE AQUIFER | COLLIN"
+    },
+    {
+        "value": 834,
+        "label": "WOODBINE AQUIFER | COOKE"
+    },
+    {
+        "value": 835,
+        "label": "WOODBINE AQUIFER | DALLAS"
+    },
+    {
+        "value": 837,
+        "label": "WOODBINE AQUIFER | DENTON"
+    },
+    {
+        "value": 838,
+        "label": "WOODBINE AQUIFER | ELLIS"
+    },
+    {
+        "value": 839,
+        "label": "WOODBINE AQUIFER | FANNIN"
+    },
+    {
+        "value": 840,
+        "label": "WOODBINE AQUIFER | GRAYSON"
+    },
+    {
+        "value": 841,
+        "label": "WOODBINE AQUIFER | HILL"
+    },
+    {
+        "value": 842,
+        "label": "WOODBINE AQUIFER | HUNT"
+    },
+    {
+        "value": 843,
+        "label": "WOODBINE AQUIFER | JOHNSON"
+    },
+    {
+        "value": 845,
+        "label": "WOODBINE AQUIFER | LAMAR"
+    },
+    {
+        "value": 848,
+        "label": "WOODBINE AQUIFER | NAVARRO"
+    },
+    {
+        "value": 850,
+        "label": "WOODBINE AQUIFER | RED RIVER"
+    },
+    {
+        "value": 852,
+        "label": "WOODBINE AQUIFER | TARRANT"
+    },
+    {
+        "value": 1054,
+        "label": "WOODSON LAKE/RESERVOIR"
+    },
+    {
+        "value": 854,
+        "label": "WRIGHT PATMAN LAKE/RESERVOIR"
+    },
+    {
+        "value": 855,
+        "label": "YEGUA-JACKSON AQUIFER | ANGELINA"
+    },
+    {
+        "value": 1055,
+        "label": "YEGUA-JACKSON AQUIFER | ATASCOSA"
+    },
+    {
+        "value": 856,
+        "label": "YEGUA-JACKSON AQUIFER | BRAZOS"
+    },
+    {
+        "value": 857,
+        "label": "YEGUA-JACKSON AQUIFER | BURLESON"
+    },
+    {
+        "value": 858,
+        "label": "YEGUA-JACKSON AQUIFER | FAYETTE"
+    },
+    {
+        "value": 1057,
+        "label": "YEGUA-JACKSON AQUIFER | GONZALES"
+    },
+    {
+        "value": 859,
+        "label": "YEGUA-JACKSON AQUIFER | GRIMES"
+    },
+    {
+        "value": 860,
+        "label": "YEGUA-JACKSON AQUIFER | HOUSTON"
+    },
+    {
+        "value": 1194,
+        "label": "YEGUA-JACKSON AQUIFER | JASPER"
+    },
+    {
+        "value": 1058,
+        "label": "YEGUA-JACKSON AQUIFER | KARNES"
+    },
+    {
+        "value": 1059,
+        "label": "YEGUA-JACKSON AQUIFER | LA SALLE"
+    },
+    {
+        "value": 1061,
+        "label": "YEGUA-JACKSON AQUIFER | MADISON"
+    },
+    {
+        "value": 863,
+        "label": "YEGUA-JACKSON AQUIFER | NACOGDOCHES"
+    },
+    {
+        "value": 864,
+        "label": "YEGUA-JACKSON AQUIFER | POLK"
+    },
+    {
+        "value": 865,
+        "label": "YEGUA-JACKSON AQUIFER | SABINE"
+    },
+    {
+        "value": 866,
+        "label": "YEGUA-JACKSON AQUIFER | SAN AUGUSTINE"
+    },
+    {
+        "value": 867,
+        "label": "YEGUA-JACKSON AQUIFER | STARR"
+    },
+    {
+        "value": 868,
+        "label": "YEGUA-JACKSON AQUIFER | TRINITY"
+    },
+    {
+        "value": 870,
+        "label": "YEGUA-JACKSON AQUIFER | WALKER"
+    },
+    {
+        "value": 871,
+        "label": "YEGUA-JACKSON AQUIFER | WASHINGTON"
+    },
+    {
+        "value": 872,
+        "label": "YEGUA-JACKSON AQUIFER | WEBB"
+    },
+    {
+        "value": 1063,
+        "label": "YEGUA-JACKSON AQUIFER | WILSON"
+    },
+    {
+        "value": 873,
+        "label": "YEGUA-JACKSON AQUIFER | ZAPATA"
+    }
+];
 
     page_types = {
         region: 'region',
