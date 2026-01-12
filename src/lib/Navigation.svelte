@@ -48,7 +48,7 @@
     let regions = /** @type {NavLabel[]} */ labelReducer(constants.getRegions(), 'Region ');
     let counties = /** @type {NavLabel[]} */ labelReducer(constants.getCountyNames());
     let usageTypes = /** @type {NavLabel[]} */ labelReducer(constants.getUsageTypes());
-    let wmstype = /** @type {NavLabel[]} */ labelReducer(constants.WMS_TYPES);
+    let wmstype = /** @type {NavLabel[]} */ labelReducer(constants.wms_info.WMS_TYPES, constants.WMS_TYPES);
     let region = $derived(chosen && chosen2 ? `/${chosen}/${chosen2}/` : !(chosen && chosen2) ? '/' : `/${chosen}/`);
     let secondary_input_enabled = $derived(chosen && chosen.length && chosen2 && chosen2 !== undefined);
     let is_home_selected = $derived(!chosen || chosen == '' || chosen == 'statewide');

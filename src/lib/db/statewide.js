@@ -106,7 +106,7 @@ export default class Statewide {
                         };
 
                         a['strategyTypeTotals'] = {};
-                        for (let type of that.constants.WMS_TYPES) {
+                        for (let type of that.constants.wms_info.WMS_TYPES) {
                             a['strategyTypeTotals'][type] = { ...init };
                         }
                     }
@@ -124,7 +124,7 @@ export default class Statewide {
                         'strategySourceTotals',
                         'SourceType'
                     );
-                    a = that.#pattern(that.constants.WMS_TYPES, a, b, id, 'strategyTypeTotals', 'WmsType');
+                    a = that.#pattern(that.constants.wms_info.WMS_TYPES, a, b, id, 'strategyTypeTotals', 'WmsType');
                 }
 
                 // Add records decade total to storage decade total for each decade.

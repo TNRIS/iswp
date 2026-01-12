@@ -171,7 +171,7 @@ export class Constant2027 {
             'OTHER DIRECT REUSE':
                 'Other direct reuse water management strategies generally convey treated wastewater directly from a treatment plant to non-potable uses such as landscaping or industrial processes.',
             'OTHER STRATEGIES':
-                'Other water management strategies individually, provide less than 0.5 percent of the total recommended strategy supplies in 2070. They include surface water desalination, weather modification, brush control, and rainwater harvesting.',
+                'Other water management strategies individually, provide less than 2 percent of the total recommended strategy supplies in 2080. They include surface water desalination, weather modification, brush control, and rainwater harvesting.',
             'OTHER SURFACE WATER':
                 'Other surface water management strategies includes minor reservoirs (less than 5,000 acre-feet of storage) and subordination as well as a wide variety of other strategies that convey, treat, reassign, or otherwise make accessible additional surface water supplies to users with or without additional infrastructure.',
             'SEAWATER DESALINATION':
