@@ -7,8 +7,8 @@ export class Constant2027 {
     MAX_RADIUS = 9;
 
     tappend = 'vw';
-    sourcemap = 'iswp_sourcefeatures2022.map';
-    sourcetables = 'iswp_sourcefeatures2022';
+    sourcemap = 'iswp_sourcefeatures2027.map';
+    sourcetables = 'iswp_sourcefeatures2027';
 
     nav_categories = [
         { value: '', label: 'All of Texas' },
