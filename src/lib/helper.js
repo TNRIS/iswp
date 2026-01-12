@@ -447,15 +447,25 @@ export let objectExistsInArrayPresorted = (accumulator, label, keys, secondkeys 
  * @type {object}
  * @property {string} value
  * @property {string} label
+ * @property {string} displayLabel
  */
-export let labelReducer = (labels, label_prefix = '') => {
+export let labelReducer = (labels, label_prefix = '', /** @type {string} */ displayLabel="") => {
     return labels.reduce((/** @type {NavLabel[]} */ accumulator, /** @type {string} */ currentValue) => {
-        let navlabel = /** @type {NavLabel}*/ ({
-            value: currentValue,
-            label: `${label_prefix}${currentValue}`
-        });
-        accumulator.push(navlabel);
-        return accumulator;
+        if(!displayLabel) {
+            let navlabel = /** @type {NavLabel}*/ ({
+                value: currentValue,
+                label: `${label_prefix}${currentValue}`
+            });
+            accumulator.push(navlabel);
+            return accumulator;
+        } else {
+            let navlabel = /** @type {NavLabel}*/ ({
+                value: currentValue,
+                label: `${label_prefix}${displayLabel}`
+            });
+            accumulator.push(navlabel);
+            return accumulator;
+        }
     }, []);
 };
 

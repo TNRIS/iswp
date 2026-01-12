@@ -14,8 +14,8 @@
     const wmsSetting2 = new QuerySettings('wmstype', 'WmsType');
 
     let set_all_wms_type_settings = (new_slug) => {
-        wmsTypeSetting.setAll(new_slug);
-        wmsSetting2.setAll(new_slug);
+        wmsTypeSetting.setAll(new_slug.toUpperCase());
+        wmsSetting2.setAll(new_slug.toUpperCase());
     };
     (() => {set_all_wms_type_settings(slug)})();
     let entityMapBlurb = $state(`<p class="note">Each water user group is mapped to a single point near its primary location; therefore, an entity with a large or multiple service areas may be displayed outside the specific area being queried.</p>`);
@@ -55,7 +55,7 @@
             <div class="summary-wrapper container">
                 <div class="view-summary usage-type-summary">
                     <h1 aria-level="2">{slug}</h1>
-                    {constants.wms_info.WMS_TYPE_DESCRIPTIONS[slug?.split('(')[0].toUpperCase().replace('AND', '&').trim()]}
+                    {constants.wms_info.WMS_TYPE_DESCRIPTIONS[slug?.toUpperCase().replace('AND', '&').trim()]}
                 </div>
             </div>
         </div>
