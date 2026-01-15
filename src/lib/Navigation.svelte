@@ -121,8 +121,18 @@
                 });
 
                 sw.getProjects().then((/** @type {ProjectLabel[]}*/ x) => {
+                    x = x.sort((a, b) => {
+                        if (a.ProjectName < b.ProjectName) {
+                            return -1;
+                        }
+                        if (a.ProjectName > b.ProjectName) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+
                     this.project = x.reduce((/** @type {NavLabel[]} */ accumulator, /** @type {any} */ currentValue) => {
-                        let exists /** @type {boolean} */ = objectExistsInArray(
+                        let exists /** @type {boolean} */ = objectExistsInArrayPresorted(
                             accumulator,
                             currentValue,
                             ['ProjectName', 'WmsProjectId'],
