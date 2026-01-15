@@ -102,6 +102,26 @@ export class Constant2027 {
         'Water recycling reuse'
     ];
 
+    // TODO: Replace various wms type lists with one list of objects. Don't want to risk introducing bugs by streamlining this right now.
+    WMS_TYPE_MAP = {
+        'AGRICULTURAL CONSERVATION': 'Agricultural conservation',
+        'AQUIFER RECHARGE (AR)': 'Aquifer recharge (AR)',
+        'AQUIFER STORAGE AND RECOVERY': 'Aquifer storage and recovery',
+        'DIRECT POTABLE REUSE': 'Direct potable reuse',
+        'DROUGHT MANAGEMENT': 'Drought management',
+        'GROUNDWATER DESALINATION': 'Groundwater desalination',
+        'GROUNDWATER WELLS AND OTHER': 'Groundwater wells and other',
+        'INDIRECT REUSE': 'Indirect reuse',
+        'INDUSTRIAL CONSERVATION': 'Industrial conservation',
+        'MUNICIPAL CONSERVATION': 'Municipal conservation',
+        'NEW MAJOR RESERVOIR': 'New major reservoir',
+        'OTHER DIRECT REUSE': 'Other direct reuse',
+        'OTHER STRATEGIES': 'Other strategies',
+        'OTHER SURFACE WATER': 'Other surface water',
+        'SEAWATER DESALINATION': 'Seawater desalination',
+        'WATER RECYCLING REUSE': 'Water recycling reuse'
+    }
+
     #themes = ['demands', 'supplies', 'needs', 'strategies'];
 
     #theme_titles = {
@@ -126,9 +146,8 @@ export class Constant2027 {
     wms_info = {
         WMS_TYPES: [
             'AGRICULTURAL CONSERVATION',
-            'AQUIFER STORAGE AND RECOVERY',
             'AQUIFER RECHARGE (AR)',
-            'CONJUNCTIVE USE',
+            'AQUIFER STORAGE AND RECOVERY',
             'DIRECT POTABLE REUSE',
             'DROUGHT MANAGEMENT',
             'GROUNDWATER DESALINATION',
@@ -146,12 +165,10 @@ export class Constant2027 {
         WMS_TYPE_DESCRIPTIONS: {
             'AGRICULTURAL CONSERVATION':
                 'Agricultural conservation is primarily irrigation conservation strategies and some livestock conservation based on best management practices. Irrigation conservation strategies include changes to irrigation methods, equipment, and crops. For example, conversion to Low Energy Precision Application systems and irrigation scheduling, as well as other activities associated with irrigation best management practices, can help producers reduce their water use. Like municipal conservation, irrigation conservation strategies tend to be an aggregate of multiple best management practices, any one or several of which could be implemented to achieve the estimated water savings of the strategy.',
-            'AQUIFER STORAGE & RECOVERY':
-                'Aquifer storage and recovery water management strategies inject water, when available, into an aquifer where it is stored for later use.',
             'AQUIFER RECHARGE (AR)' :
                 'Aquifer recharge water management strategies involve adding water to an aquifer via injection well, infiltration basin, or other means of infiltration to replenish water in an aquifer.',
-            'CONJUNCTIVE USE':
-                'Conjunctive use water management strategies combine multiple water sources, usually surface water and groundwater, to optimize the beneficial characteristics of each source, yielding additional firm water supplies.',
+            'AQUIFER STORAGE & RECOVERY':
+                'Aquifer storage and recovery water management strategies inject water, when available, into an aquifer where it is stored for later use.',
             'DIRECT POTABLE REUSE':
                 'Direct potable reuse strategies involve taking treated wastewater effluent, further treating it at an advanced water treatment plant, and then either introducing it upfront of the water treatment plant or directly into the potable water distribution system.',
             'DROUGHT MANAGEMENT':
