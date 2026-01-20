@@ -150,9 +150,6 @@
                             ['ProjectName', 'WmsProjectId'],
                             ['value', 'label']
                         );
-                        if(currentValue.ProjectName == "ASR WITH IPR") {
-                            console.log("Hi")
-                        }
                         if (!exists) {
                             accumulator.push({
                                 value: `${currentValue.WmsProjectId}`,

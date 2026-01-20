@@ -404,8 +404,11 @@ export let objectExistsInArray = (accumulator, label, keys, secondkeys = keys) =
         if (accumulator.length) {
             exists = accumulator.some((/** @type {any} */ item) => {
                 let match = true;
-                keys.forEach((key, i) => {
-                    if (!(item[secondkeys[i]] === label[key])) match = false;
+                keys.forEach((key) => {
+                    secondkeys.forEach((skey) => {
+                        if (!(item[skey] === label[key])) match = false;
+                    })
+                    
                 });
                 return match;
             });
@@ -430,9 +433,12 @@ export let objectExistsInArrayPresorted = (accumulator, label, keys, secondkeys 
     if(!accumulator.length) return false;
     let match = false;
     keys.forEach((key, i) => {
-        if ((accumulator[accumulator.length-1][secondkeys[i]] === label[key])) {
-            match = true;
-        }
+        secondkeys.forEach((skey) => {
+            if ((accumulator[accumulator.length-1][skey] === label[key])) {
+                match = true;
+            }
+        })
+
     });
 
     return match;
