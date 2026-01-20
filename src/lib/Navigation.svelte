@@ -3,7 +3,7 @@
 <script>
     import Statewide from '$lib/db/statewide.js';
     import Select from 'svelte-select';
-    import { objectExistsInArray, labelReducer, objectExistsInArrayPresorted } from '$lib/helper';
+    import { objectExistsInArray, labelReducer, labelReducer27, objectExistsInArrayPresorted } from '$lib/helper';
     import Fuse from 'fuse.js';
 
     /**
@@ -45,10 +45,22 @@
     })();
 
     let chosen2 = /** @type {string}*/ $state("");
-    let regions = /** @type {NavLabel[]} */ labelReducer(constants.getRegions(), 'Region ');
-    let counties = /** @type {NavLabel[]} */ labelReducer(constants.getCountyNames());
-    let usageTypes = /** @type {NavLabel[]} */ labelReducer(constants.getUsageTypes());
-    let wmstype = /** @type {NavLabel[]} */ labelReducer(constants.wms_info.WMS_TYPES, '', constants.WMS_TYPES);
+    let regions, counties, usageTypes, wmstype;
+
+
+
+    if(constants.id == 27) {
+        regions = /** @type {NavLabel[]} */ labelReducer27(constants.getRegions(), 'Region ');
+        counties = /** @type {NavLabel[]} */ labelReducer27(constants.getCountyNames());
+        usageTypes = /** @type {NavLabel[]} */ labelReducer27(constants.getUsageTypes());
+        wmstype = /** @type {NavLabel[]} */ labelReducer27(constants.wms_info.WMS_TYPES, '', constants.WMS_TYPES);
+    } else {
+        regions = /** @type {NavLabel[]} */ labelReducer(constants.getRegions(), 'Region ');
+        counties = /** @type {NavLabel[]} */ labelReducer(constants.getCountyNames());
+        usageTypes = /** @type {NavLabel[]} */ labelReducer(constants.getUsageTypes());
+        wmstype = /** @type {NavLabel[]} */ labelReducer(constants.wms_info.WMS_TYPES);
+    }
+
     let region = $derived(chosen && chosen2 ? `/${chosen}/${chosen2}/` : !(chosen && chosen2) ? '/' : `/${chosen}/`);
     let secondary_input_enabled = $derived(chosen && chosen.length && chosen2 && chosen2 !== undefined);
     let is_home_selected = $derived(!chosen || chosen == '' || chosen == 'statewide');
@@ -106,7 +118,7 @@
                             accumulator,
                             currentValue,
                             ['EntityName', 'EntityId'],
-                            ['label', 'value']
+                            ['value', 'label']
                         );
 
                         if (!exists) {
@@ -136,9 +148,11 @@
                             accumulator,
                             currentValue,
                             ['ProjectName', 'WmsProjectId'],
-                            ['label', 'value']
+                            ['value', 'label']
                         );
-
+                        if(currentValue.ProjectName == "ASR WITH IPR") {
+                            console.log("Hi")
+                        }
                         if (!exists) {
                             accumulator.push({
                                 value: `${currentValue.WmsProjectId}`,
