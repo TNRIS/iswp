@@ -34,7 +34,7 @@ export const delete_database27 = () => {
 const storeChecksum = async () => {
     // Store checksum in localstorage
     const start = Date.now();
-    const checksum_url = 'https://tnris-droc.s3.amazonaws.com/iswp/2027/checksum.json';
+    const checksum_url = '/db/2027/checksum.json';
     const response = await fetch(checksum_url);
     const cs = await response.json();
     localStorage.setItem('checksum2027', JSON.stringify(cs));
@@ -53,8 +53,8 @@ export function startDb27() {
         request27.onsuccess = async (event) => {
             db27 = event.target.result;
             if (UPGRADE_NEEDED) {
-                const BASE_URL = 'https://tnris-droc.s3.amazonaws.com/iswp/';
-                const cache_2027 = '2027/cache.json';
+                const BASE_URL = '/';
+                const cache_2027 = 'db/2027/cache.json';
 
                 let gz27 = await fetch(BASE_URL + cache_2027, {
                     decompress: true

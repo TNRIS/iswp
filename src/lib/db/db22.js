@@ -32,7 +32,7 @@ export const delete_database22 = () => {
 
 const storeChecksum = async () => {
     // Store checksum in localstorage
-    const checksum_url = 'https://tnris-droc.s3.amazonaws.com/iswp/2022/checksum.json';
+    const checksum_url = '/db/2022/checksum.json';
     const response = await fetch(checksum_url);
     const cs = await response.json();
     localStorage.setItem('checksum2022', JSON.stringify(cs));
@@ -49,7 +49,7 @@ export function startDb22() {
         request22.onsuccess = async (event) => {
             db22 = event.target.result;
             if (UPGRADE_NEEDED) {
-                let gz22 = await fetch('https://tnris-droc.s3.amazonaws.com/iswp/2022/cache.json', {
+                let gz22 = await fetch('/db/2022/cache.json', {
                     decompress: true
                 });
                 let j22 = await gz22.json();
