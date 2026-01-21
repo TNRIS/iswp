@@ -404,8 +404,11 @@ export let objectExistsInArray = (accumulator, label, keys, secondkeys = keys) =
         if (accumulator.length) {
             exists = accumulator.some((/** @type {any} */ item) => {
                 let match = true;
-                keys.forEach((key, i) => {
-                    if (!(item[secondkeys[i]] === label[key])) match = false;
+                keys.forEach((key) => {
+                    secondkeys.forEach((skey) => {
+                        if (!(item[skey] === label[key])) match = false;
+                    })
+                    
                 });
                 return match;
             });
@@ -430,16 +433,19 @@ export let objectExistsInArrayPresorted = (accumulator, label, keys, secondkeys 
     if(!accumulator.length) return false;
     let match = false;
     keys.forEach((key, i) => {
-        if ((accumulator[accumulator.length-1][secondkeys[i]] === label[key])) {
-            match = true;
-        }
+        secondkeys.forEach((skey) => {
+            if ((accumulator[accumulator.length-1][skey] === label[key])) {
+                match = true;
+            }
+        })
+
     });
 
     return match;
 };
 
 /**
- * labelReducer: Create usable labels out of an array of strings.
+ * labelReducer27: Create usable labels out of an array of strings.
  * @param {string[]} labels
  * @param {string} [label_prefix] - Optional Paramater to prefix labels with.
  * 
@@ -449,7 +455,7 @@ export let objectExistsInArrayPresorted = (accumulator, label, keys, secondkeys 
  * @property {string} label
  * @property {string} displayLabel
  */
-export let labelReducer = (labels, label_prefix = '', /** @type {string} */ displayLabel="") => {
+export let labelReducer27 = (labels, label_prefix = '', /** @type {string} */ displayLabel="") => {
     let i = 0
     return labels.reduce((/** @type {NavLabel[]} */ accumulator, /** @type {string} */ currentValue) => {
         if(!displayLabel) {
@@ -471,6 +477,28 @@ export let labelReducer = (labels, label_prefix = '', /** @type {string} */ disp
         }
     }, []);
 };
+
+/**
+ * labelReducer: Create usable labels out of an array of strings.
+ * @param {string[]} labels
+ * @param {string} [label_prefix] - Optional Paramater to prefix labels with.
+ * 
+ * @typedef NavLabel
+ * @type {object}
+ * @property {string} value
+ * @property {string} label
+ */
+export let labelReducer = (labels, label_prefix = '') => {
+    return labels.reduce((/** @type {NavLabel[]} */ accumulator, /** @type {string} */ currentValue) => {
+        let navlabel = /** @type {NavLabel}*/ ({
+            value: currentValue,
+            label: `${label_prefix}${currentValue}`
+        });
+        accumulator.push(navlabel);
+        return accumulator;
+    }, []);
+};
+
 
 /**
  * wrapupCommonIdbTasks: Wrap up common idb tasks.

@@ -54,9 +54,14 @@
         <div class="view-top usage-type-view-top">
             <div class="summary-wrapper container">
                 <div class="view-summary usage-type-summary">
-
-                    <h1 aria-level="2">{constants.WMS_TYPE_MAP[slug?.toUpperCase().trim()]}</h1>
+                    {#if constants.id === 27}
+                        <h1 aria-level="2">{constants.WMS_TYPE_MAP[slug?.toUpperCase().trim()]}</h1>
+                        {constants.wms_info.WMS_TYPE_DESCRIPTIONS[slug?.toUpperCase().replace('AND', '&').trim()]}
+                    {:else}
+                    <h1 aria-level="2">{slug}</h1>
                     {constants.wms_info.WMS_TYPE_DESCRIPTIONS[slug?.toUpperCase().replace('AND', '&').trim()]}
+                    {/if}
+                    
                 </div>
             </div>
         </div>
