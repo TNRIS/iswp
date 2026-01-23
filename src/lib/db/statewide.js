@@ -245,7 +245,7 @@ export default class Statewide {
                 setting.s_projects.filter
             );
         }
-
+        // Why is a project here? I'll check.
         let [demands, needs, supplies, population, strategies, projects] = await Promise.all([
             demands_observable,
             needs_observable,
