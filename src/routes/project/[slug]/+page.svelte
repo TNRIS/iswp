@@ -33,14 +33,22 @@
             }
         }
 
-        const decade_online = dat?.projects[0].OnlineDecade;
+        if(!dat?.projects[0]) {
+            // Let's get the name then.
+            let projs = await sw.getProjects()
+            projectName = projs.find((v) => v.WmsProjectId ==$page.params.slug).ProjectName;
+
+            return dat;
+        }
+
+        const decade_online = dat?.projects[0]?.OnlineDecade;
 
         let formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',
             maximumFractionDigits: 0
         });
-        const capital_cost = formatter.format(dat?.projects[0].CapitalCost);
+        const capital_cost = formatter.format(dat?.projects[0]?.CapitalCost);
 
         tagline = `<span>Decade Online: ${decade_online}</span><br /><span>Capital Cost: ${capital_cost}</span>`;
 
@@ -67,11 +75,12 @@
         <div class="loader"></div>
     {:then out}
         <PopulationChart {tagline} title={projectName} titleOnly={true} {lrp} {constants} />
-        <ProjectTable2
+        {#key projectName}<ProjectTable2
             project_title={`WMS PROJECT - ${projectName}`}
             project_title2={'Water Management Strategies related to Project'}
             {lrp}
-            type={'region'} />
+            type={'region'}
+            {constants} />{/key}
         <DataViewChoiceWrapInd
             title={`WMS PROJECT - ${projectName}`}
             {entityMapBlurb}

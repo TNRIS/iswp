@@ -328,13 +328,15 @@
                 });
 
                 let project = swdata?.projects[0];
-                let coords = coordFitter(project);
-                L.marker(coords, {
-                    icon
-                }).addTo(map);
+                if(project) {
+                    let coords = coordFitter(project);
+                    L.marker(coords, {
+                        icon
+                    }).addTo(map);
 
-                makeLastOfClassnameAccessible(project.ProjectName, 'triangle-marker');
-                map.setView([coords[0], coords[1] - 0.5], 9);
+                    makeLastOfClassnameAccessible(project.ProjectName, 'triangle-marker');
+                    map.setView([coords[0], coords[1] - 0.5], 9);
+                }
                 countyHoverSetup();
             }
         }
