@@ -132,6 +132,7 @@
     {/if}
     <div id="reactpivot"></div>
     <p id="note" class="note"></p>
+    <p></p>
     {#await onLoad then d}
         <CsvDownloads swdata={d} {csvTitle} {fileName} {constants} />
     {/await}

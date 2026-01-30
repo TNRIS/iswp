@@ -17,7 +17,7 @@
         for (let project of swdata.projects) {
             if (project.WmsSponsorRegion) {
                 let wms_column = '';
-                let wug_projects = swdata.wug_projects.filter((k) => {return k.WmsProjectId == project.WmsId});
+                let wug_projects = swdata.wug_projects.filter((k) => {return k.WmsProjectId == project.WmsProjectId});
                 if(wug_projects && wug_projects.length) {
                     wms_column = html(`<a href="/wms/${project.WmsId}">${project.WmsName}`);
                 } else {
