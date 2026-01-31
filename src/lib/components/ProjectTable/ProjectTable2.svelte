@@ -4,7 +4,8 @@
     import 'gridjs/dist/theme/mermaid.css';
     import { onMount } from 'svelte';
     import { usd_format } from '$lib/helper.js';
-    const { lrp, type, project_title, project_title2 } = $$props;
+    import { text } from '@sveltejs/kit';
+    const { lrp, type, project_title, project_title2, constants } = $$props;
 
     let projects = false;
     $: project_data = [];
@@ -12,10 +13,18 @@
     onMount(async () => {
         const swdata = await lrp;
         if (swdata.projects && swdata.projects.length) projects = true;
+
         for (let project of swdata.projects) {
             if (project.WmsSponsorRegion) {
+                let wms_column = '';
+                let wug_projects = swdata.wug_projects.filter((k) => {return k.WmsProjectId == project.WmsProjectId});
+                if(wug_projects && wug_projects.length) {
+                    wms_column = html(`<a href="/wms/${project.WmsId}">${project.WmsName}`);
+                } else {
+                    wms_column = project.WmsName
+                }
                 let to_array = [
-                    html(`<a href="/wms/${project.WmsId}">${project.WmsName}`),
+                    wms_column,
                     html(`<a href="/region/${project.WmsSponsorRegion}">${project.WmsSponsorRegion}`)
                 ];
 

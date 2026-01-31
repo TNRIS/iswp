@@ -82,9 +82,9 @@
         }
     };
     let onLoad /** @type {promise} */ = getData();
-
     (async () => {
-        await onLoad;
+        let resProj = await onLoad;
+
         try {
             let dimenContainer = document.getElementsByClassName('reactPivot-dimensions');
             dimenContainer.ariaDescription = 'Pivot Table for narrowing down data the raw data available in csv form below.';
@@ -101,8 +101,19 @@
         } catch (err) {
             console.log('problem making dimension table more accessible. Proceeding. Please report this to twdb.');
         }
+        if(!resProj?.projects?.length) {
+            let note = document.getElementById('note');
+            if(constants.id == 22) {
+                note.innerHTML = "This project is not assigned to a specific WUG. To see more information about the project and its related WMS supply, click the following link to go to a TWDB webpage containing an Excel workbook summary of the 2022 State Water Plan data which includes that information <a href='http://www.twdb.texas.gov/waterplanning/data/rwp-database/index.asp'>http://www.twdb.texas.gov/waterplanning/data/rwp-database/index.asp</a>. You can also contact wrpdatarequests@twdb.texas.gov to request information about this project."
+            } else if(constants.id == 27) {
+                note.innerHTML = "This project is not assigned to a specific WUG. Please contact <a href='sendto:wrpdatarequests@twdb.texas.gov'>wrpdatarequests@twdb.texas.gov</a> to request information about this project."
+
+            }
+        }
     })();
     dataviewContext.getData.set(getData);
+
+
 </script>
 
 {#await onLoad}
@@ -120,6 +131,8 @@
         Sorry, there is no Population data.
     {/if}
     <div id="reactpivot"></div>
+    <p id="note" class="note"></p>
+    <p></p>
     {#await onLoad then d}
         <CsvDownloads swdata={d} {csvTitle} {fileName} {constants} />
     {/await}

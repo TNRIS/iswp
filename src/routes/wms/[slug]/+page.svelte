@@ -35,7 +35,12 @@
             projects: dat2.projects
         };
 
-        const wr = cap(dat?.strategies?.rows[0].WugRegion).trim();
+        let wr;
+
+        if(dat?.strategies?.rows) {
+            wr = cap(dat?.strategies?.rows[0].WugRegion).trim();
+        } // Doesn't seem like there is a strategy associated with this wms 4905. That's how
+          // I get the tagline. Below. Perhaps there's another way to get the region for this WMS?
 
         tagline = wr ? `Water Management Strategy Sponsor <a href="/region/${wr}">Region ${wr}</a>` : undefined;
 
