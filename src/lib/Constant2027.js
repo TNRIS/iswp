@@ -1,6 +1,6 @@
 export class Constant2027 {
     id = 27;
-    header = '2026 Regional Water Plan Data';
+    header = '2027 Regional Water Plan Data';
     region_footer = `The 2026 regional water plans can be found on the TWDB website at: https://www.twdb.texas.gov/waterplanning/rwp/plans/2026/index.asp. You can also visit the Texas Water Development Board Secure Agency Reporting Application at https://www3.twdb.texas.gov/apps/SARA/reports/list to view 2026 Regional Water Plan data. Use the global filter option located at the top of the reporting application and filter the reports by the text '2026' to see all reports associated with the 2026 RWPs.`;
     allow_dl = false;
     MIN_RADIUS = 4;
@@ -198,7 +198,7 @@ export class Constant2027 {
         }
     };
 
-    #year = 2026;
+    #year = 2027;
     #regions = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'];
     #countyNames = [
         'Anderson',

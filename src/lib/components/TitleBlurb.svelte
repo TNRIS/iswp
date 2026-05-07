@@ -10,7 +10,7 @@
             <div class="twelve columns iswp-description" title="ISWP description" role="article">
                 {#if constants.id == 27}
                     <p>
-                        This website lets water users statewide take an up-close look at the 2026 regional water planning data and how water needs change over time by showing:
+                        This website lets water users statewide take an up-close look at the 2027 State Water Plan data and how water needs change over time by showing:
                     </p>
                 {:else}
                     <p>
@@ -28,11 +28,7 @@
                 </ul>
                 {#if constants.id == 27}
                     <p>
-                        The final regional water plan data will be used in the development of the 2027 State Water Plan which is central to
-                        the mission of the Texas Water Development Board. Based on 16 regional water plans, the state water plan addresses
-                        the needs of all water user groups in the state - municipal, irrigation, manufacturing, livestock, mining, and
-                        steam-electric power - during a repeat of the drought of record. The regional and state water plans consider a
-                        50-year planning horizon: 2030 through 2080.
+                        Development of the state water plan is central to the mission of the Texas Water Development Board. Based on 16 regional water plans, the plan addresses the needs of all water user groups in the state - municipal, irrigation, manufacturing, livestock, mining, and steam-electric power - during a repeat of the drought of record. The regional and state water plans consider a 50-year planning horizon: 2030 through 2080.
                     </p>
                 {:else}
                     <p>
