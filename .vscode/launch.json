@@ -13,7 +13,11 @@
             "name": "Node.js - Debug datarefresh",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceFolder}/src/datarefresh/app.js"
+            "program": "${workspaceFolder}/src/lib/datarefresh/app.js",
+            "runtimeArgs": [
+                "--loader",
+                "./loader.mjs"
+            ]
         }
     ]
 }
