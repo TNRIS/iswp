@@ -4,9 +4,9 @@
     let decades = constants.getDecades();
     export let csvTitle;
     if (!fileName) console.log('We need a filename');
-    import { gen_csv_json } from "$lib/csv.js"
+    import { gen_csv_json } from "$lib/csv.js";
 
-    let csv_json = gen_csv_json(swdata, constants)
+    let csv_json = gen_csv_json(swdata, constants);
 
     /**
      * @param {string} thing

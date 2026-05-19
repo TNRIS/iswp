@@ -1,7 +1,7 @@
 <script>
     import Banner from '$lib/Banner.svelte';
     import Navigation from '$lib/Navigation.svelte';
-    import { getConstants, load_indexeddb, visualize_idb_downloading } from '$lib/helper';
+    import { getConstants, load_indexeddb, visualize_idb_downloading } from '$lib/helper.js';
     import { page } from '$app/stores';
     import { setContext } from 'svelte';
 

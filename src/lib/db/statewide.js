@@ -6,7 +6,7 @@ import { Constant2022 } from '../../lib/Constant2022.js';
 import { Constant2027 } from '../../lib/Constant2027.js';
 
 import { writable } from 'svelte/store';
-import { objLeftjoin, real_clone, DEFAULT_FLAG } from '../../lib/helper';
+import { objLeftjoin, real_clone, DEFAULT_FLAG } from '../../lib/helper.js';
 let page;
 export default class Statewide {
     host = window.location.hostname;

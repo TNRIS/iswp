@@ -14,7 +14,7 @@
 import { Constant2017 } from '$lib/Constant2017.js';
 import { Constant2022 } from '$lib/Constant2022.js';
 import { Constant2027 } from '$lib/Constant2027.js';
-import { DEFAULT_FLAG } from '$lib/helper';
+import { DEFAULT_FLAG } from '$lib/helper.js';
 
 export default class RegionalSummary {
     host = window.location.hostname;
