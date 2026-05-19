@@ -5,7 +5,7 @@
     const countyTable = 'county_extended';
     const regionTable = 'rwpas';
     const { title, swdata, constants } = $$props;
-    import { cap, coordFitter } from '$lib/helper';
+    import { cap, coordFitter } from '$lib/helper.js';
     const sourceMap = constants.sourcemap;
 
     function navigateToRegion({ data }) {

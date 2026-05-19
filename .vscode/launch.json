@@ -10,10 +10,14 @@
             "enableContentValidation": false
         },
         {
-            "name": "Node.js - Debug Current File",
+            "name": "Node.js - Debug datarefresh",
             "type": "node",
             "request": "launch",
-            "program": "${file}"
+            "program": "${workspaceFolder}/src/lib/datarefresh/app.js",
+            "runtimeArgs": [
+                "--loader",
+                "./loader.mjs"
+            ]
         }
     ]
 }

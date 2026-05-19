@@ -184,6 +184,15 @@
             <li><a href="download/statewide/needs.csv">Download Statewide Needs (Potential Shortages) data (Comma-Separated Values)</a></li>
             <li><a href="download/statewide/strategies.csv">Download Statewide Strategy Supplies data (Comma-Separated Values)</a></li>
         </ul>
+    {:else if constants.id == 27}
+    <h5 id="dl_header" aria-level="4">Download Data</h5>
+        <ul>
+            <li><a href="download/statewide/2027/population.csv">Download Statewide Population data (Comma-Separated Values)</a></li>
+            <li><a href="download/statewide/2027/demands.csv">Download Statewide Demands data (Comma-Separated Values)</a></li>
+            <li><a href="download/statewide/2027/existing.csv">Download Statewide Existing Supplies data (Comma-Separated Values)</a></li>
+            <li><a href="download/statewide/2027/needs.csv">Download Statewide Needs (Potential Shortages) data (Comma-Separated Values)</a></li>
+            <li><a href="download/statewide/2027/strategies.csv">Download Statewide Strategy Supplies data (Comma-Separated Values)</a></li>
+        </ul>
     {:else}
         <CsvDownloads {swdata} {csvTitle} fileName={'statewide'} {constants} {downloadPopulation} />
     {/if}

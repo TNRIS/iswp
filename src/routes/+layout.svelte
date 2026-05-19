@@ -1,7 +1,7 @@
 <script>
     import Banner from '$lib/Banner.svelte';
     import Navigation from '$lib/Navigation.svelte';
-    import { getConstants, load_indexeddb, visualize_idb_downloading } from '$lib/helper';
+    import { getConstants, load_indexeddb, visualize_idb_downloading } from '$lib/helper.js';
     import { page } from '$app/stores';
     import { setContext } from 'svelte';
 
@@ -17,7 +17,7 @@
     //Remove temporary banner
     document.getElementById('temp-content')?.remove();
 </script>
-{#if constants.id == 27}
+<!-- DELETE IN 2029 or sooner if sure. {#if constants.id == 27}
     <div class="draft-note">
         <div class="wrapper" style="word-break: break-word;">
             This web application displays data associated with the final
@@ -32,7 +32,7 @@
             2026 RWPs.
         </div>
     </div>
-{/if}
+{/if} -->
 <Banner {constants} />
     {#await Promise.all([visualize_idb_downloading, db]) then}
         <Navigation {db} {selected} {constants} />
