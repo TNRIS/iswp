@@ -17,7 +17,7 @@
         "@aws-sdk/client-s3": "^3.730.0",
         "@sveltejs/adapter-auto": "^4.0.0",
         "@sveltejs/adapter-static": "^3.0.8",
-        "@sveltejs/kit": "^2.19.0",
+        "@sveltejs/kit": "^2.49.5",
         "eslint": "^8.28.0",
         "eslint-plugin-svelte": "^2.26.0",
         "node-sass": "^9.0.0",
