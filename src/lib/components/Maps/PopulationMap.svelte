@@ -2,11 +2,18 @@
 
 <script>
     import { onMount } from 'svelte';
+    import { cap, coordFitter } from '$lib/helper.js';
+    import * as L from 'leaflet';
+    import * as maplibregl from 'maplibre-gl';
+    import 'leaflet/dist/leaflet.css';
+    import 'maplibre-gl/dist/maplibre-gl.css';
+    import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url';
+    import { maplibreGL } from '@maplibre/maplibre-gl-leaflet';
     const countyTable = 'county_extended';
     const regionTable = 'rwpas';
     const { title, swdata, constants } = $$props;
-    import { cap, coordFitter } from '$lib/helper.js';
     const sourceMap = constants.sourcemap;
+    maplibregl.setWorkerUrl(workerUrl);
 
     function navigateToRegion({ data }) {
         window.location.replace(`/region/${data.letter}`);
@@ -68,10 +75,20 @@
             [25.84, -93.51]
         ]);
 
-        const baseLayer = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png', {
-            attribution:
-                '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+        const baseLayer = L.maplibreGL({
+            style: 'https://tiles.openfreemap.org/styles/positron'
+        }).addTo(map);
+        const glMap = baseLayer.getMaplibreMap();
+        const keep = ['background', 'water', 'waterway', 'boundary_2', 'boundary_3', 'boundary_disputed'];
+
+        glMap.on('load', () => {
+            glMap.getStyle().layers.forEach((layer) => {
+                if (!keep.includes(layer.id)) {
+                    glMap.setLayoutProperty(layer.id, 'visibility', 'none');
+                }
+            });
         });
+
         map.addLayer(baseLayer);
 
         // Remove default Prefix
@@ -328,7 +345,7 @@
                 });
 
                 let project = swdata?.projects[0];
-                if(project) {
+                if (project) {
                     let coords = coordFitter(project);
                     L.marker(coords, {
                         icon

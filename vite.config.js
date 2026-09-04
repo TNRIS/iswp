@@ -4,11 +4,11 @@ import svg from '@poppanator/sveltekit-svg';
 /** @type {import('vite').UserConfig} */
 
 export default defineConfig({
-    plugins: [sveltekit(), svg()],
-    build: {
+	plugins: [sveltekit(), svg()],
+	build: {
 		// inline all imported assets
 		assetsInlineLimit: Infinity,
 		sourcemap: true,
-        minify: true
+		minify: true
 	}
 });
