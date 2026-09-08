@@ -34,6 +34,7 @@
     },
     "type": "module",
     "dependencies": {
+        "@maplibre/maplibre-gl-leaflet": "^0.1.4",
         "@poppanator/sveltekit-svg": "^5.0.1",
         "chartist": "^1.4.0",
         "chartist-plugin-axistitle": "^0.0.7",
@@ -44,8 +45,10 @@
         "json-2-csv": "^5.0.1",
         "leaflet": "^1.9.4",
         "leaflet-easybutton": "^2.4.0",
+        "maplibre-gl": "^6.6.0",
         "normalize.css": "^8.0.1",
         "ol": "^10.0.0",
+        "pmtiles": "^4.5.0",
         "svelte-select": "^5.8.3"
     },
     "jest": {

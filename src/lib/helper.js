@@ -6,7 +6,7 @@ import { Constant2017 } from './Constant2017.js';
 import Statewide from '$lib/db/statewide.js';
 import { getContext } from 'svelte';
 
-export let DEFAULT_FLAG = '2022';
+export let DEFAULT_FLAG = '2027';
 
 export let getConstants = (host) => {
     if (host.includes('2027')) {
@@ -18,14 +18,14 @@ export let getConstants = (host) => {
     } else {
         if (DEFAULT_FLAG == '2017') {
             return new Constant2017();
-        } else if (DEFAULT_FLAG == '2027'){
+        } else if (DEFAULT_FLAG == '2027') {
             return new Constant2027();
         }
-        else if (DEFAULT_FLAG == '2022'){
+        else if (DEFAULT_FLAG == '2022') {
             return new Constant2022();
         }
         else {
-            return new Constant2022();
+            return new Constant2027();
         }
     }
 };
@@ -72,10 +72,10 @@ export let visualize_idb_downloading = async () => {
     try {
         let loadableContent /** @type {HTMLElement} */ = document.getElementById('loadable-content');
         let mainLoader /** @type {HTMLElement} */ = document.getElementById('main-loader');
-        
+
         const checkDBDone = () => {
-            if(!loadableContent || !mainLoader) {
-                throw("Cannot find loadable content section or mainloader section.");
+            if (!loadableContent || !mainLoader) {
+                throw ("Cannot find loadable content section or mainloader section.");
             }
             if (localStorage.getItem('checkedDB') == 'true') {
                 clearInterval(interval);
@@ -88,7 +88,7 @@ export let visualize_idb_downloading = async () => {
             }
         };
         let interval = setInterval(checkDBDone, 50);
-    } catch(err) {
+    } catch (err) {
         console.log("Error checking indexed database in visualize_idb_downloading function.")
         return false;
     }
@@ -135,7 +135,7 @@ export let usd_format_whole = new Intl.NumberFormat('en-US', {
  * 
  * @returns {Promise<any>} A promise indicating when the database is done downloading.
  */
- export let load_indexeddb = async () => {
+export let load_indexeddb = async () => {
     try {
         await onMountSync();
         let IS_2017_WEBSITE = window.location.href.indexOf('2017') > -1;
@@ -172,11 +172,11 @@ export let usd_format_whole = new Intl.NumberFormat('en-US', {
  * @param { string= } chosen Optional string that defaults to "" if it is set to wms then don't capitalize.
  * @returns 
  */
-export let cap = (s,  chosen="") => {
+export let cap = (s, chosen = "") => {
     if (!s) return s;
-  
-    if(chosen && chosen.length && (chosen === 'wms' || chosen === 'project' || chosen === 'entity')) return s;
-  
+
+    if (chosen && chosen.length && (chosen === 'wms' || chosen === 'project' || chosen === 'entity')) return s;
+
     let split_space = s.split(' ');
     let format_string = '';
     for (let i = 0; i < split_space.length; i++) {
@@ -387,7 +387,7 @@ export let scaleTonew = (scale1, scale2, constants) => {
 
     let r = portion * constants.MIN_RADIUS;
     let radius = Math.floor(r) + constants.MIN_RADIUS;
-    if(radius > constants.MAX_RADIUS) radius = constants.MAX_RADIUS;
+    if (radius > constants.MAX_RADIUS) radius = constants.MAX_RADIUS;
     return radius;
 };
 
@@ -408,7 +408,7 @@ export let objectExistsInArray = (accumulator, label, keys, secondkeys = keys) =
                     secondkeys.forEach((skey) => {
                         if (!(item[skey] === label[key])) match = false;
                     })
-                    
+
                 });
                 return match;
             });
@@ -430,11 +430,11 @@ export let objectExistsInArray = (accumulator, label, keys, secondkeys = keys) =
  * @param {string[]} [secondkeys] Optional keys for the label object. Defaults to keys.
  */
 export let objectExistsInArrayPresorted = (accumulator, label, keys, secondkeys = keys) => {
-    if(!accumulator.length) return false;
+    if (!accumulator.length) return false;
     let match = false;
     keys.forEach((key, i) => {
         secondkeys.forEach((skey) => {
-            if ((accumulator[accumulator.length-1][skey] === label[key])) {
+            if ((accumulator[accumulator.length - 1][skey] === label[key])) {
                 match = true;
             }
         })
@@ -455,10 +455,10 @@ export let objectExistsInArrayPresorted = (accumulator, label, keys, secondkeys 
  * @property {string} label
  * @property {string} displayLabel
  */
-export let labelReducer27 = (labels, label_prefix = '', /** @type {string} */ displayLabel="") => {
+export let labelReducer27 = (labels, label_prefix = '', /** @type {string} */ displayLabel = "") => {
     let i = 0
     return labels.reduce((/** @type {NavLabel[]} */ accumulator, /** @type {string} */ currentValue) => {
-        if(!displayLabel) {
+        if (!displayLabel) {
             let navlabel = /** @type {NavLabel}*/ ({
                 value: currentValue,
                 label: `${label_prefix}${currentValue}`

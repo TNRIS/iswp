@@ -9,6 +9,7 @@
     import 'leaflet';
     import 'leaflet-easybutton/src/easy-button';
     import '$lib/leaflet/leaflet.utfgrid';
+
     let { children } = $props();
     let selected = { id: $page.url.pathname.split(['/'])[1] };
     let constants = getConstants($page.url.host);
@@ -17,6 +18,7 @@
     //Remove temporary banner
     document.getElementById('temp-content')?.remove();
 </script>
+
 <!-- DELETE IN 2029 or sooner if sure. {#if constants.id == 27}
     <div class="draft-note">
         <div class="wrapper" style="word-break: break-word;">
@@ -34,30 +36,34 @@
     </div>
 {/if} -->
 <Banner {constants} />
-    {#await Promise.all([visualize_idb_downloading, db]) then}
-        <Navigation {db} {selected} {constants} />
-    {:catch}
-        <span>There was an error loading the top navigation. Please clear your cache in your browser to reload the application.</span>
-    {/await}
+{#await Promise.all([visualize_idb_downloading, db]) then}
+    <Navigation {db} {selected} {constants} />
+{:catch}
+    <span>There was an error loading the top navigation. Please clear your cache in your browser to reload the application.</span>
+{/await}
 <div id="main-loader" style="display: none;">
-<div class="summary-wrapper container" id="loader-msg" style="z-index: 600">
-    <div class="w3-light-grey">
-    <div role="progressbar" id="idb_progress_bar" class="w3-container w3-green"
-        style="height:24px;width:1%;background-color: #477fc7;">
+    <div class="summary-wrapper container" id="loader-msg" style="z-index: 600">
+        <div class="w3-light-grey">
+            <div
+                role="progressbar"
+                id="idb_progress_bar"
+                class="w3-container w3-green"
+                style="height:24px;width:1%;background-color: #477fc7;">
+            </div>
+        </div>
+        Welcome. Please be patient while Interactive State Water Plan loads. <br />
+        <i>If you experience initial load times over 2 minutes, please clear the browser’s cookies/cache for this webpage.</i>
     </div>
-    </div>
-    Welcome. Please be patient while Interactive State Water Plan loads. <br /> <i>If you experience initial load
-    times over 2 minutes, please clear the browser’s cookies/cache for this webpage.</i>
-</div>
 </div>
 <div id="loadable-content">
-{@render children()}
+    {@render children()}
 </div>
+
 <style lang="css" global>
-    @import "normalize.css";
-    @import "$lib/styling/css/skeleton.css";
-    @import "$lib/styling/webfonts/gill-sans.css";
-    @import "leaflet";
-    @import "leaflet-easybutton";
-    @import "$lib/styling/sass/main.scss";
+    @import 'normalize.css';
+    @import '$lib/styling/css/skeleton.css';
+    @import '$lib/styling/webfonts/gill-sans.css';
+    @import 'leaflet';
+    @import 'leaflet-easybutton';
+    @import '$lib/styling/sass/main.scss';
 </style>

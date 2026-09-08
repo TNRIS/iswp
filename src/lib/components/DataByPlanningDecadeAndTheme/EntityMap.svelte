@@ -5,6 +5,10 @@
     import { getContext, onMount } from 'svelte';
     import { scaleTonew, usd_format, objLeftjoin, commafy, coordFitter } from '$lib/helper';
     import { runOMS } from '$lib/leaflet/leaflet.oms.js';
+    import { maplibreGL } from '@maplibre/maplibre-gl-leaflet';
+    import { PMTiles } from 'pmtiles';
+    import 'maplibre-gl/dist/maplibre-gl.css';
+
     import { map } from 'd3';
 
     /* Work in progress */
@@ -26,6 +30,7 @@
         notEqualTo as notEqualToFilter,
         or as orFilter
     } from 'ol/format/filter.js';
+
     const countyTable = 'county_extended';
     const regionTable = 'rwpas';
     const { slug, constants, type, entityMapBlurb } = $$props;
@@ -314,11 +319,20 @@
         toggleLockButton.addTo(map);
 
         map.fitBounds(TEXAS);
-        const baseLayer = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png', {
-            attribution:
-                '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+
+        const baseLayer = L.maplibreGL({
+            style: 'https://tiles.openfreemap.org/styles/positron'
+        }).addTo(map);
+        const glMap = baseLayer.getMaplibreMap();
+        const keep = ['background', 'water', 'waterway', 'boundary_2', 'boundary_3', 'boundary_disputed'];
+
+        glMap.on('load', () => {
+            glMap.getStyle().layers.forEach((layer) => {
+                if (!keep.includes(layer.id)) {
+                    glMap.setLayoutProperty(layer.id, 'visibility', 'none');
+                }
+            });
         });
-        map.addLayer(baseLayer);
         // Remove default Prefix!
         map.attributionControl.setPrefix('');
 
@@ -588,8 +602,7 @@
                                     ]);
 
                                     lines_sources.features.forEach((feature) => {
-                                        if($themeStore !== "strategies")
-                                            return;
+                                        if ($themeStore !== 'strategies') return;
                                         let jj = displayGeom(feature, {
                                             color: '#33B0FF',
                                             opacity: 1,
@@ -605,8 +618,7 @@
                                     });
 
                                     polygon_sources.features.forEach((feature) => {
-                                        if($themeStore !== "strategies")
-                                            return;
+                                        if ($themeStore !== 'strategies') return;
                                         let gj = displayGeom(feature, {
                                             color: '#3F556D',
                                             opacity: 1,
@@ -622,8 +634,7 @@
                                     });
 
                                     point_sources.features.forEach((feature, i) => {
-                                        if($themeStore !== "strategies")
-                                            return;
+                                        if ($themeStore !== 'strategies') return;
                                         let gj = displayGeom(feature, {
                                             color: '#33B0FF',
                                             opacity: 1,
@@ -638,8 +649,7 @@
                                     });
 
                                     if (markerstash?.length) {
-                                        if($themeStore !== "strategies")
-                                            return;
+                                        if ($themeStore !== 'strategies') return;
                                         markerstash.forEach((markeri) => {
                                             map.removeLayer(markeri);
                                             markeri.addTo(map);
@@ -1071,8 +1081,7 @@
                                 ]);
 
                                 point_sources.features.forEach((feature, i) => {
-                                    if($themeStore !== "supplies")
-                                        return;
+                                    if ($themeStore !== 'supplies') return;
                                     let gj = displayGeom(feature, {
                                         color: '#33B0FF',
                                         opacity: 1,
@@ -1088,8 +1097,7 @@
                                 });
 
                                 lines_sources.features.forEach((feature) => {
-                                    if($themeStore !== "supplies")
-                                        return;
+                                    if ($themeStore !== 'supplies') return;
                                     let gj = displayGeom(feature, {
                                         color: '#0097d6',
                                         opacity: 1,
@@ -1105,8 +1113,7 @@
                                 });
 
                                 polygon_sources.features.forEach((feature) => {
-                                    if($themeStore !== "supplies")
-                                        return;
+                                    if ($themeStore !== 'supplies') return;
                                     let gj = displayGeom(feature, {
                                         color: '#3F556D',
                                         opacity: 1,
@@ -1122,8 +1129,7 @@
                                 });
 
                                 if (markerstash?.length) {
-                                    if($themeStore !== "supplies")
-                                        return;
+                                    if ($themeStore !== 'supplies') return;
                                     markerstash.forEach((markeri) => {
                                         map.removeLayer(markeri);
                                         markeri.addTo(map);
@@ -1425,10 +1431,10 @@
         {#if $themeStore === 'strategies'}
             <p class="note"
                 >Red triangles indicate capital projects associated with strategy supplies that have been assigned to a Water User Group.
-                 Recommended reservoir footprints or representative locations may be hypothetical locations of facilities for regional 
-                 water planning purposes only as it relates to planning-level cost estimates. The locations presented in this site may be
-                 conceptual in nature and may not represent actual locations of facilities. Siting of facilities are subject to studies,
-                 designs, engineering, and/or contract negotiations to be determined by the project's sponsor at a later date.<a
+                Recommended reservoir footprints or representative locations may be hypothetical locations of facilities for regional water
+                planning purposes only as it relates to planning-level cost estimates. The locations presented in this site may be
+                conceptual in nature and may not represent actual locations of facilities. Siting of facilities are subject to studies,
+                designs, engineering, and/or contract negotiations to be determined by the project's sponsor at a later date.<a
                     id="hp_link"
                     on:click={() => hideshowmarkers()}
                     on:keydown={(key) => {
