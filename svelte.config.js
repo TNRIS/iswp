@@ -13,9 +13,6 @@ const config = {
       precompress: false,
       strict: false
     }),
-    output: {
-      bundleStrategy: 'inline'
-    },
     inlineStyleThreshold: 9999999
   },
   preprocess: sveltePreprocess({

@@ -7,7 +7,7 @@
     import * as maplibregl from 'maplibre-gl';
     import 'leaflet/dist/leaflet.css';
     import 'maplibre-gl/dist/maplibre-gl.css';
-    import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url';
+    import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
     import { maplibreGL } from '@maplibre/maplibre-gl-leaflet';
     const countyTable = 'county_extended';
     const regionTable = 'rwpas';
